@@ -1,0 +1,31 @@
+{
+	"options": {
+		"remove": true
+	},
+	"modules": {
+		"hoast-filter": {
+			"invert": true,
+			"patterns": [
+				"layouts/**"
+			]
+		},
+		"read": {},
+		"hoast-frontmatter": {
+			"patterns": [
+				"**/*.md"
+			]
+		},
+		"hoast-transform": {
+			"patterns": [
+				"**/*.md"
+			]
+		},
+		"hoast-layout": {
+			"directory": "layouts",
+			"layout": "page.hbs",
+			"patterns": [
+				"**/*.html"
+			]
+		}
+	}
+}
