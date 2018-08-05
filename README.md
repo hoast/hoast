@@ -6,10 +6,10 @@ A modular file processer focused on creating a simple ecosystem.
 Install using [npm](https://npmjs.com).
 
 ```
-$ npm install hoast
+[$ npm install hoast](https://www.npmjs.com/package/hoast)
 ```
 
-> Install any other dependencies as well, in this case `hoast-filter`, `hoast-frontmatter`, `hoast-layout`, and `hoast-transform`.
+> Install any other dependencies as well, in this case `jstransformer-handlebars`, `jstransformer-markdown`, `hoast-filter`, `hoast-frontmatter`, `hoast-layout`, and `hoast-transform`.
 
 Create a JavaScript file that combines the logic.
 
@@ -227,11 +227,11 @@ const build = async function() {
 build();
 ```
 
-> As you can see in both examples the Hoast object is still available for further usage.
+> As you can see in both examples the hoast object is still available for further usage.
 
 ### Debugging
 
-When making a Hoast module I highly recommend activating the debug logs by setting up the environement variables as well as the [debug]() module.
+When making a hoast module I highly recommend activating the debug logs by setting up the environment variables as well as the [debug]() module.
 
 On Windows the environment variable is set using the `set` command.
 
@@ -370,7 +370,7 @@ Hoast(__dirname)
 > See the [examples](https://github.com/hoast/hoast/tree/master/examples) directory for more in depth usage.
 
 ### Making
-In the simplest form the script below is a Hoast module. The first time it will be called as a function and arguments can be passed on so properties can be initialized or validated. The return of the function is another function which will be called every time files need to be processed. Hoast is the hoast instance and has the options property assigned during via the constructor or process call. The files argument is an array files scanned and ready to me transformed.
+In the simplest form the script below is a hoast module. The first time it will be called as a function and arguments can be passed on so properties can be initialized or validated. The return of the function is another function which will be called every time files need to be processed. Hoast is the hoast instance and has the options property assigned during via the constructor or process call. The files argument is an array files scanned and ready to me transformed.
 
 ```javascript
 exports = module.exports = function(options) {
@@ -419,13 +419,11 @@ exports = module.exports = function(options) {
 > See the [filter module](https://github.com/hoast/hoast-filter#readme) for an example.
 
 ### Browsing
-| Name | Description |
-| ---- | ----------- |
-| [Convert](https://github.com/hoast/hoast-convert#readme) | Convert the content of files using a specified function. |
-| [Filter](https://github.com/hoast/hoast-filter#readme) | Filter out files from further processing. |
-| [Frontmatter](https://github.com/hoast/hoast-frontmatter#readme) | Extracts frontmatter from files. |
-| [Layout](https://github.com/hoast/hoast-layout#readme) | Transform the content of files using layouts. |
-| [Transform](https://github.com/hoast/hoast-transform#readme) | Transform the content of files based on the extension. |
+[Convert](https://github.com/hoast/hoast-convert#readme) - *Convert the content of files using a specified function.*
+[Filter](https://github.com/hoast/hoast-filter#readme) - *Filter out files from further processing.*
+[Frontmatter](https://github.com/hoast/hoast-frontmatter#readme) - *Extracts frontmatter from files.*
+[Layout](https://github.com/hoast/hoast-layout#readme) - *Transform the content of files using layouts.*
+[Transform](https://github.com/hoast/hoast-transform#readme) - *Transform the content of files based on the extension.*
 
 > Feel free to add modules yourself by making a pull request to the repository.
 
@@ -434,11 +432,6 @@ exports = module.exports = function(options) {
 ### Modules
 1. `updated`, filters out files that have not been updated since the last build.
 2. `publish`, control publishing mode of using the frontmatter.
-	* Do no build articles depending on the publish mode.
-		* Future date = 001
-		* Draft = 010
-		* Private = 100
-	* If the mode is 110 then it would build those marked private and draft, but not those with a future date.
 3. `paths`, create cleaner paths for HTML files.
 
 ## Known issues
