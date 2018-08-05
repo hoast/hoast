@@ -33,7 +33,7 @@ Hoast(__dirname, {
 	}))
 	.process()
 	.then(function(hoast) {
-		console.log('Process successfully completed.')
+		console.log('Process successfully completed.');
 	})
 	.catch(function(error) {
 		console.error(error);

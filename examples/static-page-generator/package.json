@@ -1,11 +1,11 @@
 {
   "author": "Ron Dekker",
-  "name": "staticpagegenerator-script",
+  "name": "static-page-generator",
   "version": "0.0.0",
-  "description": "Hoast example showing script usage.",
+  "description": "Hoast example showing the basic usage usage.",
   "license": "ISC",
-  "main": "hoast.json",
-  "homepage": "https://github.com/hoast/hoast/blob/master/examples/staticpagegen-script",
+  "main": "hoast.js",
+  "homepage": "https://github.com/hoast/hoast/blob/master/examples/static-page-generator",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
