@@ -3,10 +3,10 @@ A modular file processer focused on creating a simple ecosystem.
 
 ## The elevator pitch: Building a static website
 
-Install using [npm](https://npmjs.com).
+Install [hoast](https://npmjs.com/package/hoast) using [npm](https://npmjs.com).
 
 ```
-[$ npm install hoast](https://www.npmjs.com/package/hoast)
+$ npm install hoast
 ```
 
 > Install any other dependencies as well, in this case `jstransformer-handlebars`, `jstransformer-markdown`, `hoast-filter`, `hoast-frontmatter`, `hoast-layout`, and `hoast-transform`.
@@ -438,4 +438,5 @@ exports = module.exports = function(options) {
 * Access modes of directories and files are not transferred.
 
 ## License
+
 [ISC license](https://github.com/hoast/hoast/blob/master/LICENSE)

@@ -22,7 +22,7 @@
   "bin": {
     "hoast": "cli.js"
   },
-  "homepage": "https://github.com/hoast/hoast#readme",
+  "homepage": "https://hoast.github.io/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
