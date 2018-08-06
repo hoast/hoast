@@ -66,7 +66,7 @@ write.file = function(directory, file) {
 				}	
 				writeFile(
 					join(directory, file.path),
-					file.content.type === 'Buffer' ? file.content : file.content.data,
+					file.content.type === 'string' ? file.content.data : file.content,
 					function(error) {
 						if (error) {
 							return reject(error);
