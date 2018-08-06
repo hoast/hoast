@@ -1,4 +1,4 @@
-# Hoast
+# hoast
 A modular file processer focused on creating a simple ecosystem.
 
 ## The elevator pitch: Building a static website
@@ -9,7 +9,7 @@ Install [hoast](https://npmjs.com/package/hoast) using [npm](https://npmjs.com).
 $ npm install hoast
 ```
 
-> Install any other dependencies as well, in this case `jstransformer-handlebars`, `jstransformer-markdown`, `hoast-filter`, `hoast-frontmatter`, `hoast-layout`, and `hoast-transform`.
+> Install any other dependencies as well, in this case `jstransformer-handlebars`, `jstransformer-markdown-it`, `hoast-filter`, `hoast-frontmatter`, `hoast-layout`, and `hoast-transform`.
 
 Create a JavaScript file that combines the logic.
 
@@ -160,7 +160,7 @@ Hoast(__dirname)
 As with any constructor it initializes the object.
 
 * `directory` **{String}**: The working directory, most often `__dirname`.
-* `options` **{Object}**: See [options](#object-options) for more detail about the parameter.
+* `options` **{Object}**: See [options](#options) for more detail about the parameter.
 
 #### use
 Adds the module to the modules stack.
@@ -170,9 +170,9 @@ Adds the module to the modules stack.
 #### process
 An asynchronous function which goes through the three steps mentioned in the introduction. It scans the files in the source directory, cycles through each module, and writes the result to the destination directory.
 
-* `options` **{Object}**: See [options](#object-options) for more detail about the parameter.
+* `options` **{Object}**: See [options](#options) for more detail about the parameter.
 
-#### object options
+#### options
 
 * `source` **{String}**: The directory to process files from.
 	* Default: `source`.
@@ -373,7 +373,7 @@ Hoast(__dirname)
 In the simplest form the script below is a hoast module. The first time it will be called as a function and arguments can be passed on so properties can be initialized or validated. The return of the function is another function which will be called every time files need to be processed. Hoast is the hoast instance and has the options property assigned during via the constructor or process call. The files argument is an array files scanned and ready to me transformed.
 
 ```javascript
-exports = module.exports = function(options) {
+module.exports = function(options) {
   // Prepare anything.
   
   // Return module.
@@ -390,7 +390,7 @@ exports = module.exports = function(options) {
 The modules can also be asynchronously by either being a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) or adding the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword before function.
 
 ```javascript
-exports = module.exports = function(options) {
+module.exports = function(options) {
   // Prepare anything.
   
   // Return asynchronouse module.
@@ -403,7 +403,7 @@ exports = module.exports = function(options) {
 You can also return a new files array if you need to overwrite the existing one, however it is recommended to iterate over the files using the forEach function instead of map or filter. Use this power carefully!
 
 ```javascript
-exports = module.exports = function(options) {
+module.exports = function(options) {
   // Prepare anything.
   
   // Return module.
@@ -425,7 +425,7 @@ exports = module.exports = function(options) {
 [Layout](https://github.com/hoast/hoast-layout#readme) - *Transform the content of files using layouts.*
 [Transform](https://github.com/hoast/hoast-transform#readme) - *Transform the content of files based on the extension.*
 
-> Feel free to add modules yourself by making a pull request to the repository.
+> Feel free to add modules yourself by making a [pull request to the repository](https://github.com/hoast/hoast/pulls).
 
 ## Planned
 

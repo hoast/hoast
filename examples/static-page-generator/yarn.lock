@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-abbrev@1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
-
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/align-text/-/align-text-0.1.4.tgz#0cd90a561093f35d0a99256c22b7069433fad117"
@@ -158,6 +154,10 @@ define-property@^2.0.2:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
 
+entities@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
+
 esprima@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
@@ -235,9 +235,9 @@ has-values@^1.0.0:
     is-number "^3.0.0"
     kind-of "^4.0.0"
 
-hoast-filter@0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/hoast-filter/-/hoast-filter-0.0.0.tgz#a0468f298ada1bf033475f36747f42e1f54df327"
+hoast-filter@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/hoast-filter/-/hoast-filter-0.0.1.tgz#dab5ea805f3e9905bf67ca6e2bf3a7995904c4f2"
   dependencies:
     nanomatch "^1.2.13"
 
@@ -248,25 +248,25 @@ hoast-frontmatter@0.0.0:
     gray-matter "^4.0.1"
     nanomatch "^1.2.13"
 
-hoast-layout@0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/hoast-layout/-/hoast-layout-0.0.0.tgz#7d31b6ebc8f1f3645798d90d294902c2abf300b5"
+hoast-layout@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/hoast-layout/-/hoast-layout-0.0.2.tgz#a007faabba9925beec1719c66caae61de4cc5b17"
   dependencies:
     inputformat-to-jstransformer "^1.3.0"
     jstransformer "^1.0.0"
     nanomatch "^1.2.13"
 
-hoast-transform@0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/hoast-transform/-/hoast-transform-0.0.0.tgz#264458526430f0b8bc566d348d067a72e8b995f3"
+hoast-transform@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/hoast-transform/-/hoast-transform-0.0.2.tgz#98102b685675537f03448f6d8821d5f61e28a8f2"
   dependencies:
     inputformat-to-jstransformer "^1.3.0"
     jstransformer "^1.0.0"
     nanomatch "^1.2.13"
 
-hoast@0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/hoast/-/hoast-0.0.0.tgz#5202d272933a020edd5ee3e867ba8188ea0a90eb"
+hoast@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/hoast/-/hoast-0.0.1.tgz#f3e41c53a5583c2f9cfeef733dff70765e32cffb"
   dependencies:
     commander "^2.16.0"
     isutf8 "^2.0.2"
@@ -382,11 +382,11 @@ jstransformer-handlebars@^1.1.0:
   dependencies:
     handlebars "^4.0.1"
 
-jstransformer-markdown@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/jstransformer-markdown/-/jstransformer-markdown-1.2.1.tgz#ecc9221c5f0dd5471bfaf070ea00f2bc01f43236"
+jstransformer-markdown-it@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/jstransformer-markdown-it/-/jstransformer-markdown-it-2.1.0.tgz#69ec30ce4518bed5997b38f027648e8c285e92f7"
   dependencies:
-    markdown "^0.5.0"
+    markdown-it "^8.0.0"
 
 jstransformer@^1.0.0:
   version "1.0.0"
@@ -419,6 +419,12 @@ lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
 
+linkify-it@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/linkify-it/-/linkify-it-2.0.3.tgz#d94a4648f9b1c179d64fa97291268bdb6ce9434f"
+  dependencies:
+    uc.micro "^1.0.1"
+
 longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
@@ -433,11 +439,19 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-markdown@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/markdown/-/markdown-0.5.0.tgz#28205b565a8ae7592de207463d6637dc182722b2"
+markdown-it@^8.0.0:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-8.4.2.tgz#386f98998dc15a37722aa7722084f4020bdd9b54"
   dependencies:
-    nopt "~2.1.1"
+    argparse "^1.0.7"
+    entities "~1.1.1"
+    linkify-it "^2.0.0"
+    mdurl "^1.0.1"
+    uc.micro "^1.0.5"
+
+mdurl@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
 
 minimist@~0.0.1:
   version "0.0.10"
@@ -469,12 +483,6 @@ nanomatch@^1.2.13:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
-
-nopt@~2.1.1:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/nopt/-/nopt-2.1.2.tgz#6cccd977b80132a07731d6e8ce58c2c8303cf9af"
-  dependencies:
-    abbrev "1"
 
 object-copy@^0.1.0:
   version "0.1.0"
@@ -645,6 +653,10 @@ to-regex@^3.0.1:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+uc.micro@^1.0.1, uc.micro@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.5.tgz#0c65f15f815aa08b560a61ce8b4db7ffc3f45376"
 
 uglify-js@^2.6:
   version "2.8.29"
