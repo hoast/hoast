@@ -9,27 +9,19 @@ Hoast(__dirname, {
 	remove: true
 })	.use(filter({
 		invert: true,
-		patterns: [
-			'layouts/**'
-		]
+		patterns: 'layouts/**'
 	}))
 	.use(read())
 	.use(frontmatter({
-		patterns: [
-			'**/*.md'
-		]
+		patterns: '**/*.md'
 	}))
 	.use(transform({
-		patterns: [
-			'**/*.md'
-		]
+		patterns: '**/*.md'
 	}))
 	.use(layout({
 		directory: 'layouts',
 		layout: 'page.hbs',
-		patterns: [
-			'**/*.html'
-		]
+		patterns: '**/*.html'
 	}))
 	.process()
 	.then(function(hoast) {

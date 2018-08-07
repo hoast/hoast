@@ -96,4 +96,4 @@ write.files = function(directory, files) {
 		});
 };
 
-module.exports = write.files;
+module.exports = write;

@@ -6,7 +6,7 @@ let debug; try { debug = require('debug')('hoast'); } catch(error) { debug = fun
 // Custom modules.
 const scan = require('./libraries/scan'),
 	  remove = require('./libraries/remove'),
-	  write = require('./libraries/write');
+	  write = require('./libraries/write').files;
 
 /**
  * Validates the options.
@@ -130,6 +130,10 @@ Hoast.prototype.process = async function(options) {
 		for (let i = 0; i < this.modules.length; i++) {
 			// Override batch if new files are returned.
 			batch = await this.modules[i](this, batch) || batch;
+			// Check if any files are left in the batch.
+			if (batch.length <= 0) {
+				break;
+			}
 		}
 		debug(`Batched processed.`);
 		
@@ -142,6 +146,12 @@ Hoast.prototype.process = async function(options) {
 	
 	// Return hoast.
 	return this;
+};
+
+// Helper functions that can be utilized by modules.
+Hoast.prototype.helper =  {
+	// Create a directory at the given path.
+	createDirectory = require('./libraries/write').directory
 };
 
 // Build in read module required to run before process.

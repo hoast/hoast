@@ -72,7 +72,7 @@ The system has been written with several goals it mind, to be small in size as w
 
 > Another key advantage is the environment the system has been developed in, Node.js, which utilises JavaScript the language most commonly known by web developers who this project targets with static page generation.
 
-The order in which Hoast works can be broken down into three main steps.
+The order in which hoast works can be broken down into three main steps.
 1. From the source directory all files are scanned.
 2. Each module manipulates the information presented.
 3. The results are written to the destination directory.
@@ -132,7 +132,7 @@ If you want to re-use the same module multiple times you can wrap each module in
 }
 ```
 
-> Do not forget to install the modules itself as well.
+> Do not forget to install the modules themself as well.
 
 Then run the help command for more information about running the CLI:
 
@@ -419,20 +419,21 @@ module.exports = function(options) {
 > See the [filter module](https://github.com/hoast/hoast-filter#readme) for an example.
 
 ### Browsing
-[Convert](https://github.com/hoast/hoast-convert#readme) - *Convert the content of files using a specified function.*
-[Filter](https://github.com/hoast/hoast-filter#readme) - *Filter out files from further processing.*
-[Frontmatter](https://github.com/hoast/hoast-frontmatter#readme) - *Extracts frontmatter from files.*
-[Layout](https://github.com/hoast/hoast-layout#readme) - *Transform the content of files using layouts.*
-[Transform](https://github.com/hoast/hoast-transform#readme) - *Transform the content of files based on the extension.*
+* [Changed](https://github.com/hoast/hoast-changed#readme) - Filter out files which have not been changed since the last build.
+* [Convert](https://github.com/hoast/hoast-convert#readme) - Convert the content of files using a specified function.
+* [Filter](https://github.com/hoast/hoast-filter#readme) - Filter out files from further processing.
+* [Frontmatter](https://github.com/hoast/hoast-frontmatter#readme) - Extracts frontmatter from files.
+* [Layout](https://github.com/hoast/hoast-layout#readme) - Transform the content of files using layouts.
+* [Rename](https://github.com/hoast/hoast-rename#readme) - Rename the path of files using a specified function.
+* [Transform](https://github.com/hoast/hoast-transform#readme) - Transform the content of files based on the extension.
 
 > Feel free to add modules yourself by making a [pull request to the repository](https://github.com/hoast/hoast/pulls).
 
 ## Planned
 
 ### Modules
-1. `updated`, filters out files that have not been updated since the last build.
-2. `publish`, control publishing mode of using the frontmatter.
-3. `paths`, create cleaner paths for HTML files.
+2. `publish`, control publishing mode of a file using the frontmatter.
+3. `livereload`, allow for live reloading.
 
 ## Known issues
 * Access modes of directories and files are not transferred.

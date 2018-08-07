@@ -5,27 +5,19 @@
 	"modules": {
 		"hoast-filter": {
 			"invert": true,
-			"patterns": [
-				"layouts/**"
-			]
+			"patterns": "layouts/**"
 		},
 		"read": {},
 		"hoast-frontmatter": {
-			"patterns": [
-				"**/*.md"
-			]
+			"patterns":  "**/*.md"
 		},
 		"hoast-transform": {
-			"patterns": [
-				"**/*.md"
-			]
+			"patterns": "**/*.md"
 		},
 		"hoast-layout": {
 			"directory": "layouts",
 			"layout": "page.hbs",
-			"patterns": [
-				"**/*.html"
-			]
+			"patterns": "**/*.html"
 		}
 	}
 }
