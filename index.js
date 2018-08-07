@@ -151,7 +151,7 @@ Hoast.prototype.process = async function(options) {
 // Helper functions that can be utilized by modules.
 Hoast.prototype.helper =  {
 	// Create a directory at the given path.
-	createDirectory = require('./libraries/write').directory
+	createDirectory: require('./libraries/write').directory
 };
 
 // Build in read module required to run before process.

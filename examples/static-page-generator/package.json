@@ -14,11 +14,11 @@
     "url": "https://github.com/hoast/hoast/issues"
   },
   "dependencies": {
-    "hoast": "0.0.3",
-    "hoast-filter": "0.0.2",
-    "hoast-frontmatter": "0.0.1",
+    "hoast": "0.0.6",
+    "hoast-filter": "0.0.3",
+    "hoast-frontmatter": "0.0.2",
     "hoast-layout": "0.0.3",
-    "hoast-transform": "0.0.3",
+    "hoast-transform": "0.0.4",
     "jstransformer-handlebars": "^1.1.0",
     "jstransformer-markdown-it": "^2.1.0"
   }
