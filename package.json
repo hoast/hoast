@@ -1,7 +1,7 @@
 {
   "author": "Ron Dekker",
   "name": "hoast",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A modular file processor foccused on creating a simple ecosystem for task automation.",
   "license": "ISC",
   "keywords": [

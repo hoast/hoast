@@ -114,13 +114,22 @@ Hoast.prototype.process = async function(options) {
 		}
 	}
 	
+	// Call before function on modules.
+	debug(`Start calling before function on modules.`);
+	for (let i = 0; i < this.modules.length; i++) {
+		if (this.modules[i].hasOwnProperty('before') && typeof(this.modules[i].before) === 'function') {
+			await this.modules[i].before(this);
+		}
+	}
+	debug(`Finished calling before function on modules.`);
+	
 	// Scan source for files.
 	debug(`Scanning files.`);
 	let files = await scan(join(this.directory, this.options.source));
 	debug(`Scanned files, found ${files.length} files.`);
 	
 	// Batch out files as to not handle to many at once.
-	let batch = null;
+	let batch;
 	while (files.length > 0) {
 		// Slice files based on concurrent option into batches.
 		batch = files.splice(0, this.options.concurrency);
@@ -137,12 +146,26 @@ Hoast.prototype.process = async function(options) {
 		}
 		debug(`Batched processed.`);
 		
+		// Check if any files left to write to storage.
+		if (batch.length <= 0) {
+			debug(`No files left in batch to write to storage.`);
+			continue;
+		}
 		// Write batched files to disk.
 		debug(`Writing batch to storage.`);
 		await write(this.options.destination, batch);
 		debug(`Batch written.`);
 	}
 	debug(`Finished processing files to '${this.options.destination}' directory.`);
+	
+	// Call after function on modules.
+	debug(`Start calling after function on modules.`);
+	for (let i = 0; i < this.modules.length; i++) {
+		if (this.modules[i].hasOwnProperty('after') && typeof(this.modules[i].after) === 'function') {
+			await this.modules[i].after(this);
+		}
+	}
+	debug(`Finished calling after function on modules.`);
 	
 	// Return hoast.
 	return this;
