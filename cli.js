@@ -1,27 +1,26 @@
 #!/usr/bin/env node
 
 // Node modules.
-const { constants, access, readFile } = require('fs'),
-	  pathResolve = require('path').resolve;
+const { constants, access, readFile } = require(`fs`),
+	pathResolve = require(`path`).resolve;
 // If debug available require it.
-let debug; try { debug = require('debug')('hoast-cli'); } catch(error) { debug = function() {}; }
+let debug; try { debug = require(`debug`)(`hoast-cli`); } catch(error) { debug = function() {}; }
 // Dependecy modules.
-const commander = require('commander');
+const commander = require(`commander`);
 // Custom modules.
-const package = require('./package.json'),
-	  Hoast = require('.');
+const info = require(`./package.json`),
+	Hoast = require(`.`);
 
 // Setup command utility.
 commander
-	.name(package.name)
-	.description(package.description)
-	.version(package.version)
-	.option('-d, --directory <path>', 'path to working directory', process.cwd())
-	.option('-c, --config <path>', 'path to configuration file', package.name.concat('.json'))
+	.name(info.name)
+	.description(info.description)
+	.version(info.version)
+	.option(`-c, --config <path>`, `path to configuration file`, info.name.concat(`.json`))
 	.parse(process.argv);
 
 // Translate arguments.
-const directory = commander.directory;
+const directory = process.cwd();
 const filePath = pathResolve(directory, commander.config);
 debug(`Process from ${filePath} configuration.`);
 // Check file access.
@@ -55,17 +54,19 @@ access(filePath, constants.F_OK | constants.R_OK, function(error) {
 			for (let i = 0; i < config.modules.length; i++) {
 				await addModule(directory, hoast, moduleCache, config.modules[i]);
 			}
-		} else if (typeof(config.modules) === 'object') {
+		} else if (typeof(config.modules) === `object`) {
 			await addModule(directory, hoast, moduleCache, config.modules);
 		} else {
-			console.error(`hoast-cli: modules configuration must be of type object or array.`);
+			throw {
+				message: `Modules configuration must be of type object or array.`
+			};
 		}
 		debug(`Finished adding modules.`);
 		
 		// Process.
 		hoast.process()
 			.then(function() {
-				console.log('hoast-cli: Processing successfully finished!');
+				debug(`Processing successfully finished!`);
 			})
 			.catch(function(error) {
 				throw error;
@@ -84,14 +85,16 @@ const addModule = async function(directory, hoast, moduleCache, moduleConfig) {
 			// Get module path.
 			const modulePath = await getModulePath(directory, name);
 			if (!modulePath) {
-				console.error(`hoast-cli: Unable to find path to module: ${name}`);
+				throw {
+					message: `Unable to find path to module: '${name}'.`
+				};
 			}
 			// Require module.
 			moduleCache[name] = require(modulePath);
 		}
 		// Add module to stack.
 		hoast.use(moduleCache[name](moduleConfig[name]));
-		debug(`Added ${name} module.`);
+		debug(`Added '${name}' module.`);
 	}
 };
 
@@ -103,11 +106,11 @@ const addModule = async function(directory, hoast, moduleCache, moduleConfig) {
 const getModulePath = async function(directory, moduleName) {
 	// Create all possible paths.
 	let modulePaths = [
-		pathResolve(directory, 'node_modules', moduleName),
+		pathResolve(directory, `node_modules`, moduleName),
 		pathResolve(directory, moduleName),
-		pathResolve(directory, moduleName).concat('.js'),
+		pathResolve(directory, moduleName).concat(`.js`),
 		moduleName,
-		moduleName.concat('.js')
+		moduleName.concat(`.js`)
 	];
 	
 	// Check the access to each path to find the right one.
@@ -122,7 +125,7 @@ const getModulePath = async function(directory, moduleName) {
 	
 	// If still not found then exit with an error.
 	return {
-		message: `Unable to find the ${moduleName} module.`
+		message: `Unable to find the '${moduleName}' module.`
 	};
 };
 

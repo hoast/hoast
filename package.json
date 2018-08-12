@@ -1,7 +1,10 @@
 {
-  "author": "Ron Dekker",
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.nl"
+  },
   "name": "hoast",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A modular file processor foccused on creating a simple ecosystem for task automation.",
   "license": "ISC",
   "keywords": [
@@ -15,14 +18,7 @@
     "page",
     "generator"
   ],
-  "engines": {
-    "node": ">=7.8.0"
-  },
-  "main": "index.js",
-  "bin": {
-    "hoast": "cli.js"
-  },
-  "homepage": "https://hoast.github.io/",
+  "homepage": "https://hoast.github.io",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
@@ -30,11 +26,24 @@
   "bugs": {
     "url": "https://github.com/hoast/hoast/issues"
   },
+  "engines": {
+    "node": ">=7.8.0"
+  },
+  "main": "index.js",
+  "bin": {
+    "hoast": "cli.js"
+  },
+  "scripts": {
+		"pretest": "eslint libraries/*.js index.js cli.js test.js",
+    "test": "ava test.js --verbose"
+  },
   "dependencies": {
     "commander": "^2.16.0",
     "isutf8": "^2.0.2"
   },
   "devDependencies": {
-    "debug": "^3.1.0"
+    "ava": "^0.25.0",
+    "debug": "^3.1.0",
+    "eslint": "^5.3.0"
   }
 }

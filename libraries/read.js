@@ -1,8 +1,8 @@
 // Node modules.
-const { readFile } = require('fs'),
-	  { join } = require('path');
+const { readFile } = require(`fs`),
+	{ join } = require(`path`);
 // Dependency module.
-const isutf8 = require('isutf8');
+const isutf8 = require(`isutf8`);
 
 /**
  * Read the content of the file.
@@ -19,7 +19,7 @@ const read = function(directory, file) {
 				Object.assign(file, {
 					// If file is utf8 store it as a string.
 					content: isutf8(buffer) ? {
-						type: 'string',
+						type: `string`,
 						data: buffer.toString()
 					} : buffer,
 				})

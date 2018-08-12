@@ -1,33 +1,33 @@
 // Node modules.
-const assert = require('assert'),
-	  { isAbsolute, join } = require('path');
+const assert = require(`assert`),
+	{ isAbsolute, join } = require(`path`);
 // If debug available require it.
-let debug; try { debug = require('debug')('hoast'); } catch(error) { debug = function() {}; }
+let debug; try { debug = require(`debug`)(`hoast`); } catch(error) { debug = function() {}; }
 // Custom modules.
-const scan = require('./libraries/scan'),
-	  remove = require('./libraries/remove'),
-	  write = require('./libraries/write').files;
+const scan = require(`./libraries/scan`),
+	remove = require(`./libraries/remove`),
+	write = require(`./libraries/write`).files;
 
 /**
  * Validates the options.
  * @param {Object} options The options.
  */
 const validateOptions = function(options) {
-	assert(typeof(options) === 'object', 'options must by of type object.');
+	assert(typeof(options) === `object`, `hoast: options must by of type object.`);
 	if (options.destination) {
-		assert(typeof(options.destination) === 'string', 'options.destination must be of type string.');
+		assert(typeof(options.destination) === `string`, `hoast: options.destination must be of type string.`);
 	}
 	if (options.source) {
-		assert(typeof(options.source) === 'string', 'options.source must be of type string.');
+		assert(typeof(options.source) === `string`, `hoast: options.source must be of type string.`);
 	}
 	if (options.remove) {
-		assert(typeof(options.remove) === 'boolean' || Array.isArray(options.remove), 'options.remove must be of type boolean or an array of string.');
+		assert(typeof(options.remove) === `boolean` || Array.isArray(options.remove), `hoast: options.remove must be of type boolean or an array of string.`);
 	}
 	if (options.concurrency) {
-		assert(typeof(options.concurrency) === 'number' && !Number.isNaN(options.concurrency), 'options.concurrency must be of type number.');
+		assert(typeof(options.concurrency) === `number` && !Number.isNaN(options.concurrency), `hoast: options.concurrency must be of type number.`);
 	}
 	if (options.metadata) {
-		assert(options.metadata !== null && typeof(options.metadata) === 'object', 'options.metadata must be of type object.');
+		assert(options.metadata !== null && typeof(options.metadata) === `object`, `hoast: options.metadata must be of type object.`);
 	}
 };
 
@@ -39,12 +39,12 @@ const validateOptions = function(options) {
 const Hoast = function(directory, options) {
 	// Create instance of this.
 	if (!(this instanceof Hoast)) {
-		return new Hoast(directory, options)
+		return new Hoast(directory, options);
 	}
 	debug(`Initializing.`);
 	
 	// Directory.
-	assert(typeof(directory) === 'string' && isAbsolute(directory), 'directory is a required parameter and must be an absolute path of type string.');
+	assert(typeof(directory) === `string` && isAbsolute(directory), `hoast: directory is a required parameter and must be an absolute path of type string.`);
 	this.directory = directory;
 	
 	if (options) {
@@ -54,8 +54,8 @@ const Hoast = function(directory, options) {
 	}
 	// Override default options.
 	this.options = Object.assign({
-		source: 'source',
-		destination: 'destination',
+		source: `source`,
+		destination: `destination`,
 		
 		concurrency: Infinity,
 		
@@ -76,7 +76,7 @@ Hoast.prototype.use = function(module) {
 		debug(`Initialized modules array.`);
 	}
 	// Validate module.
-	assert(typeof(module) === 'function', 'module must be of type function.');
+	assert(typeof(module) === `function`, `hoast: module must be of type function.`);
 	// Add module to list.
 	this.modules.push(module);
 	return this;
@@ -117,7 +117,7 @@ Hoast.prototype.process = async function(options) {
 	// Call before function on modules.
 	debug(`Start calling before function on modules.`);
 	for (let i = 0; i < this.modules.length; i++) {
-		if (this.modules[i].hasOwnProperty('before') && typeof(this.modules[i].before) === 'function') {
+		if (this.modules[i].hasOwnProperty(`before`) && typeof(this.modules[i].before) === `function`) {
 			await this.modules[i].before(this);
 		}
 	}
@@ -161,7 +161,7 @@ Hoast.prototype.process = async function(options) {
 	// Call after function on modules.
 	debug(`Start calling after function on modules.`);
 	for (let i = 0; i < this.modules.length; i++) {
-		if (this.modules[i].hasOwnProperty('after') && typeof(this.modules[i].after) === 'function') {
+		if (this.modules[i].hasOwnProperty(`after`) && typeof(this.modules[i].after) === `function`) {
 			await this.modules[i].after(this);
 		}
 	}
@@ -174,10 +174,10 @@ Hoast.prototype.process = async function(options) {
 // Helper functions that can be utilized by modules.
 Hoast.prototype.helper =  {
 	// Create a directory at the given path.
-	createDirectory: require('./libraries/write').directory
+	createDirectory: require(`./libraries/write`).directory
 };
 
 // Build in read module required to run before process.
-Hoast.read = require('./libraries/read');
+Hoast.read = require(`./libraries/read`);
 
 exports = module.exports = Hoast;

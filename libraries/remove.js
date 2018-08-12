@@ -1,6 +1,6 @@
 // Node modules.
-const fs = require('fs'),
-	  { join } = require('path');
+const fs = require(`fs`),
+	{ join } = require(`path`);
 
 const remove = {};
 
@@ -13,7 +13,7 @@ remove.file = function() {
 	return new Promise(function(resolve, reject) {
 		fs.lstat(file, function(error, stats) {
 			if (error) {
-				if (error.code === 'ENOENT') {
+				if (error.code === `ENOENT`) {
 					// Item does not exist.
 					return resolve();
 				}
@@ -42,7 +42,7 @@ remove.directory = function() {
 	return new Promise(function(resolve, reject) {
 		fs.access(directory, fs.constants.F_OK | fs.constants.W_OK, function(error) {
 			if (error) {
-				if (error.code === 'ENOENT') {
+				if (error.code === `ENOENT`) {
 					resolve();
 				}
 				return reject(error);

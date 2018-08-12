@@ -1,6 +1,6 @@
 // Node modules.
-const { lstat, readdir } = require('fs'),
-	  { join } = require('path');
+const { lstat, readdir } = require(`fs`),
+	{ join } = require(`path`);
 
 /**
  * Recursive flattening of an array.
@@ -60,7 +60,7 @@ const scan = function(directory) {
 					}
 				});
 			}
-		})
+		});
 	});
 };
 

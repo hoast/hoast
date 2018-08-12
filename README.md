@@ -1,4 +1,5 @@
 # hoast
+
 A modular file processer focused on creating a simple ecosystem.
 
 ## The elevator pitch
@@ -6,18 +7,18 @@ A modular file processer focused on creating a simple ecosystem.
 Creating a static page generator can be incredibly easy as is show below.
 
 ```JavaScript
-const Hoast = require('hoast');
+const Hoast = require(`hoast`);
 const read = Hoast.read,
-      filter = require('hoast-filter'),
-      frontmatter = require('hoast-frontmatter'),
-      layout = require('hoast-layout'),
-      transform = require('hoast-transform');
+      filter = require(`hoast-filter`),
+      frontmatter = require(`hoast-frontmatter`),
+      layout = require(`hoast-layout`),
+      transform = require(`hoast-transform`);
 
 Hoast(__dirname)
   // Exclude layouts.
   .use(filter({
     invert: true,
-    pattern: 'layouts/**'
+    pattern: `layouts/**`
   }))
   // Read file content.
   .use(read())
@@ -25,13 +26,13 @@ Hoast(__dirname)
   .use(frontmatter())
   // Transform markdown.
   .use(transform({
-    patterns: '**/*.md'
+    patterns: `**/*.md`
   }))
   // Layout files.
   .use(layout({
-    directory: 'layouts',
-    layout: 'article.hbs',
-    patterns: '**/*.html'
+    directory: `layouts`,
+    layout: `article.hbs`,
+    patterns: `**/*.html`
   }))
   // Process.
   .process();
@@ -128,7 +129,7 @@ $ hoast -h
 
 ```JavaScript
 // Include library.
-const Hoast = require('hoast');
+const Hoast = require(`hoast`);
 // Get build-in module.
 const read = Hoast.read;
 
@@ -167,13 +168,13 @@ An asynchronous function which goes through the three steps mentioned in the int
 * `metadata` **{Object}**: Metadata that can be used by modules.
 	* Default: `{}`.
 
-> The defaults are only applied when the constructor is called, the process' options parameter overrides what is set earlier.
+> The defaults are only applied when the constructor is called, the process` options parameter overrides what is set earlier.
 
 #### Asynchronously
 Hoast can be used asynchronously two examples are given below.
 
 ```JavaScript
-const Hoast = require('hoast');
+const Hoast = require(`hoast`);
 const read = Hoast.read;
 
 Hoast(__dirname)
@@ -181,7 +182,7 @@ Hoast(__dirname)
   .process()
   // On end.
   .then(function(hoast) {
-    console.log('Processing successfully finished!');
+    console.log(`Processing successfully finished!`);
   })
   // On error.
   .catch(function(error) {
@@ -190,7 +191,7 @@ Hoast(__dirname)
 ```
 
 ```JavaScript
-const Hoast = require('hoast');
+const Hoast = require(`hoast`);
 const read = Hoast.read;
 
 const build = async function() {
@@ -205,7 +206,7 @@ const build = async function() {
     console.error(error);
   }
   // On end.
-  console.log('Processing successfully finished!');
+  console.log(`Processing successfully finished!`);
 };
 
 build();
@@ -234,7 +235,7 @@ As mentioned before the modules handle the logic that transforms the file inform
 
 ```JavaScript
 {
-  path: 'mark\\down.md',
+  path: `mark\\down.md`,
   
   stats: {
     dev: 2114,
@@ -263,8 +264,8 @@ There is a single build-in module which reads the content of the files. It adds 
 ```JavaScript
 {
   content: {
-    type: 'string',
-    data: 'Hello there.'
+    type: `string`,
+    data: `Hello there.`
   }
 }
 ```
@@ -272,7 +273,7 @@ There is a single build-in module which reads the content of the files. It adds 
 ```JavaScript
 {
   content: {
-    type: 'Buffer',
+    type: `Buffer`,
     data: [ 71, 101, 110, 101, 114, 97, 108, 32, 75, 101, 110, 111, 98, 105, 46 ]
   }
 }
@@ -284,14 +285,14 @@ There is a single build-in module which reads the content of the files. It adds 
 The following example copies only the markdown files from the `source` directory to the `destination` directory.
 
 ```JavaScript
-const Hoast = require('hoast');
+const Hoast = require(`hoast`);
 const read = Hoast.read,
-      filter = require('hoast-filter');
+      filter = require(`hoast-filter`);
 
 Hoast(__dirname)
   // Filter to only include .md files.
   .use(filter({
-    patterns: '**/*.md'
+    patterns: `**/*.md`
   }))
   .use(read())
   .process()
@@ -302,18 +303,18 @@ Hoast(__dirname)
 You can re-use the modules after you have called process as seen below. The following script will copy all files from the `sourceA` and `sourceB` directories into the default destination directory.
 
 ```JavaScript
-const Hoast = require('hoast');
+const Hoast = require(`hoast`);
 const read = Hoast.read;
 
 Hoast(__dirname)
   // Read file content.
   .use(read())
   .process({
-    source: 'sourceA'
+    source: `sourceA`
   })
   .then(function(hoast) {
     return hoast.process({
-      source: 'sourceB'
+      source: `sourceB`
     });// Read will automaticly be used again.
   });
 ```
@@ -321,14 +322,14 @@ Hoast(__dirname)
 If you want to start with a fresh set of modules all you have to do is remove out `hoast.modules` property. The following script first copies all markdown files from the default source directory to the destination directory, and then copies all text files from the same source directory to the destination directory.
 
 ```JavaScript
-const Hoast = require('hoast');
+const Hoast = require(`hoast`);
 const read = Hoast.read,
-      filter = require('hoast-filter');
+      filter = require(`hoast-filter`);
 
 Hoast(__dirname)
   // Filter out everything but markdown files.
   .use(filter({
-    patterns: '**/*.md'
+    patterns: `**/*.md`
   })) // Only .md files available afterwards.
   .use(read())
   .process()
@@ -338,7 +339,7 @@ Hoast(__dirname)
     return hoast
       // Filter out everything but text files.
       .use(filter({
-        patterns: '**/*.txt'
+        patterns: `**/*.txt`
       })) // Only .txt files available afterwards.
       .use(read())
       .process();
