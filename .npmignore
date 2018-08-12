@@ -3,6 +3,5 @@
 .eslintrc.json
 # Continious integration
 .travis.yml
-test.js
 # Documentation
 examples/

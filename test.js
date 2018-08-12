@@ -25,7 +25,7 @@ test.serial(`libraries-write`, async function(t) {
 	await write(REF.directory, [ REF.file ]);
 	
 	// Read content from written file.
-	const content = readFileSync(join(REF.directory, REF.file.path), `utf-8`);
+	const content = readFileSync(join(REF.directory, REF.file.path), `utf8`);
 	
 	// Check content.
 	t.is(content, REF.file.content.data);
