@@ -12,9 +12,7 @@ Hoast(__dirname, {
 		patterns: `layouts/**`
 	}))
 	.use(read())
-	.use(frontmatter({
-		patterns: `**/*.md`
-	}))
+	.use(frontmatter())
 	.use(transform({
 		patterns: `**/*.md`
 	}))

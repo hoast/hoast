@@ -1,3 +1,21 @@
+<div align="center">
+  <a title="Version master branch" href="https://github.com/hoast/hoast#readme" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/github/package-json/v/hoast/hoast.svg?label=master&style=flat-square"/>
+  </a>
+  <a title="Version npm package" href="https://npmjs.com/package/hoast" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/npm/v/hoast.svg?label=npm&style=flat-square"/>
+  </a>
+  <a title="License agreement" href="https://github.com/hoast/hoast/blob/master/LICENSE" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/github/license/hoast/hoast.svg?style=flat-square"/>
+  </a>
+  <a title="Travis-ci build statis" href="https://travis-ci.org/hoast/hoast" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/travis-ci/hoast/hoast.svg?branch=master&style=flat-square"/>
+  </a>
+  <a title="Open issues on GitHub" href="https://github.com/hoast/hoast/issues" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/github/issues/hoast/hoast.svg?style=flat-square"/>
+  </a>
+</div>
+
 # hoast
 
 A modular file processer focused on creating a simple ecosystem.
@@ -31,14 +49,14 @@ Hoast(__dirname)
   // Layout files.
   .use(layout({
     directory: `layouts`,
-    layout: `article.hbs`,
+    layout: `page.hbs`,
     patterns: `**/*.html`
   }))
   // Process.
   .process();
 ```
 
-> See the [static page generator example](https://github.com/hoast/hoast/blob/master/examples/static-page-generator) for the full example including dependencies and source.
+> See the [static page generator example](https://github.com/hoast/hoast/blob/master/examples/static-page-generator) for the full example including dependencies and source directory.
 
 ## Introduction
 Hoast is a modular file processer focused on creating a simple ecosystem. The original objective was to generate webpages using a minimal system, but in addition to static page generation it can also be used for a range of different applications.
@@ -163,6 +181,8 @@ An asynchronous function which goes through the three steps mentioned in the int
 	* Default: `source`.
 * `destination` **{String}**: The directory to write the processed files to.
 	* Default: `destination`.
+* `remove` **{String}**: Whether to remove all files in the destination directory before processing.
+  * Default: `false`.
 * `concurrency` **{Number}**: Maximum number of files to process at once.
 	* Default: `Infinity`.
 * `metadata` **{Object}**: Metadata that can be used by modules.
@@ -436,7 +456,3 @@ module.exports = function(options) {
 
 ## Known issues
 * Access modes of directories and files are not transferred.
-
-## License
-
-[ISC license](https://github.com/hoast/hoast/blob/master/LICENSE)
