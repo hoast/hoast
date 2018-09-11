@@ -1,16 +1,14 @@
 // Node modules.
 const { existsSync, readFileSync } = require(`fs`),
 	{ join } = require(`path`);
-// Dependecy modules.
+// Dependency modules.
 const test = require(`ava`);
 // Custom module.
-const remove = require(`./libraries/remove`),
-	write = require(`./libraries/write`).files;
 const Hoast = require(`.`);
 
 // Reference data.
 const REF = {
-	directory: `TEST_directory`,
+	directory: `TEST-DIR`,
 	file: {
 		path: `file.txt`,
 		content: {
@@ -20,9 +18,22 @@ const REF = {
 	}
 };
 
-test.serial(`libraries-write`, async function(t) {
+test(`properties`, function(t) {
+	// Modules.
+	t.is(typeof(Hoast), `function`);
+	t.is(typeof(Hoast.read), `function`);
+	
+	// Helper functions.
+	t.is(typeof(Hoast.helper), `object`);
+	t.is(typeof(Hoast.helper.createDirectory), `function`);
+	t.is(typeof(Hoast.helper.writeFiles), `function`);
+	t.is(typeof(Hoast.helper.remove), `function`);
+	t.is(typeof(Hoast.helper.scanDirectory), `function`);
+});
+
+test.serial(`write`, async function(t) {
 	// Write data to storage.
-	await write(REF.directory, [ REF.file ]);
+	await Hoast.helper.writeFiles(REF.directory, [ REF.file ]);
 	
 	// Read content from written file.
 	const content = readFileSync(join(REF.directory, REF.file.path), `utf8`);
@@ -31,10 +42,10 @@ test.serial(`libraries-write`, async function(t) {
 	t.is(content, REF.file.content.data);
 });
 
-test.serial(`hoast`, async function(t) {
-	t.plan(18);
+test.serial(`use-case`, async function(t) {
+	t.plan(16);
 	
-	// Setup hoast with all options overriden.
+	// Setup hoast with all options overridden.
 	let options = {
 		source: `src`,
 		destination: `dst`,
@@ -57,7 +68,7 @@ test.serial(`hoast`, async function(t) {
 	t.is(hoast.modules.length, 1);
 	t.is(typeof(hoast.modules[0]), `function`);
 	
-	// Setup new completly different options.
+	// Setup new completely different options.
 	options = {
 		source: REF.directory,
 		destination: join(REF.directory, `dst`),
@@ -77,15 +88,11 @@ test.serial(`hoast`, async function(t) {
 		t.deepEqual(hoast.options, options);
 		t.true(hoast.hasOwnProperty(`modules`));
 		
-		// Check hoast helper functions.
-		t.is(typeof(hoast.helper), `object`);
-		t.is(typeof(hoast.helper.createDirectory), `function`);
-		
 		// Check files.
 		t.is(files.length, 1);
 		const file = files[0];
 		t.true(file.hasOwnProperty(`stats`));
-		// Remove stats bacause it is prone to vary.
+		// Remove stats because it is prone to vary.
 		delete file.stats;
 		t.deepEqual(file, REF.file);
 	};
@@ -105,15 +112,15 @@ test.serial(`hoast`, async function(t) {
 	hoast.use(method);
 	
 	// Return process so module test can be run.
-	return hoast.process(options);
+	await hoast.process(options);
 });
 
-test.serial(`libraries-remove`, async function(t) {
+test.serial(`remove`, async function(t) {
 	// Check if directory exists before.
 	t.true(existsSync(REF.directory));
 	
 	// Clean-up written data.
-	await remove(REF.directory);
+	await Hoast.helper.remove(REF.directory);
 	
 	// Check if directory exists after.
 	t.false(existsSync(REF.directory));

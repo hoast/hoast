@@ -3,10 +3,6 @@ const assert = require(`assert`),
 	{ isAbsolute, join } = require(`path`);
 // If debug available require it.
 let debug; try { debug = require(`debug`)(`hoast`); } catch(error) { debug = function() {}; }
-// Custom modules.
-const scan = require(`./libraries/scan`),
-	remove = require(`./libraries/remove`),
-	write = require(`./libraries/write`).files;
 
 /**
  * Validates the options.
@@ -32,8 +28,8 @@ const validateOptions = function(options) {
 };
 
 /**
- * Initilizes the object.
- * @param {Object} directory The directory to opperate from.
+ * Initializes the object.
+ * @param {Object} directory The directory to operate from.
  * @param {Object} options The options.
  */
 const Hoast = function(directory, options) {
@@ -63,6 +59,18 @@ const Hoast = function(directory, options) {
 	}, options);
 	
 	debug(`Initialized.`);
+};
+
+// Build in read module required to run before process.
+Hoast.read = require(`./libraries/read`);
+
+// Add custom modules to helper.
+Hoast.helper = Hoast.prototype.helper =  {
+	// Create a directory at the given path.
+	createDirectory: require(`./libraries/createDirectory`),
+	writeFiles: require(`./libraries/writeFiles`),
+	remove: require(`./libraries/remove`),
+	scanDirectory: require(`./libraries/scanDirectory`)
 };
 
 /**
@@ -100,15 +108,15 @@ Hoast.prototype.process = async function(options) {
 	if (this.options.remove) {
 		if (this.options.remove === true) {
 			debug(`Removing '${this.options.destination}' directory.`);
-			// If no filepaths are defined then remove the entire destination directory.
-			await remove(this.options.destination);
+			// If no file paths are defined then remove the entire destination directory.
+			await Hoast.helper.remove(this.options.destination);
 			debug(`Removed directory.`);
 		} else {
 			debug(`Removing specfified files.`);
 			// Remove all files listed in the array.
 			for (let i = 0; i < this.options.length; i++) {
-				// Prepend the destination directory to each filepath.
-				await remove(join(this.options.destination, this.options[i]));
+				// Prepend the destination directory to each file path.
+				await Hoast.helper.remove(join(this.options.destination, this.options[i]));
 			}
 			debug(`Removed files.`);
 		}
@@ -125,7 +133,7 @@ Hoast.prototype.process = async function(options) {
 	
 	// Scan source for files.
 	debug(`Scanning files.`);
-	let files = await scan(join(this.directory, this.options.source));
+	let files = await Hoast.helper.scanDirectory(join(this.directory, this.options.source));
 	debug(`Scanned files, found ${files.length} files.`);
 	
 	// Batch out files as to not handle to many at once.
@@ -153,7 +161,7 @@ Hoast.prototype.process = async function(options) {
 		}
 		// Write batched files to disk.
 		debug(`Writing batch to storage.`);
-		await write(this.options.destination, batch);
+		await Hoast.helper.writeFiles(this.options.destination, batch);
 		debug(`Batch written.`);
 	}
 	debug(`Finished processing files to '${this.options.destination}' directory.`);
@@ -171,13 +179,4 @@ Hoast.prototype.process = async function(options) {
 	return this;
 };
 
-// Helper functions that can be utilized by modules.
-Hoast.prototype.helper =  {
-	// Create a directory at the given path.
-	createDirectory: require(`./libraries/write`).directory
-};
-
-// Build in read module required to run before process.
-Hoast.read = require(`./libraries/read`);
-
-exports = module.exports = Hoast;
+module.exports = Hoast;
