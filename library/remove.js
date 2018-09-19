@@ -1,6 +1,6 @@
 // Node modules.
 const fs = require(`fs`),
-	{ join } = require(`path`);
+	path = require(`path`);
 
 const remove = {};
 
@@ -9,7 +9,7 @@ const remove = {};
  * @param {String[]} arguments file path, possibly split in segments.
  */
 remove.file = function() {
-	const file = join(...arguments);
+	const file = path.join(...arguments);
 	return new Promise(function(resolve, reject) {
 		fs.lstat(file, function(error, stats) {
 			if (error) {
@@ -38,7 +38,7 @@ remove.file = function() {
  * @param {String[]} arguments directory path, possibly split in segments.
  */
 remove.directory = function() {
-	const directory = join(...arguments);
+	const directory = path.join(...arguments);
 	return new Promise(function(resolve, reject) {
 		fs.access(directory, fs.constants.F_OK | fs.constants.W_OK, function(error) {
 			if (error) {

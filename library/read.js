@@ -1,6 +1,6 @@
 // Node modules.
-const { readFile } = require(`fs`),
-	{ join } = require(`path`);
+const fs = require(`fs`),
+	path = require(`path`);
 // Dependency module.
 const isutf8 = require(`isutf8`);
 
@@ -11,7 +11,7 @@ const isutf8 = require(`isutf8`);
  */
 const read = function(directory, file) {
 	return new Promise(function(resolve, reject) {
-		readFile(join(directory, file.path), function(error, buffer) {
+		fs.readFile(path.join(directory, file.path), function(error, buffer) {
 			if (error) {
 				return reject(error);
 			}
@@ -39,7 +39,7 @@ module.exports = function() {
 	 */
 	return async function(hoast, files) {
 		await Promise.all(files.map(function(file) {
-			return read(join(hoast.directory, hoast.options.source), file);
+			return read(path.join(hoast.directory, hoast.options.source), file);
 		}));
 	};
 };

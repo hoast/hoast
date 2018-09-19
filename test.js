@@ -1,10 +1,10 @@
 // Node modules.
-const { existsSync, readFileSync } = require(`fs`),
-	{ join } = require(`path`);
+const fs = require(`fs`),
+	path = require(`path`);
 // Dependency modules.
 const test = require(`ava`);
 // Custom module.
-const Hoast = require(`.`);
+const Hoast = require(`./library`);
 
 // Reference data.
 const REF = {
@@ -19,8 +19,10 @@ const REF = {
 };
 
 test(`properties`, function(t) {
-	// Modules.
+	// Functions.
 	t.is(typeof(Hoast), `function`);
+	
+	// Build-in modules.
 	t.is(typeof(Hoast.read), `function`);
 	
 	// Helper functions.
@@ -29,14 +31,19 @@ test(`properties`, function(t) {
 	t.is(typeof(Hoast.helper.writeFiles), `function`);
 	t.is(typeof(Hoast.helper.remove), `function`);
 	t.is(typeof(Hoast.helper.scanDirectory), `function`);
+	
+	// Prototype functions.
+	const hoast = Hoast(__dirname);
+	t.is(typeof(hoast.use), `function`);
+	t.is(typeof(hoast.process), `function`);
 });
 
-test.serial(`write`, async function(t) {
+test.serial.before(`write`, async function(t) {
 	// Write data to storage.
 	await Hoast.helper.writeFiles(REF.directory, [ REF.file ]);
 	
 	// Read content from written file.
-	const content = readFileSync(join(REF.directory, REF.file.path), `utf8`);
+	const content = fs.readFileSync(path.join(REF.directory, REF.file.path), `utf8`);
 	
 	// Check content.
 	t.is(content, REF.file.content.data);
@@ -71,7 +78,7 @@ test.serial(`use-case`, async function(t) {
 	// Setup new completely different options.
 	options = {
 		source: REF.directory,
-		destination: join(REF.directory, `dst`),
+		destination: path.join(REF.directory, `dst`),
 		
 		remove: true,
 		concurrency: 1,
@@ -115,13 +122,13 @@ test.serial(`use-case`, async function(t) {
 	await hoast.process(options);
 });
 
-test.serial(`remove`, async function(t) {
+test.serial.after(`remove`, async function(t) {
 	// Check if directory exists before.
-	t.true(existsSync(REF.directory));
+	t.true(fs.existsSync(REF.directory));
 	
 	// Clean-up written data.
 	await Hoast.helper.remove(REF.directory);
 	
 	// Check if directory exists after.
-	t.false(existsSync(REF.directory));
+	t.false(fs.existsSync(REF.directory));
 });

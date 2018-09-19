@@ -4,8 +4,8 @@
     "url": "https://rondekker.nl"
   },
   "name": "hoast",
-  "version": "0.2.0",
-  "description": "A modular file processor foccused on creating a simple ecosystem for task automation.",
+  "version": "1.0.0-beta.0",
+  "description": "A modular file processor focused on creating a simple ecosystem for task automation.",
   "license": "ISC",
   "keywords": [
     "modular",
@@ -29,12 +29,16 @@
   "engines": {
     "node": ">=7.8.0"
   },
-  "main": "index.js",
+  "main": "library/index.js",
   "bin": {
-    "hoast": "cli.js"
+    "hoast": "bin/hoast.js"
   },
+  "files": [
+    "bin/",
+    "library/"
+  ],
   "scripts": {
-		"pretest": "eslint libraries/*.js index.js cli.js test.js",
+    "pretest": "eslint library/**/*.js bin/**/*.js test.js",
     "test": "ava test.js --verbose"
   },
   "dependencies": {

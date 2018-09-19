@@ -1,10 +1,10 @@
 // Node modules.
-const { writeFile } = require(`fs`),
-	{ join, dirname } = require(`path`);
+const fs = require(`fs`),
+	path = require(`path`);
 // Custom modules
 const createDirectory = require(`./createDirectory`);
 
-const write = {}; 
+const write = {};
 
 /**
  * Write the file to the directory.
@@ -13,15 +13,15 @@ const write = {};
  */
 write.file = function(directory, file) {
 	return new Promise(function(resolve, reject) {
-		createDirectory(join(directory, dirname(file.path)))
+		createDirectory(path.join(directory, path.dirname(file.path)))
 			.then(function() {
 				if (!file.content) {
 					throw {
 						message: `hoast.write: No content found on file, read module needs to be called before process.`
 					};
 				}
-				writeFile(
-					join(directory, file.path),
+				fs.writeFile(
+					path.join(directory, file.path),
 					file.content.type === `string` ? file.content.data : file.content,
 					function(error) {
 						if (error) {

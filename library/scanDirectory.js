@@ -1,6 +1,6 @@
 // Node modules.
-const { lstat, readdir } = require(`fs`),
-	{ join } = require(`path`);
+const fs = require(`fs`),
+	path = require(`path`);
 
 /**
  * Recursive flattening of an array.
@@ -18,16 +18,16 @@ const flatten = function(array) {
  * @param {String[]} arguments file path, possibly split up in segments but in order.
  */
 const scan = function(directory) {
-	let absolute = join(...arguments),
-		relative = join(...Array.prototype.slice.call(arguments, 1));
+	let absolute = path.join(...arguments),
+		relative = path.join(...Array.prototype.slice.call(arguments, 1));
 	return new Promise(function(resolve, reject) {
-		lstat(absolute, function(error, stats) {
+		fs.lstat(absolute, function(error, stats) {
 			if (error) {
 				return reject(error);
 			}
 			if (stats.isDirectory()) {
 				// Read directory and invoke this method for all items in it.
-				readdir(absolute, function(error, files) {
+				fs.readdir(absolute, function(error, files) {
 					if (error) {
 						return reject(error);
 					}

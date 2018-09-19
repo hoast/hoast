@@ -1,26 +1,26 @@
 <div style="text-align: center;">
-  <a title="Version master branch" href="https://github.com/hoast/hoast#readme" target="_blank" rel="noopener" style="color:#0000;">
-    <img src="https://img.shields.io/github/package-json/v/hoast/hoast.svg?label=master&style=flat-square"/>
-  </a>
-  <a title="Version npm package" href="https://npmjs.com/package/hoast" target="_blank" rel="noopener" style="color:#0000;">
+  <a title="Version npm package" href="https://npmjs.com/package/hoast" target="_blank" style="color:#0000;">
     <img src="https://img.shields.io/npm/v/hoast.svg?label=npm&style=flat-square"/>
   </a>
-  <a title="License agreement" href="https://github.com/hoast/hoast/blob/master/LICENSE" target="_blank" rel="noopener" style="color:#0000;">
+  <a title="Version GitHub master branch" href="https://github.com/hoast/hoast#readme" target="_blank" style="color:#0000;">
+    <img src="https://img.shields.io/github/package-json/v/hoast/hoast.svg?label=github&style=flat-square"/>
+  </a>
+  <a title="License agreement" href="https://github.com/hoast/hoast/blob/master/LICENSE" target="_blank" style="color:#0000;">
     <img src="https://img.shields.io/github/license/hoast/hoast.svg?style=flat-square"/>
   </a>
-  <a title="Travis-ci build status" href="https://travis-ci.org/hoast/hoast" target="_blank" rel="noopener" style="color:#0000;">
-    <img src="https://img.shields.io/travis-ci/hoast/hoast.svg?branch=master&style=flat-square"/>
+  <a title="Travis-ci build status" href="https://travis-ci.org/hoast/hoast" target="_blank" style="color:#0000;">
+    <img src="https://img.shields.io/travis-ci/hoast/hoast.svg?label=travis&branch=master&style=flat-square"/>
   </span>
-  <a title="Open issues on GitHub" href="https://github.com/hoast/hoast/issues" target="_blank" rel="noopener" style="color:#0000;">
+  <a title="Open issues on GitHub" href="https://github.com/hoast/hoast/issues" target="_blank" style="color:#0000;">
     <img src="https://img.shields.io/github/issues/hoast/hoast.svg?style=flat-square"/>
   </a>
 </div>
 
 # hoast
 
-A modular file processer focused on creating a simple ecosystem.
+A modular file processor focused on creating a simple ecosystem.
 
-## The elevator pitch
+## Elevator pitch
 
 Creating a static page generator can be incredibly easy as is show below.
 
@@ -44,22 +44,48 @@ Hoast(__dirname)
   .use(frontmatter())
   // Transform markdown.
   .use(transform({
-    patterns: `**/*.md`
+    patterns: `**/*.md`,
+    patternOptions: {
+      globstar: true
+    }
   }))
   // Layout files.
   .use(layout({
     directory: `layouts`,
     layout: `page.hbs`,
-    patterns: `**/*.html`
+    patterns: `**/*.html`,
+    patternOptions: {
+      globstar: true
+    }
   }))
   // Process.
   .process();
 ```
 
-> See the [static page generator example](https://github.com/hoast/hoast/blob/master/examples/static-page-generator) for the full example including dependencies and source directory.
+> See the [static page generator example](https://github.com/hoast/hoast/blob/master/examples/static-page-generator) for the full example with in depth comments including dependencies and source directory.
+
+## Table of contents
+
+* [Introduction](#introduction)
+* [Installation](#intallation)
+* [Usage](#usage)
+  * [Command line interface](#command-line-interface)
+  * [Script](#script)
+    * [API](#api)
+    * [Asynchronously](#asynchronously)
+  * [Debugging](#debugging)
+* [Modules](#modules)
+  * [Build-in](#build-in)
+  * [Usage](#usage)
+  * [Making](#making)
+  * [Browsing](#browsing)
+* [Planned](#planned)
+  * [Modules](#modules)
+* [Known issues](#known-issues)
 
 ## Introduction
-Hoast is a modular file processer focused on creating a simple ecosystem. The original objective was to generate webpages using a minimal system, but in addition to static page generation it can also be used for a range of different applications.
+
+Hoast is a modular file processor focused on creating a simple ecosystem. The original objective was to generate webpages using a minimal system, but in addition to static page generation it can also be used for a range of different applications.
 
 The system has been written with several goals it mind, to be small in size as well as easy to use and improve. The result is a modular approach some of the advantages are:
 1. An incredibly small base system, at just a few hundred lines of code and only two dependencies.
@@ -67,14 +93,14 @@ The system has been written with several goals it mind, to be small in size as w
 3. Modules are quick to create and allow a large portion of people to contribute.
 4. Maintenance is easier as the code base is sectioned up and simpler to follow along to.
 
-> Another key advantage is the environment the system has been developed in, Node.js, which utilises JavaScript the language most commonly known by web developers who this project targets with static page generation.
+> Another key advantage is the environment the system has been developed in, Node.js, which utilizes JavaScript the language most commonly known by web developers who this project targets with static page generation.
 
 The order in which hoast works can be broken down into three main steps.
 1. From the source directory all files are scanned.
 2. Each module manipulates the information presented.
 3. The results are written to the destination directory.
 
-> This tool has been inspired by [Metalsmith](https://github.com/segmentio/metalsmith#readme), the goal was to eliminate most of the dependencies and further modularize the system as well as improve readability of the code.
+> This tool has been inspired by [Metalsmith](https://github.com/segmentio/metalsmith#readme), the goal was to eliminate most of the dependencies and further modularise the system as well as improve readability of the code.
 
 ## Installation
 
@@ -108,7 +134,10 @@ Create a JSON configuration file with the options and modules.
   "modules": {
     "read": {},
     "hoast-transform": {
-      "patterns": "**/*.md"
+      "patterns": "**/*.md",
+      "patternOptions": {
+        "globstar": true
+      }
     }
   }
 }
@@ -135,7 +164,7 @@ If you want to re-use the same module multiple times you can wrap each module in
 }
 ```
 
-> Do not forget to install the modules themself as well.
+> Do not forget to install the modules as well.
 
 Then run the help command for more information about running the CLI:
 
@@ -159,39 +188,64 @@ Hoast(__dirname)
   .process();
 ```
 
-#### constructor
+**constructor(directory, options)**
+
 As with any constructor it initializes the object.
 
-* `directory` **{String}**: The working directory, most often `__dirname`.
-* `options` **{Object}**: See [options](#options) for more detail about the parameter.
+Returns the `hoast` instance.
 
-#### use
+* `directory`: The working directory, most often `__dirname`.
+  * Type: `String`
+  * Required: `Yes`
+* `options`: See [options](#options) for more detail about the parameter.
+  * Type: `Object`
+  * Required: `No`
+
+**use(module)**
+
 Adds the module to the modules stack.
 
-* `module` **{Function}**: See [using modules](#using) and [making modules](#making) for more detail about the parameter.
+Returns the `hoast` instance.
 
-#### process
+* `module`: See [using modules](#using) and [making modules](#making) for more detail about the parameter.
+  * Type: `Function`
+  * Required: `Yes`
+
+**process(options)**
+
 An asynchronous function which goes through the three steps mentioned in the introduction. It scans the files in the source directory, cycles through each module, and writes the result to the destination directory.
 
-* `options` **{Object}**: See [options](#options) for more detail about the parameter.
+Returns the `hoast` instance.
 
-#### options
+* `options`: See [options](#options) for more detail about the parameter.
+  * Type: `Object`
+  * Required: `No`
 
-* `source` **{String}**: The directory to process files from.
-	* Default: `source`.
-* `destination` **{String}**: The directory to write the processed files to.
-	* Default: `destination`.
-* `remove` **{String}**: Whether to remove all files in the destination directory before processing.
-  * Default: `false`.
-* `concurrency` **{Number}**: Maximum number of files to process at once.
-	* Default: `Infinity`.
-* `metadata` **{Object}**: Metadata that can be used by modules.
-	* Default: `{}`.
+**options**
+
+The options object which can be given using the `constructor` or `process` functions.
+
+* `source` The directory to process files from.
+  * Type: `String`
+	* Default: `source`
+* `destination`: The directory to write the processed files to.
+  * Type: `String`
+	* Default: `destination`
+* `remove`: Whether to remove all files in the destination directory before processing.
+  * Type: `String`
+  * Default: `false`
+* `concurrency`: Maximum number of files to process at once.
+  * Type: `Number`
+	* Default: `Infinity`
+* `metadata`: Metadata that can be used by modules.
+  * Type: `Object`
+	* Default: `{}`
 
 > The defaults are only applied when the constructor is called, the process` options parameter overrides what is set earlier.
 
-#### Asynchronously
-Hoast can be used asynchronously two examples are given below.
+### Asynchronously
+
+Hoast can be used asynchronously via script, two examples are given below.
 
 ```JavaScript
 const Hoast = require(`hoast`);
@@ -251,6 +305,7 @@ $env:DEBUG = "*,-not_this"
 ```
 
 ## Modules
+
 As mentioned before the modules handle the logic that transforms the file information into the desired result. They are chained one after another and fed the results of the module that came before it. At the start the only information available is provided by the scanner function which performs a recursive search of the source directory and returns an array with objects of which an example can be seen below.
 
 ```JavaScript
@@ -279,6 +334,7 @@ As mentioned before the modules handle the logic that transforms the file inform
 > For more detail about [stats](https://nodejs.org/api/fs.html#fs_class_fs_stats) see the node documentation. The functions as well as the atime, mtime, ctime, and birthtime are not included.
 
 ### Build-in
+
 There is a single build-in module which reads the content of the files. It adds a `content` property as either a string or buffer depending if it is utf-8 encoded.
 
 ```JavaScript
@@ -301,7 +357,8 @@ There is a single build-in module which reads the content of the files. It adds 
 
 > This module has to be called before the process function or any module that expects the content property to be set.
 
-### Using
+### Usage
+
 The following example copies only the markdown files from the `source` directory to the `destination` directory.
 
 ```JavaScript
@@ -335,7 +392,7 @@ Hoast(__dirname)
   .then(function(hoast) {
     return hoast.process({
       source: `sourceB`
-    });// Read will automaticly be used again.
+    });// Read will automatically be used again.
   });
 ```
 
@@ -354,7 +411,7 @@ Hoast(__dirname)
   .use(read())
   .process()
   .then(function(hoast) {
-    // Removeing out modules array.
+    // Removing out modules array.
     hoast.modules = [];
     return hoast
       // Filter out everything but text files.
@@ -369,6 +426,7 @@ Hoast(__dirname)
 > See the [examples](https://github.com/hoast/hoast/tree/master/examples) directory for more in depth usage.
 
 ### Making
+
 In the simplest form the script below is a hoast module. The first time it will be called as a function and arguments can be passed on so properties can be initialized or validated. The return of the function is another function which will be called every time files need to be processed. Hoast is the hoast instance and has the options property assigned during via the constructor or process call. The files argument is an array files scanned and ready to me transformed.
 
 ```JavaScript
@@ -391,9 +449,9 @@ The modules can also be asynchronously by either adding the [async](https://deve
 ```JavaScript
 module.exports = function(options) {
   
-  // Return asynchronouse module.
+  // Return asynchronous module.
   return async function(hoast, files) {
-    // Perform asynchronouse logic.
+    // Perform asynchronous logic.
   };
 };
 ```
@@ -438,6 +496,7 @@ module.exports = function(options) {
 > See the [changed module](https://github.com/hoast/hoast-changed#readme) for an example.
 
 ### Browsing
+
 * [Changed](https://github.com/hoast/hoast-changed#readme) - Filter out files which have not been changed since the last build.
 * [Convert](https://github.com/hoast/hoast-convert#readme) - Convert the content of files using a specified function.
 * [Filter](https://github.com/hoast/hoast-filter#readme) - Filter out files from further processing.
@@ -450,9 +509,13 @@ module.exports = function(options) {
 
 ## Planned
 
+1. Expand tests of `hoast` and other modules.
+
 ### Modules
+
 1. `publish`, control publishing mode of a file using the frontmatter.
 2. `livereload`, allow for live reloading.
 
 ## Known issues
+
 * Access modes of directories and files are not transferred.

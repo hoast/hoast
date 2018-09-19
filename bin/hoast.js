@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 // Node modules.
-const { constants, access, readFile } = require(`fs`),
-	pathResolve = require(`path`).resolve;
+const fs = require(`fs`),
+	path = require(`path`);
 // If debug available require it.
 let debug; try { debug = require(`debug`)(`hoast-cli`); } catch(error) { debug = function() {}; }
-// Dependecy modules.
+// Dependency modules.
 const commander = require(`commander`);
 // Custom modules.
-const info = require(`./package.json`),
-	Hoast = require(`.`);
+const info = require(`../package.json`),
+	Hoast = require(`../library`);
 
 // Setup command utility.
 commander
@@ -21,17 +21,17 @@ commander
 
 // Translate arguments.
 const directory = process.cwd();
-const filePath = pathResolve(directory, commander.config);
+const filePath = path.resolve(directory, commander.config);
 debug(`Process from ${filePath} configuration.`);
 // Check file access.
-access(filePath, constants.F_OK | constants.R_OK, function(error) {
+fs.access(filePath, fs.constants.F_OK | fs.constants.R_OK, function(error) {
 	if (error) {
 		throw error;
 	}
 	debug(`Configuration accessible.`);
 	
 	// Read file.
-	readFile(filePath, async function(error, data) {
+	fs.readFile(filePath, async function(error, data) {
 		if (error) {
 			throw error;
 		}
@@ -40,7 +40,7 @@ access(filePath, constants.F_OK | constants.R_OK, function(error) {
 		// Parse file content to JSON.
 		const config = JSON.parse(data);
 		
-		// Initilize hoast.
+		// Initialize hoast.
 		const hoast = Hoast(directory, config.options);
 		
 		debug(`Start adding modules.`);
@@ -106,9 +106,9 @@ const addModule = async function(directory, hoast, moduleCache, moduleConfig) {
 const getModulePath = async function(directory, moduleName) {
 	// Create all possible paths.
 	let modulePaths = [
-		pathResolve(directory, `node_modules`, moduleName),
-		pathResolve(directory, moduleName),
-		pathResolve(directory, moduleName).concat(`.js`),
+		path.resolve(directory, `node_modules`, moduleName),
+		path.resolve(directory, moduleName),
+		path.resolve(directory, moduleName).concat(`.js`),
 		moduleName,
 		moduleName.concat(`.js`)
 	];
@@ -131,7 +131,7 @@ const getModulePath = async function(directory, moduleName) {
 
 const checkPathAccess = function(filePath) {
 	return new Promise(function(resolve) {
-		access(filePath, constants.F_OK | constants.R_OK, function(error) {
+		fs.access(filePath, fs.constants.F_OK | fs.constants.R_OK, function(error) {
 			if (error) {
 				// If not found return false.
 				return resolve(false);

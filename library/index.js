@@ -1,6 +1,6 @@
 // Node modules.
 const assert = require(`assert`),
-	{ isAbsolute, join } = require(`path`);
+	path = require(`path`);
 // If debug available require it.
 let debug; try { debug = require(`debug`)(`hoast`); } catch(error) { debug = function() {}; }
 
@@ -9,21 +9,43 @@ let debug; try { debug = require(`debug`)(`hoast`); } catch(error) { debug = fun
  * @param {Object} options The options.
  */
 const validateOptions = function(options) {
-	assert(typeof(options) === `object`, `hoast: options must by of type object.`);
+	assert(
+		typeof(options) === `object`,
+		`hoast: options must by of type object.`
+	);
 	if (options.destination) {
-		assert(typeof(options.destination) === `string`, `hoast: options.destination must be of type string.`);
+		assert(
+			typeof(options.destination) === `string`,
+			`hoast: options.destination must be of type string.`
+		);
 	}
 	if (options.source) {
-		assert(typeof(options.source) === `string`, `hoast: options.source must be of type string.`);
+		assert(
+			typeof(options.source) === `string`,
+			`hoast: options.source must be of type string.`
+		);
 	}
 	if (options.remove) {
-		assert(typeof(options.remove) === `boolean` || Array.isArray(options.remove), `hoast: options.remove must be of type boolean or an array of string.`);
+		assert(
+			typeof(options.remove) === `boolean` || Array.isArray(options.remove),
+			`hoast: options.remove must be of type boolean or an array of string.`
+		);
 	}
 	if (options.concurrency) {
-		assert(typeof(options.concurrency) === `number` && !Number.isNaN(options.concurrency), `hoast: options.concurrency must be of type number.`);
+		assert(
+			typeof(options.concurrency) === `number` && !Number.isNaN(options.concurrency),
+			`hoast: options.concurrency must be of type number.`
+		);
+		assert(
+			options.concurrency > 0,
+			`hoast: concurrency must be greater than zero.`
+		);
 	}
 	if (options.metadata) {
-		assert(options.metadata !== null && typeof(options.metadata) === `object`, `hoast: options.metadata must be of type object.`);
+		assert(
+			options.metadata !== null && typeof(options.metadata) === `object`,
+			`hoast: options.metadata must be of type object.`
+		);
 	}
 };
 
@@ -40,7 +62,7 @@ const Hoast = function(directory, options) {
 	debug(`Initializing.`);
 	
 	// Directory.
-	assert(typeof(directory) === `string` && isAbsolute(directory), `hoast: directory is a required parameter and must be an absolute path of type string.`);
+	assert(typeof(directory) === `string` && path.isAbsolute(directory), `hoast: directory is a required parameter and must be an absolute path of type string.`);
 	this.directory = directory;
 	
 	if (options) {
@@ -62,15 +84,15 @@ const Hoast = function(directory, options) {
 };
 
 // Build in read module required to run before process.
-Hoast.read = require(`./libraries/read`);
+Hoast.read = require(`./read`);
 
 // Add custom modules to helper.
 Hoast.helper = Hoast.prototype.helper =  {
 	// Create a directory at the given path.
-	createDirectory: require(`./libraries/createDirectory`),
-	writeFiles: require(`./libraries/writeFiles`),
-	remove: require(`./libraries/remove`),
-	scanDirectory: require(`./libraries/scanDirectory`)
+	createDirectory: require(`./createDirectory`),
+	writeFiles: require(`./writeFiles`),
+	remove: require(`./remove`),
+	scanDirectory: require(`./scanDirectory`)
 };
 
 /**
@@ -112,11 +134,11 @@ Hoast.prototype.process = async function(options) {
 			await Hoast.helper.remove(this.options.destination);
 			debug(`Removed directory.`);
 		} else {
-			debug(`Removing specfified files.`);
+			debug(`Removing specified files.`);
 			// Remove all files listed in the array.
 			for (let i = 0; i < this.options.length; i++) {
 				// Prepend the destination directory to each file path.
-				await Hoast.helper.remove(join(this.options.destination, this.options[i]));
+				await Hoast.helper.remove(path.join(this.options.destination, this.options[i]));
 			}
 			debug(`Removed files.`);
 		}
@@ -133,7 +155,7 @@ Hoast.prototype.process = async function(options) {
 	
 	// Scan source for files.
 	debug(`Scanning files.`);
-	let files = await Hoast.helper.scanDirectory(join(this.directory, this.options.source));
+	let files = await Hoast.helper.scanDirectory(path.join(this.directory, this.options.source));
 	debug(`Scanned files, found ${files.length} files.`);
 	
 	// Batch out files as to not handle to many at once.
