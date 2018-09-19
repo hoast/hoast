@@ -1,6 +1,9 @@
 <div style="text-align: center;">
-  <a title="Version npm package" href="https://npmjs.com/package/hoast" target="_blank" style="color:#0000;">
+  <a title="Version npm @latest package" href="https://npmjs.com/package/hoast" target="_blank" style="color:#0000;">
     <img src="https://img.shields.io/npm/v/hoast.svg?label=npm&style=flat-square"/>
+  </a>
+  <a title="Version npm @next package" href="https://npmjs.com/package/hoast/v/next" target="_blank" style="color:#0000;">
+    <img src="https://img.shields.io/npm/v/hoast/next.svg?label=npm/next&style=flat-square"/>
   </a>
   <a title="Version GitHub master branch" href="https://github.com/hoast/hoast#readme" target="_blank" style="color:#0000;">
     <img src="https://img.shields.io/github/package-json/v/hoast/hoast.svg?label=github&style=flat-square"/>
