@@ -3,7 +3,7 @@
     <img src="https://img.shields.io/npm/v/hoast.svg?label=npm&style=flat-square"/>
   </a>
   <a title="Version GitHub master branch" href="https://github.com/hoast/hoast#readme" target="_blank" style="color:#0000;">
-    <img src="https://img.shields.io/github/package-json/v/hoast/hoast.svg?label=github/master&style=flat-square"/>
+    <img src="https://img.shields.io/github/package-json/v/hoast/hoast.svg?label=github&style=flat-square"/>
   </a>
   <a title="Version GitHub develop branch" href="https://github.com/hoast/hoast/tree/develop#readme" target="_blank" style="color:#0000;">
     <img src="https://img.shields.io/github/package-json/v/hoast/hoast/develop.svg?label=github/develop&style=flat-square"/>
