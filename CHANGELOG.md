@@ -1,9 +1,12 @@
 # Changelog
 
-## 1.0.0-beta.0 (2018-09-19)
+## 1.0.0 (Unreleased)
+### Added
+- CodeCov coverage report added to CI workflow.
 ### Changed
 - Restructured project files.
 - Update examples to match with new versions of any modules.
+- Automatically convert paths in Windows style (`\\`) to Unix style (`/`).
 
 ## 0.2.0 (2018-09-11)
 ### Added

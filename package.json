@@ -4,7 +4,7 @@
     "url": "https://rondekker.nl"
   },
   "name": "hoast",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "A modular file processor focused on creating a simple ecosystem for task automation.",
   "license": "ISC",
   "keywords": [
@@ -38,8 +38,9 @@
     "library/"
   ],
   "scripts": {
-    "pretest": "eslint library/**/*.js bin/**/*.js test.js",
-    "test": "ava test.js --verbose"
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "pretest": "eslint library/**.js bin/**.js test.js",
+    "test": "nyc --reporter=text ava test.js --verbose"
   },
   "dependencies": {
     "commander": "^2.16.0",
@@ -47,7 +48,9 @@
   },
   "devDependencies": {
     "ava": "^0.25.0",
+    "codecov": "^3.1.0",
     "debug": "^3.1.0",
-    "eslint": "^5.3.0"
+    "eslint": "^5.3.0",
+    "nyc": "^13.0.1"
   }
 }

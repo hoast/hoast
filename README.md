@@ -1,25 +1,14 @@
-<div style="text-align: center;">
-  <a title="Version npm @latest package" href="https://npmjs.com/package/hoast" target="_blank" style="color:#0000;">
-    <img src="https://img.shields.io/npm/v/hoast.svg?label=npm&style=flat-square"/>
-  </a>
-  <a title="Version npm @next package" href="https://npmjs.com/package/hoast/v/next" target="_blank" style="color:#0000;">
-    <img src="https://img.shields.io/npm/v/hoast/next.svg?label=npm/next&style=flat-square"/>
-  </a>
-  <a title="Version GitHub master branch" href="https://github.com/hoast/hoast#readme" target="_blank" style="color:#0000;">
-    <img src="https://img.shields.io/github/package-json/v/hoast/hoast.svg?label=github&style=flat-square"/>
-  </a>
-  <a title="Version GitHub develop branch" href="https://github.com/hoast/hoast/tree/develop#readme" target="_blank" style="color:#0000;">
-    <img src="https://img.shields.io/github/package-json/v/hoast/hoast/develop.svg?label=github/develop&style=flat-square"/>
-  </a>
-  <a title="License agreement" href="https://github.com/hoast/hoast/blob/master/LICENSE" target="_blank" style="color:#0000;">
-    <img src="https://img.shields.io/github/license/hoast/hoast.svg?style=flat-square"/>
-  </a>
-  <a title="Travis-ci build status" href="https://travis-ci.org/hoast/hoast" target="_blank" style="color:#0000;">
-    <img src="https://img.shields.io/travis-ci/hoast/hoast.svg?label=travis&branch=master&style=flat-square"/>
-  </span>
-  <a title="Open issues on GitHub" href="https://github.com/hoast/hoast/issues" target="_blank" style="color:#0000;">
-    <img src="https://img.shields.io/github/issues/hoast/hoast.svg?style=flat-square"/>
-  </a>
+<div align="center">
+  
+  [![npm package @latest](https://img.shields.io/npm/v/hoast.svg?label=npm@latest&style=flat-square&maxAge=3600)](https://npmjs.com/package/hoast)
+  [![npm package @next](https://img.shields.io/npm/v/hoast/next.svg?label=npm@next&style=flat-square&maxAge=3600)](https://npmjs.com/package/hoast/v/next)
+  
+  [![Travis-ci status](https://img.shields.io/travis-ci/hoast/hoast.svg?branch=master&label=test%20status&style=flat-square&maxAge=3600)](https://travis-ci.org/hoast/hoast)
+  [![CodeCov coverage](https://img.shields.io/codecov/c/github/hoast/hoast/master.svg?label=test%20coverage&style=flat-square&maxAge=3600)](https://codecov.io/gh/hoast/hoast)
+  
+  [![License agreement](https://img.shields.io/github/license/hoast/hoast.svg?style=flat-square&maxAge=86400)](https://github.com/hoast/hoast/blob/master/LICENSE)
+  [![Open issues on GitHub](https://img.shields.io/github/issues/hoast/hoast.svg?style=flat-square&maxAge=86400)](https://github.com/hoast/hoast/issues)
+  
 </div>
 
 # hoast
@@ -233,19 +222,19 @@ The options object which can be given using the `constructor` or `process` funct
 
 * `source` The directory to process files from.
   * Type: `String`
-	* Default: `source`
+  * Default: `source`
 * `destination`: The directory to write the processed files to.
   * Type: `String`
-	* Default: `destination`
+  * Default: `destination`
 * `remove`: Whether to remove all files in the destination directory before processing.
   * Type: `String`
   * Default: `false`
 * `concurrency`: Maximum number of files to process at once.
   * Type: `Number`
-	* Default: `Infinity`
+  * Default: `Infinity`
 * `metadata`: Metadata that can be used by modules.
   * Type: `Object`
-	* Default: `{}`
+  * Default: `{}`
 
 > The defaults are only applied when the constructor is called, the process` options parameter overrides what is set earlier.
 
