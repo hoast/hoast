@@ -40,8 +40,7 @@ const scan = function(directory) {
 			} else {
 				// Return stats.
 				resolve({
-					path: process.platform === `win32` ? relative.replace(/\\/g, `/`) : relative,
-					
+					path: relative,
 					stats: {
 						dev: stats.dev,
 						ino: stats.ino,
