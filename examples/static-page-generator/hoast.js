@@ -16,15 +16,13 @@ Hoast(__dirname, {
 		// All file paths are accepted, except for those that start out in the layout directory.
 		patterns: [
 			`*`,
-			`!(layouts/**)`
+			`!(layouts/*)`
 		],
 		patternOptions: {
 			// All patterns need to be true in order to pass.
 			all: true,
 			// Use extended glob patterns so you can use symbols such as explanation marks.
-			extended: true,
-			// Allow extended use of asterisk.
-			globstar: true
+			extended: true
 		}
 	}))
 	.use(read())
@@ -33,11 +31,7 @@ Hoast(__dirname, {
 	// See the `package.json` for additional information as well.
 	.use(transform({
 		// All files with the markdown extension.
-		patterns: `**/*.md`,
-		patternOptions: {
-			// Allow extended use of asterisk.
-			globstar: true
-		}
+		patterns: `*.md`
 	}))
 	// For the `layout` module to accept handlebar files the `jstransformer-handlebars` module needs to be installed.
 	// See the `package.json` for additional information as well.
@@ -47,11 +41,7 @@ Hoast(__dirname, {
 		// The default layout is `page.hbs`.
 		layout: `page.hbs`,
 		// All files with the HTML extension.
-		patterns: `**/*.html`,
-		patternOptions: {
-			// Allow extended use of asterisk.
-			globstar: true
-		}
+		patterns: `*.html`
 	}))
 	// Start processing the files.
 	.process()

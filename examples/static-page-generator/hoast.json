@@ -4,28 +4,24 @@
   },
   "modules": {
     "hoast-filter": {
-      "patterns": "layouts/**",
+      "patterns": [
+        "*",
+        "!(layouts/*)"
+      ],
       "patternOptions": {
         "all": true,
-        "extended": true,
-        "globstar": true
+        "extended": true
       }
     },
     "read": {},
     "hoast-frontmatter": {},
     "hoast-transform": {
-      "patterns": "**/*.md",
-      "patternOptions": {
-        "globstar": true
-      }
+      "patterns": "*.md"
     },
     "hoast-layout": {
       "directory": "layouts",
       "layout": "page.hbs",
-      "patterns": "**/*.html",
-      "patternOptions": {
-        "globstar": true
-      }
+      "patterns": "*.html"
     }
   }
 }
