@@ -30,8 +30,14 @@ const read = Hoast.read,
 Hoast(__dirname)
   // Exclude layouts.
   .use(filter({
-    invert: true,
-    pattern: `layouts/**`
+    pattern: [
+      `*`,
+      `!(layouts/*)`
+    ],
+    patternOptions: {
+      all: true,
+      extended: true
+    }
   }))
   // Read file content.
   .use(read())
@@ -39,19 +45,13 @@ Hoast(__dirname)
   .use(frontmatter())
   // Transform markdown.
   .use(transform({
-    patterns: `**/*.md`,
-    patternOptions: {
-      globstar: true
-    }
+    patterns: `*.md`
   }))
   // Layout files.
   .use(layout({
     directory: `layouts`,
     layout: `page.hbs`,
-    patterns: `**/*.html`,
-    patternOptions: {
-      globstar: true
-    }
+    patterns: `*.html`
   }))
   // Process.
   .process();
@@ -129,10 +129,7 @@ Create a JSON configuration file with the options and modules.
   "modules": {
     "read": {},
     "hoast-transform": {
-      "patterns": "**/*.md",
-      "patternOptions": {
-        "globstar": true
-      }
+      "patterns": "*.md"
     }
   }
 }
@@ -364,7 +361,7 @@ const read = Hoast.read,
 Hoast(__dirname)
   // Filter to only include .md files.
   .use(filter({
-    patterns: `**/*.md`
+    patterns: `*.md`
   }))
   .use(read())
   .process()
@@ -401,7 +398,7 @@ const read = Hoast.read,
 Hoast(__dirname)
   // Filter out everything but markdown files.
   .use(filter({
-    patterns: `**/*.md`
+    patterns: `*.md`
   })) // Only .md files available afterwards.
   .use(read())
   .process()
@@ -411,7 +408,7 @@ Hoast(__dirname)
     return hoast
       // Filter out everything but text files.
       .use(filter({
-        patterns: `**/*.txt`
+        patterns: `*.txt`
       })) // Only .txt files available afterwards.
       .use(read())
       .process();
