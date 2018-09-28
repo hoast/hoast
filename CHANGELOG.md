@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 (2018-09-28)
+### Changed
+- Updated documentation found in README.md
+
 ## 1.0.0 (2018-09-26)
 ### Added
 - CodeCov coverage report added to CI workflow.
