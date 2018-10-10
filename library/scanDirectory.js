@@ -25,20 +25,8 @@ const scan = function(directory) {
 			if (error) {
 				return reject(error);
 			}
-			if (stats.isDirectory()) {
-				// Read directory and invoke this method for all items in it.
-				fs.readdir(absolute, function(error, files) {
-					if (error) {
-						return reject(error);
-					}
-					Promise.all(files.map(function(file) {
-						return scan(directory, relative, file);
-					})).then(function(result) {
-						resolve(flatten(result));
-					}).catch(reject);
-				});
-			} else {
-				// Return stats.
+			
+			if (stats.isFile()) {
 				resolve({
 					path: relative,
 					stats: {
@@ -58,7 +46,21 @@ const scan = function(directory) {
 						birthtimeMs: stats.birthtimeMs
 					}
 				});
+				return;
 			}
+			
+			// Read directory and invoke this method for all items in it.
+			fs.readdir(absolute, function(error, files) {
+				if (error) {
+					return reject(error);
+				}
+				
+				Promise.all(files.map(function(file) {
+					return scan(directory, relative, file);
+				})).then(function(result) {
+					resolve(flatten(result));
+				}).catch(reject);
+			});
 		});
 	});
 };

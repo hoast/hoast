@@ -1,4 +1,6 @@
-<div align="center">
+<div id="shields" align="center">
+  
+  [![](icons/128.png)](https://hoast.github.io)
   
   [![npm package @latest](https://img.shields.io/npm/v/hoast.svg?label=npm@latest&style=flat-square&maxAge=3600)](https://npmjs.com/package/hoast)
   [![npm package @next](https://img.shields.io/npm/v/hoast/next.svg?label=npm@next&style=flat-square&maxAge=3600)](https://npmjs.com/package/hoast/v/next)
@@ -73,10 +75,8 @@ Hoast(__dirname)
   * [Build-in](#build-in)
   * [Usage](#usage)
   * [Making](#making)
-  * [Browsing](#browsing)
-* [Planned](#planned)
-  * [Modules](#modules)
 * [Known issues](#known-issues)
+* [License](#license)
 
 ## Introduction
 
@@ -233,7 +233,7 @@ The options object which can be given using the `constructor` or `process` funct
   * Type: `Object`
   * Default: `{}`
 
-> The defaults are only applied when the constructor is called, the process` options parameter overrides what is set earlier.
+> The defaults are only applied when the constructor is called, the process' options parameter overrides what is set earlier.
 
 ### Asynchronously
 
@@ -302,7 +302,7 @@ As mentioned before the modules handle the logic that transforms the file inform
 
 ```JavaScript
 {
-  path: `mark\\down.md`,
+  path: `mark/down.md`,
   
   stats: {
     dev: 2114,
@@ -487,27 +487,10 @@ module.exports = function(options) {
 
 > See the [changed module](https://github.com/hoast/hoast-changed#readme) for an example.
 
-### Browsing
-
-* [Changed](https://github.com/hoast/hoast-changed#readme) - Filter out files which have not been changed since the last build.
-* [Convert](https://github.com/hoast/hoast-convert#readme) - Convert the content of files using a specified function.
-* [Filter](https://github.com/hoast/hoast-filter#readme) - Filter out files from further processing.
-* [Frontmatter](https://github.com/hoast/hoast-frontmatter#readme) - Extracts frontmatter from files.
-* [Layout](https://github.com/hoast/hoast-layout#readme) - Transform the content of files using layouts.
-* [Rename](https://github.com/hoast/hoast-rename#readme) - Rename the path of files using a specified function.
-* [Transform](https://github.com/hoast/hoast-transform#readme) - Transform the content of files based on the extension.
-
-> Feel free to add modules yourself by making a [pull request to the repository](https://github.com/hoast/hoast/pulls).
-
-## Planned
-
-1. Expand tests of `hoast` and other modules.
-
-### Modules
-
-1. `publish`, control publishing mode of a file using the frontmatter.
-2. `livereload`, allow for live reloading.
-
 ## Known issues
 
 * Access modes of directories and files are not transferred.
+
+## License
+
+[ISC license](https://github.com/hoast/hoast/blob/master/LICENSE)
