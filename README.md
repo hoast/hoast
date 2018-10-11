@@ -64,8 +64,7 @@ Hoast(__dirname)
 ## Table of contents
 
 * [Introduction](#introduction)
-* [Installation](#intallation)
-* [Usage](#usage)
+* [Installation and usage](#installation-and-usage)
   * [Command line interface](#command-line-interface)
   * [Script](#script)
     * [API](#api)
@@ -97,7 +96,7 @@ The order in which hoast works can be broken down into three main steps.
 
 > This tool has been inspired by [Metalsmith](https://github.com/segmentio/metalsmith#readme), the goal was to eliminate most of the dependencies and further modularise the system as well as improve readability of the code.
 
-## Installation
+## Installation and usage
 
 Install [hoast](https://npmjs.com/package/hoast) using [npm](https://npmjs.com) either locally to use the script version or globally to use the CLI tool.
 
@@ -108,8 +107,6 @@ $ npm install hoast
 ```
 $ npm install -g hoast
 ```
-
-## Usage
 
 ### Command line interface
 
