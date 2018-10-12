@@ -1,4 +1,4 @@
-<div id="shields" align="center">
+<div align="center">
   
   [![](icons/128.png)](https://hoast.github.io)
   
@@ -15,7 +15,7 @@
 
 # hoast
 
-A modular file processor focused on creating a simple ecosystem.
+A modular file processor focused on creating a simple ecosystem for task automation.
 
 ## Elevator pitch
 
@@ -79,7 +79,7 @@ Hoast(__dirname)
 
 ## Introduction
 
-Hoast is a modular file processor focused on creating a simple ecosystem. The original objective was to generate webpages using a minimal system, but in addition to static page generation it can also be used for a range of different applications.
+`hoast` is a modular file processor focused on creating a simple ecosystem for task automation. The original objective was to generate webpages using a minimal system, but in addition to static page generation it can also be used for a range of different applications.
 
 The system has been written with several goals it mind, to be small in size as well as easy to use and improve. The result is a modular approach some of the advantages are:
 1. An incredibly small base system, at just a few hundred lines of code and only two dependencies.
@@ -169,7 +169,7 @@ const Hoast = require(`hoast`);
 // Get build-in module.
 const read = Hoast.read;
 
-// Initialize Hoast.
+// Initialize hoast.
 Hoast(__dirname)
   // Add module.
   .use(read())
@@ -234,7 +234,7 @@ The options object which can be given using the `constructor` or `process` funct
 
 ### Asynchronously
 
-Hoast can be used asynchronously via script, two examples are given below.
+hoast can be used asynchronously via script, two examples are given below.
 
 ```JavaScript
 const Hoast = require(`hoast`);
@@ -416,7 +416,7 @@ Hoast(__dirname)
 
 ### Making
 
-In the simplest form the script below is a hoast module. The first time it will be called as a function and arguments can be passed on so properties can be initialized or validated. The return of the function is another function which will be called every time files need to be processed. Hoast is the hoast instance and has the options property assigned during via the constructor or process call. The files argument is an array files scanned and ready to me transformed.
+In the simplest form the script below is a hoast module. The first time it will be called as a function and arguments can be passed on so properties can be initialized or validated. The return of the function is another function which will be called every time files need to be processed. `hoast` is the hoast instance and has the options property assigned via the constructor or process call. The `files` argument is an array files scanned and ready to me transformed.
 
 ```JavaScript
 module.exports = function(options) {
