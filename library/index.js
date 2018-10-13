@@ -13,6 +13,7 @@ const validateOptions = function(options) {
 		typeof(options) === `object`,
 		`hoast: options must by of type object.`
 	);
+	
 	if (options.destination) {
 		assert(
 			typeof(options.destination) === `string`,
@@ -25,6 +26,7 @@ const validateOptions = function(options) {
 			`hoast: options.source must be of type string.`
 		);
 	}
+	
 	if (options.remove) {
 		assert(
 			typeof(options.remove) === `boolean` || Array.isArray(options.remove),
@@ -41,6 +43,7 @@ const validateOptions = function(options) {
 			`hoast: concurrency must be greater than zero.`
 		);
 	}
+	
 	if (options.metadata) {
 		assert(
 			options.metadata !== null && typeof(options.metadata) === `object`,
@@ -65,20 +68,24 @@ const Hoast = function(directory, options) {
 	assert(typeof(directory) === `string` && path.isAbsolute(directory), `hoast: directory is a required parameter and must be an absolute path of type string.`);
 	this.directory = directory;
 	
-	if (options) {
-		// Validate options.
-		validateOptions(options);
-		debug(`Validated options.`);
-	}
-	// Override default options.
-	this.options = Object.assign({
+	// Set default options.
+	this.options = {
 		source: `source`,
 		destination: `destination`,
 		
 		concurrency: Infinity,
 		
 		metadata: {}
-	}, options);
+	};
+	
+	// Check for custom options.
+	if (options) {
+		// Validate options.
+		validateOptions(options);
+		debug(`Validated options.`);
+		// Override default options.
+		this.options = Object.assign(this.options, options);
+	}
 	
 	debug(`Initialized.`);
 };
@@ -119,11 +126,11 @@ Hoast.prototype.use = function(module) {
 Hoast.prototype.process = async function(options) {
 	// Options.
 	if (options) {
-		// Override options.
-		this.options = Object.assign(this.options, options);
 		// Validate options.
 		validateOptions(this.options);
 		debug(`Validated options.`);
+		// Override options.
+		this.options = Object.assign(this.options, options);
 	}
 	debug(`Start processing files in '${this.options.source}' directory.`);
 	

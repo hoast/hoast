@@ -12,7 +12,7 @@
     "file",
     "processor"
   ],
-  "homepage": "https://hoast.github.io",
+  "homepage": "https://hoast.github.io/hoast",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
