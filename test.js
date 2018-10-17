@@ -58,6 +58,8 @@ test.serial(`use-case`, async function(t) {
 		destination: `dst`,
 		
 		remove: false,
+		patterns: [],
+		patternOptions: {},
 		concurrency: 8,
 		
 		metadata: {
@@ -81,6 +83,10 @@ test.serial(`use-case`, async function(t) {
 		destination: path.join(REF.directory, `dst`),
 		
 		remove: true,
+		patterns: [
+			`file.*`
+		],
+		patternOptions: {},
 		concurrency: 1,
 		
 		metadata: {

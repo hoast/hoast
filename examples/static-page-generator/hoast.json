@@ -1,18 +1,16 @@
 {
   "options": {
-    "remove": true
+    "remove": true,
+    "patterns": [
+      "*",
+      "!(layouts/*)"
+    ],
+    "patternOptions": {
+      "all": true,
+      "extended": true
+    }
   },
   "modules": {
-    "hoast-filter": {
-      "patterns": [
-        "*",
-        "!(layouts/*)"
-      ],
-      "patternOptions": {
-        "all": true,
-        "extended": true
-      }
-    },
     "read": {},
     "hoast-frontmatter": {},
     "hoast-transform": {

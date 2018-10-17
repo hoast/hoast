@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0 (unreleased)
+### Added
+- `parse` and `match` functions added to helper functions.
+- Filter functionality added when scanning for files added, configurable via `pattern` and `patternOptions` options.
+### Changed
+- Slight optimization of array flattening in the `library/scanDirectory` function.
+### Fixed
+- Fixed `options.remove` when using a string or array of strings to specify files.
+
 ## 1.0.2 (2018-10-10)
 ### Added
 - `hoast` icon added to `README.md`.

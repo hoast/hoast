@@ -2,29 +2,25 @@
 const Hoast = require(`hoast`);
 // Get all modules.
 const read = Hoast.read,
-	filter = require(`hoast-filter`),
 	frontmatter = require(`hoast-frontmatter`),
 	layout = require(`hoast-layout`),
 	transform = require(`hoast-transform`);
 
 Hoast(__dirname, {
 	// Whenever you generate a build clean out the destination directory beforehand.
-	remove: true
+	remove: true,
+	// Remove all layouts files from being further processed, by accepting all file paths except for those that start out in the layout directory.
+	patterns: [
+		`*`,
+		`!(layouts/*)`
+	],
+	patternOptions: {
+		// All patterns need to be true in order to pass.
+		all: true,
+		// Use extended glob patterns so you can use symbols such as explanation marks.
+		extended: true
+	}
 })
-	// Remove all layouts files from being further processed.
-	.use(filter({
-		// All file paths are accepted, except for those that start out in the layout directory.
-		patterns: [
-			`*`,
-			`!(layouts/*)`
-		],
-		patternOptions: {
-			// All patterns need to be true in order to pass.
-			all: true,
-			// Use extended glob patterns so you can use symbols such as explanation marks.
-			extended: true
-		}
-	}))
 	.use(read())
 	.use(frontmatter())
 	// For the `transform` module to accept handlebar files the `jstransformer-markdown-it` module needs to be installed.

@@ -1,56 +1,7 @@
 // Node modules.
-const assert = require(`assert`),
-	path = require(`path`);
+const path = require(`path`);
 // If debug available require it.
 let debug; try { debug = require(`debug`)(`hoast`); } catch(error) { debug = function() {}; }
-
-/**
- * Validates the options.
- * @param {Object} options The options.
- */
-const validateOptions = function(options) {
-	assert(
-		typeof(options) === `object`,
-		`hoast: options must by of type object.`
-	);
-	
-	if (options.destination) {
-		assert(
-			typeof(options.destination) === `string`,
-			`hoast: options.destination must be of type string.`
-		);
-	}
-	if (options.source) {
-		assert(
-			typeof(options.source) === `string`,
-			`hoast: options.source must be of type string.`
-		);
-	}
-	
-	if (options.remove) {
-		assert(
-			typeof(options.remove) === `boolean` || Array.isArray(options.remove),
-			`hoast: options.remove must be of type boolean or an array of string.`
-		);
-	}
-	if (options.concurrency) {
-		assert(
-			typeof(options.concurrency) === `number` && !Number.isNaN(options.concurrency),
-			`hoast: options.concurrency must be of type number.`
-		);
-		assert(
-			options.concurrency > 0,
-			`hoast: concurrency must be greater than zero.`
-		);
-	}
-	
-	if (options.metadata) {
-		assert(
-			options.metadata !== null && typeof(options.metadata) === `object`,
-			`hoast: options.metadata must be of type object.`
-		);
-	}
-};
 
 /**
  * Initializes the object.
@@ -65,7 +16,6 @@ const Hoast = function(directory, options) {
 	debug(`Initializing.`);
 	
 	// Directory.
-	assert(typeof(directory) === `string` && path.isAbsolute(directory), `hoast: directory is a required parameter and must be an absolute path of type string.`);
 	this.directory = directory;
 	
 	// Set default options.
@@ -73,18 +23,22 @@ const Hoast = function(directory, options) {
 		source: `source`,
 		destination: `destination`,
 		
+		remove: false,
+		patterns: [],
+		patternOptions: {},
 		concurrency: Infinity,
 		
 		metadata: {}
 	};
-	
-	// Check for custom options.
 	if (options) {
-		// Validate options.
-		validateOptions(options);
-		debug(`Validated options.`);
 		// Override default options.
 		this.options = Object.assign(this.options, options);
+		
+		// Parse new patterns to expressions.
+		if (options.patterns) {
+			this.expressions = this.helper.parse(this.options.patterns, this.options.patternOptions);
+			debug(`Patterns parsed to '${this.expressions}'.`);
+		}
 	}
 	
 	debug(`Initialized.`);
@@ -94,12 +48,17 @@ const Hoast = function(directory, options) {
 Hoast.read = require(`./read`);
 
 // Add custom modules to helper.
-Hoast.helper = Hoast.prototype.helper =  {
+Hoast.helper = Hoast.prototype.helper = {
 	// Create a directory at the given path.
+	parse: require(`planckmatch/parse`),
+	match: require(`./match`),
+	
+	scanDirectory: require(`./scanDirectory`),
+	
 	createDirectory: require(`./createDirectory`),
 	writeFiles: require(`./writeFiles`),
-	remove: require(`./remove`),
-	scanDirectory: require(`./scanDirectory`)
+	
+	remove: require(`./remove`)
 };
 
 /**
@@ -112,8 +71,6 @@ Hoast.prototype.use = function(module) {
 		this.modules = [];
 		debug(`Initialized modules array.`);
 	}
-	// Validate module.
-	assert(typeof(module) === `function`, `hoast: module must be of type function.`);
 	// Add module to list.
 	this.modules.push(module);
 	return this;
@@ -124,31 +81,49 @@ Hoast.prototype.use = function(module) {
  * @param {Object} options 
  */
 Hoast.prototype.process = async function(options) {
-	// Options.
 	if (options) {
-		// Validate options.
-		validateOptions(this.options);
-		debug(`Validated options.`);
 		// Override options.
 		this.options = Object.assign(this.options, options);
+		
+		// Parse new patterns to expressions.
+		if (options.patterns) {
+			this.expressions = this.helper.parse(this.options.patterns, this.options.patternOptions);
+			debug(`Patterns parsed to '${this.expressions}'.`);
+		}
 	}
 	debug(`Start processing files in '${this.options.source}' directory.`);
 	
+	// Remove the destination directory or specified files within it.
 	if (this.options.remove) {
-		if (this.options.remove === true) {
-			debug(`Removing '${this.options.destination}' directory.`);
-			// If no file paths are defined then remove the entire destination directory.
-			await Hoast.helper.remove(this.options.destination);
-			debug(`Removed directory.`);
-		} else {
-			debug(`Removing specified files.`);
-			// Remove all files listed in the array.
-			for (let i = 0; i < this.options.length; i++) {
-				// Prepend the destination directory to each file path.
-				await Hoast.helper.remove(path.join(this.options.destination, this.options[i]));
-			}
-			debug(`Removed files.`);
+		switch(typeof(this.options.remove)) {
+			case `boolean`:
+				debug(`Removing '${this.options.destination}' directory.`);
+				
+				// If no file paths are defined then remove the entire destination directory.
+				await this.helper.remove(this.options.destination);
+				
+				break;
+			case `string`:
+				debug(`Removing '${this.options.remove}' directory/file in '${this.options.destination}' directory.`);
+				
+				// Remove given directory or file.
+				await this.helper.remove(path.join(this.options.destination, this.options.remove));
+				
+				break;
+			default:
+				if (Array.isArray(this.options.remove)) {
+					debug(`Removing listed directories and/or files in '${this.options.destination}' directory.`);
+					
+					// Remove all directories or files listed in the array.
+					const length = this.options.remove.length;
+					for (let i = 0; i < length; i++) {
+						await this.helper.remove(path.join(this.options.destination, this.options.remove[i]));
+					}
+				}
+				
+				break;
 		}
+		debug(`Finished removing.`);
 	}
 	
 	// Call before function on modules.
@@ -162,7 +137,7 @@ Hoast.prototype.process = async function(options) {
 	
 	// Scan source for files.
 	debug(`Scanning files.`);
-	let files = await Hoast.helper.scanDirectory(path.join(this.directory, this.options.source));
+	let files = await this.helper.scanDirectory(this.expressions, this.options.patternOptions.all, path.join(this.directory, this.options.source));
 	debug(`Scanned files, found ${files.length} files.`);
 	
 	// Batch out files as to not handle to many at once.
@@ -188,9 +163,10 @@ Hoast.prototype.process = async function(options) {
 			debug(`No files left in batch to write to storage.`);
 			continue;
 		}
+		
 		// Write batched files to disk.
 		debug(`Writing batch to storage.`);
-		await Hoast.helper.writeFiles(this.options.destination, batch);
+		await this.helper.writeFiles(this.options.destination, batch);
 		debug(`Batch written.`);
 	}
 	debug(`Finished processing files to '${this.options.destination}' directory.`);

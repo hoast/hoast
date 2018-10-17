@@ -24,26 +24,23 @@ Creating a static page generator can be incredibly easy as is show below.
 ```JavaScript
 const Hoast = require(`hoast`);
 const read = Hoast.read,
-      filter = require(`hoast-filter`),
       frontmatter = require(`hoast-frontmatter`),
       layout = require(`hoast-layout`),
       transform = require(`hoast-transform`);
 
-Hoast(__dirname)
-  // Exclude layouts.
-  .use(filter({
-    pattern: [
-      `*`,
-      `!(layouts/*)`
-    ],
-    patternOptions: {
-      all: true,
-      extended: true
-    }
-  }))
+Hoast(__dirname, {
+  pattern: [
+    `*`,
+    `!(layouts/*)`
+  ],
+  patternOptions: {
+    all: true,
+    extended: true
+  }
+})
   // Read file content.
   .use(read())
-  // Extract frontmatter.
+  // Extract front matter.
   .use(frontmatter())
   // Transform markdown.
   .use(transform({
@@ -82,7 +79,7 @@ Hoast(__dirname)
 `hoast` is a modular file processor focused on creating a simple ecosystem for task automation. The original objective was to generate webpages using a minimal system, but in addition to static page generation it can also be used for a range of different applications.
 
 The system has been written with several goals it mind, to be small in size as well as easy to use and improve. The result is a modular approach some of the advantages are:
-1. An incredibly small base system, at just a few hundred lines of code and only two dependencies.
+1. An incredibly small base system, at just a few hundred lines of code and only three dependencies.
 2. Highly customizable as modules are task specific therefore you only include the modules you want. This ensures you have a deeper understanding of the build process.
 3. Modules are quick to create and allow a large portion of people to contribute.
 4. Maintenance is easier as the code base is sectioned up and simpler to follow along to.
@@ -222,6 +219,15 @@ The options object which can be given using the `constructor` or `process` funct
   * Default: `destination`
 * `remove`: Whether to remove all files in the destination directory before processing.
   * Type: `String`
+  * Default: `false`
+* `patterns`: Glob patterns to match directory and file paths with. If a path does not match during scanning of the source it will not be further explored.
+  * Type: `String` or `Array of strings`
+	* Default: `[]`
+* `patternOptions`: Options for the glob pattern matching. See [planckmatch options](https://github.com/redkenrok/node-planckmatch#options) for more details on the pattern options.
+  * Type: `Object`
+  * Default: `{}`
+* `patternOptions.all`: This options is added to `patternOptions`, and determines whether all patterns need to match instead of only one.
+  * Type: `Boolean`
   * Default: `false`
 * `concurrency`: Maximum number of files to process at once.
   * Type: `Number`

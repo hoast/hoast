@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "hoast": "^1.0.0",
-    "hoast-filter": "^1.0.0",
     "hoast-frontmatter": "^1.0.0",
     "hoast-layout": "^1.0.0",
     "hoast-transform": "^1.0.0",
