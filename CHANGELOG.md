@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 (unreleased)
+## 1.1.0 (2018-10-17)
 ### Added
 - `parse` and `match` functions added to helper functions.
 - Filter functionality added when scanning for files added, configurable via `pattern` and `patternOptions` options.
