@@ -70,13 +70,16 @@ test.serial(`processing files`, async function(t) {
 		// Check hoast.
 		t.deepEqual(hoast, _hoast);
 		
-		// Check files.
+		// Check if all files are read.
 		t.is(files.length, 2);
 		
-		let file = files[0];
-		t.true(file.hasOwnProperty(`stats`));
+		const file = files[0];
+		// Check if scan directories worked.
 		t.true(file.hasOwnProperty(`path`));
-		t.deepEqual(file.path, `file.txt`);
+		t.true(file.hasOwnProperty(`stats`));
+		
+		// Check if read module worked.
+		t.true(file.hasOwnProperty(`content`));
 	};
 	method.before = function(_hoast) {
 		// Check hoast.
