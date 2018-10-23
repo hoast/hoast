@@ -47,18 +47,23 @@ const Hoast = function(directory, options) {
 // Build in read module required to run before process.
 Hoast.read = require(`./read`);
 
-// Add custom modules to helper.
+// Add helpers.
+Hoast.helpers = Hoast.prototype.helpers = {
+	createDirectory: require(`./helpers/createDirectory`),
+	matchExpressions: require(`./helpers/matchExpressions`),
+	parsePatterns: require(`planckmatch/parse`),
+	removeFiles: require(`./helpers/removeFiles`),
+	scanDirectory: require(`./helpers/scanDirectory`),
+	writeFiles: require(`./helpers/writeFiles`)
+};
+// Legacy helpers.
 Hoast.helper = Hoast.prototype.helper = {
-	// Create a directory at the given path.
+	createDirectory: require(`./helpers/createDirectory`),
+	match: require(`./helpers/matchExpressions`),
 	parse: require(`planckmatch/parse`),
-	match: require(`./match`),
-	
-	scanDirectory: require(`./scanDirectory`),
-	
-	createDirectory: require(`./createDirectory`),
-	writeFiles: require(`./writeFiles`),
-	
-	remove: require(`./remove`)
+	remove: require(`./helpers/removeFiles`),
+	scanDirectory: require(`./helpers/scanDirectory`),
+	writeFiles: require(`./helpers/writeFiles`)
 };
 
 /**
@@ -87,41 +92,43 @@ Hoast.prototype.process = async function(options) {
 		
 		// Parse new patterns to expressions.
 		if (options.patterns) {
-			this.expressions = this.helper.parse(this.options.patterns, this.options.patternOptions);
+			this.expressions = this.helpers.parsePatterns(this.options.patterns, this.options.patternOptions);
 			debug(`Patterns parsed to '${this.expressions}'.`);
 		}
 	}
 	debug(`Start processing files in '${this.options.source}' directory.`);
 	
+	// Absolute directory to remove and write from.
+	const directoryDestination = path.join(this.directory, this.options.destination),
+		directorySource = path.join(this.directory, this.options.source);
+	
 	// Remove the destination directory or specified files within it.
 	if (this.options.remove) {
-		switch(typeof(this.options.remove)) {
-			case `boolean`:
-				debug(`Removing '${this.options.destination}' directory.`);
-				
-				// If no file paths are defined then remove the entire destination directory.
-				await this.helper.remove(this.options.destination);
-				
-				break;
-			case `string`:
-				debug(`Removing '${this.options.remove}' directory/file in '${this.options.destination}' directory.`);
-				
-				// Remove given directory or file.
-				await this.helper.remove(path.join(this.options.destination, this.options.remove));
-				
-				break;
-			default:
-				if (Array.isArray(this.options.remove)) {
-					debug(`Removing listed directories and/or files in '${this.options.destination}' directory.`);
-					
-					// Remove all directories or files listed in the array.
-					const length = this.options.remove.length;
-					for (let i = 0; i < length; i++) {
-						await this.helper.remove(path.join(this.options.destination, this.options.remove[i]));
-					}
-				}
-				
-				break;
+		debug(`Start removing.`);
+		
+		// Remove type.
+		const type = typeof(this.options.remove);
+		if (type === `boolean`) {
+			debug(`Removing '${directoryDestination}' directory.`);
+			
+			// If no file paths are defined then remove the entire destination directory.
+			await this.helpers.removeFiles.single(directoryDestination);
+		} else if (type === `string`) {
+			debug(`Removing '${this.options.remove}' directory/file in '${directoryDestination}' directory.`);
+			
+			// Remove given directory or file.
+			await this.helpers.removeFiles.single(path.join(directoryDestination, this.options.remove));
+		} else if (Array.isArray(this.options.remove)) {
+			debug(`Removing listed directories and/or files in '${directoryDestination}' directory.`);
+			
+			// Remove all directories or files listed in the array.
+			await this.helpers.removeFiles(
+				this.options.remove.map(function(file) {
+					return path.join(directoryDestination, file);
+				})
+			);
+		} else {
+			debug(`Nothing removed as 'remove' option not of valid type.`);
 		}
 		debug(`Finished removing.`);
 	}
@@ -137,7 +144,7 @@ Hoast.prototype.process = async function(options) {
 	
 	// Scan source for files.
 	debug(`Scanning files.`);
-	let files = await this.helper.scanDirectory(this.expressions, this.options.patternOptions.all, path.join(this.directory, this.options.source));
+	let files = await this.helpers.scanDirectory(directorySource, this.expressions, this.options.patternOptions.all);
 	debug(`Scanned files, found ${files.length} files.`);
 	
 	// Batch out files as to not handle to many at once.
@@ -166,10 +173,10 @@ Hoast.prototype.process = async function(options) {
 		
 		// Write batched files to disk.
 		debug(`Writing batch to storage.`);
-		await this.helper.writeFiles(this.options.destination, batch);
+		await this.helpers.writeFiles(directoryDestination, batch);
 		debug(`Batch written.`);
 	}
-	debug(`Finished processing files to '${this.options.destination}' directory.`);
+	debug(`Finished processing files to '${directoryDestination}' directory.`);
 	
 	// Call after function on modules.
 	debug(`Start calling after function on modules.`);

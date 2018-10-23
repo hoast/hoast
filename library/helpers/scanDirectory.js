@@ -2,16 +2,15 @@
 const fs = require(`fs`),
 	path = require(`path`);
 // Custom modules.
-const match = require(`./match`);
+const match = require(`./matchExpressions`);
 
 /**
  * Scan a directory recursively.
+ * @param {String} directory Directory name.
  * @param {RegExps|Array} expression Regular Expression for matching with file paths.
  * @param {Boolean} all Whether all patterns need to match.
- * @param {String} directory Directory name.
- * @param {String[]} arguments File path, possibly split up in segments but in order.
  */
-const scanDirectory = function(expressions, all, directory) {
+const scanDirectory = function(directory, expressions, all = false) {
 	// Create inner scan method that can be recursively called whilst still having access to the 'expressions' and 'all' parameters.
 	const scan = async function(directory, relative) {
 		// Create absolute path.
@@ -62,7 +61,6 @@ const scanDirectory = function(expressions, all, directory) {
 					
 					// Recursively call for each file in subdirectory.
 					Promise.all(files.map(function(file) {
-						
 						// Create new relative path.
 						const newRelative = path.join(relative, file);
 						

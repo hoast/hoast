@@ -13,16 +13,8 @@ const match = function(value, expressions, all = false) {
 		return true;
 	}
 	
-	const result = _match(value, expressions);
-	
-	// If results is an array.
-	if (Array.isArray(result)) {
-		// Check whether all or just any will result in a match, and return the outcome.
-		return all ? !result.includes(false) : result.includes(true);
-	}
-	
-	// Otherwise result is a boolean and can be returned directly.
-	return result;
+	// Check whether all or just any will result in a match, and return the outcome.
+	return all ? _match.all(value, expressions) : _match.any(value, expressions);
 };
 
 module.exports = match;

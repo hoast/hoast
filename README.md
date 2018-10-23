@@ -220,7 +220,7 @@ The options object which can be given using the `constructor` or `process` funct
 * `remove`: Whether to remove all files in the destination directory before processing.
   * Type: `String`
   * Default: `false`
-* `patterns`: Glob patterns to match directory and file paths with. If a path does not match during scanning of the source it will not be further explored.
+* `patterns`: Glob patterns to match directory and file paths with. If a directory or file path does not match during scanning of the source it will not be further explored.
   * Type: `String` or `Array of strings`
 	* Default: `[]`
 * `patternOptions`: Options for the glob pattern matching. See [planckmatch options](https://github.com/redkenrok/node-planckmatch#options) for more details on the pattern options.
@@ -439,6 +439,8 @@ module.exports = function(options) {
 
 > See the [remove module](https://github.com/hoast/hoast-remove#readme) for an example.
 
+**Asynchronous**
+
 The modules can also be asynchronously by either adding the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword or using a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 ```JavaScript
@@ -450,6 +452,8 @@ module.exports = function(options) {
   };
 };
 ```
+
+**Overriding files**
 
 You can also return a new files array if you need to overwrite the existing one, however it is recommended to iterate over the files using the forEach function instead of map or filter. Use this power carefully!
 
@@ -465,6 +469,66 @@ module.exports = function(options) {
 ```
 
 > See the [filter module](https://github.com/hoast/hoast-filter#readme) for an example.
+
+**hoast helpers**
+
+The `hoast` instance includes several helpers which can be used to perform task common across modules. These helpers can be accessed via the `helper` property of the `hoast` instance. See the list below for available functions.
+
+* `createDirectory(directory)`: Create a directory at the given path.
+  * `directory`: The path to the desired directory.
+    * Type: `string`
+    * Required: `Yes`
+* `matchExpressions(value, expressions, all)`: Match a value to regular expressions.
+  * `value`: Value to match to.
+    * Type: `String`
+    * Required: `Yes`
+  * `expressions`: Regular expressions to match with.
+    * Type: `String` or `Array of strings`
+    * Required: `Yes`
+  * `all`: Whether all or any patterns need to match in order to return a positive result.
+    * Type: `Boolean`
+    * Default: `false`
+* `parsePatterns(patterns, options, path)`: Parse glob patterns into regular expressions.
+  * `patterns`: Glob patterns.
+    * Type: `String` or `Array of strings`
+    * Required: `Yes`
+  * `options`: Parse options, see [planckmatch](https://github.com/RedKenrok/node-planckmatch#readme)'s parse options for more detail.
+    * Type: `Object`
+    * Required: `No`
+* `removeFiles(files)`: Remove directories and/or files from storage.
+  * `files`: Paths of directories and/or files.
+    * Type: `Array of strings`
+    * Required: `Yes`
+* `removeFiles.single(files)`: Remove a directory or file from storage.
+  * `file`: Path of directory or file.
+    * Type: `String`
+    * Required: `Yes`
+* `scanDirectory(directory, expressions, all)`: Retrieve stats of files within a given directory.
+  * `directory`: Path to directory.
+    * Type: `String`
+    * Required: `Yes`
+  * `expressions`: Regular expressions to match with.
+    * Type: `String` or `Array of strings`
+    * Required: `No`
+  * `all`: Whether all or any expressions need to match.
+    * Type: `Boolean`
+    * Default: `false`
+* `writeFiles(directory, files)`: Write files to storage.
+  * `directory`: Path to directory where files are to be written to.
+    * Type: `String`
+    * Required: `Yes`
+  * `files`: List of files with `path` property with the relative path to the given directory and a `content` property with the files content.
+    * Type: `Array of objects`
+    * Required: `Yes`
+* `writeFiles.single(directory, file)`: Write file to storage.
+  * `directory`: Path to directory where file is to be written to.
+    * Type: `String`
+    * Required: `Yes`
+  * `file`: Object with `path` property with the relative path to the given directory and a `content` property with the file's content.
+    * Type: `Object`
+    * Required: `Yes`
+
+**Before and after**
 
 Some modules might require to be perform logic after all options are initialized or after all files are written to storage. To accommodate this you can add a `before` and `after` function to your main method. These functions can also be asynchronously and are called in the order the modules were added.
 

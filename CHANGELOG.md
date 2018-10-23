@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.1 (2018-10-23)
+### Changed
+- Dependencies updated to latest versions.
+- Restructured project files with helpers in separate directory and tests placed in separate directory `test` directory as well as updated to reflect new changes.
+- Expression matching helper optimized using `planckmatch`'s new `match.all` and `match.any` functions.
+- Renamed `helper` property to `helpers` as well as certain names of helper functions, see the list below. (Legacy support is still present.)
+  - `match` to `matchExpressions`
+  - `parse` to `parsePatterns`
+  - `remove` to `removeFiles`
+- Exposed underlying `single` functions of helpers which iterate over an array. The are of the `removeFiles` and `writeFiles` helpers with the `single` functions exposed as `removeFiles.single` and `writeFiles.single` respectively.
+### Fixed
+- `directory` parameter now properly used when removing and writing files to storage.
+
 ## 1.1.0 (2018-10-17)
 ### Added
 - `parse` and `match` functions added to helper functions.
