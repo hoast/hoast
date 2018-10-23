@@ -1,6 +1,8 @@
 // Node modules.
 const fs = require(`fs`),
 	path = require(`path`);
+// Get whether OS is windows.
+const isWin = process.platform === `win32`;
 
 /**
  * Create a directory.
@@ -12,7 +14,14 @@ const createDirectory = function(directory) {
 	// Iterate over each part of the directory path and add the next part to each subsequent promise.
 	return directory.reduce(function(promise, directory) {
 		return promise.then(function(previous) {
-			directory = previous ? `${previous}${path.sep}${directory}` : directory;
+			if (previous) {
+				if (isWin) {
+					directory = `${previous}${path.sep}${directory}`;
+				} else {
+					directory = path.join(previous, directory);
+				}
+			}
+			
 			// Check if directory already exists.
 			if (fs.existsSync(directory)) {
 				// Directory already exists go to next element of path.
@@ -29,6 +38,7 @@ const createDirectory = function(directory) {
 					}
 				});
 			}
+			
 			// Create the directory.
 			return new Promise(function(resolve, reject) {
 				fs.mkdir(directory, function(error) {

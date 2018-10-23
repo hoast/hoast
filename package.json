@@ -28,6 +28,7 @@
     "hoast": "bin/hoast.js"
   },
   "files": [
+    "*.js",
     "bin/",
     "library/"
   ],
