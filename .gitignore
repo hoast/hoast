@@ -1,5 +1,6 @@
 # Node
 node_modules/
-examples/**/destination/
 # Coverage
 .nyc_output/
+# Examples
+examples/**/destination/
