@@ -15,7 +15,7 @@ const createDirectory = function(directory) {
 			if (previous) {
 				// Check if the path should start with a path separator.
 				if (index === 0 && directory === ``) {
-					directory = `${path.sep}${directory}`;
+					return Promise.resolve(`${path.sep}${directory}`);
 				} else {
 					directory = `${previous}${path.sep}${directory}`;
 				}
