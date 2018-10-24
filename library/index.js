@@ -36,7 +36,7 @@ const Hoast = function(directory, options) {
 		
 		// Parse new patterns to expressions.
 		if (options.patterns) {
-			this.expressions = this.helper.parse(this.options.patterns, this.options.patternOptions);
+			this.expressions = this.helper.parse(this.options.patterns, this.options.patternOptions, true);
 			debug(`Patterns parsed to '${this.expressions}'.`);
 		}
 	}
