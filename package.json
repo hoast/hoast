@@ -35,7 +35,7 @@
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "pretest": "eslint library/**.js bin/**.js test/**.js",
-    "test": "nyc --reporter=text ava test/** --verbose"
+    "test": "nyc --reporter=text ava test/**.js --verbose"
   },
   "dependencies": {
     "commander": "^2.19.0",

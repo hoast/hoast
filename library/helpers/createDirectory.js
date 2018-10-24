@@ -7,18 +7,20 @@ const fs = require(`fs`),
  * @param {String} directory Path of the directory.
  */
 const createDirectory = function(directory) {
-	// Join and split path into sequential directory names.
+	// Join and split path into sequential directory segments.
 	directory = directory.split(path.sep);
+	
+	// If path started with separator prepend this to the first segment.
+	if (directory[0] === ``) {
+		directory.shift();
+		directory[0] = `${path.sep}${directory[0]}`;
+	}
+	
 	// Iterate over each part of the directory path and add the next part to each subsequent promise.
-	return directory.reduce(function(promise, directory, index) {
+	return directory.reduce(function(promise, directory) {
 		return promise.then(function(previous) {
 			if (previous) {
-				// Check if the path should start with a path separator.
-				if (index === 0 && directory === ``) {
-					return Promise.resolve(`${path.sep}${directory}`);
-				} else {
-					directory = `${previous}${path.sep}${directory}`;
-				}
+				directory = `${previous}${path.sep}${directory}`;
 			}
 			
 			// Check if directory already exists.
