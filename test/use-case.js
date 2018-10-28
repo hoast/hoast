@@ -23,7 +23,7 @@ test.serial(`initializing hoast`, function(t) {
 			`file.*`
 		],
 		patternOptions: {},
-		concurrency: 8,
+		concurrency: 16,
 		
 		metadata: {
 			title: `instance`
@@ -46,7 +46,7 @@ test.serial(`adding modules`, function(t) {
 });
 
 test.serial(`processing files`, async function(t) {
-	t.plan(8);
+	t.plan(13); // `method` gets called twice.
 	
 	const options = {
 		source: SOURCE,
@@ -56,9 +56,12 @@ test.serial(`processing files`, async function(t) {
 			DESTINATION,
 			`${DESTINATION}-TEST`
 		],
-		patterns: [],
+		patterns: [
+			`directory`,
+			`directory${path.sep}*`
+		],
 		patternOptions: {},
-		concurrency: 16,
+		concurrency: 1,
 		
 		metadata: {
 			title: `process`
@@ -70,8 +73,8 @@ test.serial(`processing files`, async function(t) {
 		// Check hoast.
 		t.deepEqual(hoast, _hoast);
 		
-		// Check if all files are read.
-		t.is(files.length, 2);
+		// Check if file is read and other file is filtered out.
+		t.is(files.length, 1);
 		
 		const file = files[0];
 		// Check if scan directories worked.
@@ -80,6 +83,10 @@ test.serial(`processing files`, async function(t) {
 		
 		// Check if read module worked.
 		t.true(file.hasOwnProperty(`content`));
+		
+		if (file.path === `directory${path.sep}file.txt`) {
+			return [];
+		}
 	};
 	method.before = function(_hoast) {
 		// Check hoast.

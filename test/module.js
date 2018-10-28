@@ -28,7 +28,7 @@ test(`core`, function(t) {
 });
 
 // Build-in modules.
-test(`build-in`, function(t) {
+test(`modules`, function(t) {
 	t.is(typeof(Hoast.read), `function`);
 	
 	// Alias path.
@@ -37,25 +37,20 @@ test(`build-in`, function(t) {
 	t.deepEqual(Hoast.read, read);
 });
 
-// Helpers functions.
+// `helpers` functions.
 test(`helpers`, function(t) {
+	// Global
 	t.is(typeof(Hoast.helpers), `object`);
-	
-	t.is(typeof(Hoast.helpers.createDirectory), `function`);
-	t.is(typeof(Hoast.helpers.parsePatterns), `function`);
-	t.is(typeof(Hoast.helpers.matchExpressions), `function`);
-	t.is(typeof(Hoast.helpers.removeFiles), `function`);
-	t.is(typeof(Hoast.helpers.scanDirectory), `function`);
-	t.is(typeof(Hoast.helpers.writeFiles), `function`);
+	// Prototype.
+	const hoast = Hoast(__dirname);
+	t.is(typeof(hoast.helpers), `object`);
 });
 
-test(`helper-legacy`, function(t) {
+// Legacy `helper` functions.
+test(`helper`, function(t) {
+	// Global
 	t.is(typeof(Hoast.helper), `object`);
-	
-	t.is(typeof(Hoast.helper.createDirectory), `function`);
-	t.is(typeof(Hoast.helper.parse), `function`);
-	t.is(typeof(Hoast.helper.match), `function`);
-	t.is(typeof(Hoast.helper.remove), `function`);
-	t.is(typeof(Hoast.helper.scanDirectory), `function`);
-	t.is(typeof(Hoast.helper.writeFiles), `function`);
+	// Prototype.
+	const hoast = Hoast(__dirname);
+	t.is(typeof(hoast.helpers), `object`);
 });

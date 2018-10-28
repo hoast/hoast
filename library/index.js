@@ -50,6 +50,7 @@ Hoast.read = require(`./read`);
 // Add helpers.
 Hoast.helpers = Hoast.prototype.helpers = {
 	createDirectory: require(`./helpers/createDirectory`),
+	deepAssign: require(`./helpers/deepAssign`),
 	matchExpressions: require(`./helpers/matchExpressions`),
 	parsePatterns: require(`planckmatch/parse`),
 	removeFiles: require(`./helpers/removeFiles`),

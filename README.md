@@ -478,6 +478,13 @@ The `hoast` instance includes several helpers which can be used to perform task 
   * `directory`: The path to the desired directory.
     * Type: `string`
     * Required: `Yes`
+* `deepAssign(target, ...sources)`: Deeply assign two or more objects together.
+  * `target`: Object to assign to.
+    * Type: `Object`
+    * Required: `Yes`
+  * `sources`: Objects to read properties from.
+    * Type: `Object`
+    * Required: `No`
 * `matchExpressions(value, expressions, all)`: Match a value to regular expressions.
   * `value`: Value to match to.
     * Type: `String`
@@ -492,7 +499,7 @@ The `hoast` instance includes several helpers which can be used to perform task 
   * `patterns`: Glob patterns.
     * Type: `String` or `Array of strings`
     * Required: `Yes`
-  * `options`: Parse options, see [planckmatch](https://github.com/RedKenrok/node-planckmatch#readme)'s parse options for more detail.
+  * `options`: Parse options, see [planckmatch](https://github.com/RedKenrok/node-planckmatch#options)'s parse options for more detail.
     * Type: `Object`
     * Required: `No`
 * `removeFiles(files)`: Remove directories and/or files from storage.

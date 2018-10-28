@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.3 (2018-10-28)
+### Added
+- `deepAssign` function added to `helpers`.
+- Tests improved and `function` tests added for `helpers.deepAssign`, `helpers.matchExpression`, and `helpers.parsePatterns`.
+
+## 1.1.2 (2018-10-24)
+### Fixed
+- `createDirectory` function now works with absolute paths.
+- `patterns` now parsed as file paths.
+
 ## 1.1.1 (2018-10-23)
 ### Changed
 - Dependencies updated to latest versions.
