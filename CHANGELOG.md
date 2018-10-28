@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.3 (2018-10-28)
+## 1.1.4 (2018-10-28)
 ### Added
 - `deepAssign` function added to `helpers`.
 - Tests improved and `function` tests added for `helpers.deepAssign`, `helpers.matchExpression`, and `helpers.parsePatterns`.
