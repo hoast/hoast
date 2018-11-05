@@ -1,6 +1,6 @@
 <div align="center">
   
-  [![](icons/128.png)](https://hoast.github.io)
+  [![](icons/128.png)](https://hoast.js.org)
   
   [![npm package @latest](https://img.shields.io/npm/v/hoast.svg?label=npm@latest&style=flat-square&maxAge=3600)](https://npmjs.com/package/hoast)
   [![npm package @next](https://img.shields.io/npm/v/hoast/next.svg?label=npm@next&style=flat-square&maxAge=3600)](https://npmjs.com/package/hoast/v/next)
@@ -64,8 +64,7 @@ Hoast(__dirname, {
 * [Installation and usage](#installation-and-usage)
   * [Command line interface](#command-line-interface)
   * [Script](#script)
-    * [API](#api)
-    * [Asynchronously](#asynchronously)
+  * [Options](#options)
   * [Debugging](#debugging)
 * [Modules](#modules)
   * [Build-in](#build-in)
@@ -128,6 +127,8 @@ Create a JSON configuration file with the options and modules.
   }
 }
 ```
+
+> See [options](#options) for more detail about the property.
 
 If you want to re-use the same module multiple times you can wrap each module in their object and change the modules property in an array as seen below.
 
@@ -207,38 +208,7 @@ Returns the `hoast` instance.
   * Type: `Object`
   * Required: `No`
 
-**options**
-
-The options object which can be given using the `constructor` or `process` functions.
-
-* `source` The directory to process files from.
-  * Type: `String`
-  * Default: `source`
-* `destination`: The directory to write the processed files to.
-  * Type: `String`
-  * Default: `destination`
-* `remove`: Whether to remove all files in the destination directory before processing.
-  * Type: `String`
-  * Default: `false`
-* `patterns`: Glob patterns to match directory and file paths with. If a directory or file path does not match during scanning of the source it will not be further explored.
-  * Type: `String` or `Array of strings`
-	* Default: `[]`
-* `patternOptions`: Options for the glob pattern matching. See [planckmatch options](https://github.com/redkenrok/node-planckmatch#options) for more details on the pattern options.
-  * Type: `Object`
-  * Default: `{}`
-* `patternOptions.all`: This options is added to `patternOptions`, and determines whether all patterns need to match instead of only one.
-  * Type: `Boolean`
-  * Default: `false`
-* `concurrency`: Maximum number of files to process at once.
-  * Type: `Number`
-  * Default: `Infinity`
-* `metadata`: Metadata that can be used by modules.
-  * Type: `Object`
-  * Default: `{}`
-
-> The defaults are only applied when the constructor is called, the process' options parameter overrides what is set earlier.
-
-### Asynchronously
+**Asynchronously**
 
 hoast can be used asynchronously via script, two examples are given below.
 
@@ -282,6 +252,37 @@ build();
 ```
 
 > As you can see in both examples the hoast object is still available for further usage.
+
+### options
+
+The options object which can be given using the `constructor` or `process` functions.
+
+* `source` The directory to process files from.
+  * Type: `String`
+  * Default: `source`
+* `destination`: The directory to write the processed files to.
+  * Type: `String`
+  * Default: `destination`
+* `remove`: Whether to remove all files in the destination directory before processing.
+  * Type: `String`
+  * Default: `false`
+* `patterns`: Glob patterns to match directory and file paths with. If a directory or file path does not match during scanning of the source it will not be further explored.
+  * Type: `String` or `Array of strings`
+	* Default: `[]`
+* `patternOptions`: Options for the glob pattern matching. See [planckmatch options](https://github.com/redkenrok/node-planckmatch#options) for more details on the pattern options.
+  * Type: `Object`
+  * Default: `{}`
+* `patternOptions.all`: This options is added to `patternOptions`, and determines whether all patterns need to match instead of only one.
+  * Type: `Boolean`
+  * Default: `false`
+* `concurrency`: Maximum number of files to process at once.
+  * Type: `Number`
+  * Default: `Infinity`
+* `metadata`: Metadata that can be used by modules.
+  * Type: `Object`
+  * Default: `{}`
+
+> The defaults are only applied when the constructor is called, the process' options parameter overrides what is set earlier.
 
 ### Debugging
 
