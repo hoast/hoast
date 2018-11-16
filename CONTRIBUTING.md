@@ -1,0 +1,1 @@
+> See the organization's [contributing page](https://hoast.js.org/contributing), if you just want to report an issue skip to the [issues section](https://hoast.js.org/contributing#issues).
