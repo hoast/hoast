@@ -17,6 +17,22 @@
 
 A modular file processor focused on creating a simple ecosystem for task automation.
 
+## Table of contents
+
+* [Elevator pitch](#elevator-pitch)
+* [Introduction](#introduction)
+* [Installation and usage](#installation-and-usage)
+  * [Command line interface](#command-line-interface)
+  * [Script](#script)
+  * [Options](#options)
+  * [Debugging](#debugging)
+* [Modules](#modules)
+  * [Build-in](#build-in)
+  * [Usage](#usage)
+  * [Making](#making)
+* [Known issues](#known-issues)
+* [License](#license)
+
 ## Elevator pitch
 
 Creating a static page generator can be incredibly easy as is show below.
@@ -57,21 +73,6 @@ Hoast(__dirname, {
 ```
 
 > See the [static page generator example](https://github.com/hoast/hoast/blob/master/examples/static-page-generator) for the full example with in depth comments including dependencies and source directory.
-
-## Table of contents
-
-* [Introduction](#introduction)
-* [Installation and usage](#installation-and-usage)
-  * [Command line interface](#command-line-interface)
-  * [Script](#script)
-  * [Options](#options)
-  * [Debugging](#debugging)
-* [Modules](#modules)
-  * [Build-in](#build-in)
-  * [Usage](#usage)
-  * [Making](#making)
-* [Known issues](#known-issues)
-* [License](#license)
 
 ## Introduction
 
