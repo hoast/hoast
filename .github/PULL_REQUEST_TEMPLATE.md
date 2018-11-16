@@ -13,4 +13,4 @@
 **Write any additional context in place of this.**
 
 **Checklist**: *Check off the box by placing a `x` inside the brackets after making sure you agree to the term outlined.*
-* [ ] I have read and followed the [Contributing guide](https://github.com/hoast/contribute/blob/master/CONTRIBUTING.md).
+* [ ] I have read and followed the [contributing page](https://hoast.js.org/contributing).
