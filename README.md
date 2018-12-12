@@ -31,7 +31,6 @@ A modular file processor focused on creating a simple ecosystem for task automat
   * [Usage](#usage)
   * [Making](#making)
 * [Known issues](#known-issues)
-* [License](#license)
 
 ## Elevator pitch
 
@@ -45,9 +44,9 @@ const read = Hoast.read,
       transform = require(`hoast-transform`);
 
 Hoast(__dirname, {
-  pattern: [
+  patterns: [
     `*`,
-    `!(layouts/*)`
+    `!(layouts)`
   ],
   patternOptions: {
     all: true,
@@ -65,7 +64,7 @@ Hoast(__dirname, {
   // Layout files.
   .use(layout({
     directory: `layouts`,
-    layout: `page.hbs`,
+    layouts: `page.hbs`,
     patterns: `*.html`
   }))
   // Process.
@@ -93,25 +92,15 @@ The order in which hoast works can be broken down into three main steps.
 
 ## Installation and usage
 
-Install [hoast](https://npmjs.com/package/hoast) using [npm](https://npmjs.com) either locally to use the script version or globally to use the CLI tool.
+Install [hoast](https://npmjs.com/package/hoast) using [npm](https://npmjs.com) after you have your project initialized.
 
 ```
 $ npm install hoast
 ```
 
-```
-$ npm install -g hoast
-```
-
 ### Command line interface
 
-If you are more used to using a CLI you can do the following.
-
-Install the global command:
-
-```
-$ npm install -g hoast
-```
+To learn about to hoast command run `$ hoast -h`.
 
 Create a JSON configuration file with the options and modules.
 
@@ -128,6 +117,8 @@ Create a JSON configuration file with the options and modules.
 ```
 
 > See [options](#options) for more detail about the property.
+
+The modules property ...
 
 If you want to re-use the same module multiple times you can wrap each module in their object and change the modules property in an array as seen below.
 
@@ -151,12 +142,6 @@ If you want to re-use the same module multiple times you can wrap each module in
 ```
 
 > Do not forget to install the modules as well.
-
-Then run the help command for more information about running the CLI:
-
-```
-$ hoast -h
-```
 
 ### Script
 
@@ -306,7 +291,6 @@ As mentioned before the modules handle the logic that transforms the file inform
 ```JavaScript
 {
   path: `mark/down.md`,
-  
   stats: {
     dev: 2114,
     ino: 48064969,
@@ -564,7 +548,3 @@ module.exports = function(options) {
 ## Known issues
 
 * Access modes of directories and files are not transferred.
-
-## License
-
-[ISC license](https://github.com/hoast/hoast/blob/master/LICENSE)

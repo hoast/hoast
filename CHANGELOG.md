@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.5 (Unreleased)
+### Added
+- CLI tool process time indicator.
+### Fixed
+- CLI tool does not process when using either the version or help flag.
+
 ## 1.1.4 (2018-10-28)
 ### Added
 - `deepAssign` function added to `helpers`.
