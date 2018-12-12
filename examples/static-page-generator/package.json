@@ -1,22 +1,14 @@
 {
-  "author": "Ron Dekker",
-  "name": "static-page-generator",
-  "description": "Hoast example showing the basic usage usage.",
-  "license": "ISC",
   "main": "hoast.js",
-  "homepage": "https://github.com/hoast/hoast/blob/master/examples/static-page-generator",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hoast/hoast.git"
-  },
-  "bugs": {
-    "url": "https://github.com/hoast/hoast/issues"
+  "scripts": {
+    "build-config": "node node_modules/hoast/bin/hoast.js",
+    "build-script": "node hoast.js"
   },
   "dependencies": {
-    "hoast": "^1.0.0",
-    "hoast-frontmatter": "^1.0.0",
-    "hoast-layout": "^1.0.0",
-    "hoast-transform": "^1.0.0",
+    "hoast": "^1.1.5",
+    "hoast-frontmatter": "^1.2.1",
+    "hoast-layout": "^1.3.0",
+    "hoast-transform": "^1.1.1",
     "jstransformer-handlebars": "^1.1.0",
     "jstransformer-markdown-it": "^2.1.0"
   }

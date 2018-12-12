@@ -1,8 +1,9 @@
 # Static page generator
 
-This example includes two ways of constructing a static web site. The first one is using the command line interface in combination with the `hoast.json`, the other is using node directly with the `hoast.js`. In this case they both work from the same source and will have the same result. Since a `JSON` file does not accept comments, please check the `JavaScript` then for an explanation of the build process.
+This example includes two ways of constructing a static web site. The first one is using the command line interface in combination with the `hoast.json`, the other is using node directly with the `hoast.js`. In this case they both work from the same source and will have the same result. Since the `JSON` format does not accept comments, therefore check the `JavaScript` file for an explanation of the build process.
 
 > To learn more about using the [CLI](https://github.com/hoast/hoast#command-line-interface) see the documentation.
+
 > To learn more about using the [script](https://github.com/hoast/hoast#script) see the documentation.
 
 ## License
