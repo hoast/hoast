@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.5 (Unreleased)
+## 1.1.5 (2018-12-12)
 ### Added
 - CLI tool process time indicator.
 ### Fixed
