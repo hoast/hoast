@@ -5,5 +5,9 @@ node_js:
   - "9"
   - "10"
   - "node"
+before_install:
+  - curl -L https://unpkg.com/@pnpm/self-installer | node
+install:
+  - pnpm install
 after_success:
   - npm run coverage
