@@ -10,9 +10,11 @@
   "keywords": [
     "modular",
     "file",
-    "processor"
+    "processor",
+    "task",
+    "automation"
   ],
-  "homepage": "https://hoast.github.io/hoast",
+  "homepage": "https://github.com/hoast/hoast#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
