@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "pretest": "eslint library/**/*.js bin/**/*.js test/**/*.js",
+    "posttest": "eslint library/**/*.js bin/**/*.js test/**/*.js",
     "test": "nyc --reporter=text ava \"test/**/*.js\" --verbose",
     "next": "npm publish --tag next"
   },
@@ -46,10 +46,10 @@
     "planckmatch": "^0.2.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^1.0.1",
     "codecov": "^3.1.0",
-    "debug": "^4.1.0",
-    "eslint": "^5.10.0",
+    "debug": "^4.1.1",
+    "eslint": "^5.12.0",
     "nyc": "^13.1.0"
   }
 }

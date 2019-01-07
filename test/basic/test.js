@@ -4,7 +4,7 @@ const fs = require(`fs`),
 // Dependency modules.
 const test = require(`ava`);
 // Custom module.
-const Hoast = require(`../library`);
+const Hoast = require(`../../library`);
 
 // Constants.
 const DESTINATION = `dst`,

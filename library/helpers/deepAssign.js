@@ -27,10 +27,8 @@ const deepAssign = function(target, ...sources) {
 					});
 				}
 				deepAssign(target[key], source[key]);
-			} else {
-				Object.assign(target, {
-					[key]: source[key]
-				});
+			} else if(source[key] !== undefined) {
+				target[key] = source[key];
 			}
 		}
 	}
