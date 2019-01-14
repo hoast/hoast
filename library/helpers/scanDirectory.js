@@ -11,16 +11,9 @@ const match = require(`./matchExpressions`);
  * @param {Boolean} all Whether all patterns need to match.
  */
 const scanDirectory = function(directory, expressions, all = false) {
-	// Create inner scan method that can be recursively called whilst still having access to the 'expressions' and 'all' parameters.
-	const scan = async function(directory, relative) {
-		// Create absolute path.
-		let absolute;
-		if (relative) {
-			absolute = path.join(directory, relative);
-		} else {
-			relative = ``;
-			absolute = directory;
-		}
+	const scanFile = function(relative) {
+		// Create absolute path to scanned directory or file.
+		const absolute = relative ? path.join(directory, relative) : directory;
 		
 		return new Promise(function(resolve, reject) {
 			// Retrieve file status.
@@ -31,7 +24,13 @@ const scanDirectory = function(directory, expressions, all = false) {
 				
 				// If it is a file resolve with its stats.
 				if (stats.isFile()) {
-					resolve({
+					if (!relative) {
+						return reject({
+							message: `hoast/helpers/scanDirectory: Directory parameter should lead towards a directory not a file.`
+						});
+					}
+					
+					return resolve({
 						path: relative,
 						stats: {
 							dev: stats.dev,
@@ -50,7 +49,6 @@ const scanDirectory = function(directory, expressions, all = false) {
 							birthtimeMs: stats.birthtimeMs
 						}
 					});
-					return;
 				}
 				
 				// Read directory and invoke this method for all items in it.
@@ -62,7 +60,7 @@ const scanDirectory = function(directory, expressions, all = false) {
 					// Recursively call for each file in subdirectory.
 					Promise.all(files.map(function(file) {
 						// Create new relative path.
-						const newRelative = path.join(relative, file);
+						const newRelative = relative ? path.join(relative, file) : file;
 						
 						// Check if path still matches expression.
 						if (!match(newRelative, expressions, all)) {
@@ -70,7 +68,7 @@ const scanDirectory = function(directory, expressions, all = false) {
 						}
 						
 						// Recursively call this again.
-						return scan(directory, newRelative);
+						return scanFile(newRelative);
 					})).then(function(result) {
 						// Flatten array before returning.
 						resolve(result.reduce(function(previous, current) {
@@ -78,10 +76,9 @@ const scanDirectory = function(directory, expressions, all = false) {
 								return previous;
 							} else if (Array.isArray(current)) {
 								return previous.concat(current);
-							} else {
-								previous.push(current);
-								return previous;
 							}
+							previous.push(current);
+							return previous;
 						}, []));
 					}).catch(reject);
 				});
@@ -90,7 +87,7 @@ const scanDirectory = function(directory, expressions, all = false) {
 	};
 	
 	// Return first call of scan.
-	return scan(directory);
+	return scanFile();
 };
 
 module.exports = scanDirectory;

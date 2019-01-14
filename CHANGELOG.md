@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.6 (Unreleased)
+### Changed
++ `removeFiles` and `writeFiles` helpers now allow one file to be given instead of only an array or having to use the `.singles` method.
+
 ## 1.1.5 (2018-12-12)
 ### Added
 - CLI tool process time indicator.
