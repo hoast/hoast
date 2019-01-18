@@ -6,8 +6,8 @@ const isutf8 = require(`isutf8`);
 
 /**
  * Read the content of the file.
- * @param {Object} directory The directory path of the file.
- * @param {Object} file The file data.
+ * @param {object} directory The directory path of the file.
+ * @param {object} file The file data.
  */
 const read = function(directory, file) {
 	return new Promise(function(resolve, reject) {
@@ -34,8 +34,8 @@ const read = function(directory, file) {
 module.exports = function() {
 	/**
 	 * Reads data from all the given files.
-	 * @param {Object} hoast Hoast instance.
-	 * @param {Object[]} files An array of file data.
+	 * @param {object} hoast Hoast instance.
+	 * @param {object[]} files An array of file data.
 	 */
 	return async function(hoast, files) {
 		await Promise.all(files.map(function(file) {

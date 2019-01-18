@@ -5,8 +5,8 @@ let debug; try { debug = require(`debug`)(`hoast`); } catch(error) { debug = fun
 
 /**
  * Initializes the object.
- * @param {Object} directory The directory to operate from.
- * @param {Object} options The options.
+ * @param {object} directory The directory to operate from.
+ * @param {object} options The options.
  */
 const Hoast = function(directory, options) {
 	// Create instance of this.
@@ -69,7 +69,7 @@ Hoast.helper = Hoast.prototype.helper = {
 
 /**
  * Add a module to the processing stack.
- * @param {Function} module A Hoast compatible module function.
+ * @param {function} module A Hoast compatible module function.
  */
 Hoast.prototype.use = function(module) {
 	// Reset modules array if not set or of incorrect type.
@@ -84,7 +84,7 @@ Hoast.prototype.use = function(module) {
 
 /**
  * Process the files using the specified modules.
- * @param {Object} options 
+ * @param {object} options 
  */
 Hoast.prototype.process = async function(options) {
 	if (options) {

@@ -4,7 +4,7 @@ const fs = require(`fs`),
 
 /**
  * Create a directory.
- * @param {String} directory Path of the directory.
+ * @param {string} directory Path of the directory.
  */
 const createDirectory = function(directory) {
 	// Join and split path into sequential directory segments.

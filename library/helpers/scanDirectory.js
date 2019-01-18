@@ -6,9 +6,9 @@ const match = require(`./matchExpressions`);
 
 /**
  * Scan a directory recursively.
- * @param {String} directory Directory name.
- * @param {RegExps|Array} expression Regular Expression for matching with file paths.
- * @param {Boolean} all Whether all patterns need to match.
+ * @param {string} directory Directory name.
+ * @param {RegExps|RegExp[]} expression Regular Expression for matching with file paths.
+ * @param {boolean} all Whether all patterns need to match.
  */
 const scanDirectory = function(directory, expressions, all = false) {
 	const scanFile = function(relative) {

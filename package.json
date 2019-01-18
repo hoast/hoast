@@ -25,15 +25,15 @@
   "engines": {
     "node": ">=7.8.0"
   },
-  "main": "library/index.js",
-  "bin": {
-    "hoast": "bin/hoast.js"
-  },
   "files": [
     "*.js",
     "bin/",
     "library/"
   ],
+  "bin": {
+    "hoast": "bin/hoast.js"
+  },
+  "main": "library/index.js",
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "posttest": "eslint library/**/*.js bin/**/*.js test/**/*.js",
@@ -42,11 +42,11 @@
   },
   "dependencies": {
     "commander": "^2.19.0",
-    "isutf8": "^2.0.2",
+    "isutf8": "^2.0.3",
     "planckmatch": "^0.2.0"
   },
   "devDependencies": {
-    "ava": "^1.0.1",
+    "ava": "^1.1.0",
     "codecov": "^3.1.0",
     "debug": "^4.1.1",
     "eslint": "^5.12.0",

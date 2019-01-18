@@ -1,6 +1,6 @@
 /**
  * Check whether the value is an object.
- * @param {Any} value Value of unknown type.
+ * @param {any} value Value of unknown type.
  * @returns Whether the value is an object. 
  */
 const isObject = function(value) {
@@ -9,8 +9,8 @@ const isObject = function(value) {
 
 /**
  * Deeply assign a series of objects properties together.
- * @param {Object} target Target object to merge to.
- * @param  {...Object} sources Objects to merge into the target.
+ * @param {object} target Target object to merge to.
+ * @param  {...object} sources Objects to merge into the target.
  */
 const deepAssign = function(target, ...sources) {
 	if (!sources.length) {

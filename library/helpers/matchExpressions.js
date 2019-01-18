@@ -3,13 +3,13 @@ const _match = require(`planckmatch/match`);
 
 /**
  * Check if expressions match with the given value.
- * @param {String} value String to match with the expressions.
- * @param {RegExps|Array} expressions Regular expressions to match with.
- * @param {Boolean} all Whether all patterns need to match.
+ * @param {string} value String to match with the expressions.
+ * @param {RegExps|RegExp[]} expressions Regular expressions to match with.
+ * @param {boolean} all Whether all patterns need to match.
  */
 const match = function(value, expressions, all = false) {
 	// If no expressions return early as valid.
-	if (!expressions || expressions.length === 0) {
+	if (!expressions || (Array.isArray(expressions) && expressions.length === 0)) {
 		return true;
 	}
 	

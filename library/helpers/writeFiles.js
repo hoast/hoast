@@ -6,8 +6,8 @@ const createDirectory = require(`./createDirectory`);
 
 /**
  * Writes each file to the directory.
- * @param {String} directory Directory path.
- * @param {Object | Object[]} files File data or Array of file data.
+ * @param {string} directory Directory path.
+ * @param {object | Object[]} files File data or Array of file data.
  */
 const writeFiles = function(directory, files) {
 	if (Array.isArray(files)) {
@@ -26,25 +26,37 @@ const writeFiles = function(directory, files) {
 
 /**
  * Write the file to the directory.
- * @param {String} directory Directory path.
- * @param {Object} file File data.
+ * @param {string} directory Directory path.
+ * @param {object} file File data.
  */
 const writeFile = writeFiles.single = function(directory, file) {
 	return new Promise(function(resolve, reject) {
 		// Ensure directory exists.
 		createDirectory(path.join(directory, path.dirname(file.path)))
 			.then(function() {
-				// Write file to destination.
-				fs.writeFile(
-					path.join(directory, file.path),
-					file.content.type === `string` ? file.content.data : file.content,
-					function(error) {
+				// Open file, 'w' flag means it opens file for writing, and it creates (if it does not exist) or truncated (if it exists) the file.
+				fs.open(path.join(directory, file.path), `w`, function(error, fileDescriptor) {
+					if (error) {
+						return reject(error);
+					}
+					
+					// Write content to newly created file.
+					fs.writeFile(fileDescriptor, file.content.type === `string` ? file.content.data : file.content, function(error) {
 						if (error) {
 							return reject(error);
 						}
-						resolve();
-					}
-				);
+						
+						// Close file.
+						fs.close(fileDescriptor, function(error) {
+							if (error) {
+								return reject(error);
+							}
+							
+							// Resolve promise without any issue.
+							resolve();
+						});
+					});
+				});
 			}).catch(reject);
 	});
 };

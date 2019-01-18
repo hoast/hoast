@@ -106,8 +106,8 @@ if (commander.version !== true && commander.help !== true) {
 	
 	/**
 	 * Tries to retrieve the path to the module of that name.
-	 * @param {String} directory The working directory.
-	 * @param {String} moduleName Name of the module.
+	 * @param {string} directory The working directory.
+	 * @param {string} moduleName Name of the module.
 	 */
 	const getModulePath = async function(directory, moduleName) {
 		// Create all possible paths.

@@ -1,23 +1,28 @@
 // Dependency modules.
 const test = require(`ava`);
-// Custom module.
-const Hoast = require(`../../library`);
-const hoast = Hoast(__dirname);
+// Library modules.
+const Hoast = require(`../../../library`);
 
-test(`type`, function(t) {
+test(`type check`, function(t) {
+	const hoast = Hoast(__dirname);
+	
 	t.is(typeof(Hoast.helpers.deepAssign), `function`);
 	t.is(typeof(hoast.helpers.deepAssign), `function`);
 	t.is(Hoast.helpers.deepAssign, hoast.helpers.deepAssign);
 });
 
-test(`function`, function(t) {
-	// Return modified primary object.
+test(`modify primary parameter`, function(t) {
 	const object = {};
 	t.is(Hoast.helpers.deepAssign(object), object);
 	t.is(Hoast.helpers.deepAssign(object, {}), object);
+	t.is(Hoast.helpers.deepAssign(object, {
+		a: `a`
+	}), object);
+	
 	t.not(Hoast.helpers.deepAssign({}, object), object);
-	
-	// Assign.
+});
+
+test(`assign`, function(t) {
 	t.deepEqual(Hoast.helpers.deepAssign({
 		a: `a`
 	}, {}), {
@@ -28,8 +33,9 @@ test(`function`, function(t) {
 	}), {
 		a: `a`
 	});
-	
-	// Assign deep.
+});
+
+test(`assign deeply`, function(t) {
 	t.deepEqual(Hoast.helpers.deepAssign({
 		a: {
 			b: `b`
@@ -48,8 +54,9 @@ test(`function`, function(t) {
 			b: `b`
 		}
 	});
-	
-	// Merge.
+});
+
+test(`merge`, function(t) {
 	t.deepEqual(Hoast.helpers.deepAssign({
 		a: `a`
 	}, {
@@ -58,8 +65,9 @@ test(`function`, function(t) {
 		a: `a`,
 		b: `b`
 	});
-	
-	// Merge deep.
+});
+
+test(`merge deeply`, function(t) {
 	t.deepEqual(Hoast.helpers.deepAssign({
 		a: {
 			b: `b`
@@ -74,8 +82,9 @@ test(`function`, function(t) {
 			c: `c`
 		}
 	});
-	
-	// Overwrite.
+});
+
+test(`overwrite`, function(t) {
 	t.deepEqual(Hoast.helpers.deepAssign({
 		a: `a`
 	}, {
@@ -83,8 +92,9 @@ test(`function`, function(t) {
 	}), {
 		a: `b`
 	});
-	
-	// Overwrite deep.
+});
+
+test(`overwrite deeply`, function(t) {
 	t.deepEqual(Hoast.helpers.deepAssign({
 		a: {
 			b: `b`
@@ -98,8 +108,9 @@ test(`function`, function(t) {
 			b: `c`
 		}
 	});
-	
-	// Multiple
+});
+
+test(`multiple sources`, function(t) {
 	t.deepEqual(Hoast.helpers.deepAssign({
 		a: `a`
 	}, {
@@ -111,8 +122,9 @@ test(`function`, function(t) {
 		b: `b`,
 		c: `c`
 	});
-	
-	// Invalid parameters.
+});
+
+test(`discard invalid parameters`, function(t) {
 	t.deepEqual(Hoast.helpers.deepAssign(1), 1);
 	t.deepEqual(Hoast.helpers.deepAssign(1, 2), 1);
 	t.deepEqual(Hoast.helpers.deepAssign({}, 2), {});

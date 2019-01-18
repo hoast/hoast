@@ -4,7 +4,7 @@ const fs = require(`fs`),
 
 /**
  * Remove directories and/or files.
- * @param {String | String[]} files Path(s) of directories and\or files.
+ * @param {string | String[]} files Path(s) of directories and\or files.
  */
 const removeFiles = function(files) {
 	if (Array.isArray(files)) {
@@ -23,7 +23,7 @@ const removeFiles = function(files) {
 
 /**
  * Remove directory or file.
- * @param {String} file Path of directory or file.
+ * @param {string} file Path of directory or file.
  */
 const removeFile = removeFiles.single = function(file) {
 	return new Promise(function(resolve, reject) {
@@ -53,18 +53,22 @@ const removeFile = removeFiles.single = function(file) {
 						return reject(error);
 					}
 					
+					// Prefix
+					directoryFiles = directoryFiles.map(function(directoryFile) {
+						return path.join(directory, directoryFile);
+					});
+					
 					// If directory then remove each directory and\or file within, then remove this directory.
-					Promise.all(directoryFiles.map(function(directoryFile) {
-						return removeFile(path.join(directory, directoryFile));
-					})).then(function() {
-						// Remove the now empty directory.
-						fs.rmdir(directory, function(error) {
-							if (error) {
-								return reject(error);
-							}
-							resolve();
-						});
-					}).catch(reject);
+					removeFiles(directoryFiles)
+						.then(function() {
+							// Remove the now empty directory.
+							fs.rmdir(directory, function(error) {
+								if (error) {
+									return reject(error);
+								}
+								resolve();
+							});
+						}).catch(reject);
 				});
 			}
 		});
