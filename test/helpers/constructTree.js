@@ -20,7 +20,7 @@ const constructTree = async function(directory, file = ``) {
 				return reject(error);
 			}
 			
-			// If it is a file resolve with its stats.
+			// Check if file.
 			if (stats.isFile()) {
 				return resolve(file);
 			}

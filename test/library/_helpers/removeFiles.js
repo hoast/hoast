@@ -8,7 +8,7 @@ const Hoast = require(`../../../library`);
 const removeFiles = require(`../../../library/helpers/removeFiles`);
 // Helper modules.
 const constructTree = require(`../../helpers/constructTree`),
-	copyFile = require(`../../helpers/copyFile`);
+	copyDirectory = require(`../../helpers/copyDirectory`);
 
 test(`type check`, function(t) {
 	const hoast = Hoast(__dirname);
@@ -36,7 +36,7 @@ test(`remove directory`, async function(t) {
 	
 	try {
 		// Copy directory.
-		await copyFile(pathSrc, pathDst);
+		await copyDirectory(pathSrc, pathDst);
 		// Check directory exists.
 		t.deepEqual(await constructTree(pathDst), {
 			files: [
