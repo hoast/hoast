@@ -3,12 +3,12 @@ const fs = require(`fs`),
 	path = require(`path`);
 // Dependency modules.
 const test = require(`ava`);
-// Library modules.
-const Hoast = require(`../../../library`);
-const removeFiles = require(`../../../library/helpers/removeFiles`);
 // Helper modules.
 const constructTree = require(`../../helpers/constructTree`),
 	copyDirectory = require(`../../helpers/copyDirectory`);
+// Library modules.
+const Hoast = require(`../../../library`);
+const removeFiles = require(`../../../library/helpers/removeFiles`);
 
 test(`type check`, function(t) {
 	const hoast = Hoast(__dirname);

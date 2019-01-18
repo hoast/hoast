@@ -12,20 +12,6 @@ const createDirectory = require(`../../library/helpers/createDirectory`);
  */
 const copyFile = function(source, destination, callback) {
 	let callbackCalled = false;
-	
-	const readStream = fs.createReadStream(source);
-	readStream.on(`error`, function(error) {
-		done(error);
-	});
-	const writeStream = fs.createWriteStream(destination);
-	writeStream.on(`error`, function(error) {
-		done(error);
-	});
-	writeStream.on(`close`, function() {
-		done();
-	});
-	readStream.pipe(writeStream);
-	
 	function done(error) {
 		if (callbackCalled) {
 			return;
@@ -34,6 +20,21 @@ const copyFile = function(source, destination, callback) {
 		callbackCalled = true;
 		callback(error);
 	}
+	
+	const readStream = fs.createReadStream(source);
+	readStream.on(`error`, function(error) {
+		done(error);
+	});
+	
+	const writeStream = fs.createWriteStream(destination);
+	writeStream.on(`error`, function(error) {
+		done(error);
+	});
+	writeStream.on(`close`, function() {
+		done();
+	});
+	
+	readStream.pipe(writeStream);
 };
 
 /**

@@ -6,7 +6,8 @@ const test = require(`ava`);
 const equalDirectory = require(`../../helpers/equalDirectory`);
 // Library modules.
 const Hoast = require(`../../../library`);
-const writeFiles = require(`../../../library/helpers/writeFiles`);
+const writeFiles = require(`../../../library/helpers/writeFiles`),
+	removeFiles = require(`../../../library/helpers/removeFiles`);
 
 test(`type check`, function(t) {
 	const hoast = Hoast(__dirname);
@@ -59,6 +60,9 @@ test(`write files`, async function(t) {
 		
 		// Compare directory.
 		await equalDirectory(t, pathDst, pathSrc);
+		
+		// Remove directory.
+		await removeFiles(pathDst);
 	} catch(error) {
 		t.fail(error);
 	}
