@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.6 (Unreleased)
+## 1.1.6 (2019-01-24)
 ### Changed
 + `removeFiles` and `writeFiles` helpers now allow one file to be given instead of only an array or having to use the `.singles` method.
 

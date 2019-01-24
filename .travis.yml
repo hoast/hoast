@@ -10,4 +10,4 @@ before_install:
 install:
   - pnpm install
 after_success:
-  - npm run coverage
+  - pnpm run coverage

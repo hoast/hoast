@@ -53,13 +53,13 @@ const removeFile = removeFiles.single = function(file) {
 						return reject(error);
 					}
 					
-					// Prefix
-					directoryFiles = directoryFiles.map(function(directoryFile) {
+					// Prefix files with absolute directory.
+					const absoluteFiles = directoryFiles.map(function(directoryFile) {
 						return path.join(directory, directoryFile);
 					});
 					
 					// If directory then remove each directory and\or file within, then remove this directory.
-					removeFiles(directoryFiles)
+					removeFiles(absoluteFiles)
 						.then(function() {
 							// Remove the now empty directory.
 							fs.rmdir(directory, function(error) {

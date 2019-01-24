@@ -113,12 +113,12 @@ Hoast.prototype.process = async function(options) {
 			debug(`Removing '${directoryDestination}' directory.`);
 			
 			// If no file paths are defined then remove the entire destination directory.
-			await this.helpers.removeFiles.single(directoryDestination);
+			await this.helpers.removeFiles(directoryDestination);
 		} else if (type === `string`) {
 			debug(`Removing '${this.options.remove}' directory/file in '${directoryDestination}' directory.`);
 			
 			// Remove given directory or file.
-			await this.helpers.removeFiles.single(path.join(directoryDestination, this.options.remove));
+			await this.helpers.removeFiles(path.join(directoryDestination, this.options.remove));
 		} else if (Array.isArray(this.options.remove)) {
 			debug(`Removing listed directories and/or files in '${directoryDestination}' directory.`);
 			
