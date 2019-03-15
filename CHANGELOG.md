@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.7-beta.0 (2019-03-15)
+## 1.1.7-beta (2019-03-15)
 ### Added
 + Added absolute file path support for `destination` and `source` options.
 

@@ -100,8 +100,8 @@ Hoast.prototype.process = async function(options) {
 	debug(`Start processing files in '${this.options.source}' directory.`);
 	
 	// Absolute directory to remove and write from.
-	const directoryDestination = path.isAbsolute(this.options.destination) ? this.options.destination : path.join(this.directory, this.options.destination),
-		directorySource = path.isAbsolute(this.options.source) ? this.options.source : path.join(this.directory, this.options.source);
+	this.options.destinationAbsolute = path.isAbsolute(this.options.destination) ? this.options.destination : path.join(this.directory, this.options.destination);
+	this.options.sourceAbsolute = path.isAbsolute(this.options.source) ? this.options.source : path.join(this.directory, this.options.source);
 
 	// Remove the destination directory or specified files within it.
 	if (this.options.remove) {
@@ -110,22 +110,22 @@ Hoast.prototype.process = async function(options) {
 		// Remove type.
 		const type = typeof(this.options.remove);
 		if (type === `boolean`) {
-			debug(`Removing '${directoryDestination}' directory.`);
+			debug(`Removing '${this.options.destinationAbsolute}' directory.`);
 			
 			// If no file paths are defined then remove the entire destination directory.
-			await this.helpers.removeFiles(directoryDestination);
+			await this.helpers.removeFiles(this.options.destinationAbsolute);
 		} else if (type === `string`) {
-			debug(`Removing '${this.options.remove}' directory/file in '${directoryDestination}' directory.`);
+			debug(`Removing '${this.options.remove}' directory/file in '${this.options.destinationAbsolute}' directory.`);
 			
 			// Remove given directory or file.
-			await this.helpers.removeFiles(path.join(directoryDestination, this.options.remove));
+			await this.helpers.removeFiles(path.join(this.options.destinationAbsolute, this.options.remove));
 		} else if (Array.isArray(this.options.remove)) {
-			debug(`Removing listed directories and/or files in '${directoryDestination}' directory.`);
+			debug(`Removing listed directories and/or files in '${this.options.destinationAbsolute}' directory.`);
 			
 			// Remove all directories or files listed in the array.
 			await this.helpers.removeFiles(
 				this.options.remove.map(function(file) {
-					return path.join(directoryDestination, file);
+					return path.join(this.options.destinationAbsolute, file);
 				})
 			);
 		} else {
@@ -145,7 +145,7 @@ Hoast.prototype.process = async function(options) {
 	
 	// Scan source for files.
 	debug(`Scanning files.`);
-	let files = await this.helpers.scanDirectory(directorySource, this.expressions, this.options.patternOptions.all);
+	let files = await this.helpers.scanDirectory(this.options.sourceAbsolute, this.expressions, this.options.patternOptions.all);
 	debug(`Scanned files, found ${files.length} files.`);
 	
 	// Batch out files as to not handle to many at once.
@@ -174,10 +174,10 @@ Hoast.prototype.process = async function(options) {
 		
 		// Write batched files to disk.
 		debug(`Writing batch to storage.`);
-		await this.helpers.writeFiles(directoryDestination, batch);
+		await this.helpers.writeFiles(this.options.destinationAbsolute, batch);
 		debug(`Batch written.`);
 	}
-	debug(`Finished processing files to '${directoryDestination}' directory.`);
+	debug(`Finished processing files to '${this.options.destinationAbsolute}' directory.`);
 	
 	// Call after function on modules.
 	debug(`Start calling after function on modules.`);

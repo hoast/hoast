@@ -39,7 +39,7 @@ module.exports = function() {
 	 */
 	return async function(hoast, files) {
 		await Promise.all(files.map(function(file) {
-			return read(path.join(hoast.directory, hoast.options.source), file);
+			return read(hoast.options.sourceAbsolute, file);
 		}));
 	};
 };

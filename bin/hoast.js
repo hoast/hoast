@@ -11,6 +11,11 @@ const commander = require(`commander`);
 const info = require(`../package.json`),
 	Hoast = require(`../library`);
 
+// Trace unhandled rejections.
+process.on(`unhandledRejection`, function(reason, promise) {
+	console.log(`Unhandled Rejection at:`, promise, `reason:`, reason);
+});
+
 // Setup command utility.
 commander
 	.name(info.name)
@@ -74,7 +79,7 @@ if (commander.version !== true && commander.help !== true) {
 			}
 			
 			time = process.hrtime(time);
-			console.log(`Finished in ${(time[0] + time[1] / 1e9).toFixed(3)}s.`);
+			console.log(`\x1b[47m\x1b[30m`, `Finished in ${(time[0] + time[1] / 1e9).toFixed(3)}s.`, `\x1b[0m`);
 		});
 	});
 	
