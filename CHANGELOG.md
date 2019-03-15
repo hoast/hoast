@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.7-beta.0 (2019-03-15)
+### Added
++ Added absolute file path support for `destination` and `source` options.
+
 ## 1.1.6 (2019-01-24)
 ### Changed
 + `removeFiles` and `writeFiles` helpers now allow one file to be given instead of only an array or having to use the `.singles` method.

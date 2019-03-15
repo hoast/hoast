@@ -62,9 +62,7 @@ if (commander.version !== true && commander.help !== true) {
 			} else if (typeof(config.modules) === `object`) {
 				await addModule(directory, hoast, moduleCache, config.modules);
 			} else {
-				throw {
-					message: `Modules configuration must be of type object or array.`
-				};
+				throw `Modules configuration must be of type object or array.`;
 			}
 			debug(`Finished adding modules.`);
 			
@@ -91,9 +89,7 @@ if (commander.version !== true && commander.help !== true) {
 				// Get module path.
 				const modulePath = await getModulePath(directory, name);
 				if (!modulePath) {
-					throw {
-						message: `Unable to find path to module: '${name}'.`
-					};
+					throw `Unable to find path to module: '${name}'.`;
 				}
 				// Require module.
 				moduleCache[name] = require(modulePath);
@@ -130,9 +126,7 @@ if (commander.version !== true && commander.help !== true) {
 		}
 		
 		// If still not found then exit with an error.
-		return {
-			message: `Unable to find the '${moduleName}' module.`
-		};
+		return `Unable to find the '${moduleName}' module.`;
 	};
 	
 	const checkPathAccess = function(filePath) {

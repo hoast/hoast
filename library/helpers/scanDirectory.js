@@ -25,9 +25,7 @@ const scanDirectory = function(directory, expressions, all = false) {
 				// If it is a file resolve with its stats.
 				if (stats.isFile()) {
 					if (!relative) {
-						return reject({
-							message: `hoast/helpers/scanDirectory: Directory parameter should lead towards a directory not a file.`
-						});
+						return reject(`hoast/helpers/scanDirectory: Directory parameter should lead towards a directory not a file.`);
 					}
 					
 					return resolve({

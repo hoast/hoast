@@ -241,10 +241,10 @@ build();
 
 The options object which can be given using the `constructor` or `process` functions.
 
-* `source` The directory to process files from.
+* `source` The directory to process files from, either absolute or relative to the directory parameter.
   * Type: `String`
   * Default: `source`
-* `destination`: The directory to write the processed files to.
+* `destination`: The directory to write the processed files to, either absolute or relative to the directory parameter.
   * Type: `String`
   * Default: `destination`
 * `remove`: Whether to remove all files in the destination directory before processing.

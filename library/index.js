@@ -100,9 +100,9 @@ Hoast.prototype.process = async function(options) {
 	debug(`Start processing files in '${this.options.source}' directory.`);
 	
 	// Absolute directory to remove and write from.
-	const directoryDestination = path.join(this.directory, this.options.destination),
-		directorySource = path.join(this.directory, this.options.source);
-	
+	const directoryDestination = path.isAbsolute(this.options.destination) ? this.options.destination : path.join(this.directory, this.options.destination),
+		directorySource = path.isAbsolute(this.options.source) ? this.options.source : path.join(this.directory, this.options.source);
+
 	// Remove the destination directory or specified files within it.
 	if (this.options.remove) {
 		debug(`Start removing.`);
