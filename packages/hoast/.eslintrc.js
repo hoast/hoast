@@ -55,6 +55,7 @@ module.exports = {
       'error',
       'never',
     ],
+    'no-cond-assign': 0,
     'standard/no-callback-literal': 0,
   },
 }

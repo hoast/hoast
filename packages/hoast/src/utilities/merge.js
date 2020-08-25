@@ -1,6 +1,6 @@
 /**
  * Check whether the value is an object.
- * @param {any} value Value of unknown type.
+ * @param {Any} value Value of unknown type.
  * @returns Whether the value is an object.
  */
 const isObject = function(value) {
@@ -9,10 +9,10 @@ const isObject = function(value) {
 
 /**
  * Deeply assign a series of objects properties together.
- * @param {object} target Target object to merge to.
- * @param  {...object} sources Objects to merge into the target.
+ * @param {Object} target Target object to merge to.
+ * @param  {...Object} sources Objects to merge into the target.
  */
-const deepAssign = function(target, ...sources) {
+const merge = function(target, ...sources) {
   if (!sources.length) {
     return target
   }
@@ -26,14 +26,16 @@ const deepAssign = function(target, ...sources) {
             [key]: {},
           })
         }
-        deepAssign(target[key], source[key])
-      } else if (source[key] !== undefined) {
-        target[key] = source[key]
+        merge(target[key], source[key])
+      } else {
+        Object.assign(target, {
+          [key]: source[key],
+        })
       }
     }
   }
 
-  return deepAssign(target, ...sources)
+  return merge(target, ...sources)
 }
 
-module.exports = deepAssign
+export default merge
