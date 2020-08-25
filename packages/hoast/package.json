@@ -1,0 +1,62 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "hoast",
+  "version": "2.0.0-alpha",
+  "description": "A modular file processor focused on creating a simple ecosystem for task automation.",
+  "license": "ISC",
+  "keywords": [
+    "modular",
+    "file",
+    "processor",
+    "task",
+    "automation"
+  ],
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "engines": {
+    "node": ">=7.8.0"
+  },
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "*.js",
+    "bin/",
+    "src/"
+  ],
+  "bin": {
+    "hoast": "bin/hoast.js"
+  },
+  "main": "library/index.js",
+  "scripts": {
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "lint": "eslint src/**/*.js bin/**/*.js test/**/*.js --fix",
+    "pretest": "yarn run lint",
+    "test": "nyc --reporter=text ava \"test/**/*.js\""
+  },
+  "dependencies": {
+    "isutf8": "^3.0.0",
+    "optionator": "^0.9.1",
+    "planckmatch": "^0.2.1"
+  },
+  "devDependencies": {
+    "ava": "^3.12.1",
+    "codecov": "^3.7.2",
+    "debug": "^4.1.1",
+    "eslint": "^7.7.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "nyc": "^15.1.0"
+  }
+}
