@@ -12,32 +12,36 @@ class Hoast {
   /**
    * Create Hoast instance.
    * @param {Object} options Options object.
-   * @param {Object} data Data object.
+   * @param {Object} meta Meta object.
    */
-  constructor(options = null, data = null) {
+  constructor(options = null, meta = null) {
     // Set options.
     this.options = {
       directory: process.cwd(),
     }
     if (options) {
-      this.setOptions(options)
+      this.assignOptions(options)
     }
+
+    // Set data object.
+    this.meta = {}
+    this.assignMeta(meta)
+    // Initialize meta collections.
+    this.metaCollections = {}
 
     // Initialize collections.
     this.collections = []
-    // Initialize data object.
-    this.data = {}
-    this.setData(data)
+
     // Initialize modules registry.
-    this.modulesSource = {}
-    this.modulesProcess = {}
+    this.sources = {}
+    this.processes = {}
   }
 
   /**
    * Set options.
    * @param {Object} options Options object.
    */
-  setOptions(options) {
+  assignOptions(options) {
     if (typeof (options) !== 'object') {
       return
     }
@@ -45,14 +49,33 @@ class Hoast {
     this.options = Object.assign(this.options, options)
   }
 
-  // Data.
+  // Meta.
 
-  setData(data) {
-    if (typeof (data) !== 'object') {
+  assignMeta(meta) {
+    if (typeof (meta) !== 'object') {
       return
     }
 
-    this.data = merge(this.data, data)
+    this.meta = merge(this.meta, meta)
+  }
+
+  addMetaCollection(collection) {
+    if (typeof (collection) !== 'object') {
+      return
+    }
+
+    this.metaCollections.push(collection)
+  }
+
+  addMetaCollections(...collections) {
+    // Filter based on type.
+    collections = collections.filter((collection) => typeof (collection) === 'object')
+    if (!collections) {
+      return
+    }
+
+    // Add to collections.
+    this.metaCollections.push(...collections)
   }
 
   // Collections.
@@ -86,7 +109,7 @@ class Hoast {
       return
     }
 
-    this.modulesSource[name] = source
+    this.sources[name] = source
   }
 
   registerSources(...sources) {
@@ -97,10 +120,10 @@ class Hoast {
       return isValidSource(source)
     })
 
-    this.modulesSource = Object.assign(this.modulesSource, sources)
+    this.sources = Object.assign(this.sources, sources)
   }
 
-  // Processs.
+  // Processes.
 
   registerProcess(name, process) {
     if (typeof (name) !== 'string') {
@@ -110,35 +133,60 @@ class Hoast {
       return
     }
 
-    this.modulesProcess[name] = process
+    this.processes[name] = process
   }
 
-  registerProcesss(...processs) {
-    processs = processs.filter(({ name, process }) => {
+  registerProcesses(...processes) {
+    processes = processes.filter(({ name, process }) => {
       if (typeof (name) !== 'string') {
         return false
       }
       return isValidProcess(process)
     })
 
-    this.modulesProcess = Object.assign(this.modulesProcess, processs)
+    this.processes = Object.assign(this.processes, processes)
   }
 
   /**
    * Process collections.
    */
   async process() {
-    // Call before on sources and processs.
-    await callAsync(this.modulesSource, 'before', this)
-    await callAsync(this.modulesProcess, 'before', this)
+    // Call before on sources and processes.
+    await callAsync(this.sources, 'before', this)
+    await callAsync(this.processes, 'before', this)
 
-    // Fetch data from sources and put in data.
-    // TODO: ...
+    // Iterate over meta collections.
+    for (const collection in this.metaCollections) {
+      // Prepare processes.
+      const processes = collection.processes.map(process => prepareProcess(process))
+
+      // Iterate over collection sources.
+      for (const _source in collection.sources) {
+        const source = prepareSource(_source)
+        const iterate = source.module.iterator(this, ...source.options)
+
+        let data
+        while ((data = await iterate()) !== null) {
+          for (const process in processes) {
+            // Process data.
+            data = await process.module.process(this, data, ...process.options)
+
+            // If data is null stop processing.
+            if (data === null) {
+              break
+            }
+          }
+
+          // Merge data with meta.
+          this.assignMeta(data)
+        }
+      }
+    }
 
     // Iterate over collections.
     for (const collection in this.collections) {
-      // Prepare processs.
-      const processes = collection.process.map(process => prepareProcess(process))
+      // Prepare processes.
+      const processes = collection.processes.map(process => prepareProcess(process))
 
       // Iterate over collection sources.
       for (const _source in collection.sources) {
@@ -162,9 +210,9 @@ class Hoast {
       }
     }
 
-    // Call after on sources and processs.
-    await callAsync(this.modulesSource, 'after', this)
-    await callAsync(this.modulesProcess, 'after', this)
+    // Call after on sources and processes.
+    await callAsync(this.sources, 'after', this)
+    await callAsync(this.processes, 'after', this)
   }
 }
 

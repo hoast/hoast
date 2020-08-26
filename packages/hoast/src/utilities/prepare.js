@@ -1,3 +1,8 @@
+// TODO: Prepare function do not call before function.
+// Possible solutions:
+// 1. Only allow registered modules and stop allowing functions or objects to be given.
+// 2. Flag each object as having been called before on, and remove the flag when after is called.
+
 const prepareModule = function(lookup, data, defaultKey) {
   let module, options
 

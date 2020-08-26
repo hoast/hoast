@@ -65,9 +65,15 @@ $ yarn add hoast
 
 ### Command line interface
 
+
+
 ### Script
 
+
+
 ### Options
+
+
 
 ## Source modules
 
@@ -75,12 +81,32 @@ Source modules, as the name implies, source data to be transformed.
 
 ### Using
 
+
+
 ### Making
 
-## Transform modules
 
-Transform modules, as the name implies, transform the sourced data.
+
+## Process modules
+
+Process modules, as the name implies, process the sourced data.
 
 ### Using
 
+
+
 ### Making
+
+
+
+## Transform modules
+
+Transform modules, as the name implies, transform the data being processed.
+
+### Using
+
+
+
+### Making
+
+
