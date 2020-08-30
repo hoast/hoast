@@ -53,7 +53,7 @@ module.exports = {
     ],
     'space-before-function-paren': [
       'error',
-      'never',
+      'always',
     ],
     'no-cond-assign': 0,
     'standard/no-callback-literal': 0,

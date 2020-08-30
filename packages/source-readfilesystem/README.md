@@ -1,1 +1,0 @@
-Add a dot sperated namespace option to the options so the data returned can be easily merged with for instance the metadata object without weird quirks in the core code.

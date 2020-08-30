@@ -27,18 +27,42 @@ A modular data sourcer and transformer focused on creating a simple yet extendib
   * [Script](#script)
   * [Options](#options)
 * [Source modules](#source-modules)
-  * [Using](#usage)
-  * [Making](#making)
+  * [Using](#usaging-source-modules)
+  * [Making](#making-souce-modules)
 * [Process modules](#process-modules)
-  * [Using](#usage)
-  * [Making](#making)
+  * [Using](#using-process-modules)
+  * [Making](#making-process-modules)
+* [Transform modules](#transform-modules)
+  * [Using](#using-transform-modules)
+  * [Making](#making-transform-modules)
 
 ## Elevator pitch
 
 Creating a static page generator can be incredibly easy as shown below.
 
 ```JavaScript
-TODO:
+import Hoast from '@hoast/hoast';
+import SouceReadFiles from '@hoast/source-readfiles';
+import ProcessWriteFiles from '@hoast/process-writefiles';
+
+(new Hoast)
+  .registerSource(
+    'readfilesystem-markdown',
+    new SouceReadFiles({
+      patterns: [
+        '*',
+        '!(layouts)',
+      ],
+      patternOptions: {
+        all: true,
+        extended: true,
+      },
+    })
+  )
+  .registerProcess(
+    'writefilesystem',
+    new ProcessWriteFiles()
+  )
 ```
 
 > See the [static page generator example]() for the full example with in depth comments including dependencies and source directory.
@@ -79,11 +103,11 @@ $ yarn add hoast
 
 Source modules, as the name implies, source data to be transformed.
 
-### Using
+### Using source modules
 
 
 
-### Making
+### Making source modules
 
 
 
@@ -91,11 +115,11 @@ Source modules, as the name implies, source data to be transformed.
 
 Process modules, as the name implies, process the sourced data.
 
-### Using
+### Using process modules
 
 
 
-### Making
+### Making process modules
 
 
 
@@ -103,10 +127,10 @@ Process modules, as the name implies, process the sourced data.
 
 Transform modules, as the name implies, transform the data being processed.
 
-### Using
+### Using transform modules
 
 
 
-### Making
+### Making transform modules
 
 
