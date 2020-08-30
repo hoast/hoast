@@ -1,8 +1,8 @@
 // Import internal modules.
-import { callAsync } from './utilities/call.js'
-import { hasKeys } from './utilities/has.js'
-import iterate from './utilities/iterate.js'
-import merge from './utilities/merge.js'
+import { callAsync } from './util/call.js'
+import { hasKeys } from './util/has.js'
+import iterate from './util/iterate.js'
+import merge from './util/merge.js'
 
 const isValidCollection = function (data) {
   if (hasKeys(data, ['sources'])) {

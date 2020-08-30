@@ -73,16 +73,14 @@ TODO:
 
 ## Installation
 
-Install [hoast](https://npmjs.com/package/hoast) using [npm](https://npmjs.com) after you have your project initialized.
-
 ```
-$ npm install hoast
+% npm install hoast --save
 ```
 
 OR
 
 ```
-$ yarn add hoast
+% yarn add hoast
 ```
 
 ## Usage

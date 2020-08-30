@@ -1,13 +1,13 @@
-export const hasKeys = function (module, requiredProperties = []) {
+export const hasKeys = function (value, requiredProperties = []) {
   // Check if module is an object.
-  const moduleType = typeof (module)
+  const moduleType = typeof (value)
   if (moduleType !== 'object') {
     return false
   }
 
   // Check if object has all required properties.
   for (const propertyKey in requiredProperties) {
-    if (!Object.prototype.hasOwnProperty.call(module, propertyKey)) {
+    if (!Object.prototype.hasOwnProperty.call(value, propertyKey)) {
       return false
     }
   }

@@ -1,11 +1,4 @@
-/**
- * Check whether the value is an object.
- * @param {Any} value Value of unknown type.
- * @returns Whether the value is an object.
- */
-const isObject = function (value) {
-  return (value && typeof value === 'object' && !Array.isArray(value))
-}
+import { isObject } from './is.js';
 
 /**
  * Deeply assign a series of objects properties together.
