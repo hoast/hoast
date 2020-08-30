@@ -1,8 +1,19 @@
 // Import internal modules.
 import { callAsync } from './utilities/call.js'
+import { hasKeys } from './utilities/has.js'
 import iterate from './utilities/iterate.js'
 import merge from './utilities/merge.js'
-import { isValidProcess, isValidSource } from './utilities/isvalid.js'
+
+const isValidCollection = function (data) {
+  if (hasKeys(data, ['sources'])) {
+    return hasKeys(data.sources, ['next'])
+  }
+  return false;
+}
+
+const isValidProcess = function (data) {
+  return hasKeys(data, ['process'])
+}
 
 class Hoast {
   /**
@@ -23,18 +34,19 @@ class Hoast {
     this.meta = {}
     this.assignMeta(meta)
     // Initialize meta collections.
-    this.metaCollections = {}
+    this._metaCollections = {}
 
     // Initialize collections.
-    this.collections = []
+    this._collections = []
 
     // Initialize modules registry.
-    this.sources = {}
-    this.processes = {}
+    this._processes = {}
   }
 
+  // Options
+
   /**
-   * Set options.
+   * Assign data to options.
    * @param {Object} options Options object.
    */
   assignOptions (options) {
@@ -49,6 +61,10 @@ class Hoast {
 
   // Meta.
 
+  /**
+   * Assign data to meta data.
+   * @param {Object} meta Data to merge with current meta data.
+   */
   assignMeta (meta) {
     if (typeof (meta) !== 'object') {
       return
@@ -59,87 +75,77 @@ class Hoast {
     return this
   }
 
+  /**
+   * Add collection to meta collections.
+   * @param {Object} collection Collection to add.
+   */
   addMetaCollection (collection) {
-    if (typeof (collection) !== 'object') {
+    if (!isValidCollection(collection)) {
       return
     }
 
-    this.metaCollections.push(collection)
+    this._metaCollections.push(collection)
 
     return this
   }
 
+  /**
+   * Add collections to meta collections.
+   * @param {Array} collections Collections to add.
+   */
   addMetaCollections (...collections) {
     // Filter based on type.
-    collections = collections.filter((collection) => typeof (collection) === 'object')
+    collections = collections.filter((collection) => isValidCollection(collection))
     if (!collections) {
       return
     }
 
     // Add to collections.
-    this.metaCollections.push(...collections)
+    this._metaCollections.push(...collections)
 
     return this
   }
 
   // Collections.
 
+  /**
+   * Add collection to collections.
+   * @param {Object} collection Collection to add.
+   */
   addCollection (collection) {
-    if (typeof (collection) !== 'object') {
+    if (!isValidCollection(collection)) {
       return
     }
 
-    this.collections.push(collection)
+    this._collections.push(collection)
 
     return this
   }
 
-  addCollections (...collections) {
+  /**
+   * Add collections to collections.
+   * @param {Array} collections Collections to add.
+   */
+  addCollections (collections) {
     // Filter based on type.
-    collections = collections.filter((collection) => typeof (collection) === 'object')
+    collections = collections.filter(collection => isValidCollection(collection))
     if (!collections) {
       return
     }
 
     // Add to collections.
-    this.collections.push(...collections)
-
-    return this
-  }
-
-  // Sources
-  // TODO:
-  // Source function should not be registered before hand and re-used.
-  // Instead should always be a newly defined function or object with iterator method.
-
-  registerSource (name, source) {
-    if (typeof (name) !== 'string') {
-      return
-    }
-    if (!isValidSource(source)) {
-      return
-    }
-
-    this.sources[name] = source
-
-    return this
-  }
-
-  registerSources (...sources) {
-    sources = sources.filter(({ name, source }) => {
-      if (typeof (name) !== 'string') {
-        return false
-      }
-      return isValidSource(source)
-    })
-
-    this.sources = Object.assign(this.sources, sources)
+    this._collections.push(...collections)
 
     return this
   }
 
   // Processes.
 
+  /**
+   * Register process.
+   * @param {String} name Name of process.
+   * @param {Object} process Process object.
+   */
   registerProcess (name, process) {
     if (typeof (name) !== 'string') {
       return
@@ -148,23 +154,29 @@ class Hoast {
       return
     }
 
-    this.processes[name] = process
+    this._processes[name] = process
 
     return this
   }
 
-  registerProcesses (...processes) {
-    processes = processes.filter(({ name, process }) => {
+  /**
+   * Register processes.
+   * @param {Object} processes Process objects by name as key.
+   */
+  registerProcesses (processes) {
+    processes = processes.filter(({ name, process }) => { // TODO: Fix.
       if (typeof (name) !== 'string') {
         return false
       }
       return isValidProcess(process)
     })
 
-    this.processes = Object.assign(this.processes, processes)
+    this._processes = Object.assign(this._processes, processes)
 
     return this
   }
+
+  // Process.
 
   /**
    * Process collections.
@@ -228,7 +240,7 @@ class Hoast {
 
               // If string get from lookup.
               if (processType === 'string') {
-                process = app.processes[process]
+                process = app._processes[process]
 
                 // Get type again.
                 processType = typeof (process)
@@ -282,7 +294,7 @@ class Hoast {
     }
 
     // Prepare meta collections.
-    const metaCollections = this.metaCollections.map(collection => {
+    const metaCollections = this._metaCollections.map(collection => {
       collection = merge({}, collection)
 
       // Ensure sources and processes are arrays.
@@ -308,7 +320,7 @@ class Hoast {
     await processCollections(metaCollections)
 
     // Prepare collections.
-    const collections = this.collections.map(collection => {
+    const collections = this._collections.map(collection => {
       collection = merge({}, collection)
 
       // Ensure sources and processes are arrays.
@@ -326,7 +338,7 @@ class Hoast {
     await processCollections(collections)
 
     // Call finally on processes.
-    await callAsync(this.processes, 'finally', this)
+    await callAsync(this._processes, 'finally', this)
   }
 }
 

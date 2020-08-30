@@ -52,7 +52,7 @@ module.exports = {
       'never',
     ],
     'space-before-function-paren': [
-      'error',
+      'info',
       'always',
     ],
     'no-cond-assign': 0,
