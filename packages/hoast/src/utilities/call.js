@@ -1,7 +1,7 @@
-export const call = function(context, methodName, ...methodArguments) {
+export const call = function (context, methodName, ...methodArguments) {
   if (Array.isArray(context)) {
     for (const item in context) {
-      callAsync(item, methodName, ...methodArguments)
+      call(item, methodName, ...methodArguments)
     }
     return
   }
@@ -11,7 +11,7 @@ export const call = function(context, methodName, ...methodArguments) {
   }
 }
 
-export const callAsync = async function(context, methodName, ...methodArguments) {
+export const callAsync = async function (context, methodName, ...methodArguments) {
   if (Array.isArray(context)) {
     for (const item in context) {
       await callAsync(item, methodName, ...methodArguments)

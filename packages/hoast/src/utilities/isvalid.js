@@ -1,9 +1,4 @@
-export const isValidModule = function(module, requiredProperties = []) {
-  // If array get first value as module.
-  if (Array.isArray(module)) {
-    module = module[0]
-  }
-
+export const isValidModule = function (module, requiredProperties = []) {
   // Check if module is an object.
   const moduleType = typeof (module)
   if (moduleType !== 'object') {
@@ -20,12 +15,12 @@ export const isValidModule = function(module, requiredProperties = []) {
   return true
 }
 
-export const isValidProcess = function(data) {
+export const isValidProcess = function (data) {
   return isValidModule(data, ['process'])
 }
 
-export const isValidSource = function(data) {
-  return isValidModule(data, ['iterator'])
+export const isValidSource = function (data) {
+  return isValidModule(data, ['next'])
 }
 
 export default {

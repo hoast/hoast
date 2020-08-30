@@ -3,7 +3,7 @@
  * @param {Any} value Value of unknown type.
  * @returns Whether the value is an object.
  */
-const isObject = function(value) {
+const isObject = function (value) {
   return (value && typeof value === 'object' && !Array.isArray(value))
 }
 
@@ -12,7 +12,7 @@ const isObject = function(value) {
  * @param {Object} target Target object to merge to.
  * @param  {...Object} sources Objects to merge into the target.
  */
-const merge = function(target, ...sources) {
+const merge = function (target, ...sources) {
   if (!sources.length) {
     return target
   }
