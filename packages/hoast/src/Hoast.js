@@ -2,7 +2,6 @@
 import { callAsync } from './utilities/call.js'
 import iterate from './utilities/iterate.js'
 import merge from './utilities/merge.js'
-import { prepareModule } from './utilities/prepare.js'
 import { isValidProcess, isValidSource } from './utilities/isvalid.js'
 
 class Hoast {
@@ -171,6 +170,9 @@ class Hoast {
    * Process collections.
    */
   async process () {
+    // Store this as app.
+    const app = this
+
     const processCollections = async function (collections) {
       // Exit early if no collections.
       if (!collections.length) {
@@ -181,9 +183,8 @@ class Hoast {
       let collectionsDone = false
       let collectionIndex = -1
       let collection
-      // Current collection source.
+      // Current collection source index.
       let sourceIndex
-      let source
 
       const nextCollection = function () {
         // Get first collection with sources.
@@ -202,7 +203,6 @@ class Hoast {
         } while (!collection.sources.length)
 
         sourceIndex = 0
-        source = collection.sources[sourceIndex]
       }
 
       // Set initial collection.
@@ -218,102 +218,115 @@ class Hoast {
         function () {
           // Return a source process method.
           return async () => {
-            // Get data from source.
-            const data = await source.next()
+            // Store collection data locally.
+            const _source = collection.sources[sourceIndex]
+            const _processes = collection.processes
 
-            // TODO:
+            // Prepare processes.
+            const _processesPrepared = _processes.map(process => {
+              let processType = typeof (process)
 
-            // Check if source is done.
-            if (source.done) {
-              // Call finally on source. TODO: Since the source itself handles when it is done a finally call is not neccesary. Right?
-              if (Object.prototype.hasOwnProperty.call(source, 'finally')) {
-                source.finally()
+              // If string get from lookup.
+              if (processType === 'string') {
+                process = app.processes[process]
+
+                // Get type again.
+                processType = typeof (process)
               }
 
-              // Set next collection.
-              nextCollection()
+              // If function wrap in object.
+              if (processType === 'function') {
+                process = {
+                  process: process,
+                }
+              }
 
-              // Exit early if done.
-              if (collectionsDone) {
-                this.done = true
+              return process
+            })
+
+            // Get data from source.
+            let data = await _source.next()
+
+            // Iterate over processes.
+            for (const process in _processesPrepared) {
+              data = await process.process(app, data)
+            }
+
+            // Check if source is done.
+            if (_source.done) {
+              // Increment source index.
+              sourceIndex++
+
+              // Check if all sources finished.
+              if (sourceIndex >= collection.sources.length) {
+                // Call finally on object processes from this collection.
+                _processes.forEach(process => {
+                  if (typeof (process) === 'object' && Object.prototype.hasOwnProperty.call(process, 'finally')) {
+                    process.finally(app)
+                  }
+                })
+
+                // Set next collection.
+                nextCollection()
+
+                // Exit early if done.
+                if (collectionsDone) {
+                  this.done = true
+                }
               }
             }
           }
         },
         this.options.concurrentLimit
       )
-
-      //
-      //
-      // ...
-      //
-      //
-
-      // Iterate over meta collections.
-      for (const collection in collections) {
-        // Prepare processes.
-        const processes = collection.processes.map(process => prepareModule(this.processes, process))
-
-        // ...
-
-        // Iterate over collection sources.
-        // TODO: should iterate over sources of multiple collections if possible.
-        // Bundle which collection it belongs to then grab the processes from that?
-        // Write a source iterator that moves to the next collection if the current has run out!
-        const sourceIterator = function () { }
-        await iterate(sourceIterator, this.options.concurrentLimit)
-
-        // ...
-
-        const sources = Array.isArray(collection.sources) ? collection.sources : [collection.sources]
-        for (const _source in sources) {
-          const source = prepareModule(this.sources, _source)
-          const iterate = source.module.iterator(this, ...source.options)
-
-          // TODO: Why are options even passed, could all be know before hand.
-          // TODO: Iterator should listen to done being truthy instead of waiting for null.
-          let data
-          while ((data = await iterate()) !== null) {
-            for (const process in processes) {
-              // Process data.
-              data = await process.module.process(this, data, ...process.options)
-
-              // If data is null stop processing.
-              if (data === null) {
-                break
-              }
-            }
-          }
-        }
-      }
     }
 
-    // TODO: Before should be called if it hasn't yet before first use.
-    // Call before on sources and processes.
-    await callAsync(this.sources, 'before', this)
-    await callAsync(this.processes, 'before', this)
+    // Prepare meta collections.
+    const metaCollections = this.metaCollections.map(collection => {
+      collection = merge({}, collection)
 
-    // Add 'assign to meta' process at the end of each meta collection.
-    const metaCollections = this.metaCollections.map((collection) => {
+      // Ensure sources and processes are arrays.
+      if (!Array.isArray(collection.sources)) {
+        collection.sources = [collection.sources]
+      }
+      if (!Array.isArray(collection.processes)) {
+        collection.processes = [collection.processes]
+      }
+
+      // Add 'assign to meta' process at the end of each meta collection.
       collection.processes = [...collection.processes, {
         process: function (app, data) {
           app.assignMeta(data)
           return data
         },
       }]
+
       return collection
     })
 
     // Process meta collections.
     await processCollections(metaCollections)
 
-    // Process collections.
-    await processCollections(this.collections)
+    // Prepare collections.
+    const collections = this.collections.map(collection => {
+      collection = merge({}, collection)
 
-    // TODO: After should be called at the end if before was called.
-    // Call after on sources and processes.
-    await callAsync(this.sources, 'after', this)
-    await callAsync(this.processes, 'after', this)
+      // Ensure sources and processes are arrays.
+      if (!Array.isArray(collection.sources)) {
+        collection.sources = [collection.sources]
+      }
+      if (!Array.isArray(collection.processes)) {
+        collection.processes = [collection.processes]
+      }
+
+      return collection
+    })
+
+    // Process collections.
+    await processCollections(collections)
+
+    // Call finally on processes.
+    await callAsync(this.processes, 'finally', this)
   }
 }
 
