@@ -3,15 +3,13 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/hoast",
+  "name": "@hoast/source-filesystem",
   "version": "1.0.0-alpha",
-  "description": "A modular file processor focused on creating a simple ecosystem for task automation.",
+  "description": "",
   "keywords": [
-    "modular",
-    "data",
-    "processor",
-    "task",
-    "automation"
+    "hoast",
+    "source",
+    "filesystem"
   ],
   "license": "ISC",
   "homepage": "https://github.com/hoast/hoast#readme",
@@ -26,14 +24,10 @@
   "files": [
     "README.md",
     "CHANGELOG.md",
-    "bin/",
     "src/"
   ],
-  "bin": {
-    "hoast": "bin/hoast.js"
-  },
-  "main": "src/Hoast.js",
+  "main": "src/SourceFilesystem.js",
   "dependencies": {
-    "minimist": "^1.2.5"
+    "planckmatch": "^0.2.1"
   }
 }

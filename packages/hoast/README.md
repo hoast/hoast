@@ -26,15 +26,15 @@ A modular data sourcer and transformer focused on creating a simple yet extendib
   * [Command line interface](#command-line-interface)
   * [Script](#script)
   * [Options](#options)
-* [Source modules](#source-modules)
-  * [Using](#usaging-source-modules)
-  * [Making](#making-souce-modules)
-* [Process modules](#process-modules)
-  * [Using](#using-process-modules)
-  * [Making](#making-process-modules)
-* [Transform modules](#transform-modules)
-  * [Using](#using-transform-modules)
-  * [Making](#making-transform-modules)
+* [Source packages](#source-packages)
+  * [Using](#usaging-source-packages)
+  * [Making](#making-souce-packages)
+* [Process packages](#process-packages)
+  * [Using](#using-process-packages)
+  * [Making](#making-process-packages)
+* [Transform packages](#transform-packages)
+  * [Using](#using-transform-packages)
+  * [Making](#making-transform-packages)
 
 ## Elevator pitch
 
@@ -97,38 +97,45 @@ OR
 
 
 
-## Source modules
+## Source packages
 
-Source modules, as the name implies, source data to be transformed.
+Source packages, as the name implies, source data to be transformed.
 
-### Using source modules
-
-
-
-### Making source modules
+### Using source packages
 
 
 
-## Process modules
-
-Process modules, as the name implies, process the sourced data.
-
-### Using process modules
+### Making source packages
 
 
 
-### Making process modules
+## Process packages
+
+Process packages, as the name implies, process the sourced data.
+
+### Using process packages
 
 
 
-## Transform modules
-
-Transform modules, as the name implies, transform the data being processed.
-
-### Using transform modules
+### Making process packages
 
 
 
-### Making transform modules
+## Transform packages (Move to process-transform)
+
+Transform packages, as the name implies, transform the data being processed.
+
+### Using transform packages
 
 
+
+### Making transform packages
+
+
+## Dev notes
+
+### For source packages
+
+Add a dot sperated namespace option to the options so the data returned can be easily merged with for instance the metadata object without weird quirks in the core code.
+
+Source plugins should skip items if the item has not changes since last time. Except for metadata sourcing of course where the entire result will be cached and added to the metadata object if the source hasn't changed. Source plugins can keep track of this data in a cache directory perhaps managed by the app. Where they can possibly return a use cache property.

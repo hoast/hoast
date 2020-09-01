@@ -1,0 +1,14 @@
+{
+  "name": "examples",
+  "private": true,
+  "dependencies": {
+    "@hoast/hoast": "2.0.0",
+    "@hoast/source-filesystem": "1.0.0"
+  },
+  "scripts": {
+    "hoast-json": "hoast --file-path='hoast.json'",
+    "hoast-instance": "hoast --file-path='hoast-instance.js'",
+    "hoast-object": "hoast --file-path='hoast-object.js'",
+    "hoast-process": "node ./hoast.js"
+  }
+}

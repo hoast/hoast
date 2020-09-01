@@ -25,14 +25,15 @@ class Hoast {
     // Set options.
     this.options = {
       concurrentLimit: 16,
+      ignoreCache: false,
     }
     if (options) {
-      this.assignOptions(options)
+      this.setOptions(options)
     }
 
     // Set data object.
     this.meta = {}
-    this.assignMeta(meta)
+    this.setMeta(meta)
     // Initialize meta collections.
     this._metaCollections = {}
 
@@ -49,9 +50,9 @@ class Hoast {
    * Assign data to options.
    * @param {Object} options Options object.
    */
-  assignOptions (options) {
+  setOptions (options) {
     if (typeof (options) !== 'object') {
-      return
+      return this
     }
 
     this.options = Object.assign(this.options, options)
@@ -65,9 +66,9 @@ class Hoast {
    * Assign data to meta data.
    * @param {Object} meta Data to merge with current meta data.
    */
-  assignMeta (meta) {
+  setMeta (meta) {
     if (typeof (meta) !== 'object') {
-      return
+      return this
     }
 
     this.meta = merge(this.meta, meta)
@@ -81,7 +82,7 @@ class Hoast {
    */
   addMetaCollection (collection) {
     if (!isValidCollection(collection)) {
-      return
+      return this
     }
 
     this._metaCollections.push(collection)
@@ -93,11 +94,11 @@ class Hoast {
    * Add collections to meta collections.
    * @param {Array} collections Collections to add.
    */
-  addMetaCollections (...collections) {
+  addMetaCollections (collections) {
     // Filter based on type.
     collections = collections.filter((collection) => isValidCollection(collection))
     if (!collections) {
-      return
+      return this
     }
 
     // Add to collections.
@@ -114,7 +115,7 @@ class Hoast {
    */
   addCollection (collection) {
     if (!isValidCollection(collection)) {
-      return
+      return this
     }
 
     this._collections.push(collection)
@@ -130,7 +131,7 @@ class Hoast {
     // Filter based on type.
     collections = collections.filter(collection => isValidCollection(collection))
     if (!collections) {
-      return
+      return this
     }
 
     // Add to collections.
@@ -148,10 +149,10 @@ class Hoast {
    */
   registerProcess (name, process) {
     if (typeof (name) !== 'string') {
-      return
+      return this
     }
     if (!isValidProcess(process)) {
-      return
+      return this
     }
 
     this._processes[name] = process
@@ -164,14 +165,29 @@ class Hoast {
    * @param {Object} processes Process objects by name as key.
    */
   registerProcesses (processes) {
-    processes = processes.filter(({ name, process }) => { // TODO: Fix.
+    const processesFiltered = {}
+    for (const name in Object.keys(processes)) {
       if (typeof (name) !== 'string') {
-        return false
+        continue
       }
-      return isValidProcess(process)
-    })
 
-    this._processes = Object.assign(this._processes, processes)
+      if (!processes.hasOwnProperty(name)) {
+        continue
+      }
+
+      const process = processes[name]
+
+      if (!isValidProcess(process)) {
+        continue
+      }
+
+      processesFiltered[name] = process
+    }
+    if (processesFiltered === {}) {
+      return this
+    }
+
+    this._processes = Object.assign(this._processes, processesFiltered)
 
     return this
   }
@@ -339,6 +355,8 @@ class Hoast {
 
     // Call finally on processes.
     await callAsync(this._processes, 'finally', this)
+
+    return this
   }
 }
 

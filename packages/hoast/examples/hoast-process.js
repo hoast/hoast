@@ -1,7 +1,7 @@
 import Hoast from '@hoast/hoast'
 import SourceFilesystem from '@hoast/source-filesystem'
 
-const hoast = new Hoast()
+new Hoast()
   .setMeta({
     name: 'Hoast & hoastig',
     url: 'hoast.js.org',
@@ -16,5 +16,4 @@ const hoast = new Hoast()
       }),
     },
   ])
-
-export default hoast
+  .process()

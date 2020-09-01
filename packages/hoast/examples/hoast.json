@@ -1,7 +1,20 @@
 {
-  "options": {},
-  "meta": {},
-  "metacollections": {},
-  "collections": {},
+  "meta": {
+    "name": "Hoast & hoastig",
+    "url": "hoast.js.org"
+  },
+  "collections": [
+    {
+      "source": [
+        "@hoast/source-filesystem",
+        {
+          "directory": "src",
+          "patterns": [
+            "content/*"
+          ]
+        }
+      ]
+    }
+  ],
   "processes": {}
 }
