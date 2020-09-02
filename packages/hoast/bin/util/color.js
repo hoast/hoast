@@ -1,6 +1,24 @@
 // Node modules.
 import util from 'util'
 
+/*
+  'reset',           'bold',          'dim',
+  'italic',          'underline',     'blink',
+  'inverse',         'hidden',        'strikethrough',
+  'doubleunderline', 'black',         'red',
+  'green',           'yellow',        'blue',
+  'magenta',         'cyan',          'white',
+  'bgBlack',         'bgRed',         'bgGreen',
+  'bgYellow',        'bgBlue',        'bgMagenta',
+  'bgCyan',          'bgWhite',       'framed',
+  'overlined',       'gray',          'redBright',
+  'greenBright',     'yellowBright',  'blueBright',
+  'magentaBright',   'cyanBright',    'whiteBright',
+  'bgGray',          'bgRedBright',   'bgGreenBright',
+  'bgYellowBright',  'bgBlueBright',  'bgMagentaBright',
+  'bgCyanBright',    'bgWhiteBright'
+ */
+
 /**
  * Colorize text.
  * @param {String} color Name of color to apply.

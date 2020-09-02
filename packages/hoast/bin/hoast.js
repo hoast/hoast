@@ -10,7 +10,6 @@ import minimist from 'minimist'
 
 // Custom libraries.
 import color from './util/color.js';
-import { isClass } from '../src/util/is.js'
 import instantiate from './util/instantiate.js';
 import { isValidConfig } from './util/isValid.js'
 import merge from '../src/util/merge.js'
@@ -23,8 +22,6 @@ const fsAccess = util.promisify(fs.access)
 const fsReadFile = util.promisify(fs.readFile)
 
 const CLI = async function () {
-  console.log(color)
-
   // Get package file.
   // 1. Take import url (aka file path of script).
   // 2. Remove file:// protecol using a regular expression.
@@ -77,6 +74,12 @@ Options for run
   // Display help.
   if (options._.indexOf('h') >= 0 || options._.indexOf('help') >= 0) {
     console.log(MESSAGE_HELP)
+    return
+  }
+
+  // Display version.
+  if (options._.indexOf('v') >= 0 || options._.indexOf('version') >= 0) {
+    console.log(MESSAGE_VERSION)
     return
   }
 
@@ -165,21 +168,23 @@ Options for run
       // Setup hoast.
       hoast = new Hoast(config.options, config.meta)
 
-      // Instantiate meta collection properties.
-      for (const collection in config.metaCollections) {
-        // Instantiate source.
-        collection.source = instantiate(collection.source)
+      if (config.metaCollections) {
+        // Instantiate meta collection properties.
+        for (const collection in config.metaCollections) {
+          // Instantiate source.
+          collection.source = instantiate(collection.source)
 
-        // Instantiate processes.
-        for (const key in Object.keys(collection.processes)) {
-          if (Object.prototype.hasOwnProperty.call(collection.processes, key)) {
-            continue
+          // Instantiate processes.
+          for (const key in Object.keys(collection.processes)) {
+            if (Object.prototype.hasOwnProperty.call(collection.processes, key)) {
+              continue
+            }
+            collection.processes[key] = instantiate(collection.processes[key])
           }
-          collection.processes[key] = instantiate(collection.processes[key])
-        }
 
-        // Add meta collection.
-        hoast.addMetaCollection(collection)
+          // Add meta collection.
+          hoast.addMetaCollection(collection)
+        }
       }
 
       // Instantiate collection properties.
@@ -199,14 +204,16 @@ Options for run
         hoast.addCollection(collection)
       }
 
-      // Instantiate processes.
-      for (const key in Object.keys(config.processes)) {
-        if (Object.prototype.hasOwnProperty.call(config.processes, key)) {
-          continue
-        }
+      if (config.processes) {
+        // Instantiate processes.
+        for (const key in Object.keys(config.processes)) {
+          if (Object.prototype.hasOwnProperty.call(config.processes, key)) {
+            continue
+          }
 
-        // Register process.
-        hoast.registerProcess(key, instantiate(config.processes[key]))
+          // Register process.
+          hoast.registerProcess(key, instantiate(config.processes[key]))
+        }
       }
     }
 
@@ -223,14 +230,6 @@ Options for run
     // Start processing.
     hoast.process()
   }
-
-  // Display version.
-  if (options._.indexOf('v') >= 0 || options._.indexOf('version') >= 0) {
-    console.log(MESSAGE_VERSION)
-    return
-  }
-
-  console.warn(`${MESSAGE_UNKNOWN_COMMAND} ${MESSAGE_SEE_HELP}`)
 }
 
 // Run CLI.

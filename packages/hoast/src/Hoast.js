@@ -35,7 +35,7 @@ class Hoast {
     this.meta = {}
     this.setMeta(meta)
     // Initialize meta collections.
-    this._metaCollections = {}
+    this._metaCollections = []
 
     // Initialize collections.
     this._collections = []
@@ -309,31 +309,33 @@ class Hoast {
       )
     }
 
-    // Prepare meta collections.
-    const metaCollections = this._metaCollections.map(collection => {
-      collection = merge({}, collection)
+    if (this._metaCollections.length > 0) {
+      // Prepare meta collections.
+      const metaCollections = this._metaCollections.map(collection => {
+        collection = merge({}, collection)
 
-      // Ensure sources and processes are arrays.
-      if (!Array.isArray(collection.sources)) {
-        collection.sources = [collection.sources]
-      }
-      if (!Array.isArray(collection.processes)) {
-        collection.processes = [collection.processes]
-      }
+        // Ensure sources and processes are arrays.
+        if (!Array.isArray(collection.sources)) {
+          collection.sources = [collection.sources]
+        }
+        if (!Array.isArray(collection.processes)) {
+          collection.processes = [collection.processes]
+        }
 
-      // Add 'assign to meta' process at the end of each meta collection.
-      collection.processes = [...collection.processes, {
-        process: function (app, data) {
-          app.assignMeta(data)
-          return data
-        },
-      }]
+        // Add 'assign to meta' process at the end of each meta collection.
+        collection.processes = [...collection.processes, {
+          process: function (app, data) {
+            app.assignMeta(data)
+            return data
+          },
+        }]
 
-      return collection
-    })
+        return collection
+      })
 
-    // Process meta collections.
-    await processCollections(metaCollections)
+      // Process meta collections.
+      await processCollections(metaCollections)
+    }
 
     // Prepare collections.
     const collections = this._collections.map(collection => {
@@ -353,8 +355,10 @@ class Hoast {
     // Process collections.
     await processCollections(collections)
 
-    // Call finally on processes.
-    await callAsync(this._processes, 'finally', this)
+    if (this._processes) {
+      // Call finally on processes.
+      await callAsync(this._processes, 'finally', this)
+    }
 
     return this
   }
