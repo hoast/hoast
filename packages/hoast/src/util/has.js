@@ -6,8 +6,8 @@ export const hasKeys = function (value, requiredProperties = []) {
   }
 
   // Check if object has all required properties.
-  for (const propertyKey in requiredProperties) {
-    if (!Object.prototype.hasOwnProperty.call(value, propertyKey)) {
+  for (const propertyName of requiredProperties) {
+    if (!Object.prototype.hasOwnProperty.call(value, propertyName)) {
       return false
     }
   }

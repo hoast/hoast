@@ -166,7 +166,7 @@ class Hoast {
    */
   registerProcesses (processes) {
     const processesFiltered = {}
-    for (const name in Object.keys(processes)) {
+    for (const name in processes) {
       if (typeof (name) !== 'string') {
         continue
       }
@@ -276,7 +276,7 @@ class Hoast {
             let data = await _source.next()
 
             // Iterate over processes.
-            for (const process in _processesPrepared) {
+            for (const process of _processesPrepared) {
               data = await process.process(app, data)
             }
 
@@ -288,11 +288,11 @@ class Hoast {
               // Check if all sources finished.
               if (sourceIndex >= collection.sources.length) {
                 // Call finally on object processes from this collection.
-                _processes.forEach(process => {
+                for (const process of _processes) {
                   if (typeof (process) === 'object' && Object.prototype.hasOwnProperty.call(process, 'finally')) {
-                    process.finally(app)
+                    await process.finally(app)
                   }
-                })
+                }
 
                 // Set next collection.
                 nextCollection()

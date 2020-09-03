@@ -1,6 +1,6 @@
 export const call = function (context, methodName, ...methodArguments) {
   if (Array.isArray(context)) {
-    for (const item in context) {
+    for (const item of context) {
       call(item, methodName, ...methodArguments)
     }
     return
@@ -13,7 +13,7 @@ export const call = function (context, methodName, ...methodArguments) {
 
 export const callAsync = async function (context, methodName, ...methodArguments) {
   if (Array.isArray(context)) {
-    for (const item in context) {
+    for (const item of context) {
       await callAsync(item, methodName, ...methodArguments)
     }
     return

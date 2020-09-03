@@ -9,10 +9,11 @@ import util from 'util'
 import minimist from 'minimist'
 
 // Custom libraries.
-import color from './util/color.js';
-import instantiate from './util/instantiate.js';
+import color from './util/color.js'
+import instantiate from './util/instantiate.js'
 import { isValidConfig } from './util/isValid.js'
 import merge from '../src/util/merge.js'
+import timer from './util/timer.js'
 
 // Import core library.
 import Hoast from '../src/Hoast.js'
@@ -71,165 +72,182 @@ Options for run
   const options = minimist(process.argv.slice(2))
   options._ = options._.map(_ => String.prototype.toLowerCase.call(_))
 
-  // Display help.
-  if (options._.indexOf('h') >= 0 || options._.indexOf('help') >= 0) {
-    console.log(MESSAGE_HELP)
-    return
+  if (options._.length > 0) {
+    // Display help.
+    if (options._.indexOf('h') >= 0 || options._.indexOf('help') >= 0) {
+      console.log(MESSAGE_HELP)
+      return
+    }
+
+    // Display version.
+    if (options._.indexOf('v') >= 0 || options._.indexOf('version') >= 0) {
+      console.log(MESSAGE_VERSION)
+      return
+    }
+
+    if (options._.indexOf('r') == -1 && options._.indexOf('run') == -1) {
+      console.log(MESSAGE_UNKNOWN_COMMAND)
+      return
+    }
   }
 
-  // Display version.
-  if (options._.indexOf('v') >= 0 || options._.indexOf('version') >= 0) {
-    console.log(MESSAGE_VERSION)
-    return
-  }
+  // Log start message.
+  console.log('Starting hoast')
 
-  if (options._.length === 0 || options._.indexOf('r') >= 0 || options._.indexOf('run') >= 0) {
-    // Set configuration file path.
-    let filePath
-    if (Object.prototype.hasOwnProperty.call(options, 'file-path')) {
-      filePath = options['file-path']
-      if (!path.isAbsolute(filePath)) {
-        filePath = path.resolve(process.cwd(), filePath)
-      }
+  // Start execution timer.
+  const time = timer()
+
+  // Set configuration file path.
+  let filePath
+  if (Object.prototype.hasOwnProperty.call(options, 'file-path')) {
+    filePath = options['file-path']
+    if (!path.isAbsolute(filePath)) {
+      filePath = path.resolve(process.cwd(), filePath)
+    }
+
+    try {
+      await fsAccess(filePath, fs.constants.R_OK)
+    } catch {
+      console.error(`Error: No readable configuration file found at "${filePath}". ` + MESSAGE_SEE_HELP)
+      return
+    }
+  } else {
+    // Check for hoast.js or hoast.json in current working directory.
+    filePath = path.resolve(process.cwd(), 'hoast.js')
+    try {
+      await fsAccess(filePath, fs.constants.R_OK)
+    } catch {
+      filePath = path.resolve(process.cwd(), 'hoast.json')
 
       try {
         await fsAccess(filePath, fs.constants.R_OK)
       } catch {
-        console.error(`Error: No readable configuration file found at "${filePath}". ` + MESSAGE_SEE_HELP)
+        console.error(`Error: No readable configuration file found in "${process.cwd()}". ` + MESSAGE_SEE_HELP)
         return
       }
-    } else {
-      // Check for hoast.js or hoast.json in current working directory.
-      filePath = path.resolve(process.cwd(), 'hoast.js')
-      try {
-        await fsAccess(filePath, fs.constants.R_OK)
-      } catch {
-        filePath = path.resolve(process.cwd(), 'hoast.json')
-
-        try {
-          await fsAccess(filePath, fs.constants.R_OK)
-        } catch {
-          console.error(`Error: No readable configuration file found in "${process.cwd()}". ` + MESSAGE_SEE_HELP)
-          return
-        }
-      }
     }
+  }
 
-    const extension = path.extname(filePath)
-    let config = {
-      options: {},
-      meta: {},
-    }
-    let hoast
-    switch (String.prototype.toLowerCase.call(extension)) {
-      case 'json':
-        // Read and parse configuration at file path.
-        config = merge(
-          config,
-          JSON.parse(
-            fsReadFile(filePath, 'utf8')
-          )
+  const extension = path.extname(filePath)
+  let config = {
+    options: {},
+    meta: {},
+  }
+  let hoast
+  switch (String.prototype.toLowerCase.call(extension)) {
+    case '.json':
+      // Read and parse configuration at file path.
+      config = merge(
+        config,
+        JSON.parse(
+          await fsReadFile(filePath, 'utf8')
         )
+      )
+      break
+
+    case '.js':
+      // Import from file path.
+      const imported = await import(filePath)
+
+      if (imported instanceof Hoast) {
+        hoast = imported
         break
+      }
 
-      case 'js':
-        // Import from file path.
-        const imported = await import(filePath)
+      if (!imported || typeof (imported) !== 'object') {
+        // Invalid response.
+        throw new Error('Invalid configuration file content! ' + MESSAGE_SEE_HELP)
+      }
 
-        if (imported instanceof Hoast) {
-          hoast = imported
-          break
-        }
+      config = imported
+      break
 
-        if (!imported || typeof (imported) !== 'object') {
-          // Invalid response.
-          throw new Error('Invalid configuration file content! ' + MESSAGE_SEE_HELP)
-        }
+    default:
+      throw new Error('Unkown extension type! ' + MESSAGE_SEE_DOCS)
+  }
 
-        config = imported
-        break
+  if (!hoast) {
+    // Ensure options is set and an object.
+    if (!config.options) {
+      config.options = {}
+    } else if (typeof (config.options) !== 'object') {
+      throw new Error('Invalid options type in configuration file! Must be of type object. ' + MESSAGE_SEE_DOCS)
     }
 
-    if (!hoast) {
-      // Ensure options is set and an object.
-      if (!config.options) {
-        config.options = {}
-      } else if (typeof (config.options) !== 'object') {
-        throw new Error('Invalid options type in configuration file! Must be of type object. ' + MESSAGE_SEE_DOCS)
-      }
+    // Ensure meta is set and an object.
+    if (!config.meta) {
+      config.meta = {}
+    } else if (typeof (config.meta) !== 'object') {
+      throw new Error('Invalid meta type in configuration file! Must be of type object. ' + MESSAGE_SEE_DOCS)
+    }
 
-      // Ensure meta is set and an object.
-      if (!config.meta) {
-        config.meta = {}
-      } else if (typeof (config.meta) !== 'object') {
-        throw new Error('Invalid meta type in configuration file! Must be of type object. ' + MESSAGE_SEE_DOCS)
-      }
+    // Setup hoast.
+    hoast = new Hoast(config.options, config.meta)
 
-      // Setup hoast.
-      hoast = new Hoast(config.options, config.meta)
-
-      if (config.metaCollections) {
-        // Instantiate meta collection properties.
-        for (const collection in config.metaCollections) {
-          // Instantiate source.
-          collection.source = instantiate(collection.source)
-
-          // Instantiate processes.
-          for (const key in Object.keys(collection.processes)) {
-            if (Object.prototype.hasOwnProperty.call(collection.processes, key)) {
-              continue
-            }
-            collection.processes[key] = instantiate(collection.processes[key])
-          }
-
-          // Add meta collection.
-          hoast.addMetaCollection(collection)
-        }
-      }
-
-      // Instantiate collection properties.
-      for (const collection in config.collections) {
+    if (config.metaCollections) {
+      // Instantiate meta collection properties.
+      for (const collection of config.metaCollections) {
         // Instantiate source.
         collection.source = instantiate(collection.source)
 
         // Instantiate processes.
-        for (const key in Object.keys(collection.processes)) {
-          if (Object.prototype.hasOwnProperty.call(collection.processes, key)) {
+        for (const name in collection.processes) {
+          if (Object.prototype.hasOwnProperty.call(collection.processes, name)) {
             continue
           }
-          collection.processes[key] = instantiate(collection.processes[key])
+          collection.processes[name] = instantiate(collection.processes[name])
         }
 
-        // Add collection.
-        hoast.addCollection(collection)
-      }
-
-      if (config.processes) {
-        // Instantiate processes.
-        for (const key in Object.keys(config.processes)) {
-          if (Object.prototype.hasOwnProperty.call(config.processes, key)) {
-            continue
-          }
-
-          // Register process.
-          hoast.registerProcess(key, instantiate(config.processes[key]))
-        }
+        // Add meta collection.
+        hoast.addMetaCollection(collection)
       }
     }
 
-    // Overwrite options with CLI options.
-    const optionsOverride = {}
-    if (Object.prototype.hasOwnProperty.call(options, 'ignore-cache')) {
-      optionsOverride.ignoreCache = options['ignore-cache']
-    }
-    if (Object.prototype.hasOwnProperty.call(options, 'limit-concurrency')) {
-      optionsOverride.concurrencyLimit = options['limit-concurrency']
-    }
-    hoast.setOptions(optionsOverride)
+    // Instantiate collection properties.
+    for (const collection of config.collections) {
+      // Instantiate source.
+      collection.source = instantiate(collection.source)
 
-    // Start processing.
-    hoast.process()
+      // Instantiate processes.
+      for (const name in collection.processes) {
+        if (Object.prototype.hasOwnProperty.call(collection.processes, name)) {
+          continue
+        }
+        collection.processes[name] = instantiate(collection.processes[name])
+      }
+
+      // Add collection.
+      hoast.addCollection(collection)
+    }
+
+    if (config.processes) {
+      // Instantiate processes.
+      for (const name in config.processes) {
+        if (Object.prototype.hasOwnProperty.call(config.processes, name)) {
+          continue
+        }
+
+        // Register process.
+        hoast.registerProcess(name, instantiate(config.processes[name]))
+      }
+    }
   }
+
+  // Overwrite options with CLI options.
+  const optionsOverride = {}
+  if (Object.prototype.hasOwnProperty.call(options, 'ignore-cache')) {
+    optionsOverride.ignoreCache = options['ignore-cache']
+  }
+  if (Object.prototype.hasOwnProperty.call(options, 'limit-concurrency')) {
+    optionsOverride.concurrencyLimit = options['limit-concurrency']
+  }
+  hoast.setOptions(optionsOverride)
+
+  // Start processing.
+  await hoast.process()
+
+  // Log end with execution time.
+  console.log(`Finished hoast: ${time()}s`)
 }
 
 // Run CLI.
