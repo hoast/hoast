@@ -22,16 +22,28 @@
 ### Core
 
 - `hoast`
-- `hoastig`
 
 ### Source packages
 
+- `source-graphql`
 - `source-readfiles`
+- `source-rest`
 
 ### Process packages
 
+- `process-transform`
 - `process-writefiles`
 
 ### Transform packages
 
 - `transform-json`
+
+### Made with
+
+These serve as tools you can use directly, or as an example on how to make a solution that fits your needs.
+
+- `hoastig`
+
+## Version numbering
+
+

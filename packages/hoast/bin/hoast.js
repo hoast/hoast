@@ -9,7 +9,7 @@ import util from 'util'
 import minimist from 'minimist'
 
 // Custom libraries.
-import color from './util/color.js'
+// TODO: import color from './util/color.js'
 import instantiate from './util/instantiate.js'
 import { isValidConfig } from './util/isValid.js'
 import merge from '../src/util/merge.js'
@@ -188,7 +188,7 @@ Options for run
       // Instantiate meta collection properties.
       for (const collection of config.metaCollections) {
         // Instantiate source.
-        collection.source = instantiate(collection.source)
+        collection.source = instantiate(source)
 
         // Instantiate processes.
         for (const name in collection.processes) {

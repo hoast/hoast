@@ -202,42 +202,57 @@ class Hoast {
     const app = this
 
     const processCollections = async function (collections) {
-      // Exit early if no collections.
-      if (!collections.length) {
-        return
-      }
-
       // Current collection.
-      let collectionsDone = false
       let collectionIndex = -1
       let collection
-      // Current collection source index.
-      let sourceIndex
+      let processesPrepared;
 
-      const nextCollection = function () {
-        // Get first collection with sources.
-        do {
-          // Increment collection.
-          collectionIndex++
+      /**
+       * Get and set the next collection.
+       * @returns {Bool} Returns true if finished and no more collections available.
+       */
+      const setNextCollection = function () {
+        // Increment collection.
+        collectionIndex++
 
-          // Exit early if index exceeds collections.
-          if (collectionIndex >= collections.length) {
-            collectionsDone = true
-            return
+        // Exit early if index exceeds collections.
+        if (collectionIndex >= collections.length) {
+          collection = null
+          preparedProcesses = null;
+
+          return true;
+        }
+
+        // Get collection at index.
+        collection = collections[collectionIndex]
+
+        // Prepare collection processes.
+        processesPrepared = collection.processes.map(process => {
+          let processType = typeof (process)
+
+          // If string get from lookup.
+          if (processType === 'string') {
+            process = app._processes[process]
+
+            // Get type again.
+            processType = typeof (process)
           }
 
-          // Get collection at index.
-          collection = collections[collectionIndex]
-        } while (!collection.sources.length)
+          // If function wrap in object.
+          if (processType === 'function') {
+            process = {
+              process: process,
+            }
+          }
 
-        sourceIndex = 0
+          return process
+        })
+
+        return true;
       }
 
-      // Set initial collection.
-      nextCollection()
-
       // Exit early if already done.
-      if (collectionsDone) {
+      if (setNextCollection()) {
         return
       }
 
@@ -247,30 +262,9 @@ class Hoast {
           // Return a source process method.
           return async () => {
             // Store collection data locally.
-            const _source = collection.sources[sourceIndex]
+            const _source = collection.source
             const _processes = collection.processes
-
-            // Prepare processes.
-            const _processesPrepared = _processes.map(process => {
-              let processType = typeof (process)
-
-              // If string get from lookup.
-              if (processType === 'string') {
-                process = app._processes[process]
-
-                // Get type again.
-                processType = typeof (process)
-              }
-
-              // If function wrap in object.
-              if (processType === 'function') {
-                process = {
-                  process: process,
-                }
-              }
-
-              return process
-            })
+            const _processesPrepared = processesPrepared;
 
             // Get data from source.
             let data = await _source.next()
@@ -282,25 +276,16 @@ class Hoast {
 
             // Check if source is done.
             if (_source.done) {
-              // Increment source index.
-              sourceIndex++
-
-              // Check if all sources finished.
-              if (sourceIndex >= collection.sources.length) {
-                // Call finally on object processes from this collection.
-                for (const process of _processes) {
-                  if (typeof (process) === 'object' && Object.prototype.hasOwnProperty.call(process, 'finally')) {
-                    await process.finally(app)
-                  }
+              // Call finally on object processes from this collection.
+              for (const process of _processes) {
+                if (typeof (process) === 'object' && Object.prototype.hasOwnProperty.call(process, 'finally')) {
+                  await process.finally(app)
                 }
+              }
 
-                // Set next collection.
-                nextCollection()
-
-                // Exit early if done.
-                if (collectionsDone) {
-                  this.done = true
-                }
+              // Set next collection.
+              if (setNextCollection()) {
+                this.done = true;
               }
             }
           }
@@ -312,15 +297,8 @@ class Hoast {
     if (this._metaCollections.length > 0) {
       // Prepare meta collections.
       const metaCollections = this._metaCollections.map(collection => {
+        // Clone collection data.
         collection = merge({}, collection)
-
-        // Ensure sources and processes are arrays.
-        if (!Array.isArray(collection.sources)) {
-          collection.sources = [collection.sources]
-        }
-        if (!Array.isArray(collection.processes)) {
-          collection.processes = [collection.processes]
-        }
 
         // Add 'assign to meta' process at the end of each meta collection.
         collection.processes = [...collection.processes, {
@@ -339,17 +317,8 @@ class Hoast {
 
     // Prepare collections.
     const collections = this._collections.map(collection => {
-      collection = merge({}, collection)
-
-      // Ensure sources and processes are arrays.
-      if (!Array.isArray(collection.sources)) {
-        collection.sources = [collection.sources]
-      }
-      if (!Array.isArray(collection.processes)) {
-        collection.processes = [collection.processes]
-      }
-
-      return collection
+      // Clone collection data.
+      return merge({}, collection)
     })
 
     // Process collections.

@@ -97,6 +97,22 @@ OR
 
 
 
+### Configuration files
+
+
+
+#### JSON
+
+
+
+#### JavaScript object
+
+
+
+#### JavaScript Instance
+
+
+
 ## Source packages
 
 Source packages, as the name implies, source data to be transformed.
@@ -121,15 +137,16 @@ Process packages, as the name implies, process the sourced data.
 
 
 
-## Transform packages (Move to process-transform)
+## Transform packages
 
-Transform packages, as the name implies, transform the data being processed.
+Transform packages, as the name implies, transform the data being processed. They serve the same purpose and interface as the process packages, but can also be dynamically infered using the [`@hoast/process-transform`]() package.
 
 ### Using transform packages
 
 
 
 ### Making transform packages
+
 
 
 ## Dev notes
