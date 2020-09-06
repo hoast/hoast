@@ -906,6 +906,11 @@ pkg-dir@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+planckmatch@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/planckmatch/-/planckmatch-0.2.1.tgz#62018e11be5582f76e54ec1cee0a221a44629f2c"
+  integrity sha512-ckBZEvk4h1a5NA/gYej4tNaeUF5IdYbolYB54spNRoI+ypY6CHdr184Cx3s0gWdrl8155N5XO6UMIpxYfPxQvg==
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"

@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/hoast",
-  "version": "1.0.0-alpha",
+  "version": "2.0.0",
   "description": "A modular file processor focused on creating a simple ecosystem for task automation.",
   "keywords": [
     "modular",
@@ -37,6 +37,7 @@
     "lint": "eslint --fix --cache bin src --ext .js"
   },
   "dependencies": {
+    "@hoast/utils": "2.0.0",
     "minimist": "^1.2.5"
   }
 }

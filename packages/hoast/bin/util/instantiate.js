@@ -1,4 +1,4 @@
-import { isClass } from '../../src/util/is.js'
+import { isClass } from '@hoast/utils/is.js'
 
 /**
  * Instantiate a value. If the value is an array the first item is assumed to be the value and the others become arguments given to the constructor.

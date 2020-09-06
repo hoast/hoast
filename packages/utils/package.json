@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/utils",
-  "version": "1.0.0-alpha",
+  "version": "2.0.0",
   "description": "Utility functions commonly used by hoast and hoast plugins.",
   "keywords": [
     "hoast",
@@ -26,11 +26,11 @@
   "files": [
     "README.md",
     "CHANGELOG.md",
-    "src/"
+    "*.js"
   ],
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "lint": "eslint --fix --cache src --ext .js"
+    "lint": "eslint --fix --cache *.js"
   },
   "dependencies": {}
 }

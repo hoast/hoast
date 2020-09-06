@@ -1,8 +1,9 @@
 {
-  "name": "@hoast/workspace",
   "private": true,
+  "name": "@hoast/workspace",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "packages/hoast/examples"
   ],
   "scripts": {
     "lint": "yarn workspaces run lint"

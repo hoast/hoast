@@ -4,6 +4,7 @@ import path from 'path'
 import { promisify } from 'util'
 
 // Import external modules.
+import merge from '@hoast/utils/merge.js'
 import { parse, match } from 'planckmatch'
 
 // Promisify file system functions.
@@ -13,10 +14,11 @@ const fsReadFile = promisify(fs.readFile)
 class SourceFilesystem {
   constructor(options) {
     // Store options.
-    this._options = Object.assign({
+    this._options = merge({
       directory: 'src',
       patterns: [],
       patternOptions: {},
+      readOptions: {},
     }, options)
   }
 
@@ -58,7 +60,7 @@ class SourceFilesystem {
       }
 
       // Get file content.
-      const content = await fsReadFile(filePath)
+      const content = await fsReadFile(filePath, this._options.readOptions)
 
       // Return result.
       return {

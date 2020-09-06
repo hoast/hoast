@@ -9,10 +9,9 @@ import { promisify } from 'util'
 import minimist from 'minimist'
 
 // Custom libraries.
-// TODO: import color from './util/color.js'
 import instantiate from './util/instantiate.js'
 // TODO: import { isValidConfig } from './util/isValid.js'
-import merge from '../src/util/merge.js'
+import merge from '@hoast/utils/merge.js'
 import timer from './util/timer.js'
 
 // Import core library.
@@ -129,10 +128,7 @@ Options for run
   }
 
   const extension = path.extname(filePath)
-  let config = {
-    options: {},
-    meta: {},
-  }
+  let config
   let hoast
   switch (String.prototype.toLowerCase.call(extension)) {
     case '.json':
@@ -159,7 +155,7 @@ Options for run
         throw new Error('Invalid configuration file content! ' + MESSAGE_SEE_HELP)
       }
 
-      config = Object.assign(config, imported)
+      config = merge({}, imported.default)
       break
 
     default:

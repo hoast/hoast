@@ -1,5 +1,5 @@
-import { hasKeys } from '../../src/util/has.js'
-import { isObject } from '../../src/util/is.js'
+import { hasKeys } from '@hoast/utils/has.js'
+import { isObject } from '@hoast/utils/is.js'
 
 export const isValidConfig = function (value) {
   if (!hasKeys(value, ['collections'])) {

@@ -12,7 +12,7 @@ export default {
           patterns: [
             'content/*',
           ],
-        }
+        },
       ],
     },
   ],
