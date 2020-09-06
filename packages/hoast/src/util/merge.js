@@ -1,4 +1,4 @@
-import { isObject } from './is.js';
+import { isObject } from './is.js'
 
 /**
  * Deeply assign a series of objects properties together.

@@ -11,7 +11,7 @@ import minimist from 'minimist'
 // Custom libraries.
 // TODO: import color from './util/color.js'
 import instantiate from './util/instantiate.js'
-import { isValidConfig } from './util/isValid.js'
+// TODO: import { isValidConfig } from './util/isValid.js'
 import merge from '../src/util/merge.js'
 import timer from './util/timer.js'
 
@@ -66,7 +66,7 @@ Options for run
 
   const MESSAGE_SEE_DOCS = `See '${pkg.docs}' for more information about hoast.`
   const MESSAGE_SEE_HELP = `Use '${pkg.name} help' to see a list of commands.`
-  const MESSAGE_UNKNOWN_COMMAND = `Unkown command!`
+  const MESSAGE_UNKNOWN_COMMAND = 'Unkown command!'
 
   // Construct command line interface.
   const options = minimist(process.argv.slice(2))
@@ -85,7 +85,7 @@ Options for run
       return
     }
 
-    if (options._.indexOf('r') == -1 && options._.indexOf('run') == -1) {
+    if (options._.indexOf('r') === -1 && options._.indexOf('run') === -1) {
       console.log(MESSAGE_UNKNOWN_COMMAND)
       return
     }
@@ -159,7 +159,7 @@ Options for run
         throw new Error('Invalid configuration file content! ' + MESSAGE_SEE_HELP)
       }
 
-      config = imported
+      config = Object.assign(config, imported)
       break
 
     default:
@@ -188,7 +188,7 @@ Options for run
       // Instantiate meta collection properties.
       for (const collection of config.metaCollections) {
         // Instantiate source.
-        collection.source = instantiate(source)
+        collection.source = instantiate(collection.source)
 
         // Instantiate processes.
         for (const name in collection.processes) {

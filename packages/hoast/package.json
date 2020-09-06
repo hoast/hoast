@@ -33,6 +33,9 @@
     "hoast": "bin/hoast.js"
   },
   "main": "src/Hoast.js",
+  "scripts": {
+    "lint": "eslint --fix --cache bin src --ext .js"
+  },
   "dependencies": {
     "minimist": "^1.2.5"
   }

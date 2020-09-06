@@ -25,9 +25,7 @@
 
 ### Source packages
 
-- `source-graphql`
 - `source-readfiles`
-- `source-rest`
 
 ### Process packages
 

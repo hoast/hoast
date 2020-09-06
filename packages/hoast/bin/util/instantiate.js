@@ -1,4 +1,4 @@
-import { isClass } from '../../src/util/is.js';
+import { isClass } from '../../src/util/is.js'
 
 /**
  * Instantiate a value. If the value is an array the first item is assumed to be the value and the others become arguments given to the constructor.
@@ -33,7 +33,7 @@ const instantiate = async function (value) {
   // Instantiate result.
   if (type === 'function') {
     if (isClass(result)) {
-      result = new result(...parameters);
+      result = new result(...parameters) // eslint-disable-line new-cap
     } else {
       result = result(...parameters)
     }

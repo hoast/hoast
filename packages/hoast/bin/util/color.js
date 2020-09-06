@@ -33,7 +33,7 @@ const colorize = function (color, text) {
  * Dynamically generate color methods based of name.
  */
 const colors = function () {
-  let result = {}
+  const result = {}
   Object.keys(util.inspect.colors).forEach((color) => {
     result[color] = (text) => colorize(color, text)
   })

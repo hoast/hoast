@@ -6,8 +6,7 @@ const timer = function () {
   // Store start time.
   const start = process.hrtime()
 
-  // Get time end function.
-
+  // Return time end function.
   return function (precision = 3) {
     // Store end time.
     const end = process.hrtime(start)

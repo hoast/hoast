@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    browser: true,
     es6: true,
   },
   extends: [
@@ -13,7 +12,7 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: 'module',
   },
   plugins: [
@@ -52,10 +51,11 @@ module.exports = {
       'never',
     ],
     'space-before-function-paren': [
-      'info',
+      0,
       'always',
     ],
     'no-cond-assign': 0,
+    'no-case-declarations': 0,
     'standard/no-callback-literal': 0,
   },
 }

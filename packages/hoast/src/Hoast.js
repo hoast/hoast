@@ -8,7 +8,7 @@ const isValidCollection = function (data) {
   if (hasKeys(data, ['sources'])) {
     return hasKeys(data.sources, ['next'])
   }
-  return false;
+  return false
 }
 
 const isValidProcess = function (data) {
@@ -171,7 +171,7 @@ class Hoast {
         continue
       }
 
-      if (!processes.hasOwnProperty(name)) {
+      if (!Object.prototype.hasOwnProperty.call(processes, name)) {
         continue
       }
 
@@ -205,7 +205,7 @@ class Hoast {
       // Current collection.
       let collectionIndex = -1
       let collection
-      let processesPrepared;
+      let processesPrepared
 
       /**
        * Get and set the next collection.
@@ -218,9 +218,9 @@ class Hoast {
         // Exit early if index exceeds collections.
         if (collectionIndex >= collections.length) {
           collection = null
-          preparedProcesses = null;
+          processesPrepared = null
 
-          return true;
+          return true
         }
 
         // Get collection at index.
@@ -248,7 +248,7 @@ class Hoast {
           return process
         })
 
-        return true;
+        return true
       }
 
       // Exit early if already done.
@@ -264,7 +264,7 @@ class Hoast {
             // Store collection data locally.
             const _source = collection.source
             const _processes = collection.processes
-            const _processesPrepared = processesPrepared;
+            const _processesPrepared = processesPrepared
 
             // Get data from source.
             let data = await _source.next()
@@ -285,7 +285,7 @@ class Hoast {
 
               // Set next collection.
               if (setNextCollection()) {
-                this.done = true;
+                this.done = true
               }
             }
           }
