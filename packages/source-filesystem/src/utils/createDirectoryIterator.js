@@ -1,18 +1,15 @@
 // Import build-in modules.
 import fs from 'fs'
 import path from 'path'
-import { promisify } from 'util'
 
-const fsOpenDir = promisify(fs.opendir)
-
-const createIterator = async function (directory) { // TODO: Fix.
-  console.log('createIterator', directory)
+const createDirectoryIterator = function (directory) { // TODO: Fix.
+  console.log('createDirectoryIterator', directory)
 
   // Sub iterator for recursive calls.
   let subIterator
 
   // Open directory.
-  const resource = await fsOpenDir(directory, { encoding: 'utf8' })
+  const resource = fs.opendirSync(directory, { encoding: 'utf8' })
 
   return async function () {
     // If sub iterator exists try and get item from that first.
@@ -30,7 +27,7 @@ const createIterator = async function (directory) { // TODO: Fix.
     while (item = await resource.read()) {
       // For directories recursively create an iterator on the sub directory.
       if (item.isDirectory()) {
-        subIterator = await createIterator(
+        subIterator = await createDirectoryIterator(
           path.resolve(directory, item.name)
         )
 
@@ -53,4 +50,4 @@ const createIterator = async function (directory) { // TODO: Fix.
   }
 }
 
-export default createIterator
+export default createDirectoryIterator

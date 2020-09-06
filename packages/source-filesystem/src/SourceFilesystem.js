@@ -8,12 +8,12 @@ import merge from '@hoast/utils/merge.js'
 import planckmatch from 'planckmatch'
 
 // Import internal modules.
-import createIterator from './utils/createIterator.js'
+import createDirectoryIterator from './utils/createDirectoryIterator.js'
 
 // Promisify file system functions.
 const fsReadFile = promisify(fs.readFile)
 
-class SourceFilesystem {
+class SourceFilesystem { // TODO: Prototype on class instance is undefined? Why?
   constructor(options) {
     // Store options.
     this._options = merge({
@@ -23,26 +23,28 @@ class SourceFilesystem {
       readOptions: {},
     }, options)
 
-    this.init = async function () {
-      // Parse patterns into regular expressions.
-      if (this._options.patterns) {
-        this._expressions = this._options.patterns.map(pattern => {
-          return planckmatch.parse(pattern, this._options.patternOptions, true)
-        })
-      }
-
-      // Construct absolute directory path.
-      if (path.isAbsolute(this._options.directory)) {
-        this._directoryPath = this._options.directory
-      } else {
-        this._directoryPath = path.resolve(process.cwd(), this._options.directory)
-      }
-
-      // Create directory iterator.
-      this._directoryIterator = await createIterator(this._directoryPath)
-    }
-
     this.next = async function () {
+      if (!this.initialized) {
+        this.initialized = true
+
+        // Parse patterns into regular expressions.
+        if (this._options.patterns) {
+          this._expressions = this._options.patterns.map(pattern => {
+            return planckmatch.parse(pattern, this._options.patternOptions, true)
+          })
+        }
+
+        // Construct absolute directory path.
+        if (path.isAbsolute(this._options.directory)) {
+          this._directoryPath = this._options.directory
+        } else {
+          this._directoryPath = path.resolve(process.cwd(), this._options.directory)
+        }
+
+        // Create directory iterator.
+        this._directoryIterator = createDirectoryIterator(this._directoryPath)
+      }
+
       let filePath
       // Get next file path.
       while (filePath = await this._directoryIterator()) {

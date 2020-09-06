@@ -1,8 +1,10 @@
+// Import external modules.
+import { hasKeys } from '@hoast/utils/has.js'
+import merge from '@hoast/utils/merge.js'
+
 // Import internal modules.
 import { callAsync } from './utils/call.js'
-import { hasKeys } from '@hoast/utils/has.js'
-import iterate from './utils/iterate.js'
-import merge from '@hoast/utils/merge.js'
+import processCollections from './utils/processCollections.js'
 
 class Hoast {
   /**
@@ -13,7 +15,7 @@ class Hoast {
   constructor(options = null, meta = null) {
     // Set options.
     this.options = {
-      concurrencyLimit: 16,
+      concurrencyLimit: 4,
       ignoreCache: false,
     }
     if (options) {
@@ -178,108 +180,6 @@ class Hoast {
    * Process collections.
    */
   async process () {
-    // Store this as app.
-    const app = this
-
-    const processCollections = async function (collections) {
-      // Current collection.
-      let collectionIndex = -1
-      let collection
-      let processesPrepared
-
-      /**
-       * Get and set the next collection.
-       * @returns {Bool} Returns true if finished and no more collections available.
-       */
-      const setNextCollection = async function () {
-        // Increment collection.
-        collectionIndex++
-
-        // Exit early if index exceeds collections.
-        if (collectionIndex >= collections.length) {
-          collection = null
-          processesPrepared = null
-
-          return false
-        }
-
-        // Get collection at index.
-        collection = collections[collectionIndex]
-
-        // Initialize collection source.
-        if (Object.prototype.hasOwnProperty.call(collection.source, 'init')) {
-          await collection.source.init()
-        }
-
-        // Prepare collection processes.
-        processesPrepared = collection.processes.map(process => {
-          let processType = typeof (process)
-
-          // If string get from lookup.
-          if (processType === 'string') {
-            process = app._processes[process]
-
-            // Get type again.
-            processType = typeof (process)
-          }
-
-          // If function wrap in object.
-          if (processType === 'function') {
-            process = {
-              process: process,
-            }
-          }
-
-          return process
-        })
-
-        return true
-      }
-
-      // Exit early if already done.
-      if (!await setNextCollection()) {
-        return
-      }
-
-      // Iterate on collection sources and process them.
-      await iterate(
-        // Return a source process method.
-        {
-          done: false,
-          next: async () => {
-            // Store collection data locally.
-            const _source = collection.source
-            const _processes = collection.processes
-            const _processesPrepared = processesPrepared
-
-            // Get data from source.
-            let data = await _source.next(app)
-
-            // Skip if source is done.
-            if (!_source.done) {
-              // Iterate over processes.
-              for (const process of _processesPrepared) {
-                data = await process.process(app, data)
-              }
-            } else {
-              // Call finally on object processes from this collection.
-              for (const process of _processes) {
-                if (typeof (process) === 'object' && Object.prototype.hasOwnProperty.call(process, 'finally')) {
-                  await process.finally(app)
-                }
-              }
-
-              // Set next collection.
-              if (!await setNextCollection()) {
-                this.done = true
-              }
-            }
-          },
-        },
-        app.options.concurrencyLimit
-      )
-    }
-
     if (this._metaCollections.length > 0) {
       // Prepare meta collections.
       const metaCollections = this._metaCollections.map(collection => {
@@ -298,7 +198,7 @@ class Hoast {
       })
 
       // Process meta collections.
-      await processCollections(metaCollections)
+      await processCollections(this, metaCollections)
     }
 
     // Prepare collections.
@@ -308,7 +208,7 @@ class Hoast {
     })
 
     // Process collections.
-    await processCollections(collections)
+    await processCollections(this, collections)
 
     if (this._processes) {
       // Call finally on processes.
