@@ -267,15 +267,15 @@ class Hoast {
             const _processesPrepared = processesPrepared
 
             // Get data from source.
-            let data = await _source.next()
+            let data = await _source.next(app)
 
-            // Iterate over processes.
-            for (const process of _processesPrepared) {
-              data = await process.process(app, data)
-            }
-
-            // Check if source is done.
-            if (_source.done) {
+            // Skip if source is done.
+            if (!_source.done) {
+              // Iterate over processes.
+              for (const process of _processesPrepared) {
+                data = await process.process(app, data)
+              }
+            } else {
               // Call finally on object processes from this collection.
               for (const process of _processes) {
                 if (typeof (process) === 'object' && Object.prototype.hasOwnProperty.call(process, 'finally')) {

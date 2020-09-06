@@ -1,0 +1,36 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/utils",
+  "version": "1.0.0-alpha",
+  "description": "Utility functions commonly used by hoast and hoast plugins.",
+  "keywords": [
+    "hoast",
+    "util",
+    "utils",
+    "utility",
+    "utilities"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {}
+}

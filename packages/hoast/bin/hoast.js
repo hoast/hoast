@@ -3,7 +3,7 @@
 // Node modules.
 import fs from 'fs'
 import path from 'path'
-import util from 'util'
+import { promisify } from 'util'
 
 // External libraries.
 import minimist from 'minimist'
@@ -19,8 +19,8 @@ import timer from './util/timer.js'
 import Hoast from '../src/Hoast.js'
 
 // Promisify read file.
-const fsAccess = util.promisify(fs.access)
-const fsReadFile = util.promisify(fs.readFile)
+const fsAccess = promisify(fs.access)
+const fsReadFile = promisify(fs.readFile)
 
 const CLI = async function () {
   // Get package file.
