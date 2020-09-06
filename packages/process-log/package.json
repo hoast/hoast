@@ -1,0 +1,36 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/process-log",
+  "version": "2.0.0",
+  "description": "Logs state and data passed to process, useful for debugging.",
+  "keywords": [
+    "hoast",
+    "debug",
+    "debugging",
+    "log",
+    "logging"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "main": "src/Log.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {}
+}

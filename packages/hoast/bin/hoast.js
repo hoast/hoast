@@ -9,10 +9,10 @@ import { promisify } from 'util'
 import minimist from 'minimist'
 
 // Custom libraries.
-import instantiate from './util/instantiate.js'
+import instantiate from './utils/instantiate.js'
 // TODO: import { isValidConfig } from './util/isValid.js'
 import merge from '@hoast/utils/merge.js'
-import timer from './util/timer.js'
+import timer from './utils/timer.js'
 
 // Import core library.
 import Hoast from '../src/Hoast.js'
@@ -184,14 +184,11 @@ Options for run
       // Instantiate meta collection properties.
       for (const collection of config.metaCollections) {
         // Instantiate source.
-        collection.source = instantiate(collection.source)
+        collection.source = await instantiate(collection.source)
 
         // Instantiate processes.
-        for (const name in collection.processes) {
-          if (Object.prototype.hasOwnProperty.call(collection.processes, name)) {
-            continue
-          }
-          collection.processes[name] = instantiate(collection.processes[name])
+        for (let i = 0; i < collection.processes.length; i++) {
+          collection.processes[i] = await instantiate(collection.processes[i])
         }
 
         // Add meta collection.
@@ -202,14 +199,11 @@ Options for run
     // Instantiate collection properties.
     for (const collection of config.collections) {
       // Instantiate source.
-      collection.source = instantiate(collection.source)
+      collection.source = await instantiate(collection.source)
 
       // Instantiate processes.
-      for (const name in collection.processes) {
-        if (Object.prototype.hasOwnProperty.call(collection.processes, name)) {
-          continue
-        }
-        collection.processes[name] = instantiate(collection.processes[name])
+      for (let i = 0; i < collection.processes.length; i++) {
+        collection.processes[i] = await instantiate(collection.processes[i])
       }
 
       // Add collection.
@@ -224,7 +218,7 @@ Options for run
         }
 
         // Register process.
-        hoast.registerProcess(name, instantiate(config.processes[name]))
+        hoast.registerProcess(name, await instantiate(config.processes[name]))
       }
     }
   }

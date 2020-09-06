@@ -5,10 +5,12 @@ import { promisify } from 'util'
 
 // Import external modules.
 import merge from '@hoast/utils/merge.js'
-import { parse, match } from 'planckmatch'
+import planckmatch from 'planckmatch'
+
+// Import internal modules.
+import createIterator from './utils/createIterator.js'
 
 // Promisify file system functions.
-const fsOpenDir = promisify(fs.opendir)
 const fsReadFile = promisify(fs.readFile)
 
 class SourceFilesystem {
@@ -20,16 +22,12 @@ class SourceFilesystem {
       patternOptions: {},
       readOptions: {},
     }, options)
-  }
 
-  async next () {
-    if (!this.initialized) {
-      this.initialized = true
-
+    this.init = async function () {
       // Parse patterns into regular expressions.
       if (this._options.patterns) {
         this._expressions = this._options.patterns.map(pattern => {
-          return parse(pattern, this._options.patternOptions, true)
+          return planckmatch.parse(pattern, this._options.patternOptions, true)
         })
       }
 
@@ -41,80 +39,39 @@ class SourceFilesystem {
       }
 
       // Create directory iterator.
-      this._directoryIterator = SourceFilesystem.createDirectoryIterator(this._directoryPath)
+      this._directoryIterator = await createIterator(this._directoryPath)
     }
 
-    let filePath
-    // Get next file path.
-    while (filePath = await this._directoryIterator()) {
-      // Make file path relative.
-      const filePathRelative = path.relative(this._directoryPath, filePath)
+    this.next = async function () {
+      let filePath
+      // Get next file path.
+      while (filePath = await this._directoryIterator()) {
+        // Make file path relative.
+        const filePathRelative = path.relative(this._directoryPath, filePath)
+        console.log('filePath', filePathRelative)
 
-      // Check if path matches the patterns.
-      if (this._expressions) {
-        // Skip if it does not matches.
-        const matches = this._options.patternOptions.all ? match.all(filePathRelative, this._expressions) : match.any(filePathRelative, this._expressions)
-        if (!matches) {
-          continue
-        }
-      }
-
-      // Get file content.
-      const content = await fsReadFile(filePath, this._options.readOptions)
-
-      // Return result.
-      return {
-        path: filePathRelative,
-        content: content,
-      }
-    }
-
-    // Set done.
-    this.done = true
-  }
-
-  static async createDirectoryIterator (directory) {
-    // Sub iterator for recursive calls.
-    let subIterator
-
-    // Open directory.
-    const resource = await fsOpenDir(directory, { encoding: 'utf8' })
-
-    return async function () {
-      // If sub iterator exists try and get item from that first.
-      if (subIterator) {
-        const item = await subIterator()
-        if (item) {
-          return item
-        }
-
-        subIterator = null
-      }
-
-      let item
-      // Get directory item.
-      while (item = await resource.read()) {
-        // For directories recursively create an iterator on the sub directory.
-        if (item.isDirectory()) {
-          subIterator = await SourceFilesystem.createDirectoryIterator(
-            path.resolve(directory, item.name)
-          )
-
-          item = await subIterator()
-
-          if (!item) {
-            subIterator = null
+        // Check if path matches the patterns.
+        if (this._expressions) {
+          // Skip if it does not matches.
+          const matches = this._options.patternOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
+          if (!matches) {
             continue
           }
         }
 
-        // Construct file path.
-        const filePath = path.resolve(directory, item.name)
-        return filePath
+        // Get file content.
+        const content = await fsReadFile(filePath, this._options.readOptions)
+
+        // Return result.
+        return {
+          path: filePathRelative,
+          content: content,
+        }
       }
 
-      // Close directory resource handler.
-      await resource.close()
+      // Set done.
+      console.log('done')
+      this.done = true
     }
   }
 }

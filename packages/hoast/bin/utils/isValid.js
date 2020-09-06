@@ -14,7 +14,7 @@ export const isValidConfig = function (value) {
     }
   }
 
-  // TODO:
+  return true
 }
 
 export default {

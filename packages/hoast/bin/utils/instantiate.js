@@ -1,7 +1,7 @@
 import { isClass } from '@hoast/utils/is.js'
 
 /**
- * Instantiate a value. If the value is an array the first item is assumed to be the value and the others become arguments given to the constructor.
+ * Instantiate a value. If the value is an array the first item is assumed to be the value and the others become parameters given to the constructor.
  * @param {Any} value Value to import and or instantiate. A string will be dynamically imported.
  */
 const instantiate = async function (value) {
@@ -19,14 +19,14 @@ const instantiate = async function (value) {
 
   // Import as package if string.
   if (type === 'string') {
-    result = await import(result)
+    result = (await import(result)).default
 
     // Get type of imported.
     type = typeof (result)
 
     // Check new value.
     if (type !== 'function') {
-      throw new Error('Imported type must be a class or function. ')
+      throw new Error('Imported type must be a class or function.')
     }
   }
 

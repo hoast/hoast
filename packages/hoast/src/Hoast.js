@@ -1,19 +1,8 @@
 // Import internal modules.
-import { callAsync } from './util/call.js'
+import { callAsync } from './utils/call.js'
 import { hasKeys } from '@hoast/utils/has.js'
-import iterate from './util/iterate.js'
+import iterate from './utils/iterate.js'
 import merge from '@hoast/utils/merge.js'
-
-const isValidCollection = function (data) {
-  if (hasKeys(data, ['sources'])) {
-    return hasKeys(data.sources, ['next'])
-  }
-  return false
-}
-
-const isValidProcess = function (data) {
-  return hasKeys(data, ['process'])
-}
 
 class Hoast {
   /**
@@ -24,16 +13,17 @@ class Hoast {
   constructor(options = null, meta = null) {
     // Set options.
     this.options = {
-      concurrentLimit: 16,
+      concurrencyLimit: 16,
       ignoreCache: false,
     }
     if (options) {
       this.setOptions(options)
     }
 
-    // Set data object.
+    // Set meta data object.
     this.meta = {}
     this.setMeta(meta)
+
     // Initialize meta collections.
     this._metaCollections = []
 
@@ -81,7 +71,7 @@ class Hoast {
    * @param {Object} collection Collection to add.
    */
   addMetaCollection (collection) {
-    if (!isValidCollection(collection)) {
+    if (!hasKeys(collection, ['source'])) {
       return this
     }
 
@@ -96,7 +86,7 @@ class Hoast {
    */
   addMetaCollections (collections) {
     // Filter based on type.
-    collections = collections.filter((collection) => isValidCollection(collection))
+    collections = collections.filter((collection) => hasKeys(collection, ['source']))
     if (!collections) {
       return this
     }
@@ -114,7 +104,7 @@ class Hoast {
    * @param {Object} collection Collection to add.
    */
   addCollection (collection) {
-    if (!isValidCollection(collection)) {
+    if (!hasKeys(collection, ['source'])) {
       return this
     }
 
@@ -129,7 +119,7 @@ class Hoast {
    */
   addCollections (collections) {
     // Filter based on type.
-    collections = collections.filter(collection => isValidCollection(collection))
+    collections = collections.filter(collection => hasKeys(collection, ['source']))
     if (!collections) {
       return this
     }
@@ -149,9 +139,6 @@ class Hoast {
    */
   registerProcess (name, process) {
     if (typeof (name) !== 'string') {
-      return this
-    }
-    if (!isValidProcess(process)) {
       return this
     }
 
@@ -174,14 +161,7 @@ class Hoast {
       if (!Object.prototype.hasOwnProperty.call(processes, name)) {
         continue
       }
-
-      const process = processes[name]
-
-      if (!isValidProcess(process)) {
-        continue
-      }
-
-      processesFiltered[name] = process
+      processesFiltered[name] = processes[name]
     }
     if (processesFiltered === {}) {
       return this
@@ -211,7 +191,7 @@ class Hoast {
        * Get and set the next collection.
        * @returns {Bool} Returns true if finished and no more collections available.
        */
-      const setNextCollection = function () {
+      const setNextCollection = async function () {
         // Increment collection.
         collectionIndex++
 
@@ -220,11 +200,16 @@ class Hoast {
           collection = null
           processesPrepared = null
 
-          return true
+          return false
         }
 
         // Get collection at index.
         collection = collections[collectionIndex]
+
+        // Initialize collection source.
+        if (Object.prototype.hasOwnProperty.call(collection.source, 'init')) {
+          await collection.source.init()
+        }
 
         // Prepare collection processes.
         processesPrepared = collection.processes.map(process => {
@@ -252,15 +237,16 @@ class Hoast {
       }
 
       // Exit early if already done.
-      if (setNextCollection()) {
+      if (!await setNextCollection()) {
         return
       }
 
       // Iterate on collection sources and process them.
       await iterate(
-        function () {
-          // Return a source process method.
-          return async () => {
+        // Return a source process method.
+        {
+          done: false,
+          next: async () => {
             // Store collection data locally.
             const _source = collection.source
             const _processes = collection.processes
@@ -284,13 +270,13 @@ class Hoast {
               }
 
               // Set next collection.
-              if (setNextCollection()) {
+              if (!await setNextCollection()) {
                 this.done = true
               }
             }
-          }
+          },
         },
-        this.options.concurrentLimit
+        app.options.concurrencyLimit
       )
     }
 

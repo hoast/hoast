@@ -4,26 +4,23 @@
  * @param {Number} limit Maximum number of iterators to have running at once.
  * @returns {Promise} Limited concurrent process as a promise.
  */
-const iterate = function (next, limit = 1) {
+const iterate = function (iterator, limit = 1) {
   // Track active calls.
   let count = 0
 
   return new Promise((resolve, reject) => {
     const add = () => {
-      // Get next value.
-      const value = next()
-
       // Increment count.
       count++
 
       // Resolve given value.
-      Promise.resolve(value)
+      Promise.resolve(iterator.next())
         .then(() => {
           // Reduce count.
           count--
 
           // Add another one in its place.
-          if (!next.done) {
+          if (!iterator.done) {
             add()
           }
 
@@ -31,14 +28,13 @@ const iterate = function (next, limit = 1) {
           if (count <= 0) {
             resolve()
           }
-        })
-        .error((error) => {
+        }, (error) => {
           reject(error)
         })
     }
 
     while (count < limit) { // eslint-disable-line no-unmodified-loop-condition
-      if (next.done) {
+      if (iterator.done) {
         break
       }
 
