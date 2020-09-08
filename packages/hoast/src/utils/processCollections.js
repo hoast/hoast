@@ -15,7 +15,7 @@ const processCollections = async function (app, collections) {
    * Get and set the next collection.
    * @returns {Bool} Returns true if finished and no more collections available.
    */
-  const next = async function () {
+  const next = function () {
     // Increment collection.
     collectionIndex++
 
@@ -60,7 +60,7 @@ const processCollections = async function (app, collections) {
   }
 
   // Exit early if already done.
-  if (!await next()) {
+  if (!next()) {
     return
   }
 
@@ -68,7 +68,7 @@ const processCollections = async function (app, collections) {
   await iterate(
     // Return a source process method.
     {
-      done: false,
+      exhausted: false,
       next: async function () {
         // Store collection data locally.
         const _source = collection.source
@@ -83,23 +83,31 @@ const processCollections = async function (app, collections) {
           data = await _source.next(app)
         }
 
-        // Skip if source is done.
-        if (!_source.done) {
+        if (data) {
           // Iterate over processes.
           for (const process of _processesPrepared) {
+            // Skip if data is null.
+            if (data === undefined || data === null) {
+              break
+            }
+
             data = await process.process(app, data)
           }
-        } else {
+        }
+
+        // Set next collection if current is exhausted.
+        if (_source.exhausted && !this.exhausted) {
+          if (!next()) {
+            this.exhausted = true
+          }
+        }
+
+        if (_source.done) {
           // Call finally on object processes from this collection.
           for (const process of _processes) {
-            if (typeof (process) === 'object' && Object.prototype.hasOwnProperty.call(process, 'finally')) {
+            if (typeof (process) === 'object' && typeof (process.finally) === 'function') {
               await process.finally(app)
             }
-          }
-
-          // Set next collection.
-          if (!await next()) {
-            this.done = true
           }
         }
       },

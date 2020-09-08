@@ -6,7 +6,7 @@ import { promisify } from 'util'
 // Import external modules.
 import merge from '@hoast/utils/merge.js'
 import planckmatch from 'planckmatch'
-import SourceSequential from '@hoast/utils/SourceSequential.js'
+import SequentialIterator from '@hoast/utils/SequentialIterator.js'
 
 // Import internal modules.
 import DirectoryIterator from './utils/DirectoryIterator.js'
@@ -14,7 +14,7 @@ import DirectoryIterator from './utils/DirectoryIterator.js'
 // Promisify file system functions.
 const fsReadFile = promisify(fs.readFile)
 
-class SourceFilesystem extends SourceSequential {
+class SourceFilesystem extends SequentialIterator {
   constructor(options) {
     super()
 
@@ -25,81 +25,37 @@ class SourceFilesystem extends SourceSequential {
 
       patterns: [],
       patternOptions: {},
-      readOptions: {},
+      readOptions: {
+        encoding: 'utf8',
+      },
     }, options)
   }
 
-  async next () {
-    console.log('next')
-
-    if (!this._isInitialized) {
-      this._isInitialized = true
-
-      // Parse patterns into regular expressions.
-      if (this._options.patterns) {
-        this._expressions = this._options.patterns.map(pattern => {
-          return planckmatch.parse(pattern, this._options.patternOptions, true)
-        })
-      }
-
-      // Construct absolute directory path.
-      if (path.isAbsolute(this._options.directory)) {
-        this._directoryPath = this._options.directory
-      } else {
-        this._directoryPath = path.resolve(process.cwd(), this._options.directory)
-      }
-
-      // Create directory iterator.
-      this._directoryIterator = new DirectoryIterator(this._directoryPath)
-    }
-
-    // Check if it should wait.
-    if (this.hold) {
-      console.log('hold')
-      // Add resolver to promises.
-      const instance = this
-      await new Promise((resolve, reject) => {
-        instance._promises.push({
-          resolve,
-          reject,
-        })
+  initialize () {
+    // Parse patterns into regular expressions.
+    if (this._options.patterns) {
+      this._expressions = this._options.patterns.map(pattern => {
+        return planckmatch.parse(pattern, this._options.patternOptions, true)
       })
-      return
     }
 
-    console.log('don\'t hold')
-    // Call and wait for next directly.
-    await this._next()
+    // Construct absolute directory path.
+    if (path.isAbsolute(this._options.directory)) {
+      this._directoryPath = this._options.directory
+    } else {
+      this._directoryPath = path.resolve(process.cwd(), this._options.directory)
+    }
+
+    // Create directory iterator.
+    this._directoryIterator = new DirectoryIterator(this._directoryPath)
   }
 
-  async _tryShift () {
-    console.log('_shift')
-    // Set hold back to false.
-    if (this._promises.length === 0) {
-      this.hold = false
-    }
-
-    console.log('resolve')
-    const { resolve, reject } = this._promises.shift()
-    try {
-      resolve(await this._next())
-    } catch (error) {
-      reject(error)
-    }
-  }
-
-  async _next () {
-    console.log('_next')
-
-    // Set hold to true.
-    this.hold = true
-
+  async sequential () {
     let filePath
     // Get next file path.
     while (filePath = await this._directoryIterator.next()) {
       // Make file path relative.
       const filePathRelative = path.relative(this._directoryPath, filePath)
-      console.log('filePath', filePathRelative)
 
       // Check if path matches the patterns.
       if (this._expressions) {
@@ -110,27 +66,29 @@ class SourceFilesystem extends SourceSequential {
         }
       }
 
-      console.log('try _shift')
-      // Try and shift.
-      this._tryShift()
-
-      // Get file content.
-      const content = await fsReadFile(filePath, this._options.readOptions)
-
-      console.log('return result')
-      // Return result.
-      return {
-        path: filePathRelative,
-        content: content,
-      }
+      return [filePath, filePathRelative]
     }
 
-    // Set done.
-    console.log('Finished soure iteration.')
-    this.done = true
+    this.exhausted = true
+  }
 
-    // TODO:
-    // Imidiatly resolve all quued promises!
+  async concurrent (parameters) {
+    // Exit early if invalid parameters.
+    if (!parameters) {
+      return
+    }
+
+    // Deconstruct paramters.
+    const [filePath, filePathRelative] = parameters
+
+    // Get file content.
+    const content = await fsReadFile(filePath, this._options.readOptions)
+
+    // Return result.
+    return {
+      path: filePathRelative,
+      content: content,
+    }
   }
 }
 

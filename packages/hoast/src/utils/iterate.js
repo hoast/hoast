@@ -20,7 +20,7 @@ const iterate = function (iterator, limit = 1) {
           count--
 
           // Add another one in its place.
-          if (!iterator.done) {
+          if (!iterator.exhausted) {
             add()
           }
 
@@ -34,7 +34,7 @@ const iterate = function (iterator, limit = 1) {
     }
 
     while (count < limit) { // eslint-disable-line no-unmodified-loop-condition
-      if (iterator.done) {
+      if (iterator.exhausted) {
         break
       }
 

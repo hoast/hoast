@@ -7,15 +7,16 @@ const fsOpendir = promisify(fs.opendir)
 
 class DirectoryIterator {
   constructor(_directoryPath) {
-    console.log(_directoryPath)
     this._directoryPath = _directoryPath
+
+    this._isInitialized = false
   }
 
   async next () {
-    if (!this._initialized) {
-      this._initialized = true
+    if (!this._isInitialized) {
+      this._isInitialized = true
+
       // Open directory.
-      console.log(this._directoryPath)
       this._directoryResource = await fsOpendir(this._directoryPath, { encoding: 'utf8' })
     }
 
@@ -32,19 +33,24 @@ class DirectoryIterator {
     let item
     // Get directory item.
     while (item = await this._directoryResource.read()) {
-      console.log(item)
       // For directories recursively create an iterator on the sub directory.
       if (item.isDirectory()) {
+        // Create new sub iterator.
         this._subIterator = await new DirectoryIterator(
           path.resolve(this._directoryPath, item.name)
         )
 
-        item = await this._subIterator.next()
+        // Get next item from iterator.
+        const filePath = await this._subIterator.next()
 
-        if (!item) {
+        // Exit early if end of iterator.
+        if (!filePath) {
           this._subIterator = null
           continue
         }
+
+        // Return file path.
+        return filePath
       }
 
       // Construct file path.
@@ -53,7 +59,6 @@ class DirectoryIterator {
     }
 
     // Close directory resource handler.
-    console.log('Close directory resource.')
     await this._directoryResource.close()
   }
 }

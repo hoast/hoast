@@ -15,7 +15,7 @@ export default {
         },
       ],
       processes: [
-        '@hoast/process-log', {},
+        '@hoast/process-log',
       ],
     },
   ],

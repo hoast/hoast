@@ -20,15 +20,15 @@ class Log {
       default:
       case 'json':
         messages.push(JSON.stringify({
-          app,
-          data,
+          meta: app.meta,
+          data: data,
         }, null, 2))
         break
 
       case 'js':
         messages.push({
-          app,
-          data,
+          meta: app.meta,
+          data: data,
         })
         break
     }
@@ -52,6 +52,9 @@ class Log {
         console.warn(...messages)
         break
     }
+
+    // Return data as is.
+    return data
   }
 }
 

@@ -90,11 +90,8 @@ Options for run
     }
   }
 
-  // Log start message.
-  console.log('Starting hoast')
-
-  // Start execution timer.
-  const time = timer()
+  // Log prepare message.
+  console.log('Preparing hoast')
 
   // Set configuration file path.
   let filePath
@@ -232,6 +229,12 @@ Options for run
     optionsOverride.concurrencyLimit = options['limit-concurrency']
   }
   hoast.setOptions(optionsOverride)
+
+  // Log start message.
+  console.log('Starting hoast')
+
+  // Start execution timer.
+  const time = timer()
 
   // Start processing.
   await hoast.process()
