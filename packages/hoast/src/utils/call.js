@@ -6,7 +6,7 @@ export const call = function (context, methodName, ...methodArguments) {
     return
   }
 
-  if (typeof (context) === 'object' && Object.prototype.hasOwnProperty.call(context, methodName)) {
+  if (typeof (context) === 'object' && typeof (context[methodName]) === 'function') {
     context[methodName](...methodArguments)
   }
 }
@@ -19,7 +19,7 @@ export const callAsync = async function (context, methodName, ...methodArguments
     return
   }
 
-  if (typeof (context) === 'object' && Object.prototype.hasOwnProperty.call(context, methodName)) {
+  if (typeof (context) === 'object' && typeof (context[methodName]) === 'function') {
     await context[methodName](...methodArguments)
   }
 }

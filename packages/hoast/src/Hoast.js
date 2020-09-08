@@ -183,9 +183,6 @@ class Hoast {
     if (this._metaCollections.length > 0) {
       // Prepare meta collections.
       const metaCollections = this._metaCollections.map(collection => {
-        // Clone collection data.
-        collection = merge({}, collection)
-
         // Add 'assign to meta' process at the end of each meta collection.
         collection.processes = [...collection.processes, {
           process: function (app, data) {
@@ -201,14 +198,8 @@ class Hoast {
       await processCollections(this, metaCollections)
     }
 
-    // Prepare collections.
-    const collections = this._collections.map(collection => {
-      // Clone collection data.
-      return merge({}, collection)
-    })
-
     // Process collections.
-    await processCollections(this, collections)
+    await processCollections(this, this._collections)
 
     if (this._processes) {
       // Call finally on processes.

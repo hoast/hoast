@@ -30,6 +30,10 @@ const processCollections = async function (app, collections) {
     // Get collection at index.
     collection = collections[collectionIndex]
 
+    if (typeof (collection.source.next) !== 'function') {
+      collection.sourceIsSync = true
+    }
+
     // Prepare collection processes.
     processesPrepared = collection.processes.map(process => {
       let processType = typeof (process)
@@ -65,14 +69,19 @@ const processCollections = async function (app, collections) {
     // Return a source process method.
     {
       done: false,
-      next: async () => {
+      next: async function () {
         // Store collection data locally.
         const _source = collection.source
         const _processes = collection.processes
         const _processesPrepared = processesPrepared
 
         // Get data from source.
-        let data = await _source.next(app)
+        let data
+        if (collection.sourceIsSync) {
+          data = _source.nextSync(app)
+        } else {
+          data = await _source.next(app)
+        }
 
         // Skip if source is done.
         if (!_source.done) {
