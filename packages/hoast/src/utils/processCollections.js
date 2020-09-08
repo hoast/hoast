@@ -103,10 +103,10 @@ const processCollections = async function (app, collections) {
         }
 
         if (_source.done) {
-          // Call finally on object processes from this collection.
+          // Call final on object processes from this collection.
           for (const process of _processes) {
-            if (typeof (process) === 'object' && typeof (process.finally) === 'function') {
-              await process.finally(app)
+            if (typeof (process) === 'object' && typeof (process.final) === 'function') {
+              await process.final(app)
             }
           }
         }

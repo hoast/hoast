@@ -1,30 +1,17 @@
 /**
- * Allow the first part of the next call to be executed sequentially and the second part concurrently.
+ * Allow the first part of the next call to be executed sequentially and optionally a second part concurrently.
  */
-class SequentialIterator {
+class ConcurrentIterator {
   constructor() {
     this.done = false
     this.exhausted = false
 
-    this._isFinalized = false
     this._isInitialized = false
+    this._isFinalized = false
 
     this._concurrentCount = 0
     this._holdCalls = false
     this._promiseQueue = []
-  }
-
-  async _tryInitialize () {
-    // Exit early if already initialized.
-    if (this._isInitialized) {
-      return
-    }
-    this._isInitialized = true
-
-    // If initialize exist invoke it.
-    if (typeof (this.initialize) === 'function') {
-      await this.initialize()
-    }
   }
 
   async next (...parameters) {
@@ -48,13 +35,26 @@ class SequentialIterator {
     // Hold new calls.
     this._holdCalls = true
 
-    // Try to initialize.
-    await this._tryInitialize()
+    // Try to setup.
+    await this._trySetup()
 
     // Run now.
     const result = await this._run(...parameters)
 
     return result
+  }
+
+  async _trySetup () {
+    // Exit early if already setupd.
+    if (this._isInitialized) {
+      return
+    }
+    this._isInitialized = true
+
+    // If setup exist invoke it.
+    if (typeof (this.setup) === 'function') {
+      await this.setup()
+    }
   }
 
   _tryShift () {
@@ -66,8 +66,8 @@ class SequentialIterator {
       })
       this._promiseQueue = []
 
-      if (typeof (this.finally) === 'function') {
-        this.finally()
+      if (typeof (this.final) === 'function') {
+        this.final()
       }
       return
     }
@@ -88,20 +88,25 @@ class SequentialIterator {
   }
 
   async _run (...parameters) {
-    // Run sequential part.
-    let result = await this.sequential(...parameters)
+    let result = null
+    if (typeof (this.sequential) === 'function') {
+      // Run sequential part.
+      result = await this.sequential(...parameters)
+    }
 
     // Try and shift to the next call.
     this._tryShift()
 
-    // Increment concurrent count.
-    this._concurrentCount++
+    if (typeof (this.concurrent) === 'function') {
+      // Increment concurrent count.
+      this._concurrentCount++
 
-    // Run concurrent part.
-    result = await this.concurrent(result)
+      // Run concurrent part.
+      result = await this.concurrent(result)
 
-    // Decrement concurrent count.
-    this._concurrentCount--
+      // Decrement concurrent count.
+      this._concurrentCount--
+    }
 
     // If exhausted and no more concurreny of this source is going then set done to true!
     if (this.exhausted && this._concurrentCount === 0) {
@@ -111,10 +116,14 @@ class SequentialIterator {
     return result
   }
 
-  initialize () { }
-  sequential () { }
-  concurrent () { }
-  finally () { }
+  /**
+   * Methods to extends when using this as your base class.
+   *
+   * async setup () { }
+   * async sequential () { }
+   * async concurrent () { }
+   * async final () { }
+   */
 }
 
-export default SequentialIterator
+export default ConcurrentIterator

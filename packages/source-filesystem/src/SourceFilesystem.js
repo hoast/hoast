@@ -6,7 +6,7 @@ import { promisify } from 'util'
 // Import external modules.
 import merge from '@hoast/utils/merge.js'
 import planckmatch from 'planckmatch'
-import SequentialIterator from '@hoast/utils/SequentialIterator.js'
+import ConcurrentIterator from '@hoast/utils/ConcurrentIterator.js'
 
 // Import internal modules.
 import DirectoryIterator from './utils/DirectoryIterator.js'
@@ -14,7 +14,7 @@ import DirectoryIterator from './utils/DirectoryIterator.js'
 // Promisify file system functions.
 const fsReadFile = promisify(fs.readFile)
 
-class SourceFilesystem extends SequentialIterator {
+class SourceFilesystem extends ConcurrentIterator {
   constructor(options) {
     super()
 
@@ -31,7 +31,7 @@ class SourceFilesystem extends SequentialIterator {
     }, options)
   }
 
-  initialize () {
+  setup () {
     // Parse patterns into regular expressions.
     if (this._options.patterns) {
       this._expressions = this._options.patterns.map(pattern => {
@@ -72,14 +72,14 @@ class SourceFilesystem extends SequentialIterator {
     this.exhausted = true
   }
 
-  async concurrent (parameters) {
+  async concurrent (values) {
     // Exit early if invalid parameters.
-    if (!parameters) {
+    if (!values) {
       return
     }
 
     // Deconstruct paramters.
-    const [filePath, filePathRelative] = parameters
+    const [filePath, filePathRelative] = values
 
     // Get file content.
     const content = await fsReadFile(filePath, this._options.readOptions)
