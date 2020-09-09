@@ -153,6 +153,6 @@ Transform packages, as the name implies, transform the data being processed. The
 
 ### For source packages
 
-Add a dot sperated namespace option to the options so the data returned can be easily merged with for instance the metadata object without weird quirks in the core code.
+Add a dot sperated namespace option to the options so the data returned can be easily deepAssignd with for instance the metadata object without weird quirks in the core code.
 
 Source plugins should skip items if the item has not changes since last time. Except for metadata sourcing of course where the entire result will be cached and added to the metadata object if the source hasn't changed. Source plugins can keep track of this data in a cache directory perhaps managed by the app. Where they can possibly return a use cache property.

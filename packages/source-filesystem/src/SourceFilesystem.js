@@ -4,30 +4,29 @@ import path from 'path'
 import { promisify } from 'util'
 
 // Import external modules.
-import merge from '@hoast/utils/merge.js'
+import AsyncIterator from '@hoast/utils/AsyncIterator.js'
 import planckmatch from 'planckmatch'
-import ConcurrentIterator from '@hoast/utils/ConcurrentIterator.js'
 
 // Import internal modules.
 import DirectoryIterator from './utils/DirectoryIterator.js'
 
 // Promisify file system functions.
+const fsStat = promisify(fs.stat)
 const fsReadFile = promisify(fs.readFile)
 
-class SourceFilesystem extends ConcurrentIterator {
+class SourceFilesystem extends AsyncIterator {
   constructor(options) {
-    super()
-
-    // Store options.
-    this._options = merge({
+    super({
       directory: 'src',
-      content: true,
 
       patterns: [],
       patternOptions: {},
-      readOptions: {
-        encoding: 'utf8',
-      },
+
+      read: true,
+      readOptions: {},
+
+      stat: true,
+      statOptions: {},
     }, options)
   }
 
@@ -81,14 +80,23 @@ class SourceFilesystem extends ConcurrentIterator {
     // Deconstruct paramters.
     const [filePath, filePathRelative] = values
 
-    // Get file content.
-    const content = await fsReadFile(filePath, this._options.readOptions)
+    // Create result.
+    const result = {
+      path: filePathRelative,
+    }
+
+    // Read file content.
+    if (this._options.read) {
+      result.content = await fsReadFile(filePath, this._options.readOptions)
+    }
+
+    // Get file stat.
+    if (this._options.stat) {
+      result.stat = await fsStat(filePath, this._options.statOptions)
+    }
 
     // Return result.
-    return {
-      path: filePathRelative,
-      content: content,
-    }
+    return result
   }
 }
 

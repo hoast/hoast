@@ -2,10 +2,10 @@ import { isObject } from './is.js'
 
 /**
  * Deeply assign a series of objects properties together.
- * @param {Object} target Target object to merge to.
- * @param  {...Object} sources Objects to merge into the target.
+ * @param {Object} target Target object to deepAssign to.
+ * @param  {...Object} sources Objects to deepAssign into the target.
  */
-const merge = function (target, ...sources) {
+const deepAssign = function (target, ...sources) {
   if (!sources.length) {
     return target
   }
@@ -19,7 +19,7 @@ const merge = function (target, ...sources) {
             [key]: {},
           })
         }
-        merge(target[key], source[key])
+        deepAssign(target[key], source[key])
       } else {
         Object.assign(target, {
           [key]: source[key],
@@ -28,7 +28,7 @@ const merge = function (target, ...sources) {
     }
   }
 
-  return merge(target, ...sources)
+  return deepAssign(target, ...sources)
 }
 
-export default merge
+export default deepAssign

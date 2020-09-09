@@ -11,7 +11,7 @@ import minimist from 'minimist'
 // Custom libraries.
 import instantiate from './utils/instantiate.js'
 // TODO: import { isValidConfig } from './util/isValid.js'
-import merge from '@hoast/utils/merge.js'
+import deepAssign from '@hoast/utils/deepAssign.js'
 import timer from './utils/timer.js'
 
 // Import core library.
@@ -130,7 +130,7 @@ Options for run
   switch (String.prototype.toLowerCase.call(extension)) {
     case '.json':
       // Read and parse configuration at file path.
-      config = merge(
+      config = deepAssign(
         config,
         JSON.parse(
           await fsReadFile(filePath, 'utf8')
@@ -152,7 +152,7 @@ Options for run
         throw new Error('Invalid configuration file content! ' + MESSAGE_SEE_HELP)
       }
 
-      config = merge({}, imported.default)
+      config = deepAssign({}, imported.default)
       break
 
     default:

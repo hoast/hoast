@@ -56,6 +56,7 @@ module.exports = {
     ],
     'no-cond-assign': 0,
     'no-case-declarations': 0,
+    'no-fallthrough': 0,
     'standard/no-callback-literal': 0,
   },
 }

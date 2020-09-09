@@ -1,6 +1,8 @@
-class Log {
+import BasePackage from '@hoast/utils/BasePackage.js'
+
+class Log extends BasePackage {
   constructor(options) {
-    this._options = Object.assign({
+    super({
       format: 'json',
       level: 'log',
 
@@ -18,6 +20,8 @@ class Log {
 
     switch (String.prototype.toLowerCase.call(this._options.format)) {
       default:
+        this._debugger.warn('Unkown value for option "format", falling back to "json".')
+
       case 'json':
         messages.push(JSON.stringify({
           meta: app.meta,

@@ -12,6 +12,9 @@ export default {
           patterns: [
             'content/*',
           ],
+          readOptions: {
+            encoding: 'utf8',
+          },
         },
       ],
       processes: [

@@ -78,7 +78,7 @@ Ensure your commits are signed off on at the end of your commit message, like so
 
 ## Reviewing pull requests
 
-Before a pull request is allowed to be merged into the development branch at least one other contributor has to review and approve the changes made.
+Before a pull request is allowed to be deepAssignd into the development branch at least one other contributor has to review and approve the changes made.
 
 + Form is filed correctly.
 + Changes follow styling.

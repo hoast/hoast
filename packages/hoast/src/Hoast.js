@@ -1,6 +1,7 @@
 // Import external modules.
+import Debugger from '@hoast/utils/Debugger.js'
 import { hasKeys } from '@hoast/utils/has.js'
-import merge from '@hoast/utils/merge.js'
+import deepAssign from '@hoast/utils/deepAssign.js'
 
 // Import internal modules.
 import { callAsync } from './utils/call.js'
@@ -18,6 +19,7 @@ class Hoast {
       concurrencyLimit: 4,
       ignoreCache: false,
     }
+
     if (options) {
       this.setOptions(options)
     }
@@ -36,6 +38,20 @@ class Hoast {
     this._processes = {}
   }
 
+  /**
+   * Set the level of the debugger.
+   * @param {Number} debugLevel Level of log messages to show.
+   */
+
+  _setDebugLevel (debugLevel) {
+    if (!this.debugger) {
+      this.debugger = new Debugger(debugLevel)
+      return
+    }
+
+    this.debugger.setLevel(debugLevel)
+  }
+
   // Options
 
   /**
@@ -47,7 +63,11 @@ class Hoast {
       return this
     }
 
-    this.options = Object.assign(this.options, options)
+    // deepAssign current with new iptions
+    this.options = deepAssign(this.options, options)
+
+    // Set debug level based of the options.
+    this._setDebugLevel(this.options.debugLevel)
 
     return this
   }
@@ -56,14 +76,14 @@ class Hoast {
 
   /**
    * Assign data to meta data.
-   * @param {Object} meta Data to merge with current meta data.
+   * @param {Object} meta Data to deepAssign with current meta data.
    */
   setMeta (meta) {
     if (typeof (meta) !== 'object') {
       return this
     }
 
-    this.meta = merge(this.meta, meta)
+    this.meta = deepAssign(this.meta, meta)
 
     return this
   }

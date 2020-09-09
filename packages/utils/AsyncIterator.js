@@ -1,8 +1,12 @@
+import BasePackage from './BasePackage.js'
+
 /**
  * Allow the first part of the next call to be executed sequentially and optionally a second part concurrently.
  */
-class ConcurrentIterator {
-  constructor() {
+class AsyncIterator extends BasePackage {
+  constructor(defaultOptions, options) {
+    super(defaultOptions, options)
+
     this.done = false
     this.exhausted = false
 
@@ -126,4 +130,4 @@ class ConcurrentIterator {
    */
 }
 
-export default ConcurrentIterator
+export default AsyncIterator
