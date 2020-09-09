@@ -1,6 +1,6 @@
 import BasePackage from '@hoast/utils/BasePackage.js'
 
-class ProcessFilesystem extends BasePackage {
+class ProcessWritefiles extends BasePackage {
   constructor(options) {
     super({
       directory: 'dst',
@@ -12,4 +12,4 @@ class ProcessFilesystem extends BasePackage {
   }
 }
 
-export default ProcessFilesystem
+export default ProcessWritefiles

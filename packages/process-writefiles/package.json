@@ -3,14 +3,10 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/source-filesystem",
+  "name": "@hoast/process-writefiles",
   "version": "2.0.0",
   "description": "",
-  "keywords": [
-    "hoast",
-    "source",
-    "filesystem"
-  ],
+  "keywords": [],
   "license": "ISC",
   "homepage": "https://github.com/hoast/hoast#readme",
   "repository": {
@@ -26,12 +22,11 @@
     "CHANGELOG.md",
     "src/"
   ],
-  "main": "src/SourceFilesystem.js",
+  "main": "src/ProcessWritefiles.js",
   "scripts": {
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/utils": "2.0.0",
-    "planckmatch": "^0.2.1"
+    "@hoast/utils": "2.0.0"
   }
 }

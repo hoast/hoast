@@ -1,5 +1,5 @@
 import Hoast from '@hoast/hoast'
-import SourceFilesystem from '@hoast/source-filesystem'
+import SourceReadfiles from '@hoast/source-readfiles'
 
 const hoast = new Hoast()
   .setMeta({
@@ -8,7 +8,7 @@ const hoast = new Hoast()
   })
   .addCollections([
     {
-      source: new SourceFilesystem({
+      source: new SourceReadfiles({
         directory: 'src',
         patterns: [
           'content/*',

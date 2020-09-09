@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "dependencies": {
     "@hoast/hoast": "2.0.0",
-    "@hoast/source-filesystem": "2.0.0",
+    "@hoast/source-readfiles": "2.0.0",
     "@hoast/utils": "2.0.0"
   },
   "type": "module",

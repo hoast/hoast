@@ -14,7 +14,7 @@ import DirectoryIterator from './utils/DirectoryIterator.js'
 const fsStat = promisify(fs.stat)
 const fsReadFile = promisify(fs.readFile)
 
-class SourceFilesystem extends AsyncIterator {
+class SourceReadfiles extends AsyncIterator {
   constructor(options) {
     super({
       directory: 'src',
@@ -100,4 +100,4 @@ class SourceFilesystem extends AsyncIterator {
   }
 }
 
-export default SourceFilesystem
+export default SourceReadfiles

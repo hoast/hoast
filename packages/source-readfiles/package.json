@@ -3,10 +3,14 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/process-filesystem",
+  "name": "@hoast/source-readfiles",
   "version": "2.0.0",
   "description": "",
-  "keywords": [],
+  "keywords": [
+    "hoast",
+    "source",
+    "filesystem"
+  ],
   "license": "ISC",
   "homepage": "https://github.com/hoast/hoast#readme",
   "repository": {
@@ -22,11 +26,12 @@
     "CHANGELOG.md",
     "src/"
   ],
-  "main": "src/ProcessFilesystem.js",
+  "main": "src/SourceReadfiles.js",
   "scripts": {
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/utils": "2.0.0"
+    "@hoast/utils": "2.0.0",
+    "planckmatch": "^0.2.1"
   }
 }

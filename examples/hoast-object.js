@@ -6,7 +6,7 @@ export default {
   collections: [
     {
       source: [
-        '@hoast/source-filesystem',
+        '@hoast/source-readfiles',
         {
           directory: 'src',
           patterns: [
