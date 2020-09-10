@@ -28,11 +28,9 @@ class SourceReadfiles extends AsyncIterator {
       stat: true,
       statOptions: {},
     }, options)
-  }
 
-  setup () {
     // Parse patterns into regular expressions.
-    if (this._options.patterns) {
+    if (this._options.patterns && this._options.patterns.length > 0) {
       this._expressions = this._options.patterns.map(pattern => {
         return planckmatch.parse(pattern, this._options.patternOptions, true)
       })
@@ -44,7 +42,9 @@ class SourceReadfiles extends AsyncIterator {
     } else {
       this._directoryPath = path.resolve(process.cwd(), this._options.directory)
     }
+  }
 
+  setup () {
     // Create directory iterator.
     this._directoryIterator = new DirectoryIterator(this._directoryPath)
   }
@@ -84,6 +84,8 @@ class SourceReadfiles extends AsyncIterator {
     const result = {
       path: filePathRelative,
     }
+
+    // TODO: Start the next two async functions at the same time not one after the other!
 
     // Read file content.
     if (this._options.read) {

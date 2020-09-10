@@ -3,24 +3,28 @@ class Debugger {
     this.setLevel(level)
   }
 
+  getlevel () {
+    return this._level
+  }
+
   setLevel (level) {
-    this.level = level
+    this._level = level
   }
 
-  log (...parameters) {
-    this.info(...parameters)
-  }
-
-  info (message, ...optionalParams) {
-    if (this.level < 3) {
+  log (message, ...optionalParams) {
+    if (this._level < 3) {
       return
     }
 
     console.log(message, ...optionalParams)
   }
 
+  info (parameters) {
+    this.log(...parameters)
+  }
+
   warn (message, ...optionalParams) {
-    if (this.level < 2) {
+    if (this._level < 2) {
       return
     }
 
@@ -28,7 +32,7 @@ class Debugger {
   }
 
   error (message, ...optionalParams) {
-    if (this.level < 1) {
+    if (this._level < 1) {
       return
     }
 

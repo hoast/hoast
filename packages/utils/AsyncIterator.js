@@ -69,10 +69,6 @@ class AsyncIterator extends BasePackage {
         resolve(null)
       })
       this._promiseQueue = []
-
-      if (typeof (this.final) === 'function') {
-        this.final()
-      }
       return
     }
 
@@ -115,6 +111,10 @@ class AsyncIterator extends BasePackage {
     // If exhausted and no more concurreny of this source is going then set done to true!
     if (this.exhausted && this._concurrentCount === 0) {
       this.done = true
+
+      if (typeof (this.final) === 'function') {
+        this.final()
+      }
     }
 
     return result
@@ -126,7 +126,7 @@ class AsyncIterator extends BasePackage {
    * async setup () { }
    * async sequential () { }
    * async concurrent () { }
-   * async final () { }
+   * final () { }
    */
 }
 
