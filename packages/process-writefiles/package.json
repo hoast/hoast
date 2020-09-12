@@ -6,7 +6,13 @@
   "name": "@hoast/process-writefiles",
   "version": "2.0.0",
   "description": "",
-  "keywords": [],
+  "keywords": [
+    "hoast",
+    "process",
+    "filesystem",
+    "write",
+    "files"
+  ],
   "license": "ISC",
   "homepage": "https://github.com/hoast/hoast#readme",
   "repository": {

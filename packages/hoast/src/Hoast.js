@@ -1,10 +1,10 @@
 // Import external modules.
-import Debugger from '@hoast/utils/Debugger.js'
 import { hasKeys } from '@hoast/utils/has.js'
 import deepAssign from '@hoast/utils/deepAssign.js'
 
 // Import internal modules.
 import { callAsync } from './utils/call.js'
+import logger from './utils/logger.js'
 import processCollections from './utils/processCollections.js'
 
 class Hoast {
@@ -16,17 +16,17 @@ class Hoast {
   constructor(options = null, meta = null) {
     // Set options.
     this.options = {
+      logLevel: 2,
+
       concurrencyLimit: 4,
       ignoreCache: false,
     }
-
     if (options) {
-      this.setOptions(options)
+      this.options = deepAssign(this.options, options)
     }
 
-    // Set meta data object.
-    this.meta = {}
-    this.setMeta(meta)
+    // Set meta.
+    this.meta = meta || {}
 
     // Initialize meta collections.
     this._metaCollections = []
@@ -36,57 +36,13 @@ class Hoast {
 
     // Initialize modules registry.
     this._processes = {}
-  }
 
-  /**
-   * Set the level of the debugger.
-   * @param {Number} debugLevel Level of log messages to show.
-   */
-
-  _setDebugLevel (debugLevel) {
-    if (!this.debugger) {
-      this.debugger = new Debugger(debugLevel)
-      return
-    }
-
-    this.debugger.setLevel(debugLevel)
-  }
-
-  // Options
-
-  /**
-   * Assign data to options.
-   * @param {Object} options Options object.
-   */
-  setOptions (options) {
-    if (typeof (options) !== 'object') {
-      return this
-    }
-
-    // deepAssign current with new iptions
-    this.options = deepAssign(this.options, options)
-
-    // Set debug level based of the options.
-    this._setDebugLevel(this.options.debugLevel)
-
-    return this
+    // Set debugger.
+    logger.setLevel(this.options.logLevel)
+    logger.setPrefix(this.constructor.name)
   }
 
   // Meta.
-
-  /**
-   * Assign data to meta data.
-   * @param {Object} meta Data to deepAssign with current meta data.
-   */
-  setMeta (meta) {
-    if (typeof (meta) !== 'object') {
-      return this
-    }
-
-    this.meta = deepAssign(this.meta, meta)
-
-    return this
-  }
 
   /**
    * Add collection to meta collections.

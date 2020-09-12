@@ -1,7 +1,6 @@
 // Import build-in modules.
 import fs from 'fs'
 import path from 'path'
-import { promisify } from 'util'
 
 // Import external modules.
 import AsyncIterator from '@hoast/utils/AsyncIterator.js'
@@ -9,10 +8,6 @@ import planckmatch from 'planckmatch'
 
 // Import internal modules.
 import DirectoryIterator from './utils/DirectoryIterator.js'
-
-// Promisify file system functions.
-const fsStat = promisify(fs.stat)
-const fsReadFile = promisify(fs.readFile)
 
 class SourceReadfiles extends AsyncIterator {
   constructor(options) {
@@ -80,21 +75,60 @@ class SourceReadfiles extends AsyncIterator {
     // Deconstruct paramters.
     const [filePath, filePathRelative] = values
 
+    // Get extensions of file path.
+    // Get file name with extensions.
+    let extensions = filePath.split('/').pop()
+    // Split file and each extension apart.
+    extensions = extensions.split('.')
+    // Remove file name.
+    extensions.shift()
+
     // Create result.
     const result = {
       path: filePathRelative,
+      extensions: extensions,
     }
 
-    // TODO: Start the next two async functions at the same time not one after the other!
+    // Store promises here.
+    const promises = []
 
     // Read file content.
     if (this._options.read) {
-      result.content = await fsReadFile(filePath, this._options.readOptions)
+      promises.push(
+        new Promise((resolve, reject) => {
+          fs.readFile(filePath, this._options.readOptions, (error, data) => {
+            if (error) {
+              reject(error)
+              return
+            }
+
+            result.content = data
+            resolve()
+          })
+        })
+      )
     }
 
     // Get file stat.
     if (this._options.stat) {
-      result.stat = await fsStat(filePath, this._options.statOptions)
+      promises.push(
+        new Promise((resolve, reject) => {
+          fs.stat(filePath, this._options.statOptions, (error, data) => {
+            if (error) {
+              reject(error)
+              return
+            }
+
+            result.stat = data
+            resolve()
+          })
+        })
+      )
+    }
+
+    // Wait for all the promises to finish.
+    if (promises.length > 0) {
+      await Promise.all(promises)
     }
 
     // Return result.

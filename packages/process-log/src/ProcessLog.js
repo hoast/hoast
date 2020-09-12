@@ -1,6 +1,6 @@
 import BasePackage from '@hoast/utils/BasePackage.js'
 
-class Log extends BasePackage {
+class ProcessLog extends BasePackage {
   constructor(options) {
     super({
       format: 'json',
@@ -20,7 +20,7 @@ class Log extends BasePackage {
 
     switch (String.prototype.toLowerCase.call(this._options.format)) {
       default:
-        this._debugger.warn('Unkown value for option "format", falling back to "json".')
+        this._logger.warn('Unkown value for option "format", falling back to "json".')
 
       case 'json':
         messages.push(JSON.stringify({
@@ -62,4 +62,4 @@ class Log extends BasePackage {
   }
 }
 
-export default Log
+export default ProcessLog

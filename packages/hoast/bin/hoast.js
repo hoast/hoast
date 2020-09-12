@@ -58,9 +58,10 @@ Commands
   v, version  Display version
 
 Options for run
-  --file-path          {String}  File path to config or script file (Default hoast.json / hoast.js)
+  --log-level          {Number}  Log level of hoast itself (Default: 2)
+  --file-path          {String}  File path to config or script file (Default: hoast.js THEN hoast.json)
   --ignore-cache       {Bool}    Whether to use the existing cache (Default: false)
-  --limit-concurrency  {Number}  Maximum concurrency count (Default: 32)
+  --concurrency-limit  {Number}  Maximum concurrency count (Default: 32)
 `
 
   const MESSAGE_SEE_DOCS = `See '${pkg.docs}' for more information about hoast.`
@@ -222,13 +223,20 @@ Options for run
 
   // Overwrite options with CLI options.
   const optionsOverride = {}
+  if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
+    optionsOverride.logLevel = options['log-level']
+  }
   if (Object.prototype.hasOwnProperty.call(options, 'ignore-cache')) {
     optionsOverride.ignoreCache = options['ignore-cache']
   }
-  if (Object.prototype.hasOwnProperty.call(options, 'limit-concurrency')) {
-    optionsOverride.concurrencyLimit = options['limit-concurrency']
+  if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
+    optionsOverride.concurrencyLimit = options['concurrency-limit']
   }
-  hoast.setOptions(optionsOverride)
+  // Manually overwrite options.
+  hoast.options = deepAssign(
+    hoast.options,
+    optionsOverride
+  )
 
   // Log start message.
   console.log('Starting hoast')

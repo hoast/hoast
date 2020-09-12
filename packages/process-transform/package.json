@@ -3,16 +3,13 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/process-log",
+  "name": "@hoast/process-transform",
   "version": "2.0.0",
-  "description": "Logs state and data passed to process, useful for debugging.",
+  "description": "",
   "keywords": [
     "hoast",
     "process",
-    "debug",
-    "debugging",
-    "log",
-    "logging"
+    "transform"
   ],
   "license": "ISC",
   "homepage": "https://github.com/hoast/hoast#readme",
@@ -29,7 +26,7 @@
     "CHANGELOG.md",
     "src/"
   ],
-  "main": "src/ProcessLog.js",
+  "main": "src/ProcessTransform.js",
   "scripts": {
     "lint": "eslint --fix --cache src --ext .js"
   },
