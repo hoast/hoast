@@ -3,15 +3,13 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/utils",
+  "name": "@hoast/base-processor",
   "version": "2.0.0",
-  "description": "Utility functions commonly used by hoast and hoast plugins.",
+  "description": "",
   "keywords": [
     "hoast",
-    "util",
-    "utils",
-    "utility",
-    "utilities"
+    "base",
+    "processor"
   ],
   "license": "ISC",
   "homepage": "https://github.com/hoast/hoast#readme",
@@ -26,12 +24,15 @@
   "files": [
     "README.md",
     "CHANGELOG.md",
-    "*.js",
-    "base/*.js"
+    "src/*.js"
   ],
-  "main": "index.js",
+  "main": "src/BaseProcessor.js",
   "scripts": {
-    "lint": "eslint --fix --cache *.js base/*.js"
+    "lint": "eslint --fix --cache base/*.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@hoast/base-package": "2.0.0",
+    "@hoast/utils": "2.0.0",
+    "planckmatch": "^0.2.1"
+  }
 }

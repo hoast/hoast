@@ -1,4 +1,4 @@
-import BasePackage from '@hoast/utils/BasePackage.js'
+import BasePackage from '@hoast/base-package'
 
 class ProcessLog extends BasePackage {
   constructor(options) {
@@ -11,7 +11,7 @@ class ProcessLog extends BasePackage {
     }, options)
   }
 
-  process (app, data) {
+  next (app, data) {
     const messages = []
 
     if (this._options.prepend) {

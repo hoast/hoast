@@ -1,9 +1,10 @@
+// Import internal modules.
 import { isObject } from './is.js'
 
 /**
  * Deeply assign a series of objects properties together.
- * @param {Object} target Target object to deepAssign to.
- * @param  {...Object} sources Objects to deepAssign into the target.
+ * @param {Object} target Target object to assign onto.
+ * @param  {...Object} sources Sources to assign with.
  */
 const deepAssign = function (target, ...sources) {
   if (!sources.length) {

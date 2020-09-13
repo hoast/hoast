@@ -3,7 +3,7 @@ import { hasKeys } from '@hoast/utils/has.js'
 import deepAssign from '@hoast/utils/deepAssign.js'
 
 // Import internal modules.
-import { callAsync } from './utils/call.js'
+import { callSync } from './utils/call.js'
 import logger from './utils/logger.js'
 import processCollections from './utils/processCollections.js'
 
@@ -28,6 +28,10 @@ class Hoast {
     // Set meta.
     this.meta = meta || {}
 
+    // Set debugger.
+    logger.setLevel(this.options.logLevel)
+    logger.setPrefix(this.constructor.name)
+
     // Initialize meta collections.
     this._metaCollections = []
 
@@ -36,10 +40,6 @@ class Hoast {
 
     // Initialize modules registry.
     this._processes = {}
-
-    // Set debugger.
-    logger.setLevel(this.options.logLevel)
-    logger.setPrefix(this.constructor.name)
   }
 
   // Meta.
@@ -179,7 +179,7 @@ class Hoast {
 
     if (this._processes) {
       // Call finally on processes.
-      await callAsync(this._processes, 'finally', this)
+      callSync(this._processes, 'final', this)
     }
 
     return this

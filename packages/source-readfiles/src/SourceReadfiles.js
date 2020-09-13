@@ -3,18 +3,18 @@ import fs from 'fs'
 import path from 'path'
 
 // Import external modules.
-import AsyncIterator from '@hoast/utils/AsyncIterator.js'
+import BaseSourcer from '@hoast/base-sourcer'
 import planckmatch from 'planckmatch'
 
 // Import internal modules.
 import DirectoryIterator from './utils/DirectoryIterator.js'
 
-class SourceReadfiles extends AsyncIterator {
+class SourceReadfiles extends BaseSourcer {
   constructor(options) {
     super({
       directory: 'src',
 
-      patterns: [],
+      patterns: null,
       patternOptions: {},
 
       read: true,
@@ -32,19 +32,18 @@ class SourceReadfiles extends AsyncIterator {
     }
 
     // Construct absolute directory path.
-    if (path.isAbsolute(this._options.directory)) {
-      this._directoryPath = this._options.directory
-    } else {
-      this._directoryPath = path.resolve(process.cwd(), this._options.directory)
-    }
+    this._directoryPath =
+      path.isAbsolute(this._options.directory)
+        ? this._options.directory
+        : path.resolve(process.cwd(), this._options.directory)
   }
 
-  setup () {
+  setup (app) {
     // Create directory iterator.
     this._directoryIterator = new DirectoryIterator(this._directoryPath)
   }
 
-  async sequential () {
+  async sequential (app) {
     let filePath
     // Get next file path.
     while (filePath = await this._directoryIterator.next()) {
@@ -66,7 +65,7 @@ class SourceReadfiles extends AsyncIterator {
     this.exhausted = true
   }
 
-  async concurrent (values) {
+  async concurrent (app, values) {
     // Exit early if invalid parameters.
     if (!values) {
       return
@@ -82,6 +81,8 @@ class SourceReadfiles extends AsyncIterator {
     extensions = extensions.split('.')
     // Remove file name.
     extensions.shift()
+    // Reverse order, so last extension becomes the first in the list.
+    extensions.reverse()
 
     // Create result.
     const result = {

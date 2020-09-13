@@ -4,7 +4,7 @@ import path from 'path'
 import { promisify } from 'util'
 
 // Import external modules.
-import BasePackage from '@hoast/utils/BasePackage.js'
+import BasePackage from '@hoast/base-package'
 
 // Promisify file system functions.
 const fsMkdir = promisify(fs.mkdir)
@@ -28,7 +28,7 @@ class ProcessWritefiles extends BasePackage {
     }
   }
 
-  async process (app, data) {
+  async next (app, data) {
     // Construct absolute file path.
     const filePath = path.resolve(this._directoryPath, data.path)
 

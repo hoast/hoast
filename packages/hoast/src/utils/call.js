@@ -1,7 +1,7 @@
-export const call = function (context, methodName, ...methodArguments) {
+export const callSync = function (context, methodName, ...methodArguments) {
   if (Array.isArray(context)) {
     for (const item of context) {
-      call(item, methodName, ...methodArguments)
+      callSync(item, methodName, ...methodArguments)
     }
     return
   }
@@ -11,10 +11,10 @@ export const call = function (context, methodName, ...methodArguments) {
   }
 }
 
-export const callAsync = async function (context, methodName, ...methodArguments) {
+export const call = async function (context, methodName, ...methodArguments) {
   if (Array.isArray(context)) {
     for (const item of context) {
-      await callAsync(item, methodName, ...methodArguments)
+      await call(item, methodName, ...methodArguments)
     }
     return
   }
@@ -25,6 +25,6 @@ export const callAsync = async function (context, methodName, ...methodArguments
 }
 
 export default {
+  callSync,
   call,
-  callAsync,
 }

@@ -1,13 +1,13 @@
-// Import internal modules.
-import Logger from './Logger.js'
-import deepAssign from './deepAssign.js'
+// Import external modules.
+import Logger from '@hoast/utils/Logger.js'
+import deepAssign from '@hoast/utils/deepAssign.js'
 
 class BasePackage {
-  constructor(defaultOptions, options) {
+  constructor(...options) {
     // Set initial options.
     this._options = deepAssign({
       logLevel: 2,
-    }, defaultOptions, options)
+    }, ...options)
 
     // Create internal logger.
     this._logger = new Logger(this._options.logLevel, this.constructor.name)

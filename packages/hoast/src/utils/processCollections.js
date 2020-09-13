@@ -1,4 +1,7 @@
+// Import internal modules.
+import { callSync } from './call.js'
 import iterate from './iterate.js'
+import logger from './logger.js'
 
 /**
  * Process collections.
@@ -24,7 +27,11 @@ const processCollections = async function (app, collections) {
       collection = null
       processesPrepared = null
 
+      logger.info('No more collections to iterate over.')
       return false
+    }
+    if (collectionIndex > 0) {
+      logger.info('Start processing next collection.')
     }
 
     // Get collection at index.
@@ -61,8 +68,10 @@ const processCollections = async function (app, collections) {
 
   // Exit early if already done.
   if (!next()) {
+    logger.info('No collections to process.')
     return
   }
+  logger.info('Start processing collections.')
 
   // Iterate on collection sources and process them.
   await iterate(
@@ -91,7 +100,7 @@ const processCollections = async function (app, collections) {
               break
             }
 
-            data = await process.process(app, data)
+            data = await process.next(app, data)
           }
         }
 
@@ -104,16 +113,14 @@ const processCollections = async function (app, collections) {
 
         if (_source.done) {
           // Call final on object processes from this collection.
-          for (const process of _processes) {
-            if (typeof (process) === 'object' && typeof (process.final) === 'function') {
-              await process.final(app)
-            }
-          }
+          callSync(_processes, 'final', app)
         }
       },
     },
     app.options.concurrencyLimit
   )
+
+  logger.info('Finished processing collections.')
 }
 
 export default processCollections

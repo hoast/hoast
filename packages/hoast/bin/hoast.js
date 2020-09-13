@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-// Node modules.
+// Import build-in modules.
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
 
-// External libraries.
+// Import external modules.
+import deepAssign from '@hoast/utils/deepAssign.js'
+import instantiate from '@hoast/utils/instantiate.js'
 import minimist from 'minimist'
 
-// Custom libraries.
-import instantiate from './utils/instantiate.js'
+// Import local utility libraries.
 // TODO: import { isValidConfig } from './util/isValid.js'
-import deepAssign from '@hoast/utils/deepAssign.js'
 import timer from './utils/timer.js'
 
 // Import core library.

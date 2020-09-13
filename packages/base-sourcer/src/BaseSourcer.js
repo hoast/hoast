@@ -1,24 +1,23 @@
-import BasePackage from './BasePackage.js'
+// Import base class.
+import BasePackage from '@hoast/base-package'
 
 /**
  * Allow the first part of the next call to be executed sequentially and optionally a second part concurrently.
  */
-class AsyncIterator extends BasePackage {
-  constructor(defaultOptions, options) {
-    super(defaultOptions, options)
+class BaseSourcer extends BasePackage {
+  constructor(...options) {
+    super(...options)
 
     this.done = false
     this.exhausted = false
 
     this._isInitialized = false
-    this._isFinalized = false
-
     this._concurrentCount = 0
     this._holdCalls = false
     this._promiseQueue = []
   }
 
-  async next (...parameters) {
+  async next (app) {
     // Exit early if done or exhausted.
     if (this.done || this.exhausted) {
       return
@@ -31,7 +30,7 @@ class AsyncIterator extends BasePackage {
         this._promiseQueue.push({
           resolve,
           reject,
-          parameters,
+          app,
         })
       })
     }
@@ -40,16 +39,16 @@ class AsyncIterator extends BasePackage {
     this._holdCalls = true
 
     // Try to setup.
-    await this._trySetup()
+    await this._trySetup(app)
 
     // Run now.
-    const result = await this._run(...parameters)
+    const result = await this._run(app)
 
     return result
   }
 
   async _trySetup () {
-    // Exit early if already setupd.
+    // Exit early if already initialized.
     if (this._isInitialized) {
       return
     }
@@ -65,9 +64,9 @@ class AsyncIterator extends BasePackage {
     // If done wait for now.
     if (this.exhausted || this.done) {
       // Immediately resolve all queued promises.
-      this._promiseQueue.forEach(({ resolve }) => {
+      for (const { resolve } of this._promiseQueue) {
         resolve(null)
-      })
+      }
       this._promiseQueue = []
       return
     }
@@ -79,19 +78,19 @@ class AsyncIterator extends BasePackage {
     }
 
     // Run next iteration.
-    const { resolve, reject, parameters } = this._promiseQueue.shift()
+    const { resolve, reject, app } = this._promiseQueue.shift()
     try {
-      resolve(this._run(...parameters))
+      resolve(this._run(app))
     } catch (error) {
       reject(error)
     }
   }
 
-  async _run (...parameters) {
+  async _run (app) {
     let result = null
     if (typeof (this.sequential) === 'function') {
       // Run sequential part.
-      result = await this.sequential(...parameters)
+      result = await this.sequential(app)
     }
 
     // Try and shift to the next call.
@@ -102,7 +101,7 @@ class AsyncIterator extends BasePackage {
       this._concurrentCount++
 
       // Run concurrent part.
-      result = await this.concurrent(result)
+      result = await this.concurrent(app, result)
 
       // Decrement concurrent count.
       this._concurrentCount--
@@ -113,21 +112,20 @@ class AsyncIterator extends BasePackage {
       this.done = true
 
       if (typeof (this.final) === 'function') {
-        this.final()
+        this.final(app)
       }
     }
 
     return result
   }
 
-  /**
+  /*
    * Methods to extends when using this as your base class.
-   *
-   * async setup () { }
-   * async sequential () { }
-   * async concurrent () { }
-   * final () { }
+   * async setup (app:Hoast) { }
+   * async sequential (app:Hoast) { }
+   * async concurrent (app:Hoast) { }
+   * final (app:Hoast) { }
    */
 }
 
-export default AsyncIterator
+export default BaseSourcer
