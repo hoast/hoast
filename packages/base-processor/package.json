@@ -28,7 +28,7 @@
   ],
   "main": "src/BaseProcessor.js",
   "scripts": {
-    "lint": "eslint --fix --cache base/*.js"
+    "lint": "eslint --fix --cache src/*.js"
   },
   "dependencies": {
     "@hoast/base-package": "2.0.0",

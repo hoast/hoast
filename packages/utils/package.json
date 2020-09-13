@@ -31,7 +31,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --fix --cache *.js base/*.js"
+    "lint": "eslint --fix --cache *.js"
   },
   "dependencies": {}
 }
