@@ -44,7 +44,7 @@ const CLI = async function () {
 
   // Standard CLI messages.
 
-  const MESSAGE_VERSION = `${pkg.name} (v${pkg.version})`
+  const MESSAGE_VERSION = `ʕ  •ᴥ•ʔっ ${pkg.name} (v${pkg.version})`
 
   const MESSAGE_HELP = `
 ${MESSAGE_VERSION}
@@ -66,7 +66,7 @@ Options for run
 
   const MESSAGE_SEE_DOCS = `See '${pkg.docs}' for more information about hoast.`
   const MESSAGE_SEE_HELP = `Use '${pkg.name} help' to see a list of commands.`
-  const MESSAGE_UNKNOWN_COMMAND = 'Unkown command!'
+  const MESSAGE_UNKNOWN_COMMAND = 'ʕ  ;ᴥ;ʔ Unkown command!'
 
   // Construct command line interface.
   const options = minimist(process.argv.slice(2))
@@ -86,13 +86,13 @@ Options for run
     }
 
     if (options._.indexOf('r') === -1 && options._.indexOf('run') === -1) {
-      console.log(MESSAGE_UNKNOWN_COMMAND)
+      console.log(`${MESSAGE_UNKNOWN_COMMAND} ${MESSAGE_SEE_HELP}`)
       return
     }
   }
 
   // Log prepare message.
-  console.log('Preparing hoast')
+  console.log('ʕ  •ₒ•ʔ   Preparing!')
 
   // Set configuration file path.
   let filePath
@@ -239,7 +239,7 @@ Options for run
   )
 
   // Log start message.
-  console.log('Starting hoast')
+  console.log('ʕ ˵·ᴥ·ʔ   Starting!')
 
   // Start execution timer.
   const time = timer()
@@ -248,7 +248,7 @@ Options for run
   await hoast.process()
 
   // Log end with execution time.
-  console.log(`Finished hoast: ${time()}s`)
+  console.log(`ʕっ•ᴥ•ʔっ Done in ${time()}s!`)
 }
 
 // Run CLI.
