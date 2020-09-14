@@ -44,7 +44,7 @@ const CLI = async function () {
 
   // Standard CLI messages.
 
-  const MESSAGE_VERSION = `ʕ  •ᴥ•ʔっ ${pkg.name} (v${pkg.version})`
+  const MESSAGE_VERSION = `ʕ ˵•ᴥ•ʔっ ${pkg.name} (v${pkg.version})`
 
   const MESSAGE_HELP = `
 ${MESSAGE_VERSION}
@@ -66,7 +66,7 @@ Options for run
 
   const MESSAGE_SEE_DOCS = `See '${pkg.docs}' for more information about hoast.`
   const MESSAGE_SEE_HELP = `Use '${pkg.name} help' to see a list of commands.`
-  const MESSAGE_UNKNOWN_COMMAND = 'ʕ  ;ᴥ;ʔ Unkown command!'
+  const MESSAGE_UNKNOWN_COMMAND = 'ʕ ˵;ᴥ;ʔ Unkown command!'
 
   // Construct command line interface.
   const options = minimist(process.argv.slice(2))
@@ -92,7 +92,7 @@ Options for run
   }
 
   // Log prepare message.
-  console.log('ʕ  •ₒ•ʔ   Preparing!')
+  console.log('ʕ ˵·ᴥ·ʔ   Preparing!')
 
   // Set configuration file path.
   let filePath
@@ -131,29 +131,26 @@ Options for run
   switch (String.prototype.toLowerCase.call(extension)) {
     case '.json':
       // Read and parse configuration at file path.
-      config = deepAssign(
-        config,
-        JSON.parse(
-          await fsReadFile(filePath, 'utf8')
-        )
-      )
+      config = JSON.parse(await fsReadFile(filePath, 'utf8'))
       break
 
     case '.js':
       // Import from file path.
-      const imported = await import(filePath)
-
-      if (imported instanceof Hoast) {
-        hoast = imported
-        break
-      }
+      let imported = await import(filePath)
 
       if (!imported || typeof (imported) !== 'object') {
         // Invalid response.
         throw new Error('Invalid configuration file content! ' + MESSAGE_SEE_HELP)
       }
 
-      config = deepAssign({}, imported.default)
+      imported = imported.default
+
+      if (imported && imported instanceof Hoast) {
+        hoast = imported
+        break
+      }
+
+      config = deepAssign({}, imported)
       break
 
     default:
@@ -239,7 +236,7 @@ Options for run
   )
 
   // Log start message.
-  console.log('ʕ ˵·ᴥ·ʔ   Starting!')
+  console.log('ʕ ˵•ₒ•ʔ   Starting!')
 
   // Start execution timer.
   const time = timer()

@@ -11,10 +11,15 @@
           "directory": "src",
           "patterns": [
             "content/*"
-          ]
+          ],
+          "readOptions": {
+            "encoding": "utf8"
+          }
         }
+      ],
+      "processes": [
+        "@hoast/process-log"
       ]
     }
-  ],
-  "processes": {}
+  ]
 }

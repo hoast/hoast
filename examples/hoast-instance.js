@@ -1,11 +1,11 @@
 import Hoast from '@hoast/hoast'
 import SourceReadfiles from '@hoast/source-readfiles'
+import ProcessLog from '@hoast/process-log'
 
-const hoast = new Hoast()
-  .setMeta({
-    name: 'Hoast & hoastig',
-    url: 'hoast.js.org',
-  })
+const hoast = new Hoast({}, {
+  name: 'Hoast & hoastig',
+  url: 'hoast.js.org',
+})
   .addCollections([
     {
       source: new SourceReadfiles({
@@ -13,7 +13,13 @@ const hoast = new Hoast()
         patterns: [
           'content/*',
         ],
+        readOptions: {
+          encoding: 'utf8',
+        },
       }),
+      processes: [
+        new ProcessLog(),
+      ],
     },
   ])
 
