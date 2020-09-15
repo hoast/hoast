@@ -27,6 +27,7 @@
 
 ### Process packages
 
+- `process-custom`, provide your own custom process method.
 - `process-transform`
 - `process-writefiles`
 

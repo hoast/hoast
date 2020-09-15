@@ -8,7 +8,7 @@ import logger from './logger.js'
  * @param {Object} app App instance.
  * @param {Array} collections Collections to process.
  */
-const processCollections = async function (app, collections) {
+const process = async function (app, collections) {
   // Current collection.
   let collectionIndex = -1
   let collection
@@ -123,4 +123,4 @@ const processCollections = async function (app, collections) {
   logger.info('Finished processing collections.')
 }
 
-export default processCollections
+export default process

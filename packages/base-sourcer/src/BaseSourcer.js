@@ -11,13 +11,19 @@ class BaseSourcer extends BasePackage {
     this.done = false
     this.exhausted = false
 
+    this._hasSetup = typeof (this.setup) === 'function'
+    this._hasSequential = typeof (this.sequential) === 'function'
+    this._hasConcurrent = typeof (this.concurrent) === 'function'
+    this._hasFinal = typeof (this.final) === 'function'
+    // TODO: Use variables above for optimization and checking wether certain features need to be enabled or disabled entirly. For instance the promise system is not relevant if no sequantial or setup methods exist on this object.
+
     this._isInitialized = false
     this._concurrentCount = 0
     this._holdCalls = false
     this._promiseQueue = []
   }
 
-  async next (app) {
+  async next (...parameters) {
     // Exit early if done or exhausted.
     if (this.done || this.exhausted) {
       return
@@ -30,7 +36,7 @@ class BaseSourcer extends BasePackage {
         this._promiseQueue.push({
           resolve,
           reject,
-          app,
+          parameters,
         })
       })
     }
@@ -39,15 +45,15 @@ class BaseSourcer extends BasePackage {
     this._holdCalls = true
 
     // Try to setup.
-    await this._trySetup(app)
+    await this._trySetup(...parameters)
 
     // Run now.
-    const result = await this._run(app)
+    const result = await this._run(...parameters)
 
     return result
   }
 
-  async _trySetup () {
+  async _trySetup (...parameters) {
     // Exit early if already initialized.
     if (this._isInitialized) {
       return
@@ -55,8 +61,8 @@ class BaseSourcer extends BasePackage {
     this._isInitialized = true
 
     // If setup exist invoke it.
-    if (typeof (this.setup) === 'function') {
-      await this.setup()
+    if (this._hasSetup) {
+      await this.setup(...parameters)
     }
   }
 
@@ -78,30 +84,29 @@ class BaseSourcer extends BasePackage {
     }
 
     // Run next iteration.
-    const { resolve, reject, app } = this._promiseQueue.shift()
+    const { resolve, reject, parameters } = this._promiseQueue.shift()
     try {
-      resolve(this._run(app))
+      resolve(this._run(...parameters))
     } catch (error) {
       reject(error)
     }
   }
 
-  async _run (app) {
-    let result = null
-    if (typeof (this.sequential) === 'function') {
+  async _run (...parameters) {
+    if (this._hasSequential) {
       // Run sequential part.
-      result = await this.sequential(app)
+      parameters = await this.sequential(...parameters)
     }
 
     // Try and shift to the next call.
     this._tryShift()
 
-    if (typeof (this.concurrent) === 'function') {
+    if (this._hasConcurrent) {
       // Increment concurrent count.
       this._concurrentCount++
 
       // Run concurrent part.
-      result = await this.concurrent(app, result)
+      parameters = await this.concurrent(...parameters)
 
       // Decrement concurrent count.
       this._concurrentCount--
@@ -111,20 +116,20 @@ class BaseSourcer extends BasePackage {
     if (this.exhausted && this._concurrentCount === 0) {
       this.done = true
 
-      if (typeof (this.final) === 'function') {
-        this.final(app)
+      if (this._hasFinal) {
+        this.final(...parameters)
       }
     }
 
-    return result
+    return parameters
   }
 
   /*
    * Methods to extends when using this as your base class.
-   * async setup (app:Hoast) { }
-   * async sequential (app:Hoast) { }
-   * async concurrent (app:Hoast) { }
-   * final (app:Hoast) { }
+   * async setup (...parameters) { }
+   * async sequential (...parameters) { }
+   * async concurrent (...parameters) { }
+   * final (...parameters) { }
    */
 }
 

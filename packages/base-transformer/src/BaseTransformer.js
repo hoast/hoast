@@ -8,23 +8,21 @@ class BaseTransformer extends BaseProcessor {
   constructor(...options) {
     super(...options)
 
-    // Chechk if field option exists.
-    if (!this._options.field) {
-      this._logger.error('Required option "field" not set. See documention for more infromation.')
-    }
     // Convert dot notation to path segments.
-    this._fieldPath = this._options.field.split('.')
+    if (this._options.field) {
+      this._fieldPath = this._options.field.split('.')
+    }
   }
 
   async process (app, data) {
     // Get value at field.
-    let value = getByPathSegments(data, this._fieldPath)
+    let value = this._fieldPath ? getByPathSegments(data, this._fieldPath) : data
 
     // Transform value.
     value = await this.transform(app, data, value)
 
     // Set value back to field.
-    data = setByPathSegments(data, this._fieldPath, value)
+    data = this._fieldPath ? setByPathSegments(data, this._fieldPath, value) : value
 
     // Return resulting data.
     return data

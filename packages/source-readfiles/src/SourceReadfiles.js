@@ -33,7 +33,7 @@ class SourceReadfiles extends BaseSourcer {
 
     // Construct absolute directory path.
     this._directoryPath =
-      path.isAbsolute(this._options.directory)
+      (this._options.directory && path.isAbsolute(this._options.directory))
         ? this._options.directory
         : path.resolve(process.cwd(), this._options.directory)
   }

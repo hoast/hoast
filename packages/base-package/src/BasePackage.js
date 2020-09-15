@@ -12,6 +12,10 @@ class BasePackage {
     // Create internal logger.
     this._logger = new Logger(this._options.logLevel, this.constructor.name)
   }
+
+  setApp (app) {
+    this._app = app
+  }
 }
 
 export default BasePackage

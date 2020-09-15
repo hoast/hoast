@@ -11,80 +11,122 @@ import planckmatch from 'planckmatch'
 class BaseProcessor extends BasePackage {
   constructor(...options) {
     super({
-      patterns: null,
-      patternOptions: {},
-      patternField: null,
+      filterPatterns: null,
+      filterOptions: {
+        // Which item(s) to check if the field value is an array.
+        array: 'first', // first, last, all, any.
+      },
+      filterProperty: null,
     }, ...options)
 
+    this._hasSetup = typeof (this.setup) === 'function'
+    this._hasSequential = typeof (this.sequential) === 'function'
+    this._hasConcurrent = typeof (this.concurrent) === 'function'
+    // TODO: Use variables above for optimization and checking wether certain features need to be enabled or disabled entirly. For instance the promise system is not relevant if no sequantial or setup methods exist on this object.
+
     this._isInitialized = false
+    this._concurrentCount = 0
     this._holdCalls = false
     this._promiseQueue = []
 
-    // Parse patterns into regular expressions.
-    if (this._options.patterns && this._options.patterns.length > 0) {
-      if (!this._options.patternField) {
-        this._logger.error('Required option "patternField" not set. See documention for more infromation.')
-      }
-
-      this._expressions = this._options.patterns.map(pattern => {
-        return planckmatch.parse(pattern, this._options.patternOptions, this._options.patternOptions.isPath)
+    // Parse filter patterns into regular expressions.
+    if (this._options.filterPatterns && this._options.filterPatterns.length > 0) {
+      this._filterExpressions = this._options.filterPatterns.map(pattern => {
+        return planckmatch.parse(pattern, this._options.filterOptions, this._options.filterOptions.isPath)
       })
+    }
 
-      this._expressionFieldPath = this._options.patternField.split('.')
+    if (this._options.filterProperty) {
+      this._filterPropertyPath = this._options.filterProperty.split('.')
     }
   }
 
-  async next (app, data) {
+  async next (data) {
     // Exit early now if filtered out.
-    if (this._expressions) {
-      const value = getByPathSegments(data, this._expressionFieldPath)
-      const matches = this._options.patternOptions.all ? planckmatch.match.all(value, this._expressions) : planckmatch.match.any(value, this._expressions)
+    if (this._filterExpressions) {
+      // TODO: Expressions should check against whether the value is an array or a string. See this._options.filterOptions.array option.
+      const value = getByPathSegments(data, this._filterPropertyPath)
+      const matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
       if (!matches) {
         return data
       }
     }
 
-    // Initialize if not initialized already.
-    if (!this._isInitialized && typeof (this.setup) === 'function') {
-      if (this._holdCalls) {
-        // Add calls to queue.
-        return await new Promise((resolve, reject) => {
-          this._promiseQueue.push({
-            resolve,
-            reject,
-            app,
-            data,
-          })
+    // Check if calls should be held.
+    if (this._holdCalls) {
+      // Add calls to queue.
+      return await new Promise((resolve, reject) => {
+        this._promiseQueue.push({
+          resolve,
+          reject,
+          data,
         })
-      }
-      this._holdCalls = true
-
-      // If setup exist invoke it.
-      await this.setup(app)
-
-      // Set state variables.
-      this._isInitialized = true
-      this._holdCalls = false
-
-      // Release held calls.
-      for (const { resolve, reject, app, data } of this._promiseQueue) {
-        try {
-          resolve(this.process(app, data))
-        } catch (error) {
-          reject(error)
-        }
-      }
-      this._promiseQueue = []
+      })
     }
 
-    // Run process.
-    return await this.process(app, data)
+    // Hold new calls.
+    this._holdCalls = true
+
+    // Try to setup.
+    await this._trySetup(data)
+
+    // Run now.
+    const result = await this._run(data)
+
+    return result
+  }
+
+  async _trySetup (data) {
+    // Exit early if already initialized.
+    if (this._isInitialized) {
+      return
+    }
+    this._isInitialized = true
+
+    // If setup exist invoke it.
+    if (this._hasSetup) {
+      await this.setup(data)
+    }
+  }
+
+  _tryShift () {
+    // Set hold back to false.
+    if (this._promiseQueue.length === 0) {
+      this.hold = false
+      return
+    }
+
+    // Run next iteration.
+    const { resolve, reject, data } = this._promiseQueue.shift()
+    try {
+      resolve(this._run(data))
+    } catch (error) {
+      reject(error)
+    }
+  }
+
+  async _run (data) {
+    if (this._hasSequential) {
+      // Run sequential part.
+      data = await this.sequential(data)
+    }
+
+    // Try and shift to the next call.
+    this._tryShift()
+
+    if (this._hasConcurrent) {
+      // Run concurrent part.
+      data = await this.concurrent(data)
+    }
+
+    return data
   }
 
   /*
    * Methods to extends when using this as your base class.
-   * async setup (app) { }
-   * async process (app, data) { }
+   * async setup (app:Hoast) { }
+   * async sequential (app:Hoast) { }
+   * async concurrent (app:Hoast) { }
    */
 }
 

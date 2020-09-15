@@ -245,7 +245,7 @@ Options for run
   await hoast.process()
 
   // Log end with execution time.
-  console.log(`ʕっ•ᴥ•ʔっ Done in ${time()}s!`)
+  console.log(`ʕっ✦ᴥ✦ʔっ Done in ${time()}s!`)
 }
 
 // Run CLI.

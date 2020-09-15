@@ -1,17 +1,6 @@
-export const callSync = function (context, methodName, ...methodArguments) {
-  if (Array.isArray(context)) {
-    for (const item of context) {
-      callSync(item, methodName, ...methodArguments)
-    }
-    return
-  }
+// TODO: Add concurrency to asynchronous calls.
 
-  if (typeof (context) === 'object' && typeof (context[methodName]) === 'function') {
-    context[methodName](...methodArguments)
-  }
-}
-
-export const call = async function (context, methodName, ...methodArguments) {
+export const call = async function (options, context, methodName, ...methodArguments) {
   if (Array.isArray(context)) {
     for (const item of context) {
       await call(item, methodName, ...methodArguments)
@@ -25,6 +14,5 @@ export const call = async function (context, methodName, ...methodArguments) {
 }
 
 export default {
-  callSync,
   call,
 }

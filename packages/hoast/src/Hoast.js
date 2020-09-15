@@ -3,9 +3,9 @@ import { hasKeys } from '@hoast/utils/has.js'
 import deepAssign from '@hoast/utils/deepAssign.js'
 
 // Import internal modules.
-import { callSync } from './utils/call.js'
+import { call } from './utils/call.js'
 import logger from './utils/logger.js'
-import processCollections from './utils/processCollections.js'
+import process from './utils/process.js'
 
 class Hoast {
   /**
@@ -156,6 +156,13 @@ class Hoast {
    * Process collections.
    */
   async process () {
+    if (this._processes) {
+      // Call set app on processes.
+      await call({
+        concurrencyLimit: this.options.concurrencyLimit,
+      }, this._processes, 'setApp', this)
+    }
+
     if (this._metaCollections.length > 0) {
       // Prepare meta collections.
       const metaCollections = this._metaCollections.map(collection => {
@@ -170,16 +177,32 @@ class Hoast {
         return collection
       })
 
+      for (const collection of metaCollections) {
+        // Call set app on processes.
+        await call({
+          concurrencyLimit: this.options.concurrencyLimit,
+        }, collection.processes, 'setApp', this)
+      }
+
       // Process meta collections.
-      await processCollections(this, metaCollections)
+      await process(this, metaCollections)
+    }
+
+    for (const collection of this._collections) {
+      // Call set app on processes.
+      await call({
+        concurrencyLimit: this.options.concurrencyLimit,
+      }, collection.processes, 'setApp', this)
     }
 
     // Process collections.
-    await processCollections(this, this._collections)
+    await process(this, this._collections)
 
     if (this._processes) {
-      // Call finally on processes.
-      callSync(this._processes, 'final', this)
+      // Call final on processes.
+      await call({
+        concurrencyLimit: this.options.concurrencyLimit,
+      }, this._processes, 'final')
     }
 
     return this

@@ -10,6 +10,8 @@ import BasePackage from '@hoast/base-package'
 const fsMkdir = promisify(fs.mkdir)
 const fsWriteFile = promisify(fs.writeFile)
 
+// TODO: Rework with new base-processor so filepath making happens in sequential bit.
+
 class ProcessWritefiles extends BasePackage {
   constructor(options) {
     super({
@@ -21,11 +23,10 @@ class ProcessWritefiles extends BasePackage {
     }, options)
 
     // Construct absolute directory path.
-    if (path.isAbsolute(this._options.directory)) {
-      this._directoryPath = this._options.directory
-    } else {
-      this._directoryPath = path.resolve(process.cwd(), this._options.directory)
-    }
+    this._directoryPath =
+      (this._options.directory && path.isAbsolute(this._options.directory))
+        ? this._options.directory
+        : path.resolve(process.cwd(), this._options.directory)
   }
 
   async next (app, data) {

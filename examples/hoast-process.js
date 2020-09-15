@@ -1,6 +1,6 @@
 import Hoast from '@hoast/hoast'
-import SourceReadfiles from '@hoast/source-readfiles'
 import ProcessLog from '@hoast/process-log'
+import SourceReadfiles from '@hoast/source-readfiles'
 
 new Hoast({}, {
   name: 'Hoast & hoastig',
