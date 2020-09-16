@@ -11,7 +11,7 @@ class BaseSourcer extends BasePackage {
     this.done = false
     this.exhausted = false
 
-    this._hasInitialize = typeof (this.setup) === 'function'
+    this._hasInitialize = typeof (this.initialize) === 'function'
     this._hasSequential = typeof (this.sequential) === 'function'
     this._hasConcurrent = typeof (this.concurrent) === 'function'
     this._hasFinal = typeof (this.final) === 'function'

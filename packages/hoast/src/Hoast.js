@@ -3,7 +3,7 @@ import { hasKeys } from '@hoast/utils/has.js'
 import deepAssign from '@hoast/utils/deepAssign.js'
 
 // Import internal modules.
-import { call } from './utils/call.js'
+import call from './utils/call.js'
 import logger from './utils/logger.js'
 import process from './utils/process.js'
 
