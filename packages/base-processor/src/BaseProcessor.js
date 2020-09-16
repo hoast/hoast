@@ -6,28 +6,31 @@ import { getByPathSegments } from '@hoast/utils/get.js'
 import planckmatch from 'planckmatch'
 
 /**
- * Adds setup method to processors and pattern filtering.
+ * Adds initialize method to processors and pattern filtering.
  */
 class BaseProcessor extends BasePackage {
   constructor(...options) {
     super({
+      filterCustom: null,
       filterPatterns: null,
+      filterProperty: null,
       filterOptions: {
         // Which item(s) to check if the field value is an array.
         array: 'first', // first, last, all, any.
       },
-      filterProperty: null,
     }, ...options)
 
-    this._hasSetup = typeof (this.setup) === 'function'
+    this._hasInitialize = typeof (this.initialize) === 'function'
     this._hasSequential = typeof (this.sequential) === 'function'
     this._hasConcurrent = typeof (this.concurrent) === 'function'
-    // TODO: Use variables above for optimization and checking wether certain features need to be enabled or disabled entirly. For instance the promise system is not relevant if no sequantial or setup methods exist on this object.
 
-    this._isInitialized = false
-    this._concurrentCount = 0
-    this._holdCalls = false
-    this._promiseQueue = []
+    if (this._hasInitialize) {
+      this._isInitialized = false
+    }
+    if (this._hasInitialize || this._hasSequential) {
+      this._holdCalls = false
+      this._promiseQueue = []
+    }
 
     // Parse filter patterns into regular expressions.
     if (this._options.filterPatterns && this._options.filterPatterns.length > 0) {
@@ -52,6 +55,11 @@ class BaseProcessor extends BasePackage {
       }
     }
 
+    if ((!this._hasInitialize || this._isInitialized) && !this._hasSequential) {
+      // Run concurrent part.
+      return await this.concurrent(data)
+    }
+
     // Check if calls should be held.
     if (this._holdCalls) {
       // Add calls to queue.
@@ -67,52 +75,37 @@ class BaseProcessor extends BasePackage {
     // Hold new calls.
     this._holdCalls = true
 
-    // Try to setup.
-    await this._trySetup(data)
+    // Try initialization.
+    if (this._hasInitialize && !this._isInitialized) {
+      await this.initialize()
+      this._isInitialized = true
+    }
 
     // Run now.
-    const result = await this._run(data)
-
-    return result
+    return await this._next(data)
   }
 
-  async _trySetup (data) {
-    // Exit early if already initialized.
-    if (this._isInitialized) {
-      return
-    }
-    this._isInitialized = true
-
-    // If setup exist invoke it.
-    if (this._hasSetup) {
-      await this.setup(data)
-    }
-  }
-
-  _tryShift () {
-    // Set hold back to false.
-    if (this._promiseQueue.length === 0) {
-      this.hold = false
-      return
-    }
-
-    // Run next iteration.
-    const { resolve, reject, data } = this._promiseQueue.shift()
-    try {
-      resolve(this._run(data))
-    } catch (error) {
-      reject(error)
-    }
-  }
-
-  async _run (data) {
+  async _next (data) {
     if (this._hasSequential) {
       // Run sequential part.
       data = await this.sequential(data)
     }
 
-    // Try and shift to the next call.
-    this._tryShift()
+    if (this._hasInitialize || this._hasSequential) {
+      // Run any promises.
+      if (this._promiseQueue.length > 0) {
+        // Run next iteration.
+        const promise = this._promiseQueue.shift()
+        try {
+          promise.resolve(this._next(promise.data))
+        } catch (error) {
+          promise.reject(error)
+        }
+      } else {
+        // Set hold back to false.
+        this.hold = false
+      }
+    }
 
     if (this._hasConcurrent) {
       // Run concurrent part.
@@ -123,10 +116,10 @@ class BaseProcessor extends BasePackage {
   }
 
   /*
-   * Methods to extends when using this as your base class.
-   * async setup (app:Hoast) { }
-   * async sequential (app:Hoast) { }
-   * async concurrent (app:Hoast) { }
+   * Methods to use when using this as your base class.
+   * async initialize (data) { }
+   * async sequential (data) { }
+   * async concurrent (data) { }
    */
 }
 

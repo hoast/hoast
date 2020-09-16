@@ -11,22 +11,32 @@ class BaseSourcer extends BasePackage {
     this.done = false
     this.exhausted = false
 
-    this._hasSetup = typeof (this.setup) === 'function'
+    this._hasInitialize = typeof (this.setup) === 'function'
     this._hasSequential = typeof (this.sequential) === 'function'
     this._hasConcurrent = typeof (this.concurrent) === 'function'
     this._hasFinal = typeof (this.final) === 'function'
-    // TODO: Use variables above for optimization and checking wether certain features need to be enabled or disabled entirly. For instance the promise system is not relevant if no sequantial or setup methods exist on this object.
 
-    this._isInitialized = false
-    this._concurrentCount = 0
-    this._holdCalls = false
-    this._promiseQueue = []
+    if (this._hasInitialize) {
+      this._isInitialized = false
+    }
+    if (this._hasInitialize || this._hasSequential) {
+      this._holdCalls = false
+      this._promiseQueue = []
+    }
+    if (this._hasConcurrent) {
+      this._concurrentCount = 0
+    }
   }
 
   async next (...parameters) {
     // Exit early if done or exhausted.
     if (this.done || this.exhausted) {
       return
+    }
+
+    if ((!this._hasInitialize || this._isInitialized) && !this._hasSequential) {
+      // Run concurrent part.
+      return await this.concurrent()
     }
 
     // Check if calls should be held.
@@ -44,62 +54,45 @@ class BaseSourcer extends BasePackage {
     // Hold new calls.
     this._holdCalls = true
 
-    // Try to setup.
-    await this._trySetup(...parameters)
+    // Try initialization.
+    if (this._hasInitialize && !this._isInitialized) {
+      await this.initialize()
+      this._isInitialized = true
+    }
 
     // Run now.
-    const result = await this._run(...parameters)
-
-    return result
+    return await this._next(...parameters)
   }
 
-  async _trySetup (...parameters) {
-    // Exit early if already initialized.
-    if (this._isInitialized) {
-      return
-    }
-    this._isInitialized = true
-
-    // If setup exist invoke it.
-    if (this._hasSetup) {
-      await this.setup(...parameters)
-    }
-  }
-
-  _tryShift () {
-    // If done wait for now.
-    if (this.exhausted || this.done) {
-      // Immediately resolve all queued promises.
-      for (const { resolve } of this._promiseQueue) {
-        resolve(null)
-      }
-      this._promiseQueue = []
-      return
-    }
-
-    // Set hold back to false.
-    if (this._promiseQueue.length === 0) {
-      this.hold = false
-      return
-    }
-
-    // Run next iteration.
-    const { resolve, reject, parameters } = this._promiseQueue.shift()
-    try {
-      resolve(this._run(...parameters))
-    } catch (error) {
-      reject(error)
-    }
-  }
-
-  async _run (...parameters) {
+  async _next (...parameters) {
     if (this._hasSequential) {
       // Run sequential part.
       parameters = await this.sequential(...parameters)
     }
 
-    // Try and shift to the next call.
-    this._tryShift()
+    if (this._hasInitialize || this._hasSequential) {
+      // If done wait for now.
+      if (this.exhausted || this.done) {
+        // Immediately resolve all queued promises.
+        for (const promise of this._promiseQueue) {
+          promise.resolve(null)
+        }
+        this._promiseQueue = []
+      }
+
+      // Set hold back to false.
+      if (this._promiseQueue.length > 0) {
+        // Run next iteration.
+        const promise = this._promiseQueue.shift()
+        try {
+          promise.resolve(this._next(...promise.parameters))
+        } catch (error) {
+          promise.reject(error)
+        }
+      } else {
+        this.hold = false
+      }
+    }
 
     if (this._hasConcurrent) {
       // Increment concurrent count.
@@ -113,12 +106,12 @@ class BaseSourcer extends BasePackage {
     }
 
     // If exhausted and no more concurreny of this source is going then set done to true!
-    if (this.exhausted && this._concurrentCount === 0) {
-      this.done = true
-
+    if (this.exhausted && (!this._hasConcurrent || this._concurrentCount === 0)) {
       if (this._hasFinal) {
-        this.final(...parameters)
+        this.final()
       }
+
+      this.done = true
     }
 
     return parameters
@@ -126,10 +119,10 @@ class BaseSourcer extends BasePackage {
 
   /*
    * Methods to extends when using this as your base class.
-   * async setup (...parameters) { }
-   * async sequential (...parameters) { }
-   * async concurrent (...parameters) { }
-   * final (...parameters) { }
+   * async initialize () { }
+   * async sequential (...parameters):parameters || result { }
+   * async concurrent (...parameters):result { }
+   * final () { }
    */
 }
 
