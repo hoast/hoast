@@ -18,7 +18,7 @@ class ProcessWritefiles extends BaseProcessor {
 
       directoryOptions: {},
 
-      writeProperty: 'content',
+      writeProperty: 'contents',
       writeOptions: {},
     }, options)
 

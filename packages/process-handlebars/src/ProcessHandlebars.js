@@ -16,13 +16,19 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 const fsReadFile = promisify(fs.readFile)
 
 /* How to: only process if file has handlebars or hbs extension.
- * TODO: Use standard filter options.
+ * {
+ *   filterProperty: 'extensions',
+ *   filterPatterns: [
+ *     'hbs',
+ *     'handlebars',
+ *   ],
+ * },
  */
 
 class ProcessHandlebars extends BaseProcessor {
   constructor(options) {
     super({
-      property: 'content',
+      property: 'contents',
       handlebarsOptions: {},
 
       templateDirectory: null,
@@ -37,7 +43,7 @@ class ProcessHandlebars extends BaseProcessor {
     }, options)
 
     if (!this._options.templatePath && !this._options.templateProperty) {
-      this._deugger.error('No template specified. Use the "template" or "templateProperty" options.')
+      this._logger.error('No template specified. Use the "template" or "templateProperty" options.')
     }
 
     // Construct absolute directory path.
@@ -161,8 +167,8 @@ class ProcessHandlebars extends BaseProcessor {
       templatePath = getByPathSegments(data, this._templatePropertyPath)
     }
 
-    if (!templatePath && this._options._templatePath) {
-      templatePath = this._options._templatePath
+    if (!templatePath && this._options.templatePath) {
+      templatePath = this._options.templatePath
     } else {
       this._logger.warn('No template path found therefore skipping!')
       return data
@@ -203,18 +209,14 @@ class ProcessHandlebars extends BaseProcessor {
     }
 
     // Compile data with template.
-    data = setByPathSegments(data, this._propertyPath,
-      template(
-        getByPathSegments(data, this._propertyPath)
-      )
-    )
+    data = setByPathSegments(data, this._propertyPath, template(data))
 
     return data
   }
 
   final () {
     // Clear templates cache.
-    this._templates = undefined
+    // this._templates = undefined
   }
 }
 

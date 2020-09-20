@@ -6,10 +6,8 @@
     "@hoast/base-package": "2.0.0",
     "@hoast/base-processor": "2.0.0",
     "@hoast/base-sourcer": "2.0.0",
-    "@hoast/base-transformer": "2.0.0",
     "@hoast/hoast": "2.0.0",
     "@hoast/process-log": "2.0.0",
-    "@hoast/process-transform": "2.0.0",
     "@hoast/process-writefiles": "2.0.0",
     "@hoast/source-readfiles": "2.0.0",
     "@hoast/utils": "2.0.0"

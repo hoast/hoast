@@ -18,6 +18,34 @@ export default {
         },
       ],
       processes: [
+        [
+          '@hoast/process-markdown',
+          {
+            filterProperty: 'extensions',
+            filterPatterns: [
+              'md',
+              'markdown',
+            ],
+            filterOptions: {
+              all: false,
+            },
+          },
+        ],
+        [
+          '@hoast/process-handlebars',
+          {
+            filterProperty: 'extensions',
+            filterPatterns: [
+              'hbs',
+              'handlebars',
+            ],
+            filterOptions: {
+              all: false,
+            },
+            templateDirectory: 'src/layout',
+            templatePath: 'default.hbs',
+          },
+        ],
         '@hoast/process-log',
       ],
     },

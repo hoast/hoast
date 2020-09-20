@@ -13,7 +13,7 @@ export const getByDotNotation = function (source, path) {
  * @param {Array<String>} path Array of strings with each segment a property on the source.
  */
 export const getByPathSegments = function (source, path) {
-  return path.reduce((object, segment) => object[segment], source)
+  return [...path].reduce((object, segment) => object[segment], source)
 }
 
 export default {

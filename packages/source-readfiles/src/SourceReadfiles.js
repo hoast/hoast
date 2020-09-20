@@ -80,11 +80,10 @@ class SourceReadfiles extends BaseSourcer {
     extensions = extensions.split('.')
     // Remove file name.
     extensions.shift()
-    // Reverse order, so last extension becomes the first in the list.
-    extensions.reverse()
 
     // Create result.
     const result = {
+      cwd: this._directoryPath,
       uri: 'file://' + trimStart(filePath, path.sep).replace(path.sep, '/'),
       path: filePathRelative,
       extensions: extensions,
@@ -103,7 +102,7 @@ class SourceReadfiles extends BaseSourcer {
               return
             }
 
-            result.content = data
+            result.contents = data
             resolve()
           })
         })

@@ -21,23 +21,17 @@ export const setByPathSegments = function (target, path, value) {
     target = {}
   }
 
-  // Split path in segments if string.
-  if (typeof (path) === 'string') {
-    path = path.split('.')
-  }
+  [...path].reduce((object, segment, index) => {
+    if (index === path.length - 1) {
+      object[segment] = value
+      return
+    } else if (!object[segment] || typeof (object[segment]) !== 'object') {
+      object[segment] = {}
+    }
 
-  // Return value if no path segments.
-  if (path.length === 0) {
-    return value
-  }
+    return object[segment]
+  }, target)
 
-  // Get current segment.
-  const segment = path.pop()
-
-  // Recursively call this again.
-  target[segment] = setByPathSegments(target[segment], path, value)
-
-  // Return result.
   return target
 }
 

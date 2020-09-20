@@ -1,5 +1,5 @@
 // Import base class.
-import BasePackage from '@hoast/base-package.js'
+import BasePackage from '@hoast/base-package'
 
 // Import external modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
@@ -16,7 +16,8 @@ class BaseProcessor extends BasePackage {
       filterProperty: null,
       filterOptions: {
         // Which item(s) to check if the field value is an array.
-        array: 'first', // first, last, all, any.
+        all: false,
+        array: 'any', // all, any, first, last.
       },
     }, ...options)
 
