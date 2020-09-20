@@ -1,88 +1,220 @@
 // Import base class.
 import BaseProcessor from '@hoast/base-processor'
+
 // Import build-in modules.
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
+
 // Import external modules.
-import handlebars from 'handlebars'
+import DirectoryIterator from '@hoast/utils/DirectoryIterator.js'
+import Handlebars from 'handlebars'
+import { getByPathSegments } from '@hoast/utils/get.js'
+import { setByPathSegments } from '@hoast/utils/set.js'
 
 // Promisfy read file.
 const fsReadFile = promisify(fs.readFile)
 
+/* How to: only process if file has handlebars or hbs extension.
+ * TODO: Use standard filter options.
+ */
+
 class ProcessHandlebars extends BaseProcessor {
   constructor(options) {
     super({
-      directory: null,
+      property: 'content',
+      handlebarsOptions: {},
 
-      template: null,
-      templateField: null,
+      templateDirectory: null,
+      templatePath: null,
+      templateProperty: null,
+
+      helpers: null,
+      helpersDirectory: null,
+
+      partials: null,
+      partialsDirectory: null,
     }, options)
 
-    if (!this._options.template && !this._options.templateField) {
-      this._deugger.error('No template specified. Use the "template" or "templateField" options.')
-    }
-
-    // Convert dot notation to path segments.
-    if (this._options.field) {
-      this._fieldPath = this._options.field.split('.')
+    if (!this._options.templatePath && !this._options.templateProperty) {
+      this._deugger.error('No template specified. Use the "template" or "templateProperty" options.')
     }
 
     // Construct absolute directory path.
-    this._directoryPath =
-      (this._options.directory && path.isAbsolute(this._options.directory))
-        ? this._options.directory
-        : path.resolve(process.cwd(), this._options.directory)
+    this._templateDirectoryPath =
+      (this._options.templateDirectory && path.isAbsolute(this._options.templateDirectory))
+        ? this._options.templateDirectory
+        : path.resolve(process.cwd(), this._options.templateDirectory)
+
+    // Convert dot notation to path segments.
+    this._propertyPath = this._options.property.split('.')
+    if (this._options.templateProperty) {
+      this._templatePropertyPath = this._options.templateProperty.split('.')
+    }
   }
 
-  async setup () {
-    this._templateCache = {}
+  async initialize () {
+    this._templates = {}
 
-    if (this._options.template) {
-      this._template = await fsReadFile(path.resolve(this._directoryPath, this._options.template), {
+    if (this._options.templatePath) {
+      // Construct absolute template path.
+      const templatePathAbsolute =
+        path.isAbsolute(this._options.templatePath)
+          ? this._options.templatePath
+          : path.resolve(this._options.templateDirectory, this._options.templatePath)
+      const template = await fsReadFile(templatePathAbsolute, {
         encoding: 'utf8',
       })
-      // Compile template.
-      this._template = handlebars.compile(this._template)
 
-      // Store template in cache.
-      this._templateCache[this._options.template] = this._template
+      if (!template) {
+        this._logger.error('No template found at path: "' + this._options.templatePath + '"')
+      } else {
+        // Store compiled template in cache.
+        this._templates[templatePathAbsolute] = Handlebars.compile(template, this._options.handlebarsOptions)
+      }
+    }
+
+    if (this._options.helpersDirectory || this._options.partialsDirectory) {
+      const promises = []
+      if (this._options.helpersDirectory) {
+        promises.push(
+          (async () => {
+            // Construct absolute helpers directory path.
+            const directoryPath =
+              (this._options.helpersDirectory && path.isAbsolute(this._options.helpersDirectory))
+                ? this._options.helpersDirectory
+                : path.resolve(process.cwd(), this._options.helpersDirectory)
+
+            // Get helper files.
+            const directoryIterator = new DirectoryIterator(directoryPath)
+
+            let filePath
+            // Get next file path.
+            while (filePath = await directoryIterator.next()) {
+              // Get relative file path.
+              const filePathRelative = path.relative(directoryPath, filePath)
+
+              // Dynamic import helper.
+              let helper = await import(filePath)
+              if (!helper || !helper.default) {
+                continue
+              }
+              helper = helper.default
+
+              // Register helper.
+              Handlebars.registerHelper(filePathRelative, helper)
+            }
+          })()
+        )
+      }
+      if (this._options.partialsDirectory) {
+        promises.push(
+          (async () => {
+            // Construct absolute helpers directory path.
+            const directoryPath =
+              (this._options.partialsDirectory && path.isAbsolute(this._options.partialsDirectory))
+                ? this._options.partialsDirectory
+                : path.resolve(process.cwd(), this._options.partialsDirectory)
+
+            // Get helper files.
+            const directoryIterator = new DirectoryIterator(directoryPath)
+
+            let filePath
+            // Get next file path.
+            while (filePath = await directoryIterator.next()) {
+              // Get relative file path.
+              const filePathRelative = path.relative(directoryPath, filePath)
+
+              // Get file content.
+              const partial = await fsReadFile(filePath, { encoding: 'utf8' })
+
+              // Register partial.
+              Handlebars.registerPartial(filePathRelative, partial)
+            }
+          })()
+        )
+      }
+
+      // Await directory promises.
+      await Promise.all(promises)
+    }
+
+    // Register helpers.
+    if (this._options.helpers) {
+      for (const { name, helper } of this._options.helpers) {
+        Handlebars.registerHelper(name, helper)
+      }
+    }
+
+    // Register partials.
+    if (this._options.partials) {
+      for (const { name, partial } of this._options.partials) {
+        Handlebars.registerPartial(name, partial)
+      }
     }
   }
 
-  async _getTemplate (templatePath) {
+  async sequential (data) {
+    // Get template path.
+    let templatePath
+    if (this._templatePropertyPath) {
+      templatePath = getByPathSegments(data, this._templatePropertyPath)
+    }
+
+    if (!templatePath && this._options._templatePath) {
+      templatePath = this._options._templatePath
+    } else {
+      this._logger.warn('No template path found therefore skipping!')
+      return data
+    }
+
     // Construct absolute template path.
-    templatePath =
+    const templatePathAbsolute =
       path.isAbsolute(templatePath)
         ? templatePath
-        : path.resolve(this._options.directory, templatePath)
+        : path.resolve(this._options.templateDirectory, templatePath)
 
+    // Get template.
+    let template
     // Check if it exists in cache.
-    if (this._templateCache[templatePath]) {
-      return this._templateCache[templatePath]
+    if (this._templates[templatePathAbsolute]) {
+      template = this._templates[templatePathAbsolute]
+    } else {
+      // Get template from filesystem.
+      template = await fsReadFile(templatePathAbsolute, {
+        encoding: 'utf8',
+      })
+
+      if (!template) {
+        this._logger.warn('No template found at "' + templatePath + '" therefore skipping!')
+        return data
+      }
+
+      // Compile template.
+      template = Handlebars.compile(template, this._options.handlebarsOptions)
+
+      // Store template in cache.
+      this._templates[templatePathAbsolute] = template
     }
 
-    // Get template from filesystem.
-    this._template = await fsReadFile(templatePath, {
-      encoding: 'utf8',
-    })
+    if (!template) {
+      this._logger.warn('No template found therefore skipping!')
+      return data
+    }
 
-    // Compile template.
-    this._template = handlebars.compile(this._template)
+    // Compile data with template.
+    data = setByPathSegments(data, this._propertyPath,
+      template(
+        getByPathSegments(data, this._propertyPath)
+      )
+    )
 
-    // Store template in cache.
-    this._templateCache[templatePath] = this._template
-
-    return this._template
-  }
-
-  process (app, data) {
-    // TODO:
-    // Check for Get template
+    return data
   }
 
   final () {
-    // TODO: Clear cache.
+    // Clear templates cache.
+    this._templates = undefined
   }
 }
 

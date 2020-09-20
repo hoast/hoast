@@ -44,10 +44,12 @@ const CLI = async function () {
 
   // Standard CLI messages.
 
-  const MESSAGE_VERSION = `ʕ ˵•ᴥ•ʔっ ${pkg.name} (v${pkg.version})`
+  const MESSAGE_VERSION = `
+ʕ ˵·ᴥ·ʔっ ${pkg.name} (v${pkg.version})
+`
 
   const MESSAGE_HELP = `
-${MESSAGE_VERSION}
+ʕ ˵•ᴥ•ʔっ ${pkg.name} (v${pkg.version})
 
 Usage
 % ${pkg.name} [command] [options]

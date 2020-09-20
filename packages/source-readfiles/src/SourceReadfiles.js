@@ -4,10 +4,9 @@ import path from 'path'
 
 // Import external modules.
 import BaseSourcer from '@hoast/base-sourcer'
+import DirectoryIterator from '@hoast/utils/DirectoryIterator.js'
 import planckmatch from 'planckmatch'
-
-// Import internal modules.
-import DirectoryIterator from './utils/DirectoryIterator.js'
+import { trimStart } from '@hoast/utils/trim.js'
 
 class SourceReadfiles extends BaseSourcer {
   constructor(options) {
@@ -86,6 +85,7 @@ class SourceReadfiles extends BaseSourcer {
 
     // Create result.
     const result = {
+      uri: 'file://' + trimStart(filePath, path.sep).replace(path.sep, '/'),
       path: filePathRelative,
       extensions: extensions,
     }

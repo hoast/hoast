@@ -5,6 +5,7 @@ import { promisify } from 'util'
 
 // Import external modules.
 import BaseProcessor from '@hoast/base-processor'
+import { getByPathSegments } from '@hoast/utils/get.js'
 
 // Promisify file system functions.
 const fsMkdir = promisify(fs.mkdir)
@@ -17,6 +18,7 @@ class ProcessWritefiles extends BaseProcessor {
 
       directoryOptions: {},
 
+      writeProperty: 'content',
       writeOptions: {},
     }, options)
 
@@ -26,7 +28,8 @@ class ProcessWritefiles extends BaseProcessor {
         ? this._options.directory
         : path.resolve(process.cwd(), this._options.directory)
 
-    // TODO: Add write dot notation path.
+    // Convert dot notation to path segments.
+    this._writePath = this._options.writeProperty.split('.')
   }
 
   async sequential (data) {
@@ -54,7 +57,7 @@ class ProcessWritefiles extends BaseProcessor {
     // Write file to directory.
     await fsWriteFile(
       filePath,
-      data.content,
+      getByPathSegments(data, this._writePath),
       this._options.writeOptions
     )
 

@@ -46,12 +46,72 @@ class BaseProcessor extends BasePackage {
 
   async next (data) {
     // Exit early now if filtered out.
-    if (this._filterExpressions) {
-      // TODO: Expressions should check against whether the value is an array or a string. See this._options.filterOptions.array option.
-      const value = getByPathSegments(data, this._filterPropertyPath)
-      const matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
-      if (!matches) {
+    if (this._options.filterCustom) {
+      // Skip if custom methods returns false.
+      if (!this._options.filterCustom(data)) {
         return data
+      }
+    } else if (this._filterExpressions) {
+      // Get value at filter property.
+      let value = getByPathSegments(data, this._filterPropertyPath)
+      let matches
+
+      // If array then check the filter over each item.
+      if (Array.isArray(value)) {
+        if (value.length === 0) {
+          return data
+        }
+
+        switch (String.prototype.toLowerCase.call(this._options.filterOptions.array)) {
+          case 'all':
+            // All should match.
+            for (const valueItem of value) {
+              matches = this._options.filterOptions.all ? planckmatch.match.all(valueItem, this._filterExpressions) : planckmatch.match.any(valueItem, this._filterExpressions)
+              if (!matches) {
+                return data
+              }
+            }
+            break
+
+          case 'any':
+            // Any should match.
+            let match = false
+            for (const valueItem of value) {
+              matches = this._options.filterOptions.all ? planckmatch.match.all(valueItem, this._filterExpressions) : planckmatch.match.any(valueItem, this._filterExpressions)
+              if (matches) {
+                match = true
+                break
+              }
+            }
+            if (!match) {
+              return data
+            }
+            break
+
+          case 'first':
+            // First should match.
+            value = value[0]
+            matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
+            if (!matches) {
+              return data
+            }
+            break
+
+          case 'last':
+            // Last should match.
+            value = value[value.length - 1]
+            matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
+            if (!matches) {
+              return data
+            }
+            break
+        }
+      } else {
+        // Match agains value.
+        matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
+        if (!matches) {
+          return data
+        }
       }
     }
 

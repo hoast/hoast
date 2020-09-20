@@ -16,10 +16,12 @@
   },
   "type": "module",
   "scripts": {
+    "help": "hoast help",
     "hoast-instance": "hoast --file-path='hoast-instance.js'",
     "hoast-json": "hoast --file-path='hoast-json.json'",
     "hoast-object": "hoast --file-path='hoast-object.js'",
     "hoast-process": "node ./hoast-process.js",
+    "version": "hoast version",
     "lint": "eslint --fix --cache *.js"
   }
 }

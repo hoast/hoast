@@ -1,4 +1,7 @@
+// Import external modules.
 import BasePackage from '@hoast/base-package'
+
+// TODO: Expand so you can assign which property on the data to log.
 
 class ProcessLog extends BasePackage {
   constructor(options) {
@@ -20,16 +23,15 @@ class ProcessLog extends BasePackage {
 
     switch (String.prototype.toLowerCase.call(this._options.format)) {
       default:
-        this._logger.warn('Unkown value for option "format", falling back to "json".')
+        this._logger.warn('Unkown value for option "format", falling back to "js".')
+      case 'js':
+        messages.push(data)
+        break
 
       case 'json':
         messages.push(
           JSON.stringify(data, null, 2)
         )
-        break
-
-      case 'js':
-        messages.push(data)
         break
     }
 
