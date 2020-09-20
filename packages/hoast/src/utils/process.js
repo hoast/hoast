@@ -1,5 +1,5 @@
 // Import internal modules.
-import { callSync } from './call.js'
+import call from './call.js'
 import iterate from './iterate.js'
 import logger from './logger.js'
 
@@ -36,10 +36,6 @@ const process = async function (app, collections) {
 
     // Get collection at index.
     collection = collections[collectionIndex]
-
-    if (typeof (collection.source.next) !== 'function') {
-      collection.sourceIsSync = true
-    }
 
     // Prepare collection processes.
     processesPrepared = collection.processes.map(process => {
@@ -85,12 +81,7 @@ const process = async function (app, collections) {
         const _processesPrepared = processesPrepared
 
         // Get data from source.
-        let data
-        if (collection.sourceIsSync) {
-          data = _source.nextSync(app)
-        } else {
-          data = await _source.next(app)
-        }
+        let data = await _source.next()
 
         if (data) {
           // Iterate over processes.
@@ -100,7 +91,7 @@ const process = async function (app, collections) {
               break
             }
 
-            data = await process.next(app, data)
+            data = await process.next(data)
           }
         }
 
@@ -113,7 +104,9 @@ const process = async function (app, collections) {
 
         if (_source.done) {
           // Call final on object processes from this collection.
-          callSync(_processes, 'final', app)
+          await call({
+            concurrencyLimit: app.options.concurrencyLimit,
+          }, _processes, 'final')
         }
       },
     },

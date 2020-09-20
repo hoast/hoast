@@ -4,15 +4,13 @@ import path from 'path'
 import { promisify } from 'util'
 
 // Import external modules.
-import BasePackage from '@hoast/base-package'
+import BaseProcessor from '@hoast/base-processor'
 
 // Promisify file system functions.
 const fsMkdir = promisify(fs.mkdir)
 const fsWriteFile = promisify(fs.writeFile)
 
-// TODO: Rework with new base-processor so filepath making happens in sequential bit.
-
-class ProcessWritefiles extends BasePackage {
+class ProcessWritefiles extends BaseProcessor {
   constructor(options) {
     super({
       directory: 'dst',
@@ -27,9 +25,11 @@ class ProcessWritefiles extends BasePackage {
       (this._options.directory && path.isAbsolute(this._options.directory))
         ? this._options.directory
         : path.resolve(process.cwd(), this._options.directory)
+
+    // TODO: Add write dot notation path.
   }
 
-  async next (app, data) {
+  async sequential (data) {
     // Construct absolute file path.
     const filePath = path.resolve(this._directoryPath, data.path)
 
@@ -44,12 +44,21 @@ class ProcessWritefiles extends BasePackage {
       )
     )
 
+    return data
+  }
+
+  async concurrent (data) {
+    // Construct absolute file path.
+    const filePath = path.resolve(this._directoryPath, data.path)
+
     // Write file to directory.
     await fsWriteFile(
       filePath,
       data.content,
       this._options.writeOptions
     )
+
+    return data
   }
 }
 

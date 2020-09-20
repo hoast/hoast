@@ -23,11 +23,12 @@
 
 ### Source packages
 
+- `source-custom`, extends base-sourcer. Allows you to provide your own custom source methods. Helps you from having to create a package for simple one-off behaviour.
 - `source-readfiles`
 
 ### Process packages
 
-- `process-custom`, provide your own custom process method.
+- `process-custom`, extends base-processor. Allows you to provide your own custom process methods. Helps you from having to create a package for simple one-off behaviour.
 - `process-transform`
 - `process-writefiles`
 

@@ -38,12 +38,12 @@ class SourceReadfiles extends BaseSourcer {
         : path.resolve(process.cwd(), this._options.directory)
   }
 
-  setup (app) {
+  initialize () {
     // Create directory iterator.
     this._directoryIterator = new DirectoryIterator(this._directoryPath)
   }
 
-  async sequential (app) {
+  async sequential () {
     let filePath
     // Get next file path.
     while (filePath = await this._directoryIterator.next()) {
@@ -65,14 +65,14 @@ class SourceReadfiles extends BaseSourcer {
     this.exhausted = true
   }
 
-  async concurrent (app, values) {
+  async concurrent (data) {
     // Exit early if invalid parameters.
-    if (!values) {
+    if (!data) {
       return
     }
 
     // Deconstruct paramters.
-    const [filePath, filePathRelative] = values
+    const [filePath, filePathRelative] = data
 
     // Get extensions of file path.
     // Get file name with extensions.

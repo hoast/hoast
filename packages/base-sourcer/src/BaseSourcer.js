@@ -28,7 +28,7 @@ class BaseSourcer extends BasePackage {
     }
   }
 
-  async next (...parameters) {
+  async next (data) {
     // Exit early if done or exhausted.
     if (this.done || this.exhausted) {
       return
@@ -46,7 +46,7 @@ class BaseSourcer extends BasePackage {
         this._promiseQueue.push({
           resolve,
           reject,
-          parameters,
+          data,
         })
       })
     }
@@ -61,13 +61,13 @@ class BaseSourcer extends BasePackage {
     }
 
     // Run now.
-    return await this._next(...parameters)
+    return await this._next(data)
   }
 
-  async _next (...parameters) {
+  async _next (data) {
     if (this._hasSequential) {
       // Run sequential part.
-      parameters = await this.sequential(...parameters)
+      data = await this.sequential(data)
     }
 
     if (this._hasInitialize || this._hasSequential) {
@@ -85,7 +85,7 @@ class BaseSourcer extends BasePackage {
         // Run next iteration.
         const promise = this._promiseQueue.shift()
         try {
-          promise.resolve(this._next(...promise.parameters))
+          promise.resolve(this._next(promise.data))
         } catch (error) {
           promise.reject(error)
         }
@@ -99,7 +99,7 @@ class BaseSourcer extends BasePackage {
       this._concurrentCount++
 
       // Run concurrent part.
-      parameters = await this.concurrent(...parameters)
+      data = await this.concurrent(data)
 
       // Decrement concurrent count.
       this._concurrentCount--
@@ -114,14 +114,14 @@ class BaseSourcer extends BasePackage {
       this.done = true
     }
 
-    return parameters
+    return data
   }
 
   /*
    * Methods to extends when using this as your base class.
    * async initialize () { }
-   * async sequential (...parameters):parameters || result { }
-   * async concurrent (...parameters):result { }
+   * async sequential (data):data { }
+   * async concurrent (data):data { }
    * final () { }
    */
 }

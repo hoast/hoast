@@ -117,9 +117,9 @@ class BaseProcessor extends BasePackage {
 
   /*
    * Methods to use when using this as your base class.
-   * async initialize (data) { }
-   * async sequential (data) { }
-   * async concurrent (data) { }
+   * async initialize () { }
+   * async sequential (data):data { }
+   * async concurrent (data):data { }
    */
 }
 

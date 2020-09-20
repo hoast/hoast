@@ -3,7 +3,7 @@ import BasePackage from '@hoast/base-package'
 class ProcessLog extends BasePackage {
   constructor(options) {
     super({
-      format: 'json',
+      format: 'js',
       level: 'log',
 
       prepend: null,
@@ -11,7 +11,7 @@ class ProcessLog extends BasePackage {
     }, options)
   }
 
-  next (app, data) {
+  next (data) {
     const messages = []
 
     if (this._options.prepend) {
@@ -23,17 +23,13 @@ class ProcessLog extends BasePackage {
         this._logger.warn('Unkown value for option "format", falling back to "json".')
 
       case 'json':
-        messages.push(JSON.stringify({
-          meta: app.meta,
-          data: data,
-        }, null, 2))
+        messages.push(
+          JSON.stringify(data, null, 2)
+        )
         break
 
       case 'js':
-        messages.push({
-          meta: app.meta,
-          data: data,
-        })
+        messages.push(data)
         break
     }
 
