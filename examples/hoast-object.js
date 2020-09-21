@@ -46,23 +46,6 @@ export default {
             templatePath: 'html.hbs',
           },
         ],
-        [
-          '@hoast/process-riot',
-          {
-            filterProperty: 'extensions',
-            filterPatterns: [
-              'riot',
-            ],
-            filterOptions: {
-              all: false,
-            },
-            riotOptions: {
-              root: true,
-            },
-            componentDirectory: 'src/layout',
-            componentPath: 'html.riot',
-          },
-        ],
         '@hoast/process-log',
       ],
     },
