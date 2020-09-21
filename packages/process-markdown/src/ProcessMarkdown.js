@@ -1,5 +1,6 @@
 // Import external modules.
 import BaseProcessor from '@hoast/base-processor'
+import { getByPathSegments } from '@hoast/utils/get.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 // Import external unified modules.
 import unified from 'unified'
@@ -53,7 +54,8 @@ class ProcessMarkdown extends BaseProcessor {
   }
 
   async concurrent (data) {
-    const result = await this._parser.process(data)
+    let result = getByPathSegments(data, this._propertyPath)
+    result = await this._parser.process(result)
     data = setByPathSegments(data, this._propertyPath, result.contents)
     return data
   }

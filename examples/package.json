@@ -7,7 +7,10 @@
     "@hoast/base-processor": "2.0.0",
     "@hoast/base-sourcer": "2.0.0",
     "@hoast/hoast": "2.0.0",
+    "@hoast/process-handlebars": "2.0.0",
     "@hoast/process-log": "2.0.0",
+    "@hoast/process-markdown": "2.0.0",
+    "@hoast/process-riot": "2.0.0",
     "@hoast/process-writefiles": "2.0.0",
     "@hoast/source-readfiles": "2.0.0",
     "@hoast/utils": "2.0.0"
