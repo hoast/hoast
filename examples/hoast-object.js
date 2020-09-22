@@ -23,6 +23,7 @@ export default {
             templatePath: 'default.hbs',
           },
         ],
+        '@hoast/process-postprocess',
         '@hoast/process-log',
       ],
     },

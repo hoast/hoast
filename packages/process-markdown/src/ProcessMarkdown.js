@@ -1,7 +1,10 @@
-// Import external modules.
+// Import base class.
 import BaseProcessor from '@hoast/base-processor'
+
+// Import utility modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
+
 // Import external unified modules.
 import unified from 'unified'
 import remarkParse from 'remark-parse'
