@@ -10,40 +10,17 @@ export default {
         {
           directory: 'src',
           patterns: [
-            'content/*',
+            'contents/*',
           ],
-          readOptions: {
-            encoding: 'utf8',
-          },
         },
       ],
       processes: [
-        [
-          '@hoast/process-markdown',
-          {
-            filterProperty: 'extensions',
-            filterPatterns: [
-              'md',
-              'markdown',
-            ],
-            filterOptions: {
-              all: false,
-            },
-          },
-        ],
+        '@hoast/process-markdown',
         [
           '@hoast/process-handlebars',
           {
-            filterProperty: 'extensions',
-            filterPatterns: [
-              'hbs',
-              'handlebars',
-            ],
-            filterOptions: {
-              all: false,
-            },
-            templateDirectory: 'src/layout',
-            templatePath: 'html.hbs',
+            templateDirectory: 'src/layouts',
+            templatePath: 'default.hbs',
           },
         ],
         '@hoast/process-log',

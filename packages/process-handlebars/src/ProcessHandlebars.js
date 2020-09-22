@@ -15,16 +15,6 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 // Promisfy read file.
 const fsReadFile = promisify(fs.readFile)
 
-/* How to: only process if file has handlebars or hbs extension.
- * {
- *   filterProperty: 'extensions',
- *   filterPatterns: [
- *     'hbs',
- *     'handlebars',
- *   ],
- * },
- */
-
 class ProcessHandlebars extends BaseProcessor {
   constructor(options) {
     super({
@@ -82,6 +72,8 @@ class ProcessHandlebars extends BaseProcessor {
 
     if (this._options.helpersDirectory || this._options.partialsDirectory) {
       const promises = []
+
+      // Get helpers from directory.
       if (this._options.helpersDirectory) {
         promises.push(
           (async () => {
@@ -113,6 +105,8 @@ class ProcessHandlebars extends BaseProcessor {
           })()
         )
       }
+
+      // Get partials from directory.
       if (this._options.partialsDirectory) {
         promises.push(
           (async () => {
@@ -216,7 +210,7 @@ class ProcessHandlebars extends BaseProcessor {
 
   final () {
     // Clear templates cache.
-    // this._templates = undefined
+    this._templates = undefined
   }
 }
 

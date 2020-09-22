@@ -1,7 +1,7 @@
 ---
-name: Report
+name: Problem
 about: Report a problem. Perhaps you discovered a bug and we can help fix the problem.
-labels: 
+labels:
 - bug
 ---
 
@@ -10,9 +10,9 @@ labels:
 
 
 **Actions**: *List actions you took so we can reproduce the issue.*
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 **Expectation**: *Write the result you expected to have.*
 

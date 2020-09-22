@@ -10,39 +10,16 @@
         {
           "directory": "src",
           "patterns": [
-            "content/*"
-          ],
-          "readOptions": {
-            "encoding": "utf8"
-          }
+            "contents/*"
+          ]
         }
       ],
       "processes": [
-        [
-          "@hoast/process-markdown",
-          {
-            "filterProperty": "extensions",
-            "filterPatterns": [
-              "md",
-              "markdown"
-            ],
-            "filterOptions": {
-              "all": false
-            }
-          }
-        ],
+        "@hoast/process-markdown",
         [
           "@hoast/process-handlebars",
           {
-            "filterProperty": "extensions",
-            "filterPatterns": [
-              "hbs",
-              "handlebars"
-            ],
-            "filterOptions": {
-              "all": false
-            },
-            "templateDirectory": "src/layout",
+            "templateDirectory": "src/layouts",
             "templatePath": "default.hbs"
           }
         ],

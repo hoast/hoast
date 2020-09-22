@@ -13,33 +13,13 @@ new Hoast({}, {
       source: new SourceReadfiles({
         directory: 'src',
         patterns: [
-          'content/*',
+          'contents/*',
         ],
-        readOptions: {
-          encoding: 'utf8',
-        },
       }),
       processes: [
-        new ProcessMarkdown({
-          filterProperty: 'extensions',
-          filterPatterns: [
-            'md',
-            'markdown',
-          ],
-          filterOptions: {
-            all: false,
-          },
-        }),
+        new ProcessMarkdown(),
         new ProcessHandlebars({
-          filterProperty: 'extensions',
-          filterPatterns: [
-            'hbs',
-            'handlebars',
-          ],
-          filterOptions: {
-            all: false,
-          },
-          templateDirectory: 'src/layout',
+          templateDirectory: 'src/layouts',
           templatePath: 'default.hbs',
         }),
         new ProcessLog(),

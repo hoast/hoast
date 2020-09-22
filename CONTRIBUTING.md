@@ -21,7 +21,7 @@ Besides the guidelines set out in this document we expect our community reads an
 
 ## Philosophy
 
-The organizations philosophy is to provide a simple yet expansive toolkit done through a modular approach preferably using minimal libraries. We hope the achieve a simple to use and easy to maintain solution.
+The organizations philosophy is to provide a simple yet expansive toolkit done through a modular approach preferably using minimal libraries. We hope to achieve a simple to use and easy to maintain solution.
 
 ## Issues
 
@@ -80,11 +80,8 @@ Ensure your commits are signed off on at the end of your commit message, like so
 
 Before a pull request is allowed to be deepAssignd into the development branch at least one other contributor has to review and approve the changes made.
 
-+ Form is filed correctly.
 + Changes follow styling.
 + Documentation is up to date.
 + Tests are up to date.
 + Tests run successfully.
 + Commits are signed off.
-
-> Travis-ci automatically runs test and DCO bot automatically checks commits for sign offs.

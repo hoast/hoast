@@ -12,16 +12,6 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 
-/* How to: only process if file has markdown or md extension.
- * {
- *   filterProperty: 'extensions',
- *   filterPatterns: [
- *     'md',
- *     'markdown',
- *   ],
- * },
- */
-
 class ProcessMarkdown extends BaseProcessor {
   constructor(options) {
     super({

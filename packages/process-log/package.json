@@ -14,7 +14,7 @@
     "log",
     "logging"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://github.com/hoast/hoast#readme",
   "repository": {
     "type": "git",

@@ -1,9 +1,11 @@
+// Import base module.
+import BaseSourcer from '@hoast/base-sourcer'
+
 // Import build-in modules.
 import fs from 'fs'
 import path from 'path'
 
 // Import external modules.
-import BaseSourcer from '@hoast/base-sourcer'
 import DirectoryIterator from '@hoast/utils/DirectoryIterator.js'
 import planckmatch from 'planckmatch'
 import { trimStart } from '@hoast/utils/trim.js'
@@ -17,7 +19,9 @@ class SourceReadfiles extends BaseSourcer {
       patternOptions: {},
 
       read: true,
-      readOptions: {},
+      readOptions: {
+        encoding: 'utf8',
+      },
 
       stat: true,
       statOptions: {},
@@ -73,20 +77,16 @@ class SourceReadfiles extends BaseSourcer {
     // Deconstruct paramters.
     const [filePath, filePathRelative] = data
 
-    // Get extensions of file path.
-    // Get file name with extensions.
-    let extensions = filePath.split('/').pop()
-    // Split file and each extension apart.
-    extensions = extensions.split('.')
-    // Remove file name.
-    extensions.shift()
+    // Construc URI for file.
+    let uri = trimStart(filePath, path.sep)
+    if (path.sep !== '/') {
+      uri = uri.replace(path.sep, '/')
+    }
 
     // Create result.
     const result = {
-      cwd: this._directoryPath,
-      uri: 'file://' + trimStart(filePath, path.sep).replace(path.sep, '/'),
+      uri: 'file://' + uri,
       path: filePathRelative,
-      extensions: extensions,
     }
 
     // Store promises here.
