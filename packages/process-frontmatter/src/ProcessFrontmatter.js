@@ -12,7 +12,7 @@ class ProcessFrontmatter extends BaseProcessor {
       frontmatterProperty: 'frontmatter',
 
       parser: JSON.parse,
-      split: '---',
+      fence: '---',
     }, options)
 
     // Convert dot notation to path segments.
@@ -24,7 +24,14 @@ class ProcessFrontmatter extends BaseProcessor {
     // Get value.
     const value = getByPathSegments(data, this._propertyPath)
     // Split frontmatter from the rest.
-    let [frontmatter, rest] = value.split(this._options.split, 1)
+    let [frontmatter, rest] = value.split(this._options.fence, 1)
+
+    // TODO: Fix frontmatter extraction.
+    // Search for split fence.
+    // If first line of file is fence then skip this line and continue else exit early.
+    // Trim whitespace check if fence is the full line, if not skip.
+    // If it matches the fence then substring up until then and remove the fences on either end.
+
     // Parse frontmatter.
     frontmatter = this._options.parse(frontmatter)
     // Set values.

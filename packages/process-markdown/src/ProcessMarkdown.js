@@ -20,7 +20,7 @@ class ProcessMarkdown extends BaseProcessor {
     super({
       property: 'contents',
 
-      highlighting: false,
+      highlightOptions: false,
     }, options)
 
     // Convert dot notation to path segments.
@@ -36,9 +36,9 @@ class ProcessMarkdown extends BaseProcessor {
       .use(rehypeRaw) // Reparse HTML AST.
 
     // Add highlighting to code blocks.
-    if (this._options.highlighting) {
+    if (this._options.highlightOptions) {
       this._parser
-        .use(rehypeHighlight) // Code highlighting.
+        .use(rehypeHighlight, this._options.highlightOptions) // Code highlighting.
     }
 
     this._parser

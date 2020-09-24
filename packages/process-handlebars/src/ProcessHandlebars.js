@@ -6,11 +6,13 @@ import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
 
-// Import external modules.
+// Import utility modules.
 import DirectoryIterator from '@hoast/utils/DirectoryIterator.js'
-import Handlebars from 'handlebars'
 import { getByPathSegments } from '@hoast/utils/get.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
+
+// Import external modules.
+import Handlebars from 'handlebars'
 
 // Promisfy read file.
 const fsReadFile = promisify(fs.readFile)
@@ -33,7 +35,7 @@ class ProcessHandlebars extends BaseProcessor {
     }, options)
 
     if (!this._options.templatePath && !this._options.templateProperty) {
-      this._logger.error('No template specified. Use the "template" or "templateProperty" options.')
+      this._logger.error('No template specified. Use the "templatePath" or "templateProperty" options.')
     }
 
     // Construct absolute directory path.
@@ -186,7 +188,7 @@ class ProcessHandlebars extends BaseProcessor {
       })
 
       if (!template) {
-        this._logger.warn('No template found at "' + templatePath + '" therefore skipping!')
+        this._logger.warn('No template found at path "' + templatePath + '" therefore skipping!')
         return data
       }
 
@@ -197,14 +199,13 @@ class ProcessHandlebars extends BaseProcessor {
       this._templates[templatePathAbsolute] = template
     }
 
-    if (!template) {
-      this._logger.warn('No template found therefore skipping!')
-      return data
-    }
+    // Compile data with template and set value.
+    data = setByPathSegments(data, this._propertyPath, template({
+      app: this._app,
+      data: data,
+    }))
 
-    // Compile data with template.
-    data = setByPathSegments(data, this._propertyPath, template(data))
-
+    // Return result.
     return data
   }
 

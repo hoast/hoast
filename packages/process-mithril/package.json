@@ -33,7 +33,9 @@
   "dependencies": {
     "@hoast/base-processor": "2.0.0",
     "@hoast/utils": "2.0.0",
-    "mithril": "^2.0.4",
     "mithril-node-render": "^3.0.0"
+  },
+  "peerDependencies": {
+    "mithril": "^2.0.4"
   }
 }
