@@ -1686,6 +1686,16 @@ minimist@^1.2.0, minimist@^1.2.5:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
+mithril-node-render@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mithril-node-render/-/mithril-node-render-3.0.0.tgz#27fb36225456a118d3e137944096429b62113e99"
+  integrity sha512-aerVhZh6LRHHVhlsxAfxwyTa6KRFKzliAM9AmHkxPI8wLFs62NjwIWKbmeYzpNdtZhp8BKwQ6N3WPctX74OiLA==
+
+mithril@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/mithril/-/mithril-2.0.4.tgz#d125969d992b924c7185d24ff92d997e5c00116b"
+  integrity sha512-mgw+DMZlhMS4PpprF6dl7ZoeZq5GGcAuWnrg5e12MvaGauc4jzWsDZtVGRCktsiQczOEUr2K5teKbE5k44RlOg==
+
 mkdirp@^0.5.1, mkdirp@~0.5.1:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.5.tgz#d91cefd62d1436ca0f41620e251288d420099def"

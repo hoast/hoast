@@ -107,10 +107,15 @@ class BaseProcessor extends BasePackage {
             }
             break
         }
-      } else {
+      } else if (typeof (value) === 'string') {
         // Match agains value.
         matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
         if (!matches) {
+          return data
+        }
+      } else {
+        // Check truthiness.
+        if (!value) {
           return data
         }
       }
