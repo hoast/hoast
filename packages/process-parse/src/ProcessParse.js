@@ -3,6 +3,7 @@ import BaseProcessor from '@hoast/base-processor'
 
 // Import external modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
+import instantiate from '@hoast/utils/instantiate.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
 class ProcessParse extends BaseProcessor {
@@ -17,11 +18,15 @@ class ProcessParse extends BaseProcessor {
     this._propertyPath = this._options.property.split('.')
   }
 
+  async initialize () {
+    this._parser = await instantiate(this._options.parser)
+  }
+
   concurrent (data) {
     // Get value.
     let value = getByPathSegments(data, this._propertyPath)
     // Parse value.
-    value = this._options.parse(value)
+    value = this._parser(value)
     // Set value.
     data = setByPathSegments(data, this._propertyPath, value)
     // Return result.
