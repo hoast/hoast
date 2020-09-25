@@ -17,7 +17,9 @@ class ProcessLog extends BasePackage {
     }, options)
 
     // Convert dot notation to path segments.
-    this._propertyPath = this._options.property.split('.')
+    if (this._options.property) {
+      this._propertyPath = this._options.property.split('.')
+    }
   }
 
   next (data) {
