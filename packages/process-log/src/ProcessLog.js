@@ -1,17 +1,23 @@
-// Import external modules.
+// Import base modules.
 import BasePackage from '@hoast/base-package'
 
-// TODO: Expand so you can assign which property on the data to log.
+// Import external modules.
+import { getByPathSegments } from '@hoast/utils/get.js'
 
 class ProcessLog extends BasePackage {
   constructor(options) {
     super({
+      property: null,
+
       format: 'js',
       level: 'log',
 
       prepend: null,
       append: null,
     }, options)
+
+    // Convert dot notation to path segments.
+    this._propertyPath = this._options.property.split('.')
   }
 
   next (data) {
@@ -21,16 +27,18 @@ class ProcessLog extends BasePackage {
       messages.push(this._options.prepend)
     }
 
+    const value = this._propertyPath ? getByPathSegments(data, this._propertyPath) : data
+
     switch (String.prototype.toLowerCase.call(this._options.format)) {
       default:
         this._logger.warn('Unkown value for option "format", falling back to "js".')
       case 'js':
-        messages.push(data)
+        messages.push(value)
         break
 
       case 'json':
         messages.push(
-          JSON.stringify(data, null, 2)
+          JSON.stringify(value, null, 2)
         )
         break
     }
