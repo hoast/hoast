@@ -1,5 +1,5 @@
 // Import base class.
-import BaseProcessor from '@hoast/base-processor'
+import BaseProcess from '@hoast/base-process'
 
 // Import build-in modules.
 import path from 'path'
@@ -11,7 +11,7 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 // Import external modules.
 import render from 'mithril-node-render'
 
-class ProcessMythril extends BaseProcessor {
+class ProcessMythril extends BaseProcess {
   constructor(options) {
     super({
       property: 'content',

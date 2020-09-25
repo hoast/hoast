@@ -20,21 +20,23 @@
 ### Core
 
 - `hoast`
+- `utils`
+
+### Base packages
+
+- `base-package`
+- `base-process`
+- `base-source`
 
 ### Source packages
 
-- `source-custom`, extends base-sourcer. Allows you to provide your own custom source methods. Helps you from having to create a package for simple one-off behaviour.
+- `source-custom`, extends base-source. Allows you to provide your own custom source methods. Helps you from having to create a package for simple one-off behaviour.
 - `source-readfiles`
 
 ### Process packages
 
-- `process-custom`, extends base-processor. Allows you to provide your own custom process methods. Helps you from having to create a package for simple one-off behaviour.
-- `process-transform`
+- `process-custom`, extends base-process. Allows you to provide your own custom process methods. Helps you from having to create a package for simple one-off behaviour.
 - `process-writefiles`
-
-### Transform packages
-
-- `transform-json`
 
 ### Made with
 

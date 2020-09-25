@@ -8,7 +8,7 @@ import planckmatch from 'planckmatch'
 /**
  * Adds initialize method to processors and pattern filtering.
  */
-class BaseProcessor extends BasePackage {
+class BaseProcess extends BasePackage {
   constructor(...options) {
     super({
       filterCustom: null,
@@ -189,4 +189,4 @@ class BaseProcessor extends BasePackage {
    */
 }
 
-export default BaseProcessor
+export default BaseProcess

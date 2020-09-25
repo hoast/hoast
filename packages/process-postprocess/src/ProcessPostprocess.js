@@ -1,5 +1,5 @@
 // Import base class.
-import BaseProcessor from '@hoast/base-processor'
+import BaseProcess from '@hoast/base-process'
 
 // Import utility modules.
 import deepAssign from '@hoast/utils/deepAssign.js'
@@ -14,7 +14,7 @@ import htmlMinifier from 'html-minifier-terser'
 import { minify as jsMinify } from 'terser'
 import Postcss from 'postcss'
 
-class ProcessProcess extends BaseProcessor {
+class ProcessProcess extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',

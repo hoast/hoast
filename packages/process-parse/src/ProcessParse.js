@@ -1,12 +1,12 @@
 // Import base class.
-import BaseProcessor from '@hoast/base-processor'
+import BaseProcess from '@hoast/base-process'
 
 // Import external modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
 import instantiate from '@hoast/utils/instantiate.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
-class ProcessParse extends BaseProcessor {
+class ProcessParse extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',

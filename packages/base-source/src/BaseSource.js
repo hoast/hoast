@@ -4,7 +4,7 @@ import BasePackage from '@hoast/base-package'
 /**
  * Allow the first part of the next call to be executed sequentially and optionally a second part concurrently.
  */
-class BaseSourcer extends BasePackage {
+class BaseSource extends BasePackage {
   constructor(...options) {
     super(...options)
 
@@ -126,4 +126,4 @@ class BaseSourcer extends BasePackage {
    */
 }
 
-export default BaseSourcer
+export default BaseSource

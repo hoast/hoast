@@ -4,8 +4,8 @@
   "version": "2.0.0",
   "dependencies": {
     "@hoast/base-package": "x",
-    "@hoast/base-processor": "x",
-    "@hoast/base-sourcer": "x",
+    "@hoast/base-process": "x",
+    "@hoast/base-source": "x",
     "@hoast/hoast": "x",
     "@hoast/process-frontmatter": "x",
     "@hoast/process-handlebars": "x",

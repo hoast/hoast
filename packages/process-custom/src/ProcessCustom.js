@@ -1,7 +1,7 @@
 // Import base class.
-import BaseProcessor from '@hoast/base-processor'
+import BaseProcess from '@hoast/base-process'
 
-class ProcessCustom extends BaseProcessor {
+class ProcessCustom extends BaseProcess {
   constructor(options) {
     super({
       initialize: null,

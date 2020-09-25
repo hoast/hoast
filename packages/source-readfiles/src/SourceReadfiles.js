@@ -1,5 +1,5 @@
 // Import base module.
-import BaseSourcer from '@hoast/base-sourcer'
+import BaseSource from '@hoast/base-source'
 
 // Import build-in modules.
 import fs from 'fs'
@@ -10,7 +10,7 @@ import DirectoryIterator from '@hoast/utils/DirectoryIterator.js'
 import planckmatch from 'planckmatch'
 import { trimStart } from '@hoast/utils/trim.js'
 
-class SourceReadfiles extends BaseSourcer {
+class SourceReadfiles extends BaseSource {
   constructor(options) {
     super({
       directory: 'src',

@@ -1,7 +1,7 @@
 // Import base module.
-import BaseSourcer from '@hoast/base-sourcer'
+import BaseSource from '@hoast/base-source'
 
-class SourceCustom extends BaseSourcer {
+class SourceCustom extends BaseSource {
   constructor(options) {
     super({
       initialize: null,

@@ -3,7 +3,7 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/base-processor",
+  "name": "@hoast/base-source",
   "version": "2.0.0",
   "description": "",
   "keywords": [
@@ -26,13 +26,11 @@
     "CHANGELOG.md",
     "src/*.js"
   ],
-  "main": "src/BaseProcessor.js",
+  "main": "src/BaseSource.js",
   "scripts": {
     "lint": "eslint --fix --cache src/*.js"
   },
   "dependencies": {
-    "@hoast/base-package": "2.0.0",
-    "@hoast/utils": "2.0.0",
-    "planckmatch": "^0.2.1"
+    "@hoast/base-package": "2.0.0"
   }
 }

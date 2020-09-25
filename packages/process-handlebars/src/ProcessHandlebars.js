@@ -1,5 +1,5 @@
 // Import base class.
-import BaseProcessor from '@hoast/base-processor'
+import BaseProcess from '@hoast/base-process'
 
 // Import build-in modules.
 import fs from 'fs'
@@ -17,7 +17,7 @@ import Handlebars from 'handlebars'
 // Promisfy read file.
 const fsReadFile = promisify(fs.readFile)
 
-class ProcessHandlebars extends BaseProcessor {
+class ProcessHandlebars extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',

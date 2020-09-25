@@ -1,17 +1,19 @@
+// Import base module.
+import BaseProcess from '@hoast/base-process'
+
 // Import build-in modules.
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
 
 // Import external modules.
-import BaseProcessor from '@hoast/base-processor'
 import { getByPathSegments } from '@hoast/utils/get.js'
 
 // Promisify file system functions.
 const fsMkdir = promisify(fs.mkdir)
 const fsWriteFile = promisify(fs.writeFile)
 
-class ProcessWritefiles extends BaseProcessor {
+class ProcessWritefiles extends BaseProcess {
   constructor(options) {
     super({
       directory: 'dst',

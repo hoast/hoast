@@ -1,5 +1,5 @@
 // Import base class.
-import BaseProcessor from '@hoast/base-processor'
+import BaseProcess from '@hoast/base-process'
 
 // Import utility modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
@@ -15,7 +15,7 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 
-class ProcessMarkdown extends BaseProcessor {
+class ProcessMarkdown extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',
