@@ -25,7 +25,12 @@ export default {
           },
         ],
         '@hoast/process-postprocess',
-        '@hoast/process-log',
+        [
+          '@hoast/process-writefiles',
+          {
+            directory: 'dst',
+          },
+        ],
       ],
     },
     {
@@ -45,7 +50,12 @@ export default {
             mode: 'js',
           },
         ],
-        '@hoast/process-log',
+        [
+          '@hoast/process-writefiles',
+          {
+            directory: 'dst',
+          },
+        ],
       ],
     },
     {
@@ -65,7 +75,12 @@ export default {
             mode: 'css',
           },
         ],
-        '@hoast/process-log',
+        [
+          '@hoast/process-writefiles',
+          {
+            directory: 'dst',
+          },
+        ],
       ],
     },
   ],

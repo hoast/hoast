@@ -42,7 +42,7 @@ class ProcessWritefiles extends BaseProcess {
     await fsMkdir(
       path.dirname(filePath),
       Object.assign(
-        this._options.directoryOptions.mode,
+        this._options.directoryOptions,
         {
           recursive: true,
         }

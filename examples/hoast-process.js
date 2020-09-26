@@ -1,9 +1,9 @@
 import Hoast from '@hoast/hoast'
 import ProcessFrontmatter from '@hoast/process-frontmatter'
 import ProcessHandlebars from '@hoast/process-handlebars'
-import ProcessLog from '@hoast/process-log'
 import ProcessMarkdown from '@hoast/process-markdown'
 import ProcessPostprocess from '@hoast/process-postprocess'
+import ProcessWritefiles from '@hoast/process-writefiles'
 import SourceReadfiles from '@hoast/source-readfiles'
 
 new Hoast({}, {
@@ -26,7 +26,9 @@ new Hoast({}, {
           templatePath: 'default.hbs',
         }),
         new ProcessPostprocess(),
-        new ProcessLog(),
+        new ProcessWritefiles({
+          directory: 'dst',
+        }),
       ],
     },
     {
@@ -40,7 +42,9 @@ new Hoast({}, {
         new ProcessPostprocess({
           mode: 'js',
         }),
-        new ProcessLog(),
+        new ProcessWritefiles({
+          directory: 'dst',
+        }),
       ],
     },
     {
@@ -54,7 +58,9 @@ new Hoast({}, {
         new ProcessPostprocess({
           mode: 'css',
         }),
-        new ProcessLog(),
+        new ProcessWritefiles({
+          directory: 'dst',
+        }),
       ],
     },
   ])
