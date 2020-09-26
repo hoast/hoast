@@ -10,14 +10,11 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 // import external modules.
 import babel from '@babel/core'
 import cssnano from 'cssnano'
-import deasync from 'deasync'
 import htmlMinifier from 'html-minifier-terser'
 import { minify as terser } from 'terser'
 import Postcss from 'postcss'
 
-const terserSync = deasync(terser)
-
-class ProcessProcess extends BaseProcess {
+class ProcessPostprocess extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',
@@ -99,15 +96,7 @@ class ProcessProcess extends BaseProcess {
     // Create JS processor.
     this._jsProcess = (code) => {
       // Process via Babel.
-      let result = babel.transform(code, jsOptions)
-      if (result.error) {
-        return code
-      }
-
-      code = result.code
-
-      // Process via Terser.
-      result = terserSync(code, jsMinifyOptions)
+      const result = babel.transform(code, jsOptions)
       if (result.error) {
         return code
       }
@@ -180,4 +169,4 @@ class ProcessProcess extends BaseProcess {
   }
 }
 
-export default ProcessProcess
+export default ProcessPostprocess
