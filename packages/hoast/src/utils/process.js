@@ -9,61 +9,8 @@ import logger from './logger.js'
  * @param {Array} collections Collections to process.
  */
 const process = async function (app, collections) {
-  // Current collection.
-  let collectionIndex = -1
-  let collection
-  let processesPrepared
-
-  /**
-   * Get and set the next collection.
-   * @returns {Bool} Returns true if finished and no more collections available.
-   */
-  const next = function () {
-    // Increment collection.
-    collectionIndex++
-
-    // Exit early if index exceeds collections.
-    if (collectionIndex >= collections.length) {
-      collection = null
-      processesPrepared = null
-
-      logger.info('No more collections to iterate over.')
-      return false
-    }
-    if (collectionIndex > 0) {
-      logger.info('Start processing next collection.')
-    }
-
-    // Get collection at index.
-    collection = collections[collectionIndex]
-
-    // Prepare collection processes.
-    processesPrepared = collection.processes.map(process => {
-      let processType = typeof (process)
-
-      // If string get from lookup.
-      if (processType === 'string') {
-        process = app._processes[process]
-
-        // Get type again.
-        processType = typeof (process)
-      }
-
-      // If function wrap in object.
-      if (processType === 'function') {
-        process = {
-          process: process,
-        }
-      }
-
-      return process
-    })
-
-    return true
-  }
-
   // Exit early if already done.
-  if (!next()) {
+  if (collections.length === 0) {
     logger.info('No collections to process.')
     return
   }
@@ -73,19 +20,57 @@ const process = async function (app, collections) {
   await iterate(
     // Return a source process method.
     {
+      collectionsExhausted: collections.map(() => false),
+      collectionsActive: collections.map(() => 0),
+      collectionIndex: 0,
+      collection: null,
+      collectionProcesses: null,
+
       exhausted: false,
+
       next: async function () {
-        // Store collection data locally.
-        const _source = collection.source
-        const _processes = collection.processes
-        const _processesPrepared = processesPrepared
+        if (!this.collection) {
+          // Set collection.
+          this.collection = collections[this.collectionIndex]
+
+          // Prepare collections.
+          this.collectionProcesses = this.collection.processes.map(process => {
+            let processType = typeof (process)
+
+            // If string get from lookup.
+            if (processType === 'string') {
+              process = app._processes[process]
+
+              // Get type again.
+              processType = typeof (process)
+            }
+
+            // If function wrap in object.
+            if (processType === 'function') {
+              process = {
+                process: process,
+              }
+            }
+
+            return process
+          })
+        }
+
+        // Store values locally.
+        const index = this.collectionIndex
+        const source = this.collection.source
+        const processes = this.collection.processes
+        const processesPrepared = this.collectionProcesses
+
+        // Increment active collections.
+        this.collectionsActive[index]++
 
         // Get data from source.
-        let data = await _source.next()
+        let data = await source.next()
 
         if (data) {
           // Iterate over processes.
-          for (const process of _processesPrepared) {
+          for (const process of processesPrepared) {
             // Skip if data is null.
             if (data === undefined || data === null) {
               break
@@ -95,19 +80,33 @@ const process = async function (app, collections) {
           }
         }
 
-        // Set next collection if current is exhausted.
-        if (_source.exhausted && !this.exhausted) {
-          if (!next()) {
+        // Check source is exhausted and was not exhausted previously.
+        if (source.exhausted && !this.collectionsExhausted[index]) {
+          this.collectionsExhausted[index] = true
+          // Check if more collections left.
+          if (this.collectionIndex < collections.length - 1) {
+            // Unset collection.
+            this.collection = null
+            this.collectionProcesses = null
+
+            // Increment collection index.
+            this.collectionIndex++
+          } else {
+            // Set iterator as exhausted.
             this.exhausted = true
           }
         }
 
-        if (_source.done) {
-          // Call final on object processes from this collection.
+        // Check if done and this is the last active collection call.
+        if (source.done && this.collectionsActive[index] === 1) {
+          // Call final on processes only in this collection.
           await call({
             concurrencyLimit: app.options.concurrencyLimit,
-          }, _processes, 'final')
+          }, processes, 'final')
         }
+
+        // Decrement active count.
+        this.collectionsActive[index]--
       },
     },
     app.options.concurrencyLimit

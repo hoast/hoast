@@ -8,11 +8,14 @@ import instantiate from '@hoast/utils/instantiate.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
 // import external modules.
-import cssnano from 'cssnano'
 import babel from '@babel/core'
+import cssnano from 'cssnano'
+import deasync from 'deasync'
 import htmlMinifier from 'html-minifier-terser'
-import { minify as jsMinify } from 'terser'
+import { minify as terser } from 'terser'
 import Postcss from 'postcss'
+
+const terserSync = deasync(terser)
 
 class ProcessProcess extends BaseProcess {
   constructor(options) {
@@ -67,7 +70,10 @@ class ProcessProcess extends BaseProcess {
     // Setup Postcss.
     const postcss = new Postcss(cssPlugins)
     // Store options.
-    const cssOptions = deepAssign({}, this._options.cssOptions)
+    const cssOptions = deepAssign({
+    }, this._options.cssOptions, {
+      from: undefined,
+    })
 
     // Create CSS processor.
     this._cssProcess = (code) => {
@@ -101,7 +107,7 @@ class ProcessProcess extends BaseProcess {
       code = result.code
 
       // Process via Terser.
-      result = jsMinify(code, jsMinifyOptions)
+      result = terserSync(code, jsMinifyOptions)
       if (result.error) {
         return code
       }
@@ -118,7 +124,7 @@ class ProcessProcess extends BaseProcess {
       code = result.code
 
       // Process via Terser.
-      result = jsMinify(code, jsMinifyOptions)
+      result = await terser(code, jsMinifyOptions)
       if (result.error) {
         return code
       }

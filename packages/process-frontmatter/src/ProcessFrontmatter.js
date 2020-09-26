@@ -86,7 +86,7 @@ class ProcessFrontmatter extends BaseProcess {
     const rest = value.substring(lineIndexSum + lineEndIndex)
 
     // Parse frontmatter.
-    frontmatter = this._options.parse(frontmatter)
+    frontmatter = this._options.parser(frontmatter)
     // Set values.
     data = setByPathSegments(data, this._frontmatterPropertyPath, frontmatter)
     data = setByPathSegments(data, this._propertyPath, rest)

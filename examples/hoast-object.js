@@ -15,6 +15,7 @@ export default {
         },
       ],
       processes: [
+        '@hoast/process-frontmatter',
         '@hoast/process-markdown',
         [
           '@hoast/process-handlebars',
@@ -24,6 +25,46 @@ export default {
           },
         ],
         '@hoast/process-postprocess',
+        '@hoast/process-log',
+      ],
+    },
+    {
+      source: [
+        '@hoast/source-readfiles',
+        {
+          directory: 'src',
+          patterns: [
+            'scripts/*',
+          ],
+        },
+      ],
+      processes: [
+        [
+          '@hoast/process-postprocess',
+          {
+            mode: 'js',
+          },
+        ],
+        '@hoast/process-log',
+      ],
+    },
+    {
+      source: [
+        '@hoast/source-readfiles',
+        {
+          directory: 'src',
+          patterns: [
+            'styles/*',
+          ],
+        },
+      ],
+      processes: [
+        [
+          '@hoast/process-postprocess',
+          {
+            mode: 'css',
+          },
+        ],
         '@hoast/process-log',
       ],
     },
