@@ -19,7 +19,11 @@ class ProcessParse extends BaseProcess {
   }
 
   async initialize () {
-    this._parser = await instantiate(this._options.parser)
+    if (Array.isArray(this._options.parser) || typeof (this._options.parser) === 'string') {
+      this._parser = await instantiate(this._options.parser)
+    } else {
+      this._parser = this._options.parser
+    }
   }
 
   concurrent (data) {

@@ -1,22 +1,15 @@
 {
   "private": true,
-  "name": "@hoast/examples",
-  "version": "2.0.0",
+  "name": "@hoast/example-config",
+  "version": "0.0.0",
   "dependencies": {
     "@hoast/base-package": "x",
     "@hoast/base-process": "x",
     "@hoast/base-source": "x",
     "@hoast/hoast": "x",
-    "@hoast/process-frontmatter": "x",
-    "@hoast/process-handlebars": "x",
     "@hoast/process-log": "x",
-    "@hoast/process-markdown": "x",
-    "@hoast/process-mithril": "x",
-    "@hoast/process-parse": "x",
-    "@hoast/process-writefiles": "x",
     "@hoast/source-readfiles": "x",
-    "@hoast/utils": "x",
-    "mithril": "^2.0.4"
+    "@hoast/utils": "x"
   },
   "type": "module",
   "scripts": {

@@ -11,14 +11,23 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 // Import external modules.
 import render from 'mithril-node-render'
 
+// Make Mithril renderer happy.
+if (!global.window) {
+  global.window = global.document = global.requestAnimationFrame = undefined
+}
+
 class ProcessMythril extends BaseProcess {
   constructor(options) {
     super({
-      property: 'content',
+      property: 'contents',
 
       componentDirectory: null,
       componentPath: null,
       componentProperty: null,
+
+      prefix: null,
+      suffix: null,
+      mithrilOptions: {},
     }, options)
 
     if (!this._options.componentPath && !this._options.componentProperty) {
@@ -68,10 +77,16 @@ class ProcessMythril extends BaseProcess {
     }
 
     // Compile data with component.
-    const value = await render(component, {
-      app: this._app,
+    let value = await render(component, {
+      meta: this._app.meta,
       data: data,
     })
+    if (this._options.prefix) {
+      value = this._options.prefix + value
+    }
+    if (this._options.suffix) {
+      value = value + this._options.suffix
+    }
 
     // Set value.
     data = setByPathSegments(data, this._propertyPath, value)

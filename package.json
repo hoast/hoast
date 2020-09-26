@@ -2,7 +2,7 @@
   "private": true,
   "name": "@hoast/workspace",
   "workspaces": [
-    "examples",
+    "examples/*",
     "packages/*"
   ],
   "scripts": {

@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "@hoast/example-mithril",
+  "version": "0.0.0",
+  "dependencies": {
+    "@hoast/base-package": "x",
+    "@hoast/base-process": "x",
+    "@hoast/base-source": "x",
+    "@hoast/hoast": "x",
+    "@hoast/process-log": "x",
+    "@hoast/process-mithril": "x",
+    "@hoast/process-parse": "x",
+    "@hoast/source-readfiles": "x",
+    "@hoast/utils": "x",
+    "mithril": "^2.0.4"
+  },
+  "type": "module",
+  "scripts": {
+    "hoast": "hoast",
+    "lint": "eslint --fix --cache *.js src/components/*.js"
+  }
+}
