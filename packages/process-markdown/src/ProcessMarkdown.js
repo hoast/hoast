@@ -20,6 +20,9 @@ class ProcessMarkdown extends BaseProcess {
     super({
       property: 'contents',
 
+      changeExtension: [
+        'md',
+      ],
       highlightOptions: false,
     }, options)
 
@@ -47,9 +50,32 @@ class ProcessMarkdown extends BaseProcess {
   }
 
   async concurrent (data) {
-    let result = getByPathSegments(data, this._propertyPath)
-    result = await this._parser.process(result)
-    data = setByPathSegments(data, this._propertyPath, result.contents)
+    // Get value from data.
+    let value = getByPathSegments(data, this._propertyPath)
+
+    // Parse data.
+    value = await this._parser.process(value)
+    value = value.contents
+
+    // Set value back to data.
+    data = setByPathSegments(data, this._propertyPath, value)
+
+    // Change extension.
+    if (this._options.changeExtension && data.path) {
+      // Split path into segments.
+      const pathSegments = data.path.split('.')
+      // Check if file ends with an expected extension.
+      if (this._options.changeExtension.indexOf(pathSegments[pathSegments.length - 1]) >= 0) {
+        // Remove existin extension.
+        pathSegments.pop()
+        // Add html extension.
+        pathSegments.push('html')
+        // Write path back to data.
+        data.path = pathSegments.join('.')
+      }
+    }
+
+    // Return result.
     return data
   }
 }

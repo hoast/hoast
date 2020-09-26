@@ -32,6 +32,13 @@ class ProcessWritefiles extends BaseProcess {
 
     // Convert dot notation to path segments.
     this._writePath = this._options.writeProperty.split('.')
+
+    this.directoryOptions = Object.assign(
+      this._options.directoryOptions,
+      {
+        recursive: true,
+      }
+    )
   }
 
   async sequential (data) {
@@ -41,12 +48,7 @@ class ProcessWritefiles extends BaseProcess {
     // Ensure directory exists.
     await fsMkdir(
       path.dirname(filePath),
-      Object.assign(
-        this._options.directoryOptions,
-        {
-          recursive: true,
-        }
-      )
+      this.directoryOptions
     )
 
     return data

@@ -8,10 +8,7 @@ export default {
       source: [
         '@hoast/source-readfiles',
         {
-          directory: 'src',
-          patterns: [
-            'contents/*',
-          ],
+          directory: 'src/pages',
         },
       ],
       processes: [

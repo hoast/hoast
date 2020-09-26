@@ -13,10 +13,7 @@ new Hoast({}, {
   .addCollections([
     {
       source: new SourceReadfiles({
-        directory: 'src',
-        patterns: [
-          'contents/*',
-        ],
+        directory: 'src/pages',
       }),
       processes: [
         new ProcessFrontmatter(),
