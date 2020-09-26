@@ -4,7 +4,7 @@ export default {
       source: [
         '@hoast/source-readfiles',
         {
-          directory: 'src/pages',
+          directory: 'src',
         },
       ],
       processes: [

@@ -6,7 +6,7 @@ new Hoast()
   .addCollections([
     {
       source: new SourceReadfiles({
-        directory: 'src/pages',
+        directory: 'src',
       }),
       processes: [
         new ProcessLog(),

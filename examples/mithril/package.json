@@ -9,7 +9,6 @@
     "@hoast/hoast": "x",
     "@hoast/process-log": "x",
     "@hoast/process-mithril": "x",
-    "@hoast/process-parse": "x",
     "@hoast/source-readfiles": "x",
     "@hoast/utils": "x",
     "mithril": "^2.0.4"

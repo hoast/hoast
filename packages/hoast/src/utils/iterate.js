@@ -7,7 +7,7 @@
 const iterate = function (iterator, limit = 1) {
   // Track active calls.
   let count = 0
-  let index = 0
+  let index = -1
 
   return new Promise((resolve, reject) => {
     const add = () => {

@@ -10,7 +10,7 @@ export default {
       lang: 'en',
     }, [
       m('head'),
-      m('body', contents.hello),
+      m('body', contents),
     ])
   },
 }
