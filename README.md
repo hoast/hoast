@@ -1,6 +1,6 @@
 <div align="center">
 
-  [![](icons/128.png)](https://hoast.js.org)
+  [![](_assets/128.png)](https://hoast.js.org)
 
   [![License agreement](https://img.shields.io/github/license/hoast/hoast.svg?style=flat-square&maxAge=86400)](https://github.com/hoast/hoast/blob/master/LICENSE)
   [![Open issues on GitHub](https://img.shields.io/github/issues/hoast/hoast.svg?style=flat-square&maxAge=86400)](https://github.com/hoast/hoast/issues)
@@ -11,7 +11,7 @@
 
 ## Elevator pitch
 
-Creating a static page generator can be incredibly easy as is show below.
+Creating a static page generator can be incredibly easy!
 
 ```JavaScript
 import Hoast from '@hoast/hoast'
@@ -61,53 +61,13 @@ new Hoast()
 
 ## Packages
 
-### Core
-
-- [`hoast`]()
-- [`utils`]()
-
-### Base packages
-
-Packages used by process or source packages.
-
-- [`base-package`]()
-- [`base-process`]()
-- [`base-source`]()
-
-### Source packages
-
-- [`source-custom`]() - Allows you to provide your own custom source methods. Extends base-source where the overridabel methods can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
-- [`source-readfiles`]()
-
-### Process packages
-
-- [`process-custom`]() - Allows you to provide your own custom process methods. Extends base-process where the overridabel methods can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
-- [`process-frontmatter`]()
-- [`process-handlebars`]()
-- [`process-log`]()
-- [`process-markdown`]()
-- [`process-mithril`]()
-- [`process-parse`]()
-- [`process-postprocess`]()
-- [`process-writefiles`]()
+See the [packages directory](/packages) for a full list of first party packages in this repostory.
 
 ### Made with
 
 These serve as tools you can use directly, or as an example on how to make a solution that fits your needs.
 
-- [`examples`]()
-- [`hoastig`]()
-
-### Ideas
-
-Not yet made packages but ideas that might spark your imagination.
-
-- `process-query` - Extract and process queries from the given data. Perhaps via GrapQL or other external apis.
-- `process-<template-language>` - More template language packages are always welcome as everyone has a favourite or is already using one in a project they want to migrate over.
-- `source-graphql` - Retrieve data via GraphQL queries.
-- `source-rest` - Retrieve data via restful calls.
-
-> If you want to create one of these packages do let me know by creating an issue. I would love to help you out where I can.
+- [`examples`](/examples) - .
 
 ## Version numbering
 

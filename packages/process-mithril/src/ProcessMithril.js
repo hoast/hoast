@@ -27,7 +27,6 @@ class ProcessMythril extends BaseProcess {
 
       prefix: null,
       suffix: null,
-      mithrilOptions: {},
     }, options)
 
     if (!this._options.componentPath && !this._options.componentProperty) {

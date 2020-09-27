@@ -1,5 +1,5 @@
 ---
-name: Problem
+name: Report
 about: Report a problem. Perhaps you discovered a bug and we can help fix the problem.
 labels:
 - bug

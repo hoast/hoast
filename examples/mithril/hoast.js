@@ -15,9 +15,6 @@ const hoast = new Hoast()
           componentPath: 'html.js',
 
           prefix: '<!DOCTYPE html>',
-          mithrilOptions: {
-            strict: true,
-          },
         }),
         new ProcessLog(),
       ],

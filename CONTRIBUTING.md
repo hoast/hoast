@@ -17,7 +17,7 @@ Welcome and thank you for wanting to contribute! Following these guidelines help
 
 ## Code of conduct
 
-Besides the guidelines set out in this document we expect our community reads and follows to the [code of conduct](/code-of-conduct) as well.
+Besides the guidelines set out in this document we expect our community reads and follows to the [code of conduct](/CODE_OF_CONDUCT) as well.
 
 ## Philosophy
 
@@ -36,26 +36,23 @@ When opening an issue via the issue tracker please use one of the templates list
 
 Before you start work on a pull request check any open pull request first then open an issue and inform us about what you want to do. Whether this is about a bug fix or new feature we would hate to see you effort go to waist. Perhaps someone is already working on fixing that bug or you wish to build a feature that is out of the scope. However do not let this discourage you from creating your own fork! We support most use-cases, but can not realistically support all, so feel free to modify the project.
 
-To create a pull request first fork the repository, change to the `develop` branch, make, and commit your changes. Then create a pull request in the original repository, select the changes, fill in a short form, and submit the request. Afterwards simply wait for us to get back to you with any feedback.
-
-> If the repository does not have a `develop` branch, then use the default branch.
+To create a pull request first fork the repository, make and and commit your changes. Then create a pull request in the original repository, select the changes, fill in a short form, and submit the request. Afterwards simply wait for us to get back to you with any feedback.
 
 When making changes make sure you do everything listed below.
 + Follow styling.
 + Run tests.
 + Write documentation.
++ Write examples.
 + Write tests.
 + Sign off commits.
 
 ### Follow styling
 
-There is no specific styling guide to use. There are however two which can automatically be enforced by [EditorConfig](https://editorconfig.org) and [ESLint](https://eslint.org) using the `.editorconfig` and `.eslintrc.json` files respectively. Therefore you are recommend to install a plugin to automate this process.
-
-> See [EditorConfig's download section](https://editorconfig.org/#download) for a list of editor extensions.
+There is no specific styling guide to use. There are however two which can automatically be enforced by [EditorConfig](https://editorconfig.org) and [ESLint](https://eslint.org) using the `.editorconfig` and `.eslintrc.js` file respectively. Therefore you are recommend to install a plugin to automate this process. See [EditorConfig's download section](https://editorconfig.org/#download) for a list of editor extensions. Depending on your preferences you can enable the format / lint on save option in several editors as well.
 
 ### Run tests
 
-Clone the repository, install dependencies with `$ npm i --save`, and run tests with `$ npm test`.
+Clone the repository, install dependencies with `% yarn install`, and run tests with `% yarn workspaces run test` or `% yarn workspace <package-name> run test` for a specific package.
 
 ### Write documentation
 
@@ -66,13 +63,17 @@ The projects documentation include four elements the instruction manual, change 
 + **Code comments**: Code should be annotated explaining briefly what a section of code does, whereby the functionality should be understood by only reading the comments.
 + **Commit message**: Commit messages should summarize what has essentially been written to the change log.
 
+### Write examples
+
+In order to help people
+
 ### Write tests
 
-Sometimes tests need to be added, improved, or updated to reflect recent changes, be sure to run the current tests and make changes if necessary. Tests are written using the npm package Ava in the repositories `test` directory and run using `$ npm test`. Travis-ci bot will automatically run the tests on different versions of node when submit a pull request. If any tests fail your pull request will never be accepted.
+Sometimes tests need to be added, improved, or updated to reflect recent changes, be sure to run the current tests and make changes if necessary. Tests can be ran using `% yarn workspaces run test` or `% yarn workspace <package-name> run test` for a specific test. GitHub actions will automatically run the tests when a pull request is submitted. Your pull request will not be merged until all test are passed.
 
 ### Sign off commits
 
-Ensure your commits are signed off on at the end of your commit message, like so `Signed-off-by: Jean Smith <jean.smith@example.com>`. Your signature certifies that you comply with the project's [Developer Certificate of Origin](/dco). The goal of the DCO is to make sure contributors have to legal right to submit their changes. Therefore make sure to use your real name and not a pseudonym.
+Ensure your commits are signed off on at the end of your commit message, like so `Signed-off-by: Jean Smith <jean.smith@example.com>`. Your signature certifies that you comply with the project's [Developer Certificate of Origin](/DCO). The goal of the DCO is to make sure contributors have to legal right to submit their changes. Therefore make sure to use your real name and not a pseudonym.
 
 > If you set your `user.name` and `user.email` git configs, you can sign your commit automatically with `git commit -s` command or in Visual Studio Code use the `Commit All (Signed Off)` or `Commit Stages (Signed Off)` option.
 
