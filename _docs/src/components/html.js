@@ -31,10 +31,35 @@ export default {
           content: frontmatter.keywords,
         }),
 
+        // Icons.
+        m('link', {
+          rel: 'icon',
+          href: '/assets/icon-round-128.png',
+          type: 'image/png',
+          sizes: '128x128',
+        }),
+        m('link', {
+          rel: 'icon',
+          href: '/assets/icon-round-256.png',
+          type: 'image/png',
+          sizes: '256x256',
+        }),
+        m('link', {
+          rel: 'icon',
+          href: '/assets/icon-round-512.png',
+          type: 'image/png',
+          sizes: '512x512',
+        }),
+
         // Style sheets.
         m('link', {
           rel: 'stylesheet',
           href: '/styles/global.css',
+        }),
+
+        m('meta', {
+          name: 'theme-color',
+          content: '#ffffff',
         }),
       ]),
 

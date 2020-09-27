@@ -1,6 +1,6 @@
 <div align="center">
 
-  [![](_assets/128.png)](https://hoast.js.org)
+  ![Project logo](_docs/src/assets/icon-round-256.png)
 
   [![License agreement](https://img.shields.io/github/license/hoast/hoast.svg?style=flat-square&maxAge=86400)](https://github.com/hoast/hoast/blob/master/LICENSE)
   [![Open issues on GitHub](https://img.shields.io/github/issues/hoast/hoast.svg?style=flat-square&maxAge=86400)](https://github.com/hoast/hoast/issues)
@@ -76,3 +76,18 @@ These serve as tools you can use directly, or as an example on how to make a sol
 ## Contribute
 
 The project uses yarn which has some support for monorepositories. To read more about how to run commands with yarn in a monorepository see the [yarn workspaces documentation](https://yarnpkg.com/features/workspaces) or run `% yarn workspaces -h`
+
+## Tasklist
+
+- Expand documentation.
+- Expand examples.
+- Write tests.
+
+### Known issues
+
+- Not all items are iterated over and the final message `ʕっ✦ᴥ✦ʔっ Done in ${time()}s!` is not logged to the terminal.
+
+### On release
+
+- Setup GitHub actions to run tests.
+- Setup GitHub actions to mirror releases between the NPM and GitHub registry.

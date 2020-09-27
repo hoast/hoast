@@ -6,7 +6,7 @@
 }
 ---
 
-[![](assets/128.png)](https://hoast.js.org)
+ʕ ˵•ᴥ•ʔ
 
 # Hoast
 
@@ -16,3 +16,5 @@ A modular data processor foccused on creating a simple ecosystem for task automa
 - On [NPM](https://www.npmjs.com/org/hoast)
 - See [Examples](https://github.com/hoast/hoast/tree/master/examples)
 - See [Packages](https://github.com/hoast/hoast/tree/master/packages)
+- Try [Contributing](https://github.com/hoast/hoast/blob/master/CONTRIBUTING.md)
+- [MIT](https://github.com/hoast/hoast/blob/master/LICENSE) license
