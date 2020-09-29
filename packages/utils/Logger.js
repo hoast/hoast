@@ -27,8 +27,8 @@ class Logger {
    * @param {Number} level Log level value.
    */
   setLevel (level) {
-    if (typeof (level) !== 'number') {
-      throw Error('Log level value not of type number.')
+    if (level !== null && level !== undefined && typeof (level) !== 'number') {
+      throw new Error('Log level value not of type number.')
     }
 
     this._level = level
@@ -47,8 +47,8 @@ class Logger {
    * @param {Number} prefix Log prefix value.
    */
   setPrefix (prefix) {
-    if (typeof (level) !== 'string') {
-      throw Error('Log prefix value not of type string.')
+    if (prefix !== null && prefix !== undefined && typeof (prefix) !== 'string') {
+      throw new Error('Log prefix value not of type string.')
     }
 
     this._prefix = prefix
