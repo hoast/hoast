@@ -90,7 +90,7 @@ class BaseSource extends BasePackage {
           promise.reject(error)
         }
       } else {
-        this.hold = false
+        this._holdCalls = false
       }
     }
 

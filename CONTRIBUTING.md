@@ -52,7 +52,7 @@ There is no specific styling guide to use. There are however two which can autom
 
 ### Run tests
 
-Clone the repository, install dependencies with `% yarn install`, and run tests with `% yarn workspaces run test` or `% yarn workspace <package-name> run test` for a specific package.
+The project uses `yarn` which has some support for monorepositories. To read more about how to run commands with yarn in a monorepository see the [yarn workspaces documentation](https://yarnpkg.com/features/workspaces) or run `% yarn workspaces -h`. Clone the repository, install dependencies with `% yarn install`, and run tests with `% yarn workspaces run test` or `% yarn workspace <package-name> run test` for a specific package.
 
 ### Write documentation
 

@@ -6,6 +6,8 @@
 
 # Hoast
 
+A simple and modular ecosystem for build automation.
+
 ## Elevator pitch
 
 Creating a static page generator can be incredibly easy!
@@ -52,10 +54,6 @@ new Hoast()
 
 
 
-### Repository
-
-1. Is monorepository. See packages directory for packages.
-
 ## Packages
 
 See the [packages directory](/packages) for a full list of first party packages in this repostory.
@@ -64,25 +62,22 @@ See the [packages directory](/packages) for a full list of first party packages 
 
 These serve as tools you can use directly, or as an example on how to make a solution that fits your needs.
 
-- [`examples`](/examples) - .
+- [`examples`](/examples) - A series of examples on how Hoast and several packages can be used.
 
 ## Version numbering
 
-
+TODO:
 
 ## Contribute
 
-The project uses yarn which has some support for monorepositories. To read more about how to run commands with yarn in a monorepository see the [yarn workspaces documentation](https://yarnpkg.com/features/workspaces) or run `% yarn workspaces -h`
+Read the [code of conduct](/CODE_OF_CONDUCT.md) and [contributing](/CONTRIBUTING.md) documents to get up to speed on how to get involved.
 
 ## Tasklist
 
 - Expand documentation.
 - Expand examples.
+- Improve logger use.
 - Write tests.
-
-### Known issues
-
-- Not all items are iterated over and the final message `ʕっ✦ᴥ✦ʔっ Done in ${time()}s!` is not logged to the terminal.
 
 ### On release
 

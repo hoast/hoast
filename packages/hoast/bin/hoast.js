@@ -63,7 +63,7 @@ Options for run
   --log-level          {Number}  Log level of hoast itself (Default: 2)
   --file-path          {String}  File path to config or script file (Default: hoast.js THEN hoast.json)
   --ignore-cache       {Bool}    Whether to use the existing cache (Default: false)
-  --concurrency-limit  {Number}  Maximum concurrency count (Default: 32)
+  --concurrency-limit  {Number}  Maximum concurrency count (Default: 8)
 `
 
   const MESSAGE_SEE_DOCS = `See '${pkg.docs}' for more information about hoast.`

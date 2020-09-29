@@ -24,10 +24,8 @@ const iterate = function (iterator, limit = 1) {
           // Add another one in its place.
           if (!iterator.exhausted) {
             add()
-          }
-
-          // Check if this was the last one.
-          if (count <= 0) {
+          } else if (count <= 0) {
+            // If the last active one then resolve.
             resolve()
           }
         }, (error) => {
@@ -35,7 +33,7 @@ const iterate = function (iterator, limit = 1) {
         })
     }
 
-    while (count < limit) { // eslint-disable-line no-unmodified-loop-condition
+    for (let i = 0; i < limit; i++) {
       if (iterator.exhausted) {
         break
       }

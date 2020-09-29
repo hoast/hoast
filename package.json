@@ -2,11 +2,13 @@
   "private": true,
   "name": "@hoast/workspace",
   "workspaces": [
-    "_docs/",
+    ".docs/",
     "examples/*",
     "packages/*"
   ],
   "scripts": {
+    "docs:build": "yarn workspace @hoast/docs run build",
+    "docs:develop": "yarn workspace @hoast/docs run develop",
     "lint": "yarn workspaces run lint"
   },
   "devDependencies": {

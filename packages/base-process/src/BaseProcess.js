@@ -169,7 +169,7 @@ class BaseProcess extends BasePackage {
         }
       } else {
         // Set hold back to false.
-        this.hold = false
+        this._holdCalls = false
       }
     }
 

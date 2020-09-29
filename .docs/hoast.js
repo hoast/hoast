@@ -39,6 +39,12 @@ const hoast = new Hoast()
         // Bundle and minify.
         new ProcessPostprocess({
           minify: process.env.NODE_ENV === 'production',
+
+          cssPlugins: [
+            'postcss-import',
+            'autoprefixer',
+            'postcss-preset-env',
+          ],
         }),
         // Write to filesystem.
         new ProcessWritefiles({

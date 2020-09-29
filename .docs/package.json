@@ -7,9 +7,7 @@
   },
   "devDependencies": {
     "@hoast/hoast": "x",
-    "@hoast/process-custom": "x",
     "@hoast/process-frontmatter": "x",
-    "@hoast/process-log": "x",
     "@hoast/process-markdown": "x",
     "@hoast/process-mithril": "x",
     "@hoast/process-postprocess": "x",
@@ -27,7 +25,7 @@
   "scripts": {
     "build": "NODE_ENV=production hoast",
     "develop": "NODE_ENV=development onchange -i 'hoast.js' 'src/**' -- hoast",
-    "lint": "eslint --fix --cache *.js src/components*.js",
+    "lint": "eslint --fix --cache *.js src/components/*.js",
     "serve": "serve ../docs/"
   }
 }

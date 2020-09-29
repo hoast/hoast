@@ -20,15 +20,16 @@ const process = async function (app, collections) {
   await iterate(
     // Return a source process method.
     {
-      collectionsExhausted: collections.map(() => false),
-      collectionsActive: collections.map(() => 0),
       collectionIndex: 0,
       collection: null,
       collectionProcesses: null,
 
+      collectionsActiveByIndex: Array.from({ length: collections.length }, () => 0),
+      collectionsExhausted: Array.from({ length: collections.length }, () => false),
+
       exhausted: false,
 
-      next: async function () {
+      next: async function (index) {
         if (!this.collection) {
           // Set collection.
           this.collection = collections[this.collectionIndex]
@@ -57,13 +58,13 @@ const process = async function (app, collections) {
         }
 
         // Store values locally.
-        const index = this.collectionIndex
+        const collectionIndex = this.collectionIndex
         const source = this.collection.source
         const processes = this.collection.processes
         const processesPrepared = this.collectionProcesses
 
         // Increment active collections.
-        this.collectionsActive[index]++
+        this.collectionsActiveByIndex[collectionIndex]++
 
         // Get data from source.
         let data = await source.next()
@@ -81,8 +82,8 @@ const process = async function (app, collections) {
         }
 
         // Check source is exhausted and was not exhausted previously.
-        if (source.exhausted && !this.collectionsExhausted[index]) {
-          this.collectionsExhausted[index] = true
+        if (source.exhausted && !this.collectionsExhausted[collectionIndex]) {
+          this.collectionsExhausted[collectionIndex] = true
           // Check if more collections left.
           if (this.collectionIndex < collections.length - 1) {
             // Unset collection.
@@ -98,7 +99,7 @@ const process = async function (app, collections) {
         }
 
         // Check if done and this is the last active collection call.
-        if (source.done && this.collectionsActive[index] === 1) {
+        if (source.done && this.collectionsActiveByIndex[collectionIndex] === 1) {
           // Call final on processes only in this collection.
           await call({
             concurrencyLimit: app.options.concurrencyLimit,
@@ -106,10 +107,10 @@ const process = async function (app, collections) {
         }
 
         // Decrement active count.
-        this.collectionsActive[index]--
+        this.collectionsActiveByIndex[collectionIndex]--
       },
     },
-    app.options.concurrencyLimit
+    app.options.concurrencyLimit, true
   )
 
   logger.info('Finished processing collections.')
