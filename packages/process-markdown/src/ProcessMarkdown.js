@@ -8,10 +8,8 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 // Import external unified modules.
 import unified from 'unified'
 import remarkParse from 'remark-parse'
-import remarkExternalLinks from 'remark-external-links'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
-import rehypeHighlight from 'rehype-highlight'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 
@@ -23,25 +21,66 @@ class ProcessMarkdown extends BaseProcess {
       changeExtension: [
         'md',
       ],
-      highlightOptions: false,
+      remarkPlugins: [],
+      rehypePlugins: [],
     }, options)
 
     // Convert dot notation to path segments.
     this._propertyPath = this._options.property.split('.')
   }
 
-  initialize () {
+  async initialize () {
     // Construct unified parser.
     this._parser = unified()
+
+    const addPlugin = async (plugin) => {
+      let result, parameters
+      if (Array.isArray(plugin)) {
+        result = plugin.shift()
+        parameters = plugin
+      } else {
+        result = plugin
+        parameters = []
+      }
+
+      // Get type of result.
+      let type = typeof (result)
+
+      // Import as package if string.
+      if (type === 'string') {
+        result = (await import(result))
+        if (result.default) {
+          result = result.default
+        }
+
+        // Get type of imported.
+        type = typeof (result)
+
+        // Check new value.
+        if (type !== 'function') {
+          throw new Error('Imported type must be a class or function.')
+        }
+      }
+
+      this._parser
+        .use(result, ...parameters)
+    }
+
+    this._parser
       .use(remarkParse) // Markdown to Mardown AST.
-      .use(remarkExternalLinks) // Safely link to external sources.
+
+    // Add remark plugins.
+    for (const plugin of this._options.remarkPlugins) {
+      await addPlugin(plugin)
+    }
+
+    this._parser
       .use(remarkRehype) // Markdown AST to HTML AST.
       .use(rehypeRaw) // Reparse HTML AST.
 
-    // Add highlighting to code blocks.
-    if (this._options.highlightOptions) {
-      this._parser
-        .use(rehypeHighlight, this._options.highlightOptions) // Code highlighting.
+    // Add rehype plugins.
+    for (const plugin of this._options.rehypePlugins) {
+      await addPlugin(plugin)
     }
 
     this._parser
