@@ -24,6 +24,10 @@ const hoast = new Hoast()
         // Convert markdown to HTML.
         new ProcessMarkdown({
           highlightOptions: {},
+
+          remarkPlugins: [
+            'remark-external-links',
+          ],
         }),
         // Template using mithril.
         new ProcessMithril({
@@ -55,6 +59,8 @@ const hoast = new Hoast()
 
           cssPlugins: [
             'postcss-import',
+            'autoprefixer',
+            'postcss-preset-env',
           ],
         }),
         new ProcessWritefiles({

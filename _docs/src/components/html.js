@@ -63,17 +63,16 @@ export default {
         }),
       ]),
 
-      m('body',
-        // Markdown content.
+      m('body', [
         m('div', {
           class: 'container',
-        }, m.trust(contents)),
-
-        // Scripts.
-        m('script', {
-          src: '/scripts/global.js',
-        })
-      ),
+        }, [
+          // Markdown content.
+          m('div', {
+            class: 'content',
+          }, m.trust(contents)),
+        ]),
+      ]),
     ])
   },
 }

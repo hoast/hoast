@@ -7,12 +7,7 @@ body {
 }
 
 a {
-  color: #e2844d;
   font-weight: 400;
-  text-decoration: none;
-}
-a:visited {
-  color: #c33939;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -20,16 +15,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .container {
+  position: relative;
+  display: table;
+  height: 100vh;
+  width: 100%;
   max-width: 16em;
-  padding-top: 4em;
-  padding-bottom: 4em;
-  padding-left: 2em;
-  padding-right: 2em;
   margin-left: auto;
   margin-right: auto;
 }
 
-.container > *:first-child {
+.container > .content {
+  display: table-cell;
+  vertical-align: middle;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.content > *:first-child {
   margin-top: 0.25em;
   margin-bottom: 0.25em;
 
@@ -39,17 +41,17 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
 }
 
-.container img {
+.content img {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-.container ul {
+.content ul {
   list-style-type: none;
   padding: 0;
 }
 
-.container ul li {
+.content ul li {
   line-height: 2;
 }

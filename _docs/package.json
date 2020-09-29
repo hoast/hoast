@@ -6,9 +6,6 @@
     "normalize.css": "8.0.1"
   },
   "devDependencies": {
-    "@hoast/base-package": "x",
-    "@hoast/base-process": "x",
-    "@hoast/base-source": "x",
     "@hoast/hoast": "x",
     "@hoast/process-custom": "x",
     "@hoast/process-frontmatter": "x",
@@ -18,10 +15,12 @@
     "@hoast/process-postprocess": "x",
     "@hoast/process-writefiles": "x",
     "@hoast/source-readfiles": "x",
-    "@hoast/utils": "x",
+    "autoprefixer": "10.0.1",
     "mithril": "^2.0.4",
     "onchange": "7.0.2",
     "postcss-import": "12.0.1",
+    "postcss-preset-env": "6.7.0",
+    "remark-external-links": "^7.0.0",
     "serve": "11.3.2"
   },
   "type": "module",

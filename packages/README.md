@@ -38,4 +38,4 @@ The ecosystem can always grow and find new problem to solve. A short list of ide
 ### Process packages
 
 - `process-query` - Extract and process queries from the given data. Perhaps via GrapQL or other external apis.
-- `process-<template-language>` - More template language packages are always welcome as everyone has a favourite or is already using one in a project they want to migrate over.
+- `process-<render-library>` - More render methods are always welcome as everyone has a favourite or is already using one in a project they want to migrate over.
