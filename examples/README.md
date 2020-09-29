@@ -3,10 +3,10 @@
 Several examples have been written to help you on your way. See the list below for an overview of these.
 
 - [`config`](/examples/config) - See several configuration examples to find the one best fit for your needs.
-- [`handlebars`](/examples/handlers) - How to use the `process-handlebars` package.
+- [`handlebars`](/examples/handlebars) - How to use the `process-handlebars` package.
 - [`mithril`](/examples/mithril) - How to use the `process-mithril` package.
 
-> Is something missing or not clear? Let us know or even better sumbit a change via a pull request.
+> Is something missing or not clear? Let us know or even better submit a change via a pull request.
 
 ## Running examples
 

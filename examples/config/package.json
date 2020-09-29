@@ -3,13 +3,9 @@
   "name": "@hoast/example-config",
   "version": "0.0.0",
   "dependencies": {
-    "@hoast/base-package": "x",
-    "@hoast/base-process": "x",
-    "@hoast/base-source": "x",
     "@hoast/hoast": "x",
     "@hoast/process-log": "x",
-    "@hoast/source-readfiles": "x",
-    "@hoast/utils": "x"
+    "@hoast/source-readfiles": "x"
   },
   "type": "module",
   "scripts": {
