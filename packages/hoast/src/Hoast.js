@@ -1,5 +1,5 @@
 // Import external modules.
-import { hasKeys } from '@hoast/utils/has.js'
+import { hasProperties } from '@hoast/utils/has.js'
 import deepAssign from '@hoast/utils/deepAssign.js'
 
 // Import internal modules.
@@ -49,7 +49,7 @@ class Hoast {
    * @param {Object} collection Collection to add.
    */
   addMetaCollection (collection) {
-    if (!hasKeys(collection, ['source'])) {
+    if (!hasProperties(collection, ['source'])) {
       return this
     }
 
@@ -64,7 +64,7 @@ class Hoast {
    */
   addMetaCollections (collections) {
     // Filter based on type.
-    collections = collections.filter((collection) => hasKeys(collection, ['source']))
+    collections = collections.filter((collection) => hasProperties(collection, ['source']))
     if (!collections) {
       return this
     }
@@ -82,7 +82,7 @@ class Hoast {
    * @param {Object} collection Collection to add.
    */
   addCollection (collection) {
-    if (!hasKeys(collection, ['source'])) {
+    if (!hasProperties(collection, ['source'])) {
       return this
     }
 
@@ -97,7 +97,7 @@ class Hoast {
    */
   addCollections (collections) {
     // Filter based on type.
-    collections = collections.filter(collection => hasKeys(collection, ['source']))
+    collections = collections.filter(collection => hasProperties(collection, ['source']))
     if (!collections) {
       return this
     }

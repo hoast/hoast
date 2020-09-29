@@ -6,7 +6,7 @@ import { getByPathSegments } from '@hoast/utils/get.js'
 import planckmatch from 'planckmatch'
 
 /**
- * Adds initialize method to processors and pattern filtering.
+ * Adds initialize function to processors and pattern filtering.
  */
 class BaseProcess extends BasePackage {
   constructor(...options) {
@@ -48,7 +48,7 @@ class BaseProcess extends BasePackage {
   async next (data) {
     // Exit early now if filtered out.
     if (this._options.filterCustom) {
-      // Skip if custom methods returns false.
+      // Skip if custom functions returns false.
       if (!this._options.filterCustom(data)) {
         return data
       }
@@ -182,7 +182,7 @@ class BaseProcess extends BasePackage {
   }
 
   /*
-   * Methods to use when using this as your base class.
+   * Functions to use when using this as your base class.
    * async initialize () { }
    * async sequential (data):data { }
    * async concurrent (data):data { }

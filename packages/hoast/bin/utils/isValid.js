@@ -1,8 +1,8 @@
-import { hasKeys } from '@hoast/utils/has.js'
+import { hasProperties } from '@hoast/utils/has.js'
 import { isObject } from '@hoast/utils/is.js'
 
 export const isValidConfig = function (value) {
-  if (!hasKeys(value, ['collections'])) {
+  if (!hasProperties(value, ['collections'])) {
     return {
       error: 'Object does not contain "collections" property.',
     }

@@ -18,7 +18,7 @@ const process = async function (app, collections) {
 
   // Iterate on collection sources and process them.
   await iterate(
-    // Return a source process method.
+    // Return a source process function.
     {
       collectionIndex: 0,
       collection: null,

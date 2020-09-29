@@ -118,7 +118,7 @@ class BaseSource extends BasePackage {
   }
 
   /*
-   * Methods to extends when using this as your base class.
+   * Functions to extends when using this as your base class.
    * async initialize () { }
    * async sequential (data):data { }
    * async concurrent (data):data { }

@@ -4,26 +4,26 @@
 
 ## Source packages
 
-- [`source-custom`](/packages/source-custom) - Allows you to provide your own custom source methods. Extends base-source where the overridabel methods can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
+- [`source-custom`](/packages/source-custom) - Allows you to provide your own custom source functions. Extends base-source where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
 - [`source-readfiles`](/packages/source-readfiles) - Read files from the filesystem.
 
 ## Process packages
 
-- [`process-custom`](/packages/process-custom) - Allows you to provide your own custom process methods. Extends base-process where the overridabel methods can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
+- [`process-custom`](/packages/process-custom) - Allows you to provide your own custom process functions. Extends base-process where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
 - [`process-frontmatter`](/packages/process-frontmatter) - Extract frontmatter from text.
 - [`process-handlebars`](/packages/process-handlebars) - Template using [handlebars]().
 - [`process-log`](/packages/process-log) - Log data to the terminal, useful for developing other process and source packages.
 - [`process-markdown`](/packages/process-markdown) - Convert markdown text to html using [unified]().
 - [`process-mithril`](/packages/process-mithril) - Template using [mithril]().
-- [`process-parse`](/packages/process-parse) - Parse value using a method, default is `JSON.parse`.
+- [`process-parse`](/packages/process-parse) - Parse value using a function, default is `JSON.parse`.
 - [`process-postprocess`](/packages/process-postprocess) - Process CSS, HTML, and JS data using Postcss and Babel plugins. Only minifies by default using cleancss, html-minifier-terser, and terser.
 - [`process-writefiles`](/packages/process-writefiles) - Write data to the filesystem.
 
 ## For developers
 
 - [`base-package`](/packages/base-package) - Provides basic functionality like receiving the app reference and setting up a logger.
-- [`base-process`](/packages/base-process) - Provides basic functionality for process package like an initialization method, sequentially running of certain code, and filtering out running the process based of the data.
-- [`base-source`](/packages/base-source) - Provides basic functionality for source package like an initialization method, sequentially running of certain code, and a finallize method called after the source is done iterating.
+- [`base-process`](/packages/base-process) - Provides basic functionality for process package like an initialization function, sequentially running of certain code, and filtering out running the process based of the data.
+- [`base-source`](/packages/base-source) - Provides basic functionality for source package like an initialization function, sequentially running of certain code, and a finallize function called after the source is done iterating.
 - [`utils`](/packages/utils) - A package of utility functions used by several other packages in this list.
 
 ## Package ideas

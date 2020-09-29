@@ -5,6 +5,7 @@ import { isObject } from './is.js'
  * Deeply assign a series of arrays and or objects properties together.
  * @param {Any} target Target to merge onto.
  * @param  {...Any} sources Sources to merge with.
+ * @returns {Object} Target object with sources values merged.
  */
 const deepMerge = function (target, ...sources) {
   if (!sources.length) {

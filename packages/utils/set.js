@@ -3,6 +3,7 @@
  * @param {Object} target Target object to set value to.
  * @param {String} path Dot notation string with each segment a property on the target.
  * @param {Any} value The value to set at the path on the target.
+ * @returns {Object} Target object with the value set to it.
  */
 export const setByDotNotation = function (target, path, value) {
   // Split path and return result from setByPathSegments.
@@ -14,6 +15,7 @@ export const setByDotNotation = function (target, path, value) {
  * @param {Object} target Target object to set value to.
  * @param {Array<String>} path Array of strings with each segment a property on the target.
  * @param {Any} value The value to set at the path on the target.
+ * @returns {Object} Target object with the value set to it.
  */
 export const setByPathSegments = function (target, path, value) {
   // Ensure target is an object.

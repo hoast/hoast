@@ -1,7 +1,7 @@
 /**
  * Checks if value is a class.
  * @param {Any} value Value to check.
- * @returns Whether the value is a class.
+ * @returns {Boolean} Whether the value is a class.
  */
 export const isClass = function (value) {
   const isConstructorOrClass = value.constructor && value.constructor.toString().substring(0, 5) === 'class'
@@ -15,7 +15,7 @@ export const isClass = function (value) {
 /**
  * Check whether the value is an object.
  * @param {Any} value Value of unknown type.
- * @returns Whether the value is an object.
+ * @returns {Boolean} Whether the value is an object.
  */
 export const isObject = function (value) {
   return (value && typeof value === 'object' && !Array.isArray(value))

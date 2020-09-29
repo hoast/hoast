@@ -7,7 +7,7 @@ import path from 'path'
 import { promisify } from 'util'
 
 // Import utility modules.
-import DirectoryIterator from '@hoast/utils/DirectoryIterator.js'
+import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import { getByPathSegments } from '@hoast/utils/get.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
@@ -86,11 +86,11 @@ class ProcessHandlebars extends BaseProcess {
                 : path.resolve(process.cwd(), this._options.helpersDirectory)
 
             // Get helper files.
-            const directoryIterator = new DirectoryIterator(directoryPath)
+            const directoryIterator = await iterateDirectory(directoryPath)
 
             let filePath
             // Get next file path.
-            while (filePath = await directoryIterator.next()) {
+            while (filePath = await directoryIterator()) {
               // Get relative file path.
               const filePathRelative = path.relative(directoryPath, filePath)
 
@@ -119,11 +119,11 @@ class ProcessHandlebars extends BaseProcess {
                 : path.resolve(process.cwd(), this._options.partialsDirectory)
 
             // Get helper files.
-            const directoryIterator = new DirectoryIterator(directoryPath)
+            const directoryIterator = await iterateDirectory(directoryPath)
 
             let filePath
             // Get next file path.
-            while (filePath = await directoryIterator.next()) {
+            while (filePath = await directoryIterator()) {
               // Get relative file path.
               const filePathRelative = path.relative(directoryPath, filePath)
 

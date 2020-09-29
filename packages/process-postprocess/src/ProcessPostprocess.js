@@ -121,7 +121,7 @@ class ProcessPostprocess extends BaseProcess {
       return result.code
     }
 
-    // CSS and JS parser methods to this.
+    // CSS and JS parser functions to this.
     const htmlMinifyOptions = deepAssign({}, this._options.htmlMinifyOptions, {
       minifyCSS: this._cssProcess,
       minifyJS: this._jsProcess,

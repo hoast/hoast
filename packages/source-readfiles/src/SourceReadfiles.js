@@ -6,9 +6,11 @@ import fs from 'fs'
 import path from 'path'
 
 // Import external modules.
-import DirectoryIterator from '@hoast/utils/DirectoryIterator.js'
+import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import planckmatch from 'planckmatch'
 import { trimStart } from '@hoast/utils/trim.js'
+
+// TODO: Add option to skip unchanged files, prevents copying over basic files that haven't changed. One problem is that files names can change, perhaps an optional file name transformer function can given to improve this. Consider caching at the process.cwd directory in a cache file which store the last iterated time of the file at that path which can be compared with the last modified time from the stats.
 
 class SourceReadfiles extends BaseSource {
   constructor(options) {
@@ -41,15 +43,15 @@ class SourceReadfiles extends BaseSource {
         : path.resolve(process.cwd(), this._options.directory)
   }
 
-  initialize () {
+  async initialize () {
     // Create directory iterator.
-    this._directoryIterator = new DirectoryIterator(this._directoryPath)
+    this._directoryIterator = await iterateDirectory(this._directoryPath)
   }
 
   async sequential () {
     let filePath
     // Get next file path.
-    while (filePath = await this._directoryIterator.next()) {
+    while (filePath = await this._directoryIterator()) {
       // Make file path relative.
       const filePathRelative = path.relative(this._directoryPath, filePath)
 

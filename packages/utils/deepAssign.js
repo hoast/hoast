@@ -5,6 +5,7 @@ import { isObject } from './is.js'
  * Deeply assign a series of objects properties together.
  * @param {Object} target Target object to assign onto.
  * @param  {...Object} sources Sources to assign with.
+ * @returns {Object} Target object with sources values assigned.
  */
 const deepAssign = function (target, ...sources) {
   if (!sources.length) {

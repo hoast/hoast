@@ -5,7 +5,7 @@
   },
   "name": "@hoast/utils",
   "version": "2.0.0",
-  "description": "Utility functions commonly used by hoast and hoast plugins.",
+  "description": "Utility functions commonly used by hoast and hoast packages.",
   "keywords": [
     "hoast",
     "util",

@@ -1,7 +1,7 @@
 // Import internal modules.
 import iterate from './iterate.js'
 
-const call = async function (options, context, methodName, ...methodArguments) {
+const call = async function (options, context, functionName, ...functionArguments) {
   if (Array.isArray(context)) {
     if (context.length === 0) {
       return
@@ -11,8 +11,8 @@ const call = async function (options, context, methodName, ...methodArguments) {
       exhausted: false,
       next: async function (index) {
         const contextItem = context[index]
-        if (typeof (contextItem) === 'object' && typeof (contextItem[methodName]) === 'function') {
-          await contextItem[methodName](...methodArguments)
+        if (typeof (contextItem) === 'object' && typeof (contextItem[functionName]) === 'function') {
+          await contextItem[functionName](...functionArguments)
         }
 
         if (index + 1 >= context.length) {
@@ -23,8 +23,8 @@ const call = async function (options, context, methodName, ...methodArguments) {
     return
   }
 
-  if (typeof (context) === 'object' && typeof (context[methodName]) === 'function') {
-    await context[methodName](...methodArguments)
+  if (typeof (context) === 'object' && typeof (context[functionName]) === 'function') {
+    await context[functionName](...functionArguments)
   }
 }
 
