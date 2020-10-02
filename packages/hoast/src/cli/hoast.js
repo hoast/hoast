@@ -15,7 +15,7 @@ import minimist from 'minimist'
 import timer from './utils/timer.js'
 
 // Import core library.
-import Hoast from '../src/Hoast.js'
+import Hoast from '../Hoast.js'
 
 // Promisify read file.
 const fsAccess = promisify(fs.access)

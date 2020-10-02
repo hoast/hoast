@@ -3,15 +3,13 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/hoast",
+  "name": "@hoast/process-javascript",
   "version": "2.0.0",
-  "description": "A modular file processor focused on creating a simple ecosystem for task automation.",
+  "description": "",
   "keywords": [
-    "modular",
-    "data",
-    "processor",
-    "task",
-    "automation"
+    "hoast",
+    "process",
+    "javascript"
   ],
   "license": "MIT",
   "homepage": "https://github.com/hoast/hoast#readme",
@@ -28,15 +26,12 @@
     "CHANGELOG.md",
     "src/"
   ],
-  "bin": {
-    "hoast": "src/cli/hoast.js"
-  },
-  "main": "src/Hoast.js",
+  "main": "src/ProcessJavascript.js",
   "scripts": {
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/utils": "2.0.0",
-    "minimist": "^1.2.5"
+    "@hoast/base-process": "2.0.0",
+    "@hoast/utils": "2.0.0"
   }
 }
