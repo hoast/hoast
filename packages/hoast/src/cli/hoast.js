@@ -36,7 +36,7 @@ const CLI = async function () {
           import.meta.url
             .replace(/(^\w+:|^)\/\//, '')
         ),
-        '../package.json'
+        '../../package.json'
       ),
       'utf8'
     )
