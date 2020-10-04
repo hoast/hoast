@@ -10,12 +10,12 @@
 ## Process packages
 
 - [`process-custom`](/packages/process-custom) - Allows you to provide your own custom process functions. Extends base-process where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
-- [`process-frontmatter`](/packages/process-frontmatter) - Extract frontmatter from text.
-- [`process-handlebars`](/packages/process-handlebars) - Template using [handlebars]().
+- [`process-frontmatter`](/packages/process-frontmatter) - Extract frontmatter from a text value.
+- [`process-handlebars`](/packages/process-handlebars) - Template using [Handlebars](https://github.com/handlebars-lang/handlebars.js#readme).
 - [`process-log`](/packages/process-log) - Log data to the terminal, useful for developing other process and source packages.
-- [`process-markdown`](/packages/process-markdown) - Convert markdown text to html using [unified]().
-- [`process-mithril`](/packages/process-mithril) - Template using [mithril]().
-- [`process-parse`](/packages/process-parse) - Parse value using a function, default is `JSON.parse`.
+- [`process-markdown`](/packages/process-markdown) - Convert markdown text to html using [Unified](https://github.com/unifiedjs/unified#readme).
+- [`process-mithril`](/packages/process-mithril) - Template using [Mithril](https://github.com/MithrilJS/mithril.js#readme).
+- [`process-parse`](/packages/process-parse) - Parse a text value using a function or package.
 - [`process-postprocess`](/packages/process-postprocess) - Process CSS, HTML, and JS data using Postcss and Babel plugins. Only minifies by default using cleancss, html-minifier-terser, and terser.
 - [`process-writefiles`](/packages/process-writefiles) - Write data to the filesystem.
 
@@ -28,7 +28,7 @@
 
 ## Package ideas
 
-The ecosystem can always grow and find new problem to solve. A short list of ideas that might spark your imagination are written below. If you want to create one of these packages do let me know by creating an issue. I would love to help where I can.
+The project can always grow and find new problems to solve. A short list of ideas that might spark your imagination are written below. If you want to create one of these modules do let me know by creating an issue. I would love to help where I can.
 
 ### Source packages
 
@@ -37,5 +37,5 @@ The ecosystem can always grow and find new problem to solve. A short list of ide
 
 ### Process packages
 
-- `process-query` - Extract and process queries from the given data. Perhaps via GrapQL or other external apis.
+- `process-<query>` - Process queries from the given data. Perhaps via GrapQL or another query method.
 - `process-<render-library>` - More render methods are always welcome as everyone has a favourite or is already using one in a project they want to migrate over.

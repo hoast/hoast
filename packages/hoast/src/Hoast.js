@@ -11,7 +11,8 @@ class Hoast {
   /**
    * Create Hoast instance.
    * @param {Object} options Options object.
-   * @param {Object} meta Meta object.
+   * @param {Object} meta Global metadata that can be picked up by process packages.
+   * @returns {Object} Hoast instance.
    */
   constructor(options = null, meta = null) {
     // Set options.
@@ -19,7 +20,6 @@ class Hoast {
       logLevel: 2,
 
       concurrencyLimit: 4,
-      ignoreCache: false,
     }
     if (options) {
       this.options = deepAssign(this.options, options)
@@ -47,6 +47,7 @@ class Hoast {
   /**
    * Add collection to meta collections.
    * @param {Object} collection Collection to add.
+   * @returns {Object} The hoast instance.
    */
   addMetaCollection (collection) {
     if (!hasProperties(collection, ['source'])) {
@@ -59,8 +60,9 @@ class Hoast {
   }
 
   /**
-   * Add collections to meta collections.
+   * Add multiple collections to meta collections.
    * @param {Array} collections Collections to add.
+   * @returns {Object} The hoast instance.
    */
   addMetaCollections (collections) {
     // Filter based on type.
@@ -80,6 +82,7 @@ class Hoast {
   /**
    * Add collection to collections.
    * @param {Object} collection Collection to add.
+   * @returns {Object} The hoast instance.
    */
   addCollection (collection) {
     if (!hasProperties(collection, ['source'])) {
@@ -92,9 +95,10 @@ class Hoast {
   }
 
   /**
-   * Add collections to collections.
+   * Add multiple collections to collections.
    * @param {Array} collections Collections to add.
-   */
+   * @returns {Object} The hoast instance.
+  */
   addCollections (collections) {
     // Filter based on type.
     collections = collections.filter(collection => hasProperties(collection, ['source']))
@@ -114,7 +118,8 @@ class Hoast {
    * Register process.
    * @param {String} name Name of process.
    * @param {Object} process Process object.
-   */
+   * @returns {Object} The hoast instance.
+  */
   registerProcess (name, process) {
     if (typeof (name) !== 'string') {
       return this
@@ -126,8 +131,9 @@ class Hoast {
   }
 
   /**
-   * Register processes.
+   * Register multiple processes.
    * @param {Object} processes Process objects by name as key.
+   * @returns {Object} The hoast instance.
    */
   registerProcesses (processes) {
     const processesFiltered = {}
@@ -154,13 +160,14 @@ class Hoast {
 
   /**
    * Process collections.
+   * @returns {Object} The hoast instance.
    */
   async process () {
     if (this._processes) {
       // Call set app on processes.
       await call({
         concurrencyLimit: this.options.concurrencyLimit,
-      }, this._processes, 'setApp', this)
+      }, this._processes, '_setApp', this)
     }
 
     if (this._metaCollections.length > 0) {
@@ -181,7 +188,7 @@ class Hoast {
         // Call set app on processes.
         await call({
           concurrencyLimit: this.options.concurrencyLimit,
-        }, collection.processes, 'setApp', this)
+        }, collection.processes, '_setApp', this)
       }
 
       // Process meta collections.
@@ -192,7 +199,7 @@ class Hoast {
       // Call set app on processes.
       await call({
         concurrencyLimit: this.options.concurrencyLimit,
-      }, collection.processes, 'setApp', this)
+      }, collection.processes, '_setApp', this)
     }
 
     // Process collections.

@@ -1,10 +1,11 @@
 // Import base class.
 import BasePackage from '@hoast/base-package'
 
-/**
- * Allow the first part of the next call to be executed sequentially and optionally a second part concurrently.
- */
 class BaseSource extends BasePackage {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(...options) {
     super(...options)
 
@@ -28,7 +29,11 @@ class BaseSource extends BasePackage {
     }
   }
 
-  async next (data) {
+  /**
+   * Retrieve next item.
+   * @returns {Any} Retrieved data.
+   */
+  async next () {
     // Exit early if done or exhausted.
     if (this.done || this.exhausted) {
       return
@@ -46,7 +51,6 @@ class BaseSource extends BasePackage {
         this._promiseQueue.push({
           resolve,
           reject,
-          data,
         })
       })
     }
@@ -61,13 +65,18 @@ class BaseSource extends BasePackage {
     }
 
     // Run now.
-    return await this._next(data)
+    return await this._next()
   }
 
-  async _next (data) {
+  /**
+   * Retrieve next item.
+   * @returns {Any} Retrieved data.
+   */
+  async _next () {
+    let data = null
     if (this._hasSequential) {
       // Run sequential part.
-      data = await this.sequential(data)
+      data = await this.sequential()
     }
 
     if (this._hasInitialize || this._hasSequential) {
@@ -108,7 +117,7 @@ class BaseSource extends BasePackage {
     // If exhausted and no more concurreny of this source is going then set done to true!
     if (this.exhausted && (!this._hasConcurrent || this._concurrentCount === 0)) {
       if (this._hasFinal) {
-        this.final()
+        await this.final()
       }
 
       this.done = true
@@ -116,14 +125,6 @@ class BaseSource extends BasePackage {
 
     return data
   }
-
-  /*
-   * Functions to extends when using this as your base class.
-   * async initialize () { }
-   * async sequential (data):data { }
-   * async concurrent (data):data { }
-   * final () { }
-   */
 }
 
 export default BaseSource

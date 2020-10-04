@@ -52,7 +52,7 @@ const CLI = async function () {
 ʕ ˵•ᴥ•ʔっ ${pkg.name} (v${pkg.version})
 
 Usage
-% ${pkg.name} [command] [options]
+% ${pkg.name} [command] [...options]
 
 Commands
   h, help     Display help
@@ -60,10 +60,9 @@ Commands
   v, version  Display version
 
 Options for run
-  --log-level          {Number}  Log level of hoast itself (Default: 2)
-  --file-path          {String}  File path to config or script file (Default: hoast.js THEN hoast.json)
-  --ignore-cache       {Bool}    Whether to use the existing cache (Default: false)
-  --concurrency-limit  {Number}  Maximum concurrency count (Default: 8)
+  --log-level          {Number}  Log level given to the logger. (Default: 2 (Errors and warnings))
+  --file-path          {String}  File path to config or script file. (Defaults: hoast.js and hoast.json)
+  --concurrency-limit  {Number}  Maximum amount of items to process at once. (Default: 4)
 `
 
   const MESSAGE_SEE_DOCS = `See '${pkg.docs}' for more information about hoast.`
@@ -224,9 +223,6 @@ Options for run
   const optionsOverride = {}
   if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
     optionsOverride.logLevel = options['log-level']
-  }
-  if (Object.prototype.hasOwnProperty.call(options, 'ignore-cache')) {
-    optionsOverride.ignoreCache = options['ignore-cache']
   }
   if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
     optionsOverride.concurrencyLimit = options['concurrency-limit']

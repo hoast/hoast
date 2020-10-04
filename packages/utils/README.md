@@ -68,26 +68,35 @@ Check whether the value is an object.
 ## Logger.js
 
 Logger class usefull for only allowing messages to be send to the console of the right level is set.
+
 - `constructor` Create logger instance.
   - `@param {Number} level` Log level.
   - `@param {String} prefix` Prefix of logged messages.
+
 - `getLevel` Get log level value.
   - `@returns {Number}` log level value.
+
 - `setLevel` Set log level value.
   - `@param {Number} level` Log level value.
+
 - `getPrefix` Get log prefix value.
   - `@returns {String}` Log prefix value.
+
 - `setPrefix` Set log prefix value.
   - `@param {Number} prefix` Log prefix value.
+
 - `info` Logs info message to console if level is greater than 2.
   - `@param {String} message` Message to output.
   - `@param  {...Any} optionalParams` Additional optional parameters.
+
 - `warn` Logs warning message to console if level is greater than 1.
   - `@param {String} message` Message to output.
   - `@param  {...Any} optionalParams` Additional optional parameters.
+
 - `error` Logs error message to console if level is greater than 1.
   - `@param {String} message` Message to output.
   - `@param  {...Any} optionalParams` Additional optional parameters.
+
 - `trace` Logs trace to console.
   - `@param {String} message` Message to output.
   - `@param  {...Any} optionalParams` Additional optional parameters.

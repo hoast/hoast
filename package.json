@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "@hoast/workspace",
+  "description": "A set of simple and modular packages for build automation.",
   "workspaces": [
     ".docs/",
     "examples/*",
@@ -9,8 +10,9 @@
   "scripts": {
     "docs:build": "yarn workspace @hoast/docs run build",
     "docs:develop": "yarn workspace @hoast/docs run develop",
+    "help": "hoast h",
     "lint": "yarn workspaces run lint",
-    "pretest": "yarn workspaces run lint"
+    "version": "hoast v"
   },
   "devDependencies": {
     "eslint": "^7.7.0",

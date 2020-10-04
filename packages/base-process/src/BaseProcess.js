@@ -5,10 +5,11 @@ import BasePackage from '@hoast/base-package'
 import { getByPathSegments } from '@hoast/utils/get.js'
 import planckmatch from 'planckmatch'
 
-/**
- * Adds initialize function to processors and pattern filtering.
- */
 class BaseProcess extends BasePackage {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(...options) {
     super({
       filterCustom: null,
@@ -45,6 +46,11 @@ class BaseProcess extends BasePackage {
     }
   }
 
+  /**
+   * Process item.
+   * @param {Any} data Data to process.
+   * @returns {Any} Processed data.
+   */
   async next (data) {
     // Exit early now if filtered out.
     if (this._options.filterCustom) {
@@ -151,6 +157,11 @@ class BaseProcess extends BasePackage {
     return await this._next(data)
   }
 
+  /**
+   * Process item.
+   * @param {Any} data Data to process.
+   * @returns {Any} Processed data.
+   */
   async _next (data) {
     if (this._hasSequential) {
       // Run sequential part.

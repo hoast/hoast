@@ -3,6 +3,10 @@ import Logger from '@hoast/utils/Logger.js'
 import deepAssign from '@hoast/utils/deepAssign.js'
 
 class BasePackage {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(...options) {
     // Set initial options.
     this._options = deepAssign({
@@ -13,7 +17,11 @@ class BasePackage {
     this._logger = new Logger(this._options.logLevel, this.constructor.name)
   }
 
-  setApp (app) {
+  /**
+   * Set app reference.
+   * @param {Object} app Hoast instance.
+   */
+  _setApp (app) {
     this._app = app
   }
 }

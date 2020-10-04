@@ -5,7 +5,7 @@
   },
   "name": "@hoast/hoast",
   "version": "2.0.0",
-  "description": "A modular file processor focused on creating a simple ecosystem for task automation.",
+  "description": "A set of simple and modular packages for build automation.",
   "keywords": [
     "modular",
     "data",
