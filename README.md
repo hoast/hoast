@@ -88,17 +88,9 @@ Read the [code of conduct](/CODE_OF_CONDUCT.md) and [contributing](/CONTRIBUTING
 
 ## Tasklist
 
-- [ ] Expand documentation.
-- [ ] Expand examples.
-- [ ] Improve logger use.
-- [ ] Finish `isValidConfig` in CLI.
-- [ ] Write tests.
-- [ ] Reduce build times via caching.
-  - Add in watcher library.
-  - Based on change file only rebuild what is required.
-  - What to rebuild should be decided by the configuration or source plugin.
-
-### On release
-
-- [ ] Setup GitHub actions to run tests.
-- [ ] Setup GitHub actions to mirror releases between the NPM and GitHub registry.
+- Expand examples.
+- Improve logger use.
+- Finish `isValidConfig` in CLI.
+- Write tests.
+- Setup GitHub actions to run tests.
+- Reduce build times via caching.
