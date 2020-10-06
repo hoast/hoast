@@ -31,8 +31,6 @@
     "lint": "eslint --fix --cache src/*.js"
   },
   "dependencies": {
-    "@hoast/base-package": "2.0.0",
-    "@hoast/utils": "2.0.0",
-    "planckmatch": "^0.2.1"
+    "@hoast/base-package": "2.0.0"
   }
 }

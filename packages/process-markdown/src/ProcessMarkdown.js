@@ -13,6 +13,9 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 
+const EXTENSIONS_FROM = ['md', 'markdown']
+const EXTENSIONS_TO = 'html'
+
 class ProcessMarkdown extends BaseProcess {
   /**
    * Create package instance.
@@ -21,10 +24,6 @@ class ProcessMarkdown extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',
-
-      changeExtension: [
-        'md',
-      ],
       remarkPlugins: [],
       rehypePlugins: [],
     }, options)
@@ -104,15 +103,15 @@ class ProcessMarkdown extends BaseProcess {
     data = setByPathSegments(data, this._propertyPath, value)
 
     // Change extension.
-    if (this._options.changeExtension && data.path) {
+    if (data.path) {
       // Split path into segments.
       const pathSegments = data.path.split('.')
       // Check if file ends with an expected extension.
-      if (this._options.changeExtension.indexOf(pathSegments[pathSegments.length - 1]) >= 0) {
+      if (EXTENSIONS_FROM.indexOf(pathSegments[pathSegments.length - 1]) >= 0) {
         // Remove existin extension.
         pathSegments.pop()
         // Add html extension.
-        pathSegments.push('html')
+        pathSegments.push(EXTENSIONS_TO)
         // Write path back to data.
         data.path = pathSegments.join('.')
       }

@@ -19,7 +19,7 @@ OR
 - `{String} property = 'contents'` Dot notation path to the data property which should be used processed by handlebars.
 - `{String} templateDirectory = null` Template directory path, either absolute or relative to the working directory.
 - `{String} templatePath = null` Default template path relative to the template directory.
-- `{String} templateProperty = null` Dot notation path to the data property where the template path might be written.
+- `{String} templateProperty = null` Dot notation path to the data property where the template path can be written.
 - `{Object} handlebarsOptions = {}` [Handlebars options](https://github.com/handlebars-lang/handlebars.js#readme).
 - `{Object} helpers = null` Object of Handlebars helpers whereby the key is the name of the helper and the value the helper function.
 - `{String} helpersDirectory = null` Handlebars helpers directory path, either absolute or relative to the working directory. All items in the directory will be read where the path relative to the given directory is the name of the helper and the default export of the file the helper.

@@ -14,6 +14,12 @@ import htmlMinifier from 'html-minifier-terser'
 import { minify as terser } from 'terser'
 import Postcss from 'postcss'
 
+const MODES = [
+  'css',
+  'html',
+  'js',
+]
+
 class ProcessPostprocess extends BaseProcess {
   /**
    * Create package instance.
@@ -22,11 +28,7 @@ class ProcessPostprocess extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',
-
       mode: 'html',
-      modeProperty: null,
-      modeArray: -1, // Index of value in array. Negative values get computed as "<array>.length - value".
-
       minify: true,
 
       cssMinifyOptions: {},
@@ -40,6 +42,10 @@ class ProcessPostprocess extends BaseProcess {
       jsMinifyOptions: {},
       jsOptions: {},
     }, options)
+
+    if (MODES.indexOf(this._options.mode) < 0) {
+      this._logger.error('Unkown mode used. Mode:  "' + this._options.mode + '".')
+    }
 
     // Convert dot notation to path segments.
     this._propertyPath = this._options.property.split('.')
@@ -138,19 +144,8 @@ class ProcessPostprocess extends BaseProcess {
   }
 
   async concurrent (data) {
-    // Get mode value.
-    let mode
-    if (this._modePropertyPath) {
-      mode = getByPathSegments(data, this._modePropertyPath)
-    }
-    if (!mode) {
-      mode = this._options.mode
-    } else if (Array.isArray(mode)) {
-      mode = this._options.modeArray >= 0 ? mode[this._options.modeArray] : mode[mode.length + this._options.modeArray]
-    }
-
     let value = getByPathSegments(data, this._propertyPath)
-    switch (mode) {
+    switch (this._options.mode) {
       case 'css':
         value = await this._cssProcessAsync(value)
         break
@@ -161,10 +156,6 @@ class ProcessPostprocess extends BaseProcess {
 
       case 'js':
         value = await this._jsProcessAsync(value)
-        break
-
-      default:
-        this._logger.warn('Unkown mode of value "' + mode + '" used.')
         break
     }
     data = setByPathSegments(data, this._propertyPath, value)

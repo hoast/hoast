@@ -14,7 +14,6 @@ class ProcessParse extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',
-
       parser: JSON.parse,
     }, options)
 
