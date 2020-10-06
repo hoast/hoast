@@ -5,11 +5,11 @@
   },
   "name": "@hoast/base-source",
   "version": "2.0.0",
-  "description": "",
+  "description": "Base package for source packages.",
   "keywords": [
     "hoast",
     "base",
-    "processor"
+    "source"
   ],
   "license": "MIT",
   "homepage": "https://github.com/hoast/hoast#readme",

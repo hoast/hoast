@@ -1,6 +1,6 @@
 # @hoast/process-frontmatter
 
-Extract frontmatter from a text value.
+Extract frontmatter from text.
 
 ## Install
 

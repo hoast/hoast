@@ -5,7 +5,7 @@
   },
   "name": "@hoast/process-log",
   "version": "2.0.0",
-  "description": "Logs state and data passed to process, useful for debugging.",
+  "description": "Log data to the terminal, useful for developing other process and source packages.",
   "keywords": [
     "hoast",
     "process",

@@ -1,6 +1,6 @@
 # @hoast/process-markdown
 
-Convert markdown text to html using [Unified](https://github.com/unifiedjs/unified#readme).
+Convert markdown to HTML using [Unified](https://github.com/unifiedjs/unified#readme).
 
 ## Install
 

@@ -5,7 +5,7 @@
   },
   "name": "@hoast/process-parse",
   "version": "2.0.0",
-  "description": "",
+  "description": "Parse a text value using a function or package.",
   "keywords": [
     "hoast",
     "process",

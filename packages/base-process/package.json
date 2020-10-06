@@ -5,11 +5,11 @@
   },
   "name": "@hoast/base-process",
   "version": "2.0.0",
-  "description": "",
+  "description": "Base package for process packages.",
   "keywords": [
     "hoast",
     "base",
-    "processor"
+    "process"
   ],
   "license": "MIT",
   "homepage": "https://github.com/hoast/hoast#readme",

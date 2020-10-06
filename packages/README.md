@@ -14,7 +14,7 @@
 - [`process-handlebars`](/packages/process-handlebars) - Template using [Handlebars](https://github.com/handlebars-lang/handlebars.js#readme).
 - [`process-javascript`](/packages/process-javascript) - Retrieve and or execute JavaScript.
 - [`process-log`](/packages/process-log) - Log data to the terminal, useful for developing other process and source packages.
-- [`process-markdown`](/packages/process-markdown) - Convert markdown text to html using [Unified](https://github.com/unifiedjs/unified#readme).
+- [`process-markdown`](/packages/process-markdown) - Convert markdown to HTML using [Unified](https://github.com/unifiedjs/unified#readme).
 - [`process-mithril`](/packages/process-mithril) - Template using [Mithril](https://github.com/MithrilJS/mithril.js#readme).
 - [`process-parse`](/packages/process-parse) - Parse a text value using a function or package.
 - [`process-postprocess`](/packages/process-postprocess) - Process CSS, HTML, and JS data using Postcss and Babel plugins. Only minifies by default using cleancss, html-minifier-terser, and terser.

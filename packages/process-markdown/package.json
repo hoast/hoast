@@ -5,7 +5,7 @@
   },
   "name": "@hoast/process-markdown",
   "version": "2.0.0",
-  "description": "",
+  "description": "Convert markdown to HTML using Unified",
   "keywords": [
     "hoast",
     "process",

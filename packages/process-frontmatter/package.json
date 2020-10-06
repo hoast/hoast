@@ -5,7 +5,7 @@
   },
   "name": "@hoast/process-frontmatter",
   "version": "2.0.0",
-  "description": "",
+  "description": "Extract frontmatter from text.",
   "keywords": [
     "hoast",
     "process",

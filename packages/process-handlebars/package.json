@@ -5,7 +5,7 @@
   },
   "name": "@hoast/process-handlebars",
   "version": "2.0.0",
-  "description": "",
+  "description": "Template using Handlebars",
   "keywords": [
     "hoast",
     "process",

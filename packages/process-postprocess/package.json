@@ -5,7 +5,7 @@
   },
   "name": "@hoast/process-postprocess",
   "version": "2.0.0",
-  "description": "Postprocess CSS, HTML, and JavaScript contents as well as the style and script tags in the HTML contents. Does minification by default, but can be extended with PostCSS and Babel plugins.",
+  "description": "Process CSS, HTML, and JS data using PostCSS, CSSnano, html-minifier-terser, Babel, and Terser.",
   "keywords": [
     "hoast",
     "process",
