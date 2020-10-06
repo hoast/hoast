@@ -31,24 +31,24 @@ Provides basic functionality for source package like an initialization function,
 
 ### Functions
 
-- `async next` Retrieve next item.
+- `async next` This will be called by hoast itself to retrieve the next item.
   - `@returns {Any}` Retrieved data.
-- `async _next` Retrieve next item.
+- `async _next` Internally called to retrieve the next item.
   - `@returns {Any}` Retrieved data.
 
 #### Inherited
 
-- `_setApp` Set app reference.
+- `_setApp` Set app reference. This will be called by hoast itself before the next function is called.
   - `@params {Object} app` hoast instance.
 
 ### Abstract functions
 
-The following functions can be implimented by the derived class and will automatically called if present.
+The following functions can be implimented by the derived class and will automatically called if present. All functions are optional and don't have to be asynchronous.
 
-- `async initialize` TODO:
-- `async sequential` TODO:
-  - `@returns {Any}` TODO:
-- `async concurrent` TODO:
-  - `@params {Any}` TODO:
-  - `@returns {Any}` TODO:
-- `async final` TODO:
+- `async initialize` Called only once before sequential and concurrent.
+- `async sequential` Called sequentially for each iteration call. Meaning while this method is running it won't be called until the ongoing call is finished. Useful for processes that have to happen in order. Useful for iterating over the items in the filesystem.
+  - `@returns {Any}` Item.
+- `async concurrent` Called concurrently for each iteration call after the sequential call. Meaning this will run after the sequential call and in contrast to the sequential function will be called before a previous call has finished. Useful for reading file contents from the filesystem.
+  - `@params {Any}` Data returned by the sequential method.
+  - `@returns {Any}` Item.
+- `async final` Called after the source has been exhausted and is finished.

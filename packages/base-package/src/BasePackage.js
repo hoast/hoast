@@ -18,7 +18,7 @@ class BasePackage {
   }
 
   /**
-   * Set app reference.
+   * Set app reference. This will be called by hoast itself before the next function is called.
    * @param {Object} app Hoast instance.
    */
   _setApp (app) {

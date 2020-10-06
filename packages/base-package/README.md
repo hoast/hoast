@@ -18,5 +18,5 @@ Provides basic functionality like receiving the app reference and setting up a l
 
 ### Functions
 
-- `_setApp` Set app reference.
+- `_setApp` Set app reference. This will be called by hoast itself before the next function is called.
   - `@params {Object} app` hoast instance.

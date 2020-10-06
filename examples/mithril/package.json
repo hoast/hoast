@@ -6,7 +6,8 @@
     "@hoast/hoast": "x",
     "@hoast/process-log": "x",
     "@hoast/process-mithril": "x",
-    "@hoast/source-readfiles": "x"
+    "@hoast/source-readfiles": "x",
+    "mithril": "^2.0.4"
   },
   "type": "module",
   "scripts": {

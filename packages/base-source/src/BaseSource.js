@@ -30,7 +30,7 @@ class BaseSource extends BasePackage {
   }
 
   /**
-   * Retrieve next item.
+   * This will be called by hoast itself to retrieve the next item.
    * @returns {Any} Retrieved data.
    */
   async next () {
@@ -69,7 +69,7 @@ class BaseSource extends BasePackage {
   }
 
   /**
-   * Retrieve next item.
+   * Internally called to retrieve the next item.
    * @returns {Any} Retrieved data.
    */
   async _next () {

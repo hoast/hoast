@@ -16,9 +16,9 @@ class BaseProcess extends BasePackage {
       filterPatterns: null,
       filterProperty: null,
       filterOptions: {
-        // Which item(s) to check if the field value is an array.
         all: false,
-        array: 'any', // all, any, first, last.
+        array: 'any',
+        isPath: false,
       },
     }, ...options)
 
@@ -47,7 +47,7 @@ class BaseProcess extends BasePackage {
   }
 
   /**
-   * Process item.
+   * This will be called by hoast itself to process the given item.
    * @param {Any} data Data to process.
    * @returns {Any} Processed data.
    */
@@ -158,7 +158,7 @@ class BaseProcess extends BasePackage {
   }
 
   /**
-   * Process item.
+   * Internally called to process the given item.
    * @param {Any} data Data to process.
    * @returns {Any} Processed data.
    */
@@ -191,13 +191,6 @@ class BaseProcess extends BasePackage {
 
     return data
   }
-
-  /*
-   * Functions to use when using this as your base class.
-   * async initialize () { }
-   * async sequential (data):data { }
-   * async concurrent (data):data { }
-   */
 }
 
 export default BaseProcess
