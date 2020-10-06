@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "name": "@hoast/example-config",
+  "version": "0.0.0",
+  "dependencies": {
+    "@hoast/hoast": "x",
+    "@hoast/process-log": "x",
+    "@hoast/source-readfiles": "x"
+  },
+  "type": "module",
+  "scripts": {
+    "help": "hoast help",
+    "hoast-instance": "hoast --file-path='hoast-instance.js'",
+    "hoast-json": "hoast --file-path='hoast-json.json'",
+    "hoast-object": "hoast --file-path='hoast-object.js'",
+    "hoast-process": "node ./hoast-process.js",
+    "version": "hoast version",
+    "lint": "eslint --fix --cache *.js"
+  }
+}

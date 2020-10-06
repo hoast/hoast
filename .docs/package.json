@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "name": "@hoast/docs",
+  "version": "0.0.0",
+  "dependencies": {
+    "normalize.css": "8.0.1"
+  },
+  "devDependencies": {
+    "@hoast/hoast": "x",
+    "@hoast/process-frontmatter": "x",
+    "@hoast/process-markdown": "x",
+    "@hoast/process-mithril": "x",
+    "@hoast/process-postprocess": "x",
+    "@hoast/process-writefiles": "x",
+    "@hoast/source-readfiles": "x",
+    "autoprefixer": "10.0.1",
+    "mithril": "^2.0.4",
+    "onchange": "7.0.2",
+    "postcss-import": "12.0.1",
+    "postcss-preset-env": "6.7.0",
+    "remark-external-links": "^7.0.0",
+    "serve": "11.3.2"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "NODE_ENV=production hoast",
+    "develop": "NODE_ENV=development onchange -i 'hoast.js' 'src/**' -- hoast",
+    "lint": "eslint --fix --cache *.js src/components/*.js",
+    "serve": "serve ../docs/"
+  }
+}

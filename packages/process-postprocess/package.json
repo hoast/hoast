@@ -1,0 +1,46 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/process-postprocess",
+  "version": "2.0.0",
+  "description": "Process CSS, HTML, and JS data using PostCSS, CSSnano, html-minifier-terser, Babel, and Terser.",
+  "keywords": [
+    "hoast",
+    "process",
+    "postprocess",
+    "minify",
+    "css",
+    "html",
+    "js"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "main": "src/ProcessPostprocess.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.6",
+    "@hoast/base-process": "2.0.0",
+    "@hoast/utils": "2.0.0",
+    "cssnano": "^4.1.10",
+    "html-minifier-terser": "^5.1.1",
+    "postcss": "^8.1.1",
+    "terser": "^5.3.3"
+  }
+}

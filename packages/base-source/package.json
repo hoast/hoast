@@ -1,0 +1,36 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/base-source",
+  "version": "2.0.0",
+  "description": "Base package for source packages.",
+  "keywords": [
+    "hoast",
+    "base",
+    "source"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/*.js"
+  ],
+  "main": "src/BaseSource.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src/*.js"
+  },
+  "dependencies": {
+    "@hoast/base-package": "2.0.0"
+  }
+}

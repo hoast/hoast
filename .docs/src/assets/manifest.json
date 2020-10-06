@@ -1,0 +1,19 @@
+{
+  "start_url": "index.html?utm_source=homescreen",
+  "name": "Hoast",
+  "short_name": "Hoast",
+  "description": "A modular data processor!",
+  "dir": "ltr",
+  "lang": "en-GB",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    }
+  ]
+}

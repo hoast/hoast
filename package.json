@@ -1,53 +1,25 @@
 {
-  "author": {
-    "name": "Ron Dekker",
-    "url": "https://rondekker.nl"
-  },
-  "name": "hoast",
-  "version": "1.1.5",
-  "description": "A modular file processor focused on creating a simple ecosystem for task automation.",
-  "license": "ISC",
-  "keywords": [
-    "modular",
-    "file",
-    "processor"
-  ],
-  "homepage": "https://hoast.github.io/hoast",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hoast/hoast.git"
-  },
-  "bugs": {
-    "url": "https://github.com/hoast/hoast/issues"
-  },
-  "engines": {
-    "node": ">=7.8.0"
-  },
-  "main": "library/index.js",
-  "bin": {
-    "hoast": "bin/hoast.js"
-  },
-  "files": [
-    "*.js",
-    "bin/",
-    "library/"
+  "private": true,
+  "name": "@hoast/workspace",
+  "description": "A set of simple and modular packages for build automation.",
+  "workspaces": [
+    ".docs/",
+    "examples/*",
+    "packages/*"
   ],
   "scripts": {
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "pretest": "eslint library/**/*.js bin/**/*.js test/**/*.js",
-    "test": "nyc --reporter=text ava \"test/**/*.js\" --verbose",
-    "next": "npm publish --tag next"
-  },
-  "dependencies": {
-    "commander": "^2.19.0",
-    "isutf8": "^2.0.2",
-    "planckmatch": "^0.2.0"
+    "docs:build": "yarn workspace @hoast/docs run build",
+    "docs:develop": "yarn workspace @hoast/docs run develop",
+    "help": "hoast h",
+    "lint": "yarn workspaces run lint",
+    "version": "hoast v"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
-    "codecov": "^3.1.0",
-    "debug": "^4.1.0",
-    "eslint": "^5.10.0",
-    "nyc": "^13.1.0"
+    "eslint": "^7.7.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
   }
 }

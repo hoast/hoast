@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/source-readfiles",
+  "version": "2.0.0",
+  "description": "Read files from the filesystem.",
+  "keywords": [
+    "hoast",
+    "source",
+    "filesystem",
+    "read",
+    "files"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "main": "src/SourceReadfiles.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {
+    "@hoast/base-source": "2.0.0",
+    "@hoast/utils": "2.0.0",
+    "planckmatch": "^0.2.1"
+  }
+}

@@ -1,7 +1,7 @@
 ---
 name: Ask
 about: Ask a question. Whether something is unclear or missing we would love to help.
-labels: 
+labels:
 - question
 ---
 

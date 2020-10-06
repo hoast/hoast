@@ -1,0 +1,43 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/process-markdown",
+  "version": "2.0.0",
+  "description": "Convert markdown to HTML using Unified",
+  "keywords": [
+    "hoast",
+    "process",
+    "markdown"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "main": "src/ProcessMarkdown.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {
+    "@hoast/base-process": "2.0.0",
+    "@hoast/utils": "2.0.0",
+    "rehype-raw": "^4.0.2",
+    "rehype-sanitize": "^4.0.0",
+    "rehype-stringify": "^8.0.0",
+    "remark-parse": "^8.0.3",
+    "remark-rehype": "^7.0.0",
+    "unified": "^9.2.0"
+  }
+}

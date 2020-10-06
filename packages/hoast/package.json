@@ -1,0 +1,42 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/hoast",
+  "version": "2.0.0",
+  "description": "A set of simple and modular packages for build automation.",
+  "keywords": [
+    "modular",
+    "data",
+    "processor",
+    "task",
+    "automation"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "bin": {
+    "hoast": "src/cli/hoast.js"
+  },
+  "main": "src/Hoast.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {
+    "@hoast/utils": "2.0.0",
+    "minimist": "^1.2.5"
+  }
+}

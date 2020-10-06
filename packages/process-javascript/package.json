@@ -1,0 +1,37 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/process-javascript",
+  "version": "2.0.0",
+  "description": "Retrieve and or execute JavaScript.",
+  "keywords": [
+    "hoast",
+    "process",
+    "javascript"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "main": "src/ProcessJavascript.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {
+    "@hoast/base-process": "2.0.0",
+    "@hoast/utils": "2.0.0"
+  }
+}

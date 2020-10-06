@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/process-log",
+  "version": "2.0.0",
+  "description": "Log data to the terminal, useful for developing other process and source packages.",
+  "keywords": [
+    "hoast",
+    "process",
+    "debug",
+    "debugging",
+    "log",
+    "logging"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "main": "src/ProcessLog.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {
+    "@hoast/base-package": "2.0.0",
+    "@hoast/utils": "2.0.0"
+  }
+}

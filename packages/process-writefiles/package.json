@@ -1,0 +1,39 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/process-writefiles",
+  "version": "2.0.0",
+  "description": "Write data to the filesystem.",
+  "keywords": [
+    "hoast",
+    "process",
+    "filesystem",
+    "write",
+    "files"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "src/"
+  ],
+  "main": "src/ProcessWritefiles.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {
+    "@hoast/base-package": "2.0.0",
+    "@hoast/utils": "2.0.0"
+  }
+}

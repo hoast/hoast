@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "@hoast/example-handlebars",
+  "version": "0.0.0",
+  "dependencies": {
+    "@hoast/hoast": "x",
+    "@hoast/process-handlebars": "x",
+    "@hoast/process-log": "x",
+    "@hoast/source-readfiles": "x"
+  },
+  "type": "module",
+  "scripts": {
+    "hoast": "hoast",
+    "lint": "eslint --fix --cache *.js"
+  }
+}
