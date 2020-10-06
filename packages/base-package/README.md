@@ -32,3 +32,22 @@ OR
 
 - `_setApp` Set app reference. This will be called by hoast itself before the next function is called.
   - `@params {Object} app` hoast instance.
+
+### Example
+
+```JavaScript
+// Import base modules.
+import BasePackage from '@hoast/base-package'
+
+class NewPackage extends BasePackage {
+  constructor(options) {
+    super({
+      // Default options.
+    }, options)
+  }
+}
+
+export default NewPackage
+```
+
+See the [@hoast/process-log](https://github.com/hoast/hoast/tree/master/packages/process-log#readme) package for another example.

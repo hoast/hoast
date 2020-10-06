@@ -14,6 +14,6 @@ OR
 % npm install @hoast/process-parse --save
 ```
 
-## Usage
+## Options
 
 TODO:

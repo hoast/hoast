@@ -25,15 +25,16 @@ class ProcessHandlebars extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',
-      handlebarsOptions: {},
 
+      // Template options.
       templateDirectory: null,
       templatePath: null,
       templateProperty: null,
 
+      // Handlebars options.
+      handlebarsOptions: {},
       helpers: null,
       helpersDirectory: null,
-
       partials: null,
       partialsDirectory: null,
     }, options)

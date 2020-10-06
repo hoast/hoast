@@ -1,10 +1,6 @@
 // Import base class.
 import BasePackage from '@hoast/base-package'
 
-// Import external modules.
-import { getByPathSegments } from '@hoast/utils/get.js'
-import planckmatch from 'planckmatch'
-
 class BaseProcess extends BasePackage {
   /**
    * Create package instance.
@@ -12,14 +8,7 @@ class BaseProcess extends BasePackage {
    */
   constructor(...options) {
     super({
-      filterCustom: null,
-      filterPatterns: null,
-      filterProperty: null,
-      filterOptions: {
-        all: false,
-        array: 'any',
-        isPath: false,
-      },
+      filter: null,
     }, ...options)
 
     this._hasInitialize = typeof (this.initialize) === 'function'
@@ -33,17 +22,6 @@ class BaseProcess extends BasePackage {
       this._holdCalls = false
       this._promiseQueue = []
     }
-
-    // Parse filter patterns into regular expressions.
-    if (this._options.filterPatterns && this._options.filterPatterns.length > 0) {
-      this._filterExpressions = this._options.filterPatterns.map(pattern => {
-        return planckmatch.parse(pattern, this._options.filterOptions, this._options.filterOptions.isPath)
-      })
-    }
-
-    if (this._options.filterProperty) {
-      this._filterPropertyPath = this._options.filterProperty.split('.')
-    }
   }
 
   /**
@@ -53,77 +31,10 @@ class BaseProcess extends BasePackage {
    */
   async next (data) {
     // Exit early now if filtered out.
-    if (this._options.filterCustom) {
+    if (this._options.filter) {
       // Skip if custom functions returns false.
-      if (!this._options.filterCustom(data)) {
+      if (!this._options.filter(data)) {
         return data
-      }
-    } else if (this._filterExpressions) {
-      // Get value at filter property.
-      let value = getByPathSegments(data, this._filterPropertyPath)
-      let matches
-
-      // If array then check the filter over each item.
-      if (Array.isArray(value)) {
-        if (value.length === 0) {
-          return data
-        }
-
-        switch (String.prototype.toLowerCase.call(this._options.filterOptions.array)) {
-          case 'all':
-            // All should match.
-            for (const valueItem of value) {
-              matches = this._options.filterOptions.all ? planckmatch.match.all(valueItem, this._filterExpressions) : planckmatch.match.any(valueItem, this._filterExpressions)
-              if (!matches) {
-                return data
-              }
-            }
-            break
-
-          case 'any':
-            // Any should match.
-            let match = false
-            for (const valueItem of value) {
-              matches = this._options.filterOptions.all ? planckmatch.match.all(valueItem, this._filterExpressions) : planckmatch.match.any(valueItem, this._filterExpressions)
-              if (matches) {
-                match = true
-                break
-              }
-            }
-            if (!match) {
-              return data
-            }
-            break
-
-          case 'first':
-            // First should match.
-            value = value[0]
-            matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
-            if (!matches) {
-              return data
-            }
-            break
-
-          case 'last':
-            // Last should match.
-            value = value[value.length - 1]
-            matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
-            if (!matches) {
-              return data
-            }
-            break
-        }
-      } else if (typeof (value) === 'string') {
-        // Match agains value.
-        matches = this._options.filterOptions.all ? planckmatch.match.all(value, this._filterExpressions) : planckmatch.match.any(value, this._filterExpressions)
-        if (!matches) {
-          return data
-        }
-      } else {
-        // Check truthiness.
-        if (!value) {
-          return data
-        }
       }
     }
 

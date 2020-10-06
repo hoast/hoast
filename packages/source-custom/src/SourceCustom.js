@@ -4,7 +4,7 @@ import BaseSource from '@hoast/base-source'
 class SourceCustom extends BaseSource {
   /**
    * Create package instance.
-   * @param  {...Object} options Options objects.
+   * @param  {Object} options Options objects.
    */
   constructor(options) {
     super({

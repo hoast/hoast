@@ -14,6 +14,6 @@ OR
 % npm install @hoast/process-mithril --save
 ```
 
-## Usage
+## Options
 
 TODO:

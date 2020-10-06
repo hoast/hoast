@@ -80,7 +80,7 @@ The libraries follow sementic versioning meaning a version number follows the `M
 - `MINOR` version for functionality added in a backwards compatible manner;
 - `PATCH` version for bug fixes made in a backwards compatible manner.
 
-> Do note each package has their own version number which requires their own minimum version of the core package. Keep this in mind when adding packages to your project. That being said the most recent version of everything should work fine.
+Do note each package has their own version number which requires their own minimum version of the core package. Keep this in mind when adding packages to your project. That being said the most recent version of everything should work fine.
 
 ## Contribute
 

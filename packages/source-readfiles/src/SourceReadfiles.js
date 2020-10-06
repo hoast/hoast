@@ -10,7 +10,7 @@ import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import planckmatch from 'planckmatch'
 import { trimStart } from '@hoast/utils/trim.js'
 
-// TODO:
+// TODO: Improve build speed.
 // Add option to skip unchanged files, prevents copying over basic files that haven't changed.
 // One problem is that files names can change for example from a .md extension to .html extension.
 // Perhaps an optional file name transformer function can given to improve this.
@@ -23,21 +23,18 @@ import { trimStart } from '@hoast/utils/trim.js'
 class SourceReadfiles extends BaseSource {
   /**
    * Create package instance.
-   * @param  {...Object} options Options objects.
+   * @param  {Object} options Options objects.
    */
   constructor(options) {
     super({
       directory: 'src',
-
-      patterns: null,
-      patternOptions: {},
-
-      read: true,
+      filterPatterns: null,
+      filterOptions: {
+        all: false,
+      },
       readOptions: {
         encoding: 'utf8',
       },
-
-      stat: true,
       statOptions: {},
     }, options)
 
@@ -107,7 +104,7 @@ class SourceReadfiles extends BaseSource {
     const promises = []
 
     // Read file content.
-    if (this._options.read) {
+    if (this._options.readOptions) {
       promises.push(
         new Promise((resolve, reject) => {
           fs.readFile(filePath, this._options.readOptions, (error, data) => {
@@ -124,7 +121,7 @@ class SourceReadfiles extends BaseSource {
     }
 
     // Get file stat.
-    if (this._options.stat) {
+    if (this._options.statOptions) {
       promises.push(
         new Promise((resolve, reject) => {
           fs.stat(filePath, this._options.statOptions, (error, data) => {

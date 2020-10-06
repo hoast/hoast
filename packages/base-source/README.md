@@ -64,3 +64,41 @@ The following functions can be implimented by the derived class and will automat
   - `@params {Any}` Data returned by the sequential method.
   - `@returns {Any}` Item.
 - `async final` Called after the source has been exhausted and is finished.
+
+### Example
+
+```JavaScript
+// Import base modules.
+import BaseSource from '@hoast/base-source'
+
+class NewSource extends BaseSource {
+  constructor(options) {
+    super({
+      // Default options.
+    }, options)
+  }
+
+  async initialize() {
+    // Initialize.
+  }
+
+  async sequential() {
+    // Sequential.
+    this.exhausted = true
+    return {}
+  }
+
+  async concurrent(data) {
+    // Concurrent.
+    return data
+  }
+
+  async final() {
+    // Final.
+  }
+}
+
+export default NewSource
+```
+
+See the [@hoast/source-readfiles](https://github.com/hoast/hoast/tree/master/packages/source-readfiles#readme) package for another example.

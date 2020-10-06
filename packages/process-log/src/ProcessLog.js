@@ -7,14 +7,14 @@ import { getByPathSegments } from '@hoast/utils/get.js'
 class ProcessLog extends BasePackage {
   /**
    * Create package instance.
-   * @param  {...Object} options Options objects.
+   * @param  {Object} options Options objects.
    */
   constructor(options) {
     super({
       property: null,
 
       format: 'js',
-      level: 'log',
+      level: 'info',
 
       prepend: null,
       append: null,

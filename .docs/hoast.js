@@ -13,10 +13,6 @@ const hoast = new Hoast()
       // Read files from pages directory.
       source: new SourceReadfiles({
         directory: 'src/pages',
-
-        patterns: [
-          '*.md',
-        ],
       }),
       processes: [
         // Extract frontmatter.

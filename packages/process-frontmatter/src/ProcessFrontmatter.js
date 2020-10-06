@@ -17,8 +17,8 @@ class ProcessFrontmatter extends BaseProcess {
       property: 'contents',
       frontmatterProperty: 'frontmatter',
 
-      parser: JSON.parse,
       fence: '---',
+      parser: JSON.parse,
     }, options)
 
     // Convert dot notation to path segments.
@@ -90,7 +90,9 @@ class ProcessFrontmatter extends BaseProcess {
     const rest = value.substring(lineIndexSum + lineEndIndex)
 
     // Parse frontmatter.
-    frontmatter = this._options.parser(frontmatter)
+    if (this._options.parser) {
+      frontmatter = this._options.parser(frontmatter)
+    }
     // Set values.
     data = setByPathSegments(data, this._frontmatterPropertyPath, frontmatter)
     data = setByPathSegments(data, this._propertyPath, rest)

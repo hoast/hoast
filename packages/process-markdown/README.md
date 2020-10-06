@@ -14,6 +14,6 @@ OR
 % npm install @hoast/process-markdown --save
 ```
 
-## Usage
+## Options
 
 TODO:

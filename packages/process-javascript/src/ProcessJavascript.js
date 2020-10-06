@@ -1,5 +1,7 @@
+// Import base class.
 import BaseProcess from '@hoast/base-process'
 
+// Import utility modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 import { isClass } from '@hoast/utils/is.js'
@@ -11,15 +13,15 @@ class ProcessJavascript extends BaseProcess {
    */
   constructor(options) {
     super({
-      executeProperty: 'contents', // The property to find the exacutable content on.
-      execute: { // Set to false to disable code execution.
-        functionNames: [''], // Array of functions to call.
-        setProperty: 'contents', // Where to write the function call's returned data to.
+      importProperty: 'path',
+      importOptions: {
+        extractName: 'default',
+        setProperty: 'contents',
       },
 
-      importProperty: 'path', // The property to find the file to import from.
-      import: { // Set to false to disable importing.
-        extractName: 'default', // The name of the item to import from the imported code.
+      executeProperty: 'contents',
+      executeOptions: {
+        functionNames: [''],
         setProperty: 'contents',
       },
     }, options)
@@ -28,14 +30,14 @@ class ProcessJavascript extends BaseProcess {
     if (this._options.executeProperty) {
       this._executePropertyPath = this._options.executeProperty.split('.')
     }
-    if (this._options.execute && this._options.execute.setProperty) {
-      this._executeSetPropertyPath = this._options.execute.setProperty.split('.')
+    if (this._options.executeOptions && this._options.executeOptions.setProperty) {
+      this._executeSetPropertyPath = this._options.executeOptions.setProperty.split('.')
     }
     if (this._options.importProperty) {
       this._importPropertyPath = this._options.importProperty.split('.')
     }
-    if (this._options.import && this._options.import.setProperty) {
-      this._importSetPropertyPath = this._options.import.setProperty.split('.')
+    if (this._options.importOptions && this._options.importOptions.setProperty) {
+      this._importSetPropertyPath = this._options.importOptions.setProperty.split('.')
     }
   }
 
@@ -81,7 +83,7 @@ class ProcessJavascript extends BaseProcess {
     }
 
     // Iterate over function names.
-    for (const functionName of this._options.execute.functionNames) {
+    for (const functionName of this._options.executeOptions.functionNames) {
       // Deconstruct if function name is given.
       if (functionName && functionName !== '') {
         value = value[functionName]

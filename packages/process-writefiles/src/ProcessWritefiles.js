@@ -1,13 +1,11 @@
 // Import base module.
 import BaseProcess from '@hoast/base-process'
+import { getByPathSegments } from '@hoast/utils/get.js'
 
 // Import build-in modules.
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
-
-// Import external modules.
-import { getByPathSegments } from '@hoast/utils/get.js'
 
 // Promisify file system functions.
 const fsMkdir = promisify(fs.mkdir)
@@ -21,11 +19,12 @@ class ProcessWritefiles extends BaseProcess {
   constructor(options) {
     super({
       directory: 'dst',
-
       directoryOptions: {},
 
-      writeProperty: 'contents',
-      writeOptions: {},
+      property: 'contents',
+      writeOptions: {
+        encoding: 'utf8',
+      },
     }, options)
 
     // Construct absolute directory path.
@@ -34,15 +33,14 @@ class ProcessWritefiles extends BaseProcess {
         ? this._options.directory
         : path.resolve(process.cwd(), this._options.directory)
 
-    // Convert dot notation to path segments.
-    this._writePath = this._options.writeProperty.split('.')
-
     this.directoryOptions = Object.assign(
       this._options.directoryOptions,
       {
         recursive: true,
       }
     )
+
+    this._propertyPath = this._options.property.split('.')
   }
 
   async sequential (data) {
@@ -65,7 +63,7 @@ class ProcessWritefiles extends BaseProcess {
     // Write file to directory.
     await fsWriteFile(
       filePath,
-      getByPathSegments(data, this._writePath),
+      getByPathSegments(data, this._propertyPath),
       this._options.writeOptions
     )
 

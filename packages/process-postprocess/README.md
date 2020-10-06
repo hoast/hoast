@@ -14,6 +14,6 @@ OR
 % npm install @hoast/process-postprocess --save
 ```
 
-## Usage
+## Options
 
 TODO:
