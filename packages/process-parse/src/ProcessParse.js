@@ -7,6 +7,10 @@ import instantiate from '@hoast/utils/instantiate.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
 class ProcessParse extends BaseProcess {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       property: 'contents',

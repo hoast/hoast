@@ -21,6 +21,10 @@ import { trimStart } from '@hoast/utils/trim.js'
 // requires a full rebuild of all the pages instead of just the one page itself.
 
 class SourceReadfiles extends BaseSource {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       directory: 'src',

@@ -5,6 +5,10 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 import { isClass } from '@hoast/utils/is.js'
 
 class ProcessJavascript extends BaseProcess {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       executeProperty: 'contents', // The property to find the exacutable content on.

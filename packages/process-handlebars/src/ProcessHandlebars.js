@@ -18,6 +18,10 @@ import Handlebars from 'handlebars'
 const fsReadFile = promisify(fs.readFile)
 
 class ProcessHandlebars extends BaseProcess {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       property: 'contents',

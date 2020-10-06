@@ -17,6 +17,10 @@ if (!global.window) {
 }
 
 class ProcessMythril extends BaseProcess {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       property: 'contents',

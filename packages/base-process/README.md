@@ -1,13 +1,24 @@
-# Base process
+# @hoast/base-process
 
 Provides basic functionality for process package like an initialization function, sequentially running of certain code, and filtering out running the process based of the data. Meant for developers to be used as a base for a [hoast](https://hoast.js.org) process package.
 
+## Install
+
+```
+% yarn add @hoast/base-process
+```
+
+OR
+
+```
+% npm install @hoast/base-process --save
+```
 ## Usage
 
 ### Constructor
 
 - `constructor` Create package instance.
-  - `@param {Object} ...Options` Options objects which can contain the following key.
+  - `@param {Object} ...Options` Options objects which can contain the following keys.
     - `{Function} filterCustom = null` Custom filter function. The item data is given as the parameter. Return true if it should be processed, return false if this should skip this processor.
     - `{Array} filterPatterns = null` Glob patterns used to filter with.
     - `{String} filterProperty = null` Dot notation path to the data property to match the patterns against.
@@ -19,6 +30,7 @@ Provides basic functionality for process package like an initialization function
       - `{Boolean} globstar = false` If false the pattern 'path/*' will match any string beginning with 'path/', for example it will match 'path/file.txt' and 'path/to/file.txt'. If true the same 'path/*' will match any string beginning with 'path/' that does not have a '/' to the right of it, for example it will match 'path/file.txt' but not 'path/to/file.txt'. If true the pattern 'path/**' will match any string beginning with 'path/', which is equal to the 'path/*' with globstar set to false.
       - `{Boolean} isPath = false` Whether the text matched against is a path.
       - `{Boolean} strict = false` Be forgiving about multiple slashes, such as /// and make everything after the first / optional. Like how bash glob works.
+
     - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
 
 ### Variables

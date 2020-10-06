@@ -15,6 +15,10 @@ import { minify as terser } from 'terser'
 import Postcss from 'postcss'
 
 class ProcessPostprocess extends BaseProcess {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       property: 'contents',

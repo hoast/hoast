@@ -14,6 +14,10 @@ const fsMkdir = promisify(fs.mkdir)
 const fsWriteFile = promisify(fs.writeFile)
 
 class ProcessWritefiles extends BaseProcess {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       directory: 'dst',

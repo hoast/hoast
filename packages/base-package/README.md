@@ -1,6 +1,18 @@
-# Base package
+# @hoast/base-package
 
 Provides basic functionality like receiving the app reference and setting up a logger. Meant for developers to be used as a base for a [hoast](https://hoast.js.org) source or process package.
+
+## Install
+
+```
+% yarn add @hoast/base-package
+```
+
+OR
+
+```
+% npm install @hoast/base-package --save
+```
 
 ## Usage
 

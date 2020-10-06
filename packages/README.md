@@ -12,6 +12,7 @@
 - [`process-custom`](/packages/process-custom) - Allows you to provide your own custom process functions. Extends base-process where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
 - [`process-frontmatter`](/packages/process-frontmatter) - Extract frontmatter from a text value.
 - [`process-handlebars`](/packages/process-handlebars) - Template using [Handlebars](https://github.com/handlebars-lang/handlebars.js#readme).
+- [`process-javascript`](/packages/process-javascript) - Retrieve and or execute JavaScript.
 - [`process-log`](/packages/process-log) - Log data to the terminal, useful for developing other process and source packages.
 - [`process-markdown`](/packages/process-markdown) - Convert markdown text to html using [Unified](https://github.com/unifiedjs/unified#readme).
 - [`process-mithril`](/packages/process-mithril) - Template using [Mithril](https://github.com/MithrilJS/mithril.js#readme).

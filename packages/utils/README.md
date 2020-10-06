@@ -1,71 +1,87 @@
 # @hoast/utils
 
-Utility functions commonly used by hoast and hoast packages. A list of all the files and exported functions can be seen below. Simply import by the package name followed by the file path, for example `import deepAssign from '@hoast/utils/deepAssign.js'`. If a file exports multiple functions the default export will be object with all the functions on it.
+Utility functions commonly used by hoast and hoast packages.
 
-## deepAssign.js
+## Install
+
+```
+% yarn add @hoast/utils
+```
+
+OR
+
+```
+% npm install @hoast/utils --save
+```
+
+## Usage
+
+A list of all the files and exported functions can be seen below. Simply import by the package name followed by the file path, for example `import deepAssign from '@hoast/utils/deepAssign.js'`. If a file exports multiple functions the default export will be object with all the functions on it.
+
+### deepAssign.js
 
 Deeply assign a series of objects properties together.
 - `@param {Object} target` Target object to assign onto.
 - `@param  {...Object} sources` Sources to assign with.
 - `@returns {Object}` Target object with sources values assigned.
 
-## deepMerge.js
+### deepMerge.js
 
 Deeply assign a series of arrays and or objects properties together.
 - `@param {Any} target` Target to merge onto.
 - `@param  {...Any} sources` Sources to merge with.
 - `@returns {Object}` Target object with sources values merged.
 
-## iterateDirectory.js
+### iterateDirectory.js
 
 Creates recursive directory iterator. Call the returned function again and again to receive a file path. Returns `null` when all values have been iterated over.
 - `@param {String} directoryPath` Absolute directory path.
 - `@returns {Function}` Recursive directory iterator function.
 
-## get.js
+### get.js
 
-### getByDotNotation
+#### getByDotNotation
 
 Get a value from a source by a dot seperated path.
 - `@param {Object} source` The object to retrieve a value from.
 - `@param {String} path` Dot notation string with each segment a property on the source.
 - `@returns {Any}` Value at path.
 
-### getByPathSegments
+#### getByPathSegments
 
 Get a value from a source by an array seperated path.
 - `@param {Object} source` The object to retrieve a value from.
 - `@param {Array<String>}` path Array of strings with each segment a property on the source.
 - `@returns {Any}` Value at path.
 
-## has.js
+### has.js
 
 Check if an object has the required properties.
 - `@param {Object} value` Value to check.
 - `@param {Array} propertyNames` Array of property names.
 - `@returns {Boolean}` Whether the value is an object and the properties exist.
 
-## instantiate.js
+### instantiate.js
 
 Instantiate a value. If the value is an array the first item is assumed to be the value and the others become parameters given to the constructor.
 - `@param {Any} value` Value to import and or instantiate. A string will be dynamically imported.
 - `@returns {Object}` The imported and instantiated object.
 
-## is.js
+### is.js
 
-### isClass
+#### isClass
 
 Checks if value is a class.
 - `@param {Any}` value Value to check.
 - `@returns {Boolean}` Whether the value is a class.
 
-### isObject
+#### isObject
 
 Check whether the value is an object.
 - `@param {Any}` value Value of unknown type.
 - `@returns {Boolean}` Whether the value is an object.
 
-## Logger.js
+### Logger.js
 
 Logger class usefull for only allowing messages to be send to the console of the right level is set.
 
@@ -101,9 +117,9 @@ Logger class usefull for only allowing messages to be send to the console of the
   - `@param {String} message` Message to output.
   - `@param  {...Any} optionalParams` Additional optional parameters.
 
-## set.js
+### set.js
 
-### setByDotNotation
+#### setByDotNotation
 
 Set a value on a target by a dot seperated path.
 - `@param {Object} target` Target object to set value to.
@@ -111,7 +127,7 @@ Set a value on a target by a dot seperated path.
 - `@param {Any} value` The value to set at the path on the target.
 - `@returns {Object}` Target object with the value set to it.
 
-### setByPathSegments
+#### setByPathSegments
 
 Set a value on a target by an array seperated path.
 - `@param {Object} target` Target object to set value to.
@@ -119,23 +135,23 @@ Set a value on a target by an array seperated path.
 - `@param {Any} value` The value to set at the path on the target.
 - `@returns {Object}` Target object with the value set to it.
 
-## trim.js
+### trim.js
 
-### trimStart
+#### trimStart
 
 Trim a specific character from the start of a string.
 - `@param {String} string` String to trim.
 - `@param {String} character` Character to trim.
 - `@returns {String}` Trimmed string.
 
-### trim
+#### trim
 
 Trim a specific character from the start and end of a string.
 - `@param {String} string` String to trim.
 - `@param {String} character` Character to trim.
 - `@returns {String}` Trimmed string.
 
-### trimEnd
+#### trimEnd
 
 Trim a specific character from the end of a string.
 - `@param {String} string` String to trim.

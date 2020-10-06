@@ -8,6 +8,10 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 const NEW_LINE = '\n'
 
 class ProcessFrontmatter extends BaseProcess {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       property: 'contents',

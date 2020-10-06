@@ -2,6 +2,10 @@
 import BaseProcess from '@hoast/base-process'
 
 class ProcessCustom extends BaseProcess {
+  /**
+   * Create package instance.
+   * @param  {...Object} options Options objects.
+   */
   constructor(options) {
     super({
       initialize: null,

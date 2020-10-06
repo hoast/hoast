@@ -1,13 +1,25 @@
-# Base source
+# @hoast/base-source
 
 Provides basic functionality for source package like an initialization function, sequentially running of certain code, and a finallize function called after the source is done iterating. Meant for developers to be used as a base for a [hoast](https://hoast.js.org) source package.
+
+## Install
+
+```
+% yarn add @hoast/base-source
+```
+
+OR
+
+```
+% npm install @hoast/base-source --save
+```
 
 ## Usage
 
 ### Constructor
 
 - `constructor` Create package instance.
-  - `@param {Object} ...Options` Options objects which can contain the following key.
+  - `@param {Object} ...Options` Options objects which can contain the following keys.
     - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
 
 ### Variables
