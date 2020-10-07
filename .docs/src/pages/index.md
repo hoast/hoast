@@ -1,7 +1,7 @@
 ---
 {
   "title": "Hoast, a modular data processor!",
-  "description": "A simple and modular ecosystem for build automation.",
+  "description": "A set of simple and modular packages for build automation.",
   "keywords": "hoast, modular, data, processor, javascript, static, page, generator"
 }
 ---
@@ -10,7 +10,7 @@
 
 # Hoast
 
-A simple and modular ecosystem for build automation.
+A set of simple and modular packages for build automation.
 
 [Repository](https://www.github.com/hoast/hoast#readme)
 
