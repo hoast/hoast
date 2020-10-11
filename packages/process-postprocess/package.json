@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-postprocess",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Process CSS, HTML, and JS data using PostCSS, CSSnano, html-minifier-terser, Babel, and Terser.",
   "keywords": [
     "hoast",

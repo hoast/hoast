@@ -56,7 +56,7 @@ class ProcessPostprocess extends BaseProcess {
 
   async initialize () {
     // Setup Postcss plugins.
-    let cssPlugins = this._options.cssPlugins ?? []
+    let cssPlugins = this._options.cssPlugins ? this._options.cssPlugins : []
     if (cssPlugins.length >= 0) {
       // Instantiate all plugins.
       const pluginsTemp = []

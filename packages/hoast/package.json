@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/hoast",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A set of simple and modular packages for build automation.",
   "keywords": [
     "modular",

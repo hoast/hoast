@@ -26,7 +26,7 @@ class Hoast {
     }
 
     // Set meta.
-    this.meta = meta ?? {}
+    this.meta = meta || {}
 
     // Set debugger.
     logger.setLevel(this.options.logLevel)
