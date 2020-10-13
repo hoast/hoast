@@ -19,7 +19,7 @@ const iterateDirectory = async function (directoryPath) {
    */
   return async function () {
     if (subIterator) {
-      const item = await subIterator.next()
+      const item = await subIterator()
       if (item) {
         return item
       }
@@ -38,7 +38,7 @@ const iterateDirectory = async function (directoryPath) {
         )
 
         // Get next item from iterator.
-        const filePath = await subIterator.next()
+        const filePath = await subIterator()
 
         // Exit early if end of iterator.
         if (!filePath) {

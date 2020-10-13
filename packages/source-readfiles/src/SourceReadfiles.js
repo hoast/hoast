@@ -39,9 +39,9 @@ class SourceReadfiles extends BaseSource {
     }, options)
 
     // Parse patterns into regular expressions.
-    if (this._options.patterns && this._options.patterns.length > 0) {
-      this._expressions = this._options.patterns.map(pattern => {
-        return planckmatch.parse(pattern, this._options.patternOptions, true)
+    if (this._options.filterPatterns && this._options.filterPatterns.length > 0) {
+      this._expressions = this._options.filterPatterns.map(pattern => {
+        return planckmatch.parse(pattern, this._options.filterOptions, true)
       })
     }
 
@@ -67,7 +67,7 @@ class SourceReadfiles extends BaseSource {
       // Check if path matches the patterns.
       if (this._expressions) {
         // Skip if it does not matches.
-        const matches = this._options.patternOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
+        const matches = this._options.filterOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
         if (!matches) {
           continue
         }

@@ -207,6 +207,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@hoast/utils@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@hoast/utils/-/utils-2.0.0.tgz#e9ac8cca0ea29539cca4c2afc891f8924223de40"
+  integrity sha512-jnTJq/9DmaFPCSjHp6beom2CbfpVP4XPv6KVIwP8TFng95TaZrCxkr8KZxOFCuA/Wd407mji1AK+ceBdDdfnAQ==
+
 "@types/json5@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
