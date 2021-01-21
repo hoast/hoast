@@ -28,13 +28,12 @@ class ProcessPdf extends BaseProcess {
       setProperty: 'contents',
       optionsProperty: false,
 
+      mediaType: false,
+      pdfOptions: {},
       serveOptions: {
         directory: null,
         port: 3000,
       },
-
-      mediaType: false,
-      pdfOptions: {},
       wrap: '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>{0}</body></html>',
     }, options)
 
