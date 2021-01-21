@@ -16,7 +16,7 @@ OR
 
 ## Options
 
-- `{String} property = 'contents'` Dot notation path to the data property which should be processed by Mithril.
+- `{String} property = 'contents'` Dot notation path to the data property which should be processed.
 - `{String} componentDirectory = null` Component directory path, either absolute or relative to the working directory.
 - `{String} componentPath = null` Default component path relative to the component directory.
 - `{String} componentProperty = null` Dot notation path to the data property where the component path can be written.

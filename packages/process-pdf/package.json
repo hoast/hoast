@@ -3,18 +3,16 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/process-writefiles",
+  "name": "@hoast/process-pdf",
   "version": "2.0.0",
-  "description": "Write data to the filesystem.",
+  "description": "Converts HTML to PDF using puppeteer.",
   "keywords": [
     "hoast",
     "process",
-    "filesystem",
-    "write",
-    "files"
+    "pdf"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-writefiles#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-pdf#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
@@ -31,12 +29,14 @@
     "CHANGELOG.md",
     "src/"
   ],
-  "main": "src/ProcessWritefiles.js",
+  "main": "src/ProcessPdf.js",
   "scripts": {
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-package": "^2.0.0",
-    "@hoast/utils": "^2.0.0"
+    "@hoast/base-process": "^2.0.0",
+    "@hoast/utils": "^2.0.0",
+    "puppeteer": "^5.4.1",
+    "serve-handler": "^6.1.3"
   }
 }

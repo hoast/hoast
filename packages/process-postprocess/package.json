@@ -16,13 +16,16 @@
     "js"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-postprocess#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
   },
   "bugs": {
     "url": "https://github.com/hoast/hoast/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "type": "module",
   "files": [
@@ -36,8 +39,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.11.6",
-    "@hoast/base-process": "2.0.0",
-    "@hoast/utils": "2.0.0",
+    "@hoast/base-process": "^2.0.0",
+    "@hoast/utils": "^2.0.0",
     "cssnano": "^4.1.10",
     "html-minifier-terser": "^5.1.1",
     "postcss": "^8.1.1",

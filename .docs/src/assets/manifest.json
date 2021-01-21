@@ -11,9 +11,19 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "assets/128.png",
+      "src": "assets/icon-round-128.png",
       "type": "image/png",
       "sizes": "128x128"
+    },
+    {
+      "src": "assets/icon-round-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "assets/icon-round-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ]
 }

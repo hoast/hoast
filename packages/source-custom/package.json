@@ -12,13 +12,16 @@
     "custom"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-custom#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
   },
   "bugs": {
     "url": "https://github.com/hoast/hoast/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "type": "module",
   "files": [
@@ -31,6 +34,6 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-source": "2.0.0"
+    "@hoast/base-source": "^2.0.0"
   }
 }

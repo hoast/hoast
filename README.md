@@ -1,6 +1,6 @@
 <div align="center">
 
-  ![Project logo](.docs/src/assets/icon-round-256.png)
+![Project logo](.docs/src/assets/icon-round-256.png)
 
 </div>
 
@@ -89,8 +89,7 @@ Read the [code of conduct](/CODE_OF_CONDUCT.md) and [contributing](/CONTRIBUTING
 ## Tasklist
 
 - Expand examples.
-- Improve logger use.
-- Finish `isValidConfig` in CLI.
+- Improve logs.
+- Validate configs.
 - Write tests.
-- Setup GitHub actions to run tests.
-- Reduce build times via caching.
+- Reduce build.

@@ -17,6 +17,7 @@
 - [`process-markdown`](/packages/process-markdown) - Convert markdown to HTML using [Unified](https://github.com/unifiedjs/unified#readme).
 - [`process-mithril`](/packages/process-mithril) - Template using [Mithril](https://github.com/MithrilJS/mithril.js#readme).
 - [`process-parse`](/packages/process-parse) - Parse a text value using a function or package.
+- [`process-pdf`](/packages/process-pdf) - Converts HTML to PDF using [puppeteer](https://github.com/puppeteer/puppeteer#readme).
 - [`process-postprocess`](/packages/process-postprocess) - Process CSS, HTML, and JS data using Postcss and Babel plugins. Only minifies by default using cleancss, html-minifier-terser, and terser.
 - [`process-writefiles`](/packages/process-writefiles) - Write data to the filesystem.
 
