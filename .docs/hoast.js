@@ -1,10 +1,13 @@
 import Hoast from '@hoast/hoast'
+import ProcessCustom from '@hoast/process-custom'
 import ProcessFrontmatter from '@hoast/process-frontmatter'
 import ProcessMarkdown from '@hoast/process-markdown'
-import ProcessMithril from '@hoast/process-mithril'
 import ProcessPostprocess from '@hoast/process-postprocess'
 import ProcessWritefiles from '@hoast/process-writefiles'
 import SourceReadfiles from '@hoast/source-readfiles'
+
+// Import base component.
+import componentHTML from './src/components/html.js'
 
 const hoast = new Hoast()
   .addCollections([
@@ -25,12 +28,13 @@ const hoast = new Hoast()
             'remark-external-links',
           ],
         }),
-        // Template using mithril.
-        new ProcessMithril({
-          componentDirectory: 'src/components',
-          componentPath: 'html.js',
+        // Template using custom function.
+        new ProcessCustom({
+          concurrent: (data) => {
+            data.contents = componentHTML(data)
 
-          prefix: '<!DOCTYPE html>',
+            return data
+          }
         }),
         // Bundle and minify.
         new ProcessPostprocess({
