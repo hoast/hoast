@@ -5,7 +5,6 @@ Welcome and thank you for wanting to contribute! Following these guidelines help
 ## Table of contents
 
 + [Code of conduct](#code-of-conduct)
-+ [Philosophy](#philosophy)
 + [Issues](#issues)
 + [Creating pull requests](#creating-pull-requests)
   + [Follow styling](#follow-styling)
@@ -18,10 +17,6 @@ Welcome and thank you for wanting to contribute! Following these guidelines help
 ## Code of conduct
 
 Besides the guidelines set out in this document we expect our community reads and follows to the [code of conduct](/CODE_OF_CONDUCT) as well.
-
-## Philosophy
-
-The organizations philosophy is to provide a simple yet expansive toolkit done through a modular approach preferably using minimal libraries. We hope to achieve a simple to use and easy to maintain solution.
 
 ## Issues
 

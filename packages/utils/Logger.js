@@ -1,5 +1,5 @@
 /**
- * Logger class usefull for only allowing messages to be send to the console of the right level is set.
+ * Logger class useful for only allowing messages to be send to the console of the right level is set.
  */
 class Logger {
   /**
