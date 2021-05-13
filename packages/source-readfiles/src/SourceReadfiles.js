@@ -135,6 +135,12 @@ class SourceReadfiles extends BaseSource {
     // Return result.
     return result
   }
+
+  final () {
+    super.final()
+
+    this._directoryIterator = null
+  }
 }
 
 export default SourceReadfiles

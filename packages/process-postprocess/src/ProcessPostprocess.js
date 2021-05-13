@@ -162,6 +162,14 @@ class ProcessPostprocess extends BaseProcess {
 
     return data
   }
+
+  final () {
+    super.final()
+
+    this._cssProcessAsync = null
+    this._htmlProcess = null
+    this._jsProcessAsync = null
+  }
 }
 
 export default ProcessPostprocess

@@ -70,7 +70,7 @@ class ProcessMarkdown extends BaseProcess {
     }
 
     this._parser
-      .use(remarkParse) // Markdown to Mardown AST.
+      .use(remarkParse) // Markdown to Markdown AST.
 
     // Add remark plugins.
     for (const plugin of this._options.remarkPlugins) {
@@ -108,7 +108,7 @@ class ProcessMarkdown extends BaseProcess {
       const pathSegments = data.path.split('.')
       // Check if file ends with an expected extension.
       if (EXTENSIONS_FROM.indexOf(pathSegments[pathSegments.length - 1]) >= 0) {
-        // Remove existin extension.
+        // Remove existing extension.
         pathSegments.pop()
         // Add html extension.
         pathSegments.push(EXTENSIONS_TO)
@@ -119,6 +119,12 @@ class ProcessMarkdown extends BaseProcess {
 
     // Return result.
     return data
+  }
+
+  final () {
+    super.final()
+
+    this._parser = null
   }
 }
 

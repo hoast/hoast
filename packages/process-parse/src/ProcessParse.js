@@ -39,6 +39,12 @@ class ProcessParse extends BaseProcess {
     // Return result.
     return data
   }
+
+  final () {
+    super.final()
+
+    this._parser = null
+  }
 }
 
 export default ProcessParse

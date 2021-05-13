@@ -16,7 +16,7 @@ if (!global.window) {
   global.window = global.document = global.requestAnimationFrame = undefined
 }
 
-class ProcessMythril extends BaseProcess {
+class ProcessMithril extends BaseProcess {
   /**
    * Create package instance.
    * @param  {...Object} options Options objects.
@@ -99,4 +99,4 @@ class ProcessMythril extends BaseProcess {
   }
 }
 
-export default ProcessMythril
+export default ProcessMithril

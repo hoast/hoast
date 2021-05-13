@@ -215,6 +215,8 @@ class ProcessHandlebars extends BaseProcess {
   }
 
   final () {
+    super.final()
+
     // Clear templates cache.
     this._templates = undefined
   }

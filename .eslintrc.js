@@ -30,7 +30,9 @@ module.exports = {
         imports: 'never',
         exports: 'never',
         functions: 'never',
-      }],
+      },
+    ],
+    'default-case-last': 0,
     indent: [
       'error',
       2,

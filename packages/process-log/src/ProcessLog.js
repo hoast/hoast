@@ -37,7 +37,7 @@ class ProcessLog extends BasePackage {
 
     switch (String.prototype.toLowerCase.call(this._options.format)) {
       default:
-        this._logger.warn('Unkown value for option "format", falling back to "js".')
+        this._logger.warn('Unknown value for option "format", falling back to "js".')
       case 'js':
         messages.push(value)
         break
