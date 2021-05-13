@@ -37,6 +37,6 @@
   },
   "dependencies": {
     "@hoast/base-package": "^2.0.0",
-    "@hoast/utils": "^2.0.0"
+    "@hoast/utils": "^2.0.1"
   }
 }

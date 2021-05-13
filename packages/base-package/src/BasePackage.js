@@ -24,6 +24,10 @@ class BasePackage {
   _setApp (app) {
     this._app = app
   }
+
+  getApp () {
+    return this._app
+  }
 }
 
 export default BasePackage

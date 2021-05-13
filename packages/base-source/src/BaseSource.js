@@ -9,13 +9,16 @@ class BaseSource extends BasePackage {
   constructor(...options) {
     super(...options)
 
-    this.done = false
-    this.exhausted = false
-
     this._hasInitialize = typeof (this.initialize) === 'function'
     this._hasSequential = typeof (this.sequential) === 'function'
     this._hasConcurrent = typeof (this.concurrent) === 'function'
-    this._hasFinal = typeof (this.final) === 'function'
+
+    this.reset()
+  }
+
+  reset () {
+    this.done = false
+    this.exhausted = false
 
     if (this._hasInitialize) {
       this._isInitialized = false
@@ -27,6 +30,10 @@ class BaseSource extends BasePackage {
     if (this._hasConcurrent) {
       this._concurrentCount = 0
     }
+  }
+
+  final () {
+    this.reset()
   }
 
   /**
@@ -114,12 +121,8 @@ class BaseSource extends BasePackage {
       this._concurrentCount--
     }
 
-    // If exhausted and no more concurreny of this source is going then set done to true!
+    // If exhausted and no more concurrency of this source is going then set done to true!
     if (this.exhausted && (!this._hasConcurrent || this._concurrentCount === 0)) {
-      if (this._hasFinal) {
-        await this.final()
-      }
-
       this.done = true
     }
 

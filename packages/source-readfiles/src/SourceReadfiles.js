@@ -10,16 +10,6 @@ import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import planckmatch from 'planckmatch'
 import { trimStart } from '@hoast/utils/trim.js'
 
-// TODO: Improve build speed.
-// Add option to skip unchanged files, prevents copying over basic files that haven't changed.
-// One problem is that files names can change for example from a .md extension to .html extension.
-// Perhaps an optional file name transformer function can given to improve this.
-// Consider caching at the process.cwd directory in a cache file which stores the last iterated time of
-// the file at the relative path which can be compared with the last modified time from the stats data.
-// Perhaps intergrate a file watcher with the CLI that monitors the files and store which file is changed.
-// As a result it can be check based on the change origin that a template has been changed and therefore
-// requires a full rebuild of all the pages instead of just the one page itself.
-
 class SourceReadfiles extends BaseSource {
   /**
    * Create package instance.
@@ -85,10 +75,10 @@ class SourceReadfiles extends BaseSource {
       return
     }
 
-    // Deconstruct paramters.
+    // Deconstruct parameters.
     const [filePath, filePathRelative] = data
 
-    // Construc URI for file.
+    // Construct URI for file.
     let uri = trimStart(filePath, path.sep)
     if (path.sep !== '/') {
       uri = uri.replace(path.sep, '/')

@@ -5,7 +5,9 @@ import deepAssign from '@hoast/utils/deepAssign.js'
 // Import internal modules.
 import call from './utils/call.js'
 import logger from './utils/logger.js'
-import process from './utils/process.js'
+import _process from './utils/process.js'
+
+// TODO: Allow for partial builds.
 
 class Hoast {
   /**
@@ -19,14 +21,16 @@ class Hoast {
     this.options = deepAssign({
       logLevel: 2,
 
+      changedFiles: null,
       concurrencyLimit: 4,
+      directoryPath: process.cwd(),
     }, options)
 
     // Set meta.
     this.meta = meta || {}
 
     // Set debugger.
-    logger.setLevel(this._options.logLevel)
+    logger.setLevel(this.options.logLevel)
     logger.setPrefix(this.constructor.name)
 
     // Initialize meta collections.
@@ -163,7 +167,7 @@ class Hoast {
     if (this._processes) {
       // Call set app on processes.
       await call({
-        concurrencyLimit: this._options.concurrencyLimit,
+        concurrencyLimit: this.options.concurrencyLimit,
       }, this._processes, '_setApp', this)
     }
 
@@ -184,28 +188,28 @@ class Hoast {
       for (const collection of metaCollections) {
         // Call set app on processes.
         await call({
-          concurrencyLimit: this._options.concurrencyLimit,
+          concurrencyLimit: this.options.concurrencyLimit,
         }, collection.processes, '_setApp', this)
       }
 
       // Process meta collections.
-      await process(this, metaCollections)
+      await _process(this, metaCollections)
     }
 
     for (const collection of this._collections) {
       // Call set app on processes.
       await call({
-        concurrencyLimit: this._options.concurrencyLimit,
+        concurrencyLimit: this.options.concurrencyLimit,
       }, collection.processes, '_setApp', this)
     }
 
     // Process collections.
-    await process(this, this._collections)
+    await _process(this, this._collections)
 
     if (this._processes) {
       // Call final on processes.
       await call({
-        concurrencyLimit: this._options.concurrencyLimit,
+        concurrencyLimit: this.options.concurrencyLimit,
       }, this._processes, 'final')
     }
 

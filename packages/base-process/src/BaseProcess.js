@@ -15,6 +15,10 @@ class BaseProcess extends BasePackage {
     this._hasSequential = typeof (this.sequential) === 'function'
     this._hasConcurrent = typeof (this.concurrent) === 'function'
 
+    this.reset()
+  }
+
+  reset () {
     if (this._hasInitialize) {
       this._isInitialized = false
     }
@@ -22,6 +26,10 @@ class BaseProcess extends BasePackage {
       this._holdCalls = false
       this._promiseQueue = []
     }
+  }
+
+  final () {
+    this.reset()
   }
 
   /**

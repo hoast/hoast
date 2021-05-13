@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@hoast/base-process": "^2.0.0",
-    "@hoast/utils": "^2.0.0",
+    "@hoast/utils": "^2.0.1",
     "rehype-raw": "^5.1.0",
     "rehype-sanitize": "^4.0.0",
     "rehype-stringify": "^8.0.0",

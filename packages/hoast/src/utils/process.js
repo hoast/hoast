@@ -98,12 +98,19 @@ const process = async function (app, collections) {
           }
         }
 
-        // Check if done and this is the last active collection call.
-        if (source.done && this.collectionsActiveByIndex[collectionIndex] === 1) {
-          // Call final on processes only in this collection.
-          await call({
-            concurrencyLimit: app.options.concurrencyLimit,
-          }, processes, 'final')
+        if (source.done) {
+          // Call final on source.
+          if (source.final && typeof (source.final) === 'function') {
+            await source.final()
+          }
+
+          // Check if done and this is the last active collection call.
+          if (this.collectionsActiveByIndex[collectionIndex] === 1) {
+            // Call final on processes only in this collection.
+            await call({
+              concurrencyLimit: app.options.concurrencyLimit,
+            }, processes, 'final')
+          }
         }
 
         // Decrement active count.

@@ -140,7 +140,7 @@ class ProcessPdf extends BaseProcess {
       const pathSegments = data.path.split('.')
       // Check if file ends with an expected extension.
       if (EXTENSIONS_FROM.indexOf(pathSegments[pathSegments.length - 1]) >= 0) {
-        // Remove existin extension.
+        // Remove existing extension.
         pathSegments.pop()
         // Add html extension.
         pathSegments.push(EXTENSIONS_TO)
@@ -152,7 +152,9 @@ class ProcessPdf extends BaseProcess {
     return data
   }
 
-  async final() {
+  async final () {
+    super.final()
+
     // Close server.
     this._logger.info('Closing server...')
     await new Promise((resolve) => this._server.close(resolve))

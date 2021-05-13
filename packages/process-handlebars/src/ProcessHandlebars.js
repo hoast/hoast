@@ -14,7 +14,7 @@ import { setByPathSegments } from '@hoast/utils/set.js'
 // Import external modules.
 import Handlebars from 'handlebars'
 
-// Promisfy read file.
+// Promisify read file.
 const fsReadFile = promisify(fs.readFile)
 
 class ProcessHandlebars extends BaseProcess {
