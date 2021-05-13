@@ -36,17 +36,19 @@ class ProcessMithril extends BaseProcess {
     if (!this._options.componentPath && !this._options.componentProperty) {
       this._logger.error('No component specified. Use the "componentPath" or "componentProperty" options.')
     }
-    // Construct absolute directory path.
-    this._componentDirectoryPath =
-      (this._options.componentDirectory && path.isAbsolute(this._options.componentDirectory))
-        ? this._options.componentDirectory
-        : path.resolve(process.cwd(), this._options.componentDirectory)
-
     // Convert dot notation to path segments.
     this._propertyPath = this._options.property.split('.')
     if (this._options.componentProperty) {
       this._componentPropertyPath = this._options.componentProperty.split('.')
     }
+  }
+
+  initialize () {
+    // Construct absolute directory path.
+    this._componentDirectoryPath =
+      (this._options.componentDirectory && path.isAbsolute(this._options.componentDirectory))
+        ? this._options.componentDirectory
+        : path.resolve(this.getApp().options.directoryPath, this._options.componentDirectory)
   }
 
   async concurrent (data) {
@@ -96,6 +98,12 @@ class ProcessMithril extends BaseProcess {
 
     // Return result.
     return data
+  }
+
+  final () {
+    super.final()
+
+    this._componentDirectoryPath = null
   }
 }
 

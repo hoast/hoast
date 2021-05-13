@@ -43,12 +43,6 @@ class ProcessHandlebars extends BaseProcess {
       this._logger.error('No template specified. Use the "templatePath" or "templateProperty" options.')
     }
 
-    // Construct absolute directory path.
-    this._templateDirectoryPath =
-      (this._options.templateDirectory && path.isAbsolute(this._options.templateDirectory))
-        ? this._options.templateDirectory
-        : path.resolve(process.cwd(), this._options.templateDirectory)
-
     // Convert dot notation to path segments.
     this._propertyPath = this._options.property.split('.')
     if (this._options.templateProperty) {
@@ -57,6 +51,12 @@ class ProcessHandlebars extends BaseProcess {
   }
 
   async initialize () {
+    // Construct absolute directory path.
+    this._templateDirectoryPath =
+      (this._options.templateDirectory && path.isAbsolute(this._options.templateDirectory))
+        ? this._options.templateDirectory
+        : path.resolve(this.getApp().options.directoryPath, this._options.templateDirectory)
+
     this._templates = {}
 
     if (this._options.templatePath) {
@@ -88,7 +88,7 @@ class ProcessHandlebars extends BaseProcess {
             const directoryPath =
               (this._options.helpersDirectory && path.isAbsolute(this._options.helpersDirectory))
                 ? this._options.helpersDirectory
-                : path.resolve(process.cwd(), this._options.helpersDirectory)
+                : path.resolve(this.getApp().options.directoryPath, this._options.helpersDirectory)
 
             // Get helper files.
             const directoryIterator = await iterateDirectory(directoryPath)
@@ -121,7 +121,7 @@ class ProcessHandlebars extends BaseProcess {
             const directoryPath =
               (this._options.partialsDirectory && path.isAbsolute(this._options.partialsDirectory))
                 ? this._options.partialsDirectory
-                : path.resolve(process.cwd(), this._options.partialsDirectory)
+                : path.resolve(this.getApp().options.directoryPath, this._options.partialsDirectory)
 
             // Get helper files.
             const directoryIterator = await iterateDirectory(directoryPath)
@@ -217,7 +217,8 @@ class ProcessHandlebars extends BaseProcess {
   final () {
     super.final()
 
-    // Clear templates cache.
+    // Clear templates path and cache.
+    this._templateDirectoryPath = null
     this._templates = undefined
   }
 }

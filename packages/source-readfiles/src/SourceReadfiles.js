@@ -34,15 +34,15 @@ class SourceReadfiles extends BaseSource {
         return planckmatch.parse(pattern, this._options.filterOptions, true)
       })
     }
+  }
 
+  async initialize () {
     // Construct absolute directory path.
     this._directoryPath =
       (this._options.directory && path.isAbsolute(this._options.directory))
         ? this._options.directory
-        : path.resolve(process.cwd(), this._options.directory)
-  }
+        : path.resolve(this.getApp().options.directoryPath, this._options.directory)
 
-  async initialize () {
     // Create directory iterator.
     this._directoryIterator = await iterateDirectory(this._directoryPath)
   }
@@ -51,6 +51,12 @@ class SourceReadfiles extends BaseSource {
     let filePath
     // Get next file path.
     while (filePath = await this._directoryIterator()) {
+      // Skip if file hasn't changed.
+      if (!this.getApp().hasChanged(filePath)) {
+        console.log('Hasn\'t changed: ', filePath)
+        continue
+      }
+
       // Make file path relative.
       const filePathRelative = path.relative(this._directoryPath, filePath)
 
@@ -139,6 +145,7 @@ class SourceReadfiles extends BaseSource {
   final () {
     super.final()
 
+    this._directoryPath = null
     this._directoryIterator = null
   }
 }

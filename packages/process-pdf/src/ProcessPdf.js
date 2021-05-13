@@ -43,18 +43,18 @@ class ProcessPdf extends BaseProcess {
     if (this._options.optionsProperty) {
       this._optionsPropertyPath = this._options.optionsProperty.split('.')
     }
-
-    // Assign serve directory.
-    if (!this._options.serveOptions.directory) {
-      this._serveDirectory = process.cwd()
-    } else if (path.isAbsolute(this._options.serveOptions.directory)) {
-      this._serveDirectory = this._options.serveOptions.directory
-    } else {
-      this._serveDirectory = path.resolve(process.cwd(), this._options.serveOptions.directory)
-    }
   }
 
   async initialize () {
+    // Assign serve directory.
+    if (!this._options.serveOptions.directory) {
+      this._serveDirectory = this.getApp().options.directoryPath
+    } else if (path.isAbsolute(this._options.serveOptions.directory)) {
+      this._serveDirectory = this._options.serveOptions.directory
+    } else {
+      this._serveDirectory = path.resolve(this.getApp().options.directoryPath, this._options.serveOptions.directory)
+    }
+
     // Launch puppeteer.
     this._logger.info('Launching puppeteer...')
     this._browser = await puppeteer.launch({
@@ -164,6 +164,8 @@ class ProcessPdf extends BaseProcess {
     this._logger.info('Closing puppeteer...')
     await this._browser.close()
     this._logger.info('Closed puppeteer.')
+
+    this._serveDirectory = null
   }
 }
 

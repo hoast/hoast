@@ -27,12 +27,6 @@ class ProcessWritefiles extends BaseProcess {
       },
     }, options)
 
-    // Construct absolute directory path.
-    this._directoryPath =
-      (this._options.directory && path.isAbsolute(this._options.directory))
-        ? this._options.directory
-        : path.resolve(process.cwd(), this._options.directory)
-
     this.directoryOptions = Object.assign(
       this._options.directoryOptions,
       {
@@ -41,6 +35,14 @@ class ProcessWritefiles extends BaseProcess {
     )
 
     this._propertyPath = this._options.property.split('.')
+  }
+
+  initialize () {
+    // Construct absolute directory path.
+    this._directoryPath =
+      (this._options.directory && path.isAbsolute(this._options.directory))
+        ? this._options.directory
+        : path.resolve(this.getApp().options.directoryPath, this._options.directory)
   }
 
   async sequential (data) {
@@ -68,6 +70,12 @@ class ProcessWritefiles extends BaseProcess {
     )
 
     return data
+  }
+
+  final () {
+    super.final()
+
+    this._directoryPath = null
   }
 }
 

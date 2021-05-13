@@ -1,3 +1,6 @@
+// Import build-in modules.
+import path from 'path'
+
 // Import external modules.
 import { hasProperties } from '@hoast/utils/has.js'
 import deepAssign from '@hoast/utils/deepAssign.js'
@@ -6,8 +9,6 @@ import deepAssign from '@hoast/utils/deepAssign.js'
 import call from './utils/call.js'
 import logger from './utils/logger.js'
 import _process from './utils/process.js'
-
-// TODO: Allow for partial builds.
 
 class Hoast {
   /**
@@ -21,10 +22,15 @@ class Hoast {
     this.options = deepAssign({
       logLevel: 2,
 
-      changedFiles: null,
       concurrencyLimit: 4,
-      directoryPath: process.cwd(),
+      directoryPath: null,
     }, options)
+
+    if (!this.options.directoryPath) {
+      this.options.directoryPath = process.cwd()
+    } else if (!path.isAbsolute(this.options.directoryPath)) {
+      this.options.directoryPath = path.resolve(process.cwd, this.options.directoryPath)
+    }
 
     // Set meta.
     this.meta = meta || {}
@@ -41,6 +47,10 @@ class Hoast {
 
     // Initialize modules registry.
     this._processes = {}
+
+    // Accessed cache.
+    this._changedFiles = null
+    this._accessed = {}
   }
 
   // Meta collections.
@@ -186,6 +196,10 @@ class Hoast {
       })
 
       for (const collection of metaCollections) {
+        if (collection.source._setApp && typeof (collection.source._setApp) === 'function') {
+          collection.source._setApp(this)
+        }
+
         // Call set app on processes.
         await call({
           concurrencyLimit: this.options.concurrencyLimit,
@@ -197,6 +211,10 @@ class Hoast {
     }
 
     for (const collection of this._collections) {
+      if (collection.source._setApp && typeof (collection.source._setApp) === 'function') {
+        collection.source._setApp(this)
+      }
+
       // Call set app on processes.
       await call({
         concurrencyLimit: this.options.concurrencyLimit,
@@ -213,7 +231,74 @@ class Hoast {
       }, this._processes, 'final')
     }
 
+    // Reset changed files.
+    this._changedFiles = null
+
     return this
+  }
+
+  // Accessed.
+
+  addAccessed (source, filePath) {
+    // Ensure path is absolute.
+    if (!path.isAbsolute(filePath)) {
+      filePath = path.resolve(this.options.directoryPath, filePath)
+    }
+
+    if (!this._accessed[source]) {
+      this._accessed[source] = [
+        filePath,
+      ]
+      return
+    }
+
+    if (this._accessed[source].indexOf(filePath) < 0) {
+      this._accessed[source].push(filePath)
+    }
+  }
+
+  clearAccessed (source) {
+    this._accessed[source] = undefined
+  }
+
+  resetAccessed () {
+    this._accessed = {}
+  }
+
+  // Changed.
+
+  setChanged (filePaths = null) {
+    if (!filePaths) {
+      this._changedFiles = null
+    }
+
+    const absolutePaths = []
+    for (let filePath of filePaths) {
+      if (!path.isAbsolute(filePath)) {
+        filePath = path.resolve(this.options.directoryPath, filePath)
+      }
+      absolutePaths.push(filePath)
+    }
+    this._changedFiles = absolutePaths
+
+    return this
+  }
+
+  hasChanged (source) {
+    // Return true if no changed files are given.
+    if (!this._changedFiles || this._changedFiles.indexOf(source) >= 0 || !this._accessed[source]) {
+      return true
+    }
+
+    // Check if any of the changed files are in the accessed list.
+    const filePaths = this._accessed[source]
+    for (const changedFile of this._changedFiles) {
+      if (filePaths.indexOf(changedFile) >= 0) {
+        return true
+      }
+    }
+
+    return false
   }
 }
 

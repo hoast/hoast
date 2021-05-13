@@ -254,9 +254,7 @@ Options for run
 ʕ  ✦ᴥ✦ʔ   Processing changes…`)
 
       // Provide changed files to hoast and reset the local list.
-      hoast.options.changedFiles = changedFiles
-    } else {
-      hoast.options.changedFiles = null
+      hoast.setChanged(changedFiles)
     }
     changedFiles = []
 
@@ -288,10 +286,12 @@ Options for run
       ignored = options['watch-ignored']
     }
 
-    const handleFileChange = async function (path) {
-      if (changedFiles.indexOf(path) < 0) {
+    const handleFileChange = async function (filePath) {
+      filePath = path.resolve(directoryPath, filePath)
+
+      if (changedFiles.indexOf(filePath) < 0) {
         // Store change and check later.
-        changedFiles.push(path)
+        changedFiles.push(filePath)
       }
 
       if (!isProcessing && changedFiles.length > 0) {

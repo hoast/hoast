@@ -70,11 +70,11 @@ The following list serve as tools you can use directly, or as an example on how 
 
 The following list are project that are build with this project.
 
-- [`docs`](hoast.js.org) - The project's website is of couse build using the project itself.
+- [`docs`](hoast.js.org) - The project's website is of course build using the project itself.
 
 ## Version numbering
 
-The libraries follow sementic versioning meaning a version number follows the `MAJOR.MINOR.PATCH` format. Each segment is incrementend as follows:
+The libraries follow semantic versioning meaning a version number follows the `MAJOR.MINOR.PATCH` format. Each segment is incrementend as follows:
 
 - `MAJOR` version for backwards incompatible changes are made;
 - `MINOR` version for functionality added in a backwards compatible manner;
