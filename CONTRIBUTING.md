@@ -55,7 +55,6 @@ The projects documentation include four elements the instruction manual, change 
 
 + **Instruction manual**: The `README.md` introduces the project and provides instructions on how to use the package.
 + **Change log**: The `CHANGELOG.md` lists what has changed in which version. Add your changes under the `UNRELEASED` header, if not already there feel free to add it. Then create sub-headers with the type of changes either `Added`, `Changed`, `Fixed`, or `Removed` where you will list the changes.
-+ **Code comments**: Code should be annotated explaining briefly what a section of code does, whereby the functionality should be understood by only reading the comments.
 + **Commit message**: Commit messages should summarize what has essentially been written to the change log.
 
 ### Write examples

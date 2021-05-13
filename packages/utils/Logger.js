@@ -18,7 +18,7 @@ class Logger {
    * Get log level value.
    * @returns {Number} log level value.
    */
-  getlevel () {
+  getLevel () {
     return this._level
   }
 

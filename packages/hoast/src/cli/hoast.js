@@ -24,7 +24,7 @@ const fsReadFile = promisify(fs.readFile)
 const CLI = async function () {
   // Get package file.
   // 1. Take import url (aka file path of script).
-  // 2. Remove file:// protecol using a regular expression.
+  // 2. Remove file:// protocol using a regular expression.
   // 3. Get directory path from file path.
   // 4. Resolve path to package file in parent directory.
   // 5. Get content of file at path.
@@ -155,7 +155,7 @@ Options for run
       break
 
     default:
-      throw new Error('Unkown extension type! ' + MESSAGE_SEE_DOCS)
+      throw new Error('Unknown extension type! ' + MESSAGE_SEE_DOCS)
   }
 
   if (!hoast) {

@@ -14,22 +14,19 @@ class Hoast {
    * @param {Object} meta Global metadata that can be picked up by process packages.
    * @returns {Object} Hoast instance.
    */
-  constructor(options = null, meta = null) {
+  constructor(options = {}, meta = {}) {
     // Set options.
-    this.options = {
+    this.options = deepAssign({
       logLevel: 2,
 
       concurrencyLimit: 4,
-    }
-    if (options) {
-      this.options = deepAssign(this.options, options)
-    }
+    }, options)
 
     // Set meta.
     this.meta = meta || {}
 
     // Set debugger.
-    logger.setLevel(this.options.logLevel)
+    logger.setLevel(this._options.logLevel)
     logger.setPrefix(this.constructor.name)
 
     // Initialize meta collections.
@@ -42,7 +39,7 @@ class Hoast {
     this._processes = {}
   }
 
-  // Meta.
+  // Meta collections.
 
   /**
    * Add collection to meta collections.
@@ -166,7 +163,7 @@ class Hoast {
     if (this._processes) {
       // Call set app on processes.
       await call({
-        concurrencyLimit: this.options.concurrencyLimit,
+        concurrencyLimit: this._options.concurrencyLimit,
       }, this._processes, '_setApp', this)
     }
 
@@ -187,7 +184,7 @@ class Hoast {
       for (const collection of metaCollections) {
         // Call set app on processes.
         await call({
-          concurrencyLimit: this.options.concurrencyLimit,
+          concurrencyLimit: this._options.concurrencyLimit,
         }, collection.processes, '_setApp', this)
       }
 
@@ -198,7 +195,7 @@ class Hoast {
     for (const collection of this._collections) {
       // Call set app on processes.
       await call({
-        concurrencyLimit: this.options.concurrencyLimit,
+        concurrencyLimit: this._options.concurrencyLimit,
       }, collection.processes, '_setApp', this)
     }
 
@@ -208,7 +205,7 @@ class Hoast {
     if (this._processes) {
       // Call final on processes.
       await call({
-        concurrencyLimit: this.options.concurrencyLimit,
+        concurrencyLimit: this._options.concurrencyLimit,
       }, this._processes, 'final')
     }
 
