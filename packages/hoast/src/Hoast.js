@@ -4,11 +4,18 @@ import path from 'path'
 // Import external modules.
 import { hasProperties } from '@hoast/utils/has.js'
 import deepAssign from '@hoast/utils/deepAssign.js'
+import planckmatch from 'planckmatch'
 
 // Import internal modules.
 import call from './utils/call.js'
 import logger from './utils/logger.js'
 import _process from './utils/process.js'
+
+const MATCH_OPTIONS = {
+  extended: true,
+  flags: 'i',
+  globstar: true,
+}
 
 class Hoast {
   /**
@@ -178,7 +185,7 @@ class Hoast {
       // Call set app on processes.
       await call({
         concurrencyLimit: this.options.concurrencyLimit,
-      }, this._processes, '_setLibrary', this)
+      }, this._processes, '_setApp', this)
     }
 
     if (this._metaCollections.length > 0) {
@@ -196,14 +203,14 @@ class Hoast {
       })
 
       for (const collection of metaCollections) {
-        if (collection.source._setLibrary && typeof (collection.source._setLibrary) === 'function') {
-          collection.source._setLibrary(this)
+        if (collection.source._setApp && typeof (collection.source._setApp) === 'function') {
+          collection.source._setApp(this)
         }
 
         // Call set app on processes.
         await call({
           concurrencyLimit: this.options.concurrencyLimit,
-        }, collection.processes, '_setLibrary', this)
+        }, collection.processes, '_setApp', this)
       }
 
       // Process meta collections.
@@ -211,14 +218,14 @@ class Hoast {
     }
 
     for (const collection of this._collections) {
-      if (collection.source._setLibrary && typeof (collection.source._setLibrary) === 'function') {
-        collection.source._setLibrary(this)
+      if (collection.source._setApp && typeof (collection.source._setApp) === 'function') {
+        collection.source._setApp(this)
       }
 
       // Call set app on processes.
       await call({
         concurrencyLimit: this.options.concurrencyLimit,
-      }, collection.processes, '_setLibrary', this)
+      }, collection.processes, '_setApp', this)
     }
 
     // Process collections.
@@ -251,10 +258,15 @@ class Hoast {
     // Ensure path is absolute.
     if (!path.isAbsolute(filePath)) {
       filePath = path.resolve(this.options.directoryPath, filePath)
+    } else {
+      filePath = path.resolve(filePath)
     }
 
-    if (this._accessed[source].indexOf(filePath) < 0) {
-      this._accessed[source].push(filePath)
+    // Parse file path to regular expression.
+    const filePathExpression = planckmatch.parse(filePath, MATCH_OPTIONS, true)
+
+    if (this._accessed[source].indexOf(filePathExpression) < 0) {
+      this._accessed[source].push(filePathExpression)
     }
   }
 
@@ -292,9 +304,9 @@ class Hoast {
     }
 
     // Check if any of the changed files are in the accessed list.
-    const filePaths = this._accessed[source]
+    const filePathExpressions = this._accessed[source]
     for (const changedFile of this._changedFiles) {
-      if (filePaths.indexOf(changedFile) >= 0) {
+      if (planckmatch.match.any(changedFile, filePathExpressions)) {
         return true
       }
     }

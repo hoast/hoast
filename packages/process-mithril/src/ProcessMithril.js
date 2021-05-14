@@ -48,7 +48,7 @@ class ProcessMithril extends BaseProcess {
     this._componentDirectoryPath =
       (this._options.componentDirectory && path.isAbsolute(this._options.componentDirectory))
         ? this._options.componentDirectory
-        : path.resolve(this._library.options.directoryPath, this._options.componentDirectory)
+        : path.resolve(this._app.options.directoryPath, this._options.componentDirectory)
   }
 
   async concurrent (data) {
@@ -83,7 +83,7 @@ class ProcessMithril extends BaseProcess {
 
     // Compile data with component.
     let value = await render(component, {
-      meta: this._library.meta,
+      meta: this._app.meta,
       data: data,
     })
     if (this._options.prefix) {

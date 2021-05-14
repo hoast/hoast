@@ -10,7 +10,7 @@ import deepAssign from '@hoast/utils/deepAssign.js'
 import { getByPathSegments } from '@hoast/utils/get.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
-// Import puppeteer library.
+// Import puppeteer app.
 import serveHandler from 'serve-handler'
 import puppeteer from 'puppeteer'
 
@@ -48,11 +48,11 @@ class ProcessPdf extends BaseProcess {
   async initialize () {
     // Assign serve directory.
     if (!this._options.serveOptions.directory) {
-      this._serveDirectory = this._library.options.directoryPath
+      this._serveDirectory = this._app.options.directoryPath
     } else if (path.isAbsolute(this._options.serveOptions.directory)) {
       this._serveDirectory = this._options.serveOptions.directory
     } else {
-      this._serveDirectory = path.resolve(this._library.options.directoryPath, this._options.serveOptions.directory)
+      this._serveDirectory = path.resolve(this._app.options.directoryPath, this._options.serveOptions.directory)
     }
 
     // Launch puppeteer.

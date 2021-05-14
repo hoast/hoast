@@ -37,7 +37,7 @@ OR
 
 #### Inherited
 
-- `{Object} _library` Hoast instance.
+- `{Object} _app` Hoast instance.
 - `{Object} _options` Merged options.
 - `{Object} _logger` [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js) instance.
 
@@ -50,7 +50,7 @@ OR
 
 #### Inherited
 
-- `_setLibrary` Set app reference. This will be called by hoast itself before the next function is called.
+- `_setApp` Set app reference. This will be called by hoast itself before the next function is called.
   - `@params {Object} app` hoast instance.
 
 ### Abstract functions

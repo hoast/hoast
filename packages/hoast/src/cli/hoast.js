@@ -15,7 +15,7 @@ import minimist from 'minimist'
 // TODO: import { isValidConfig } from './util/isValid.js'
 import timer from './utils/timer.js'
 
-// Import core library.
+// Import core app.
 import Hoast from '../Hoast.js'
 
 // Promisify read file.

@@ -19,10 +19,10 @@ class BasePackage {
 
   /**
    * Set app reference. This will be called by hoast itself before the next function is called.
-   * @param {Object} library Hoast instance.
+   * @param {Object} app Hoast instance.
    */
-  _setLibrary (library) {
-    this._library = library
+  _setApp (app) {
+    this._app = app
   }
 }
 

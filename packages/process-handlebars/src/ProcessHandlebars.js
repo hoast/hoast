@@ -55,7 +55,7 @@ class ProcessHandlebars extends BaseProcess {
     this._templateDirectoryPath =
       (this._options.templateDirectory && path.isAbsolute(this._options.templateDirectory))
         ? this._options.templateDirectory
-        : path.resolve(this._library.options.directoryPath, this._options.templateDirectory)
+        : path.resolve(this._app.options.directoryPath, this._options.templateDirectory)
 
     this._templates = {}
 
@@ -64,7 +64,7 @@ class ProcessHandlebars extends BaseProcess {
       const templatePathAbsolute =
         path.isAbsolute(this._options.templatePath)
           ? this._options.templatePath
-          : path.resolve(this._options.templateDirectory, this._options.templatePath)
+          : path.resolve(this._templateDirectoryPath, this._options.templatePath)
       const template = await fsReadFile(templatePathAbsolute, {
         encoding: 'utf8',
       })
@@ -82,24 +82,22 @@ class ProcessHandlebars extends BaseProcess {
 
       // Get helpers from directory.
       if (this._options.helpersDirectory) {
-        this._helperPaths = []
-
         promises.push(
           (async () => {
             // Construct absolute helpers directory path.
-            const directoryPath =
+            this._helpersPath =
               (this._options.helpersDirectory && path.isAbsolute(this._options.helpersDirectory))
                 ? this._options.helpersDirectory
-                : path.resolve(this._library.options.directoryPath, this._options.helpersDirectory)
+                : path.resolve(this._app.options.directoryPath, this._options.helpersDirectory)
 
             // Get helper files.
-            const directoryIterator = await iterateDirectory(directoryPath)
+            const directoryIterator = await iterateDirectory(this._helpersPath)
 
             let filePath
             // Get next file path.
             while (filePath = await directoryIterator()) {
               // Get relative file path.
-              const filePathRelative = path.relative(directoryPath, filePath)
+              const filePathRelative = path.relative(this._helpersPath, filePath)
 
               // Dynamic import helper.
               let helper = await import(filePath)
@@ -107,8 +105,6 @@ class ProcessHandlebars extends BaseProcess {
                 continue
               }
               helper = helper.default
-
-              this._helperPaths.push(filePath)
 
               // Register helper.
               Handlebars.registerHelper(filePathRelative, helper)
@@ -119,29 +115,25 @@ class ProcessHandlebars extends BaseProcess {
 
       // Get partials from directory.
       if (this._options.partialsDirectory) {
-        this._partialPaths = []
-
         promises.push(
           (async () => {
             // Construct absolute helpers directory path.
-            const directoryPath =
+            this._partialsPath =
               (this._options.partialsDirectory && path.isAbsolute(this._options.partialsDirectory))
                 ? this._options.partialsDirectory
-                : path.resolve(this._library.options.directoryPath, this._options.partialsDirectory)
+                : path.resolve(this._app.options.directoryPath, this._options.partialsDirectory)
 
             // Get helper files.
-            const directoryIterator = await iterateDirectory(directoryPath)
+            const directoryIterator = await iterateDirectory(this._partialsPath)
 
             let filePath
             // Get next file path.
             while (filePath = await directoryIterator()) {
               // Get relative file path.
-              const filePathRelative = path.relative(directoryPath, filePath)
+              const filePathRelative = path.relative(this._partialsPath, filePath)
 
               // Get file content.
               const partial = await fsReadFile(filePath, { encoding: 'utf8' })
-
-              this._partialPaths.push(filePath)
 
               // Register partial.
               Handlebars.registerPartial(filePathRelative, partial)
@@ -187,9 +179,9 @@ class ProcessHandlebars extends BaseProcess {
     const templatePathAbsolute =
       path.isAbsolute(templatePath)
         ? templatePath
-        : path.resolve(this._options.templateDirectory, templatePath)
+        : path.resolve(this._templateDirectoryPath, templatePath)
 
-    this._library.addAccessed(data.source, templatePath)
+    this._app.addAccessed(data.source, templatePathAbsolute)
 
     // Get template.
     let template
@@ -214,20 +206,16 @@ class ProcessHandlebars extends BaseProcess {
       this._templates[templatePathAbsolute] = template
     }
 
-    if (this._helperPaths) {
-      for (const helperPath of this._helperPaths) {
-        this._library.addAccessed(data.source, helperPath)
-      }
+    if (this._helpersPath) {
+      this._app.addAccessed(data.source, path.join(this._helpersPath + '**'))
     }
-    if (this._partialPaths) {
-      for (const partialPath of this._partialPaths) {
-        this._library.addAccessed(data.source, partialPath)
-      }
+    if (this._partialsPath) {
+      this._app.addAccessed(data.source, path.join(this._partialsPath + '**'))
     }
 
     // Compile data with template and set value.
     data = setByPathSegments(data, this._propertyPath, template({
-      app: this._library,
+      app: this._app,
       data: data,
     }))
 
@@ -239,8 +227,8 @@ class ProcessHandlebars extends BaseProcess {
     super.final()
 
     // Clear templates path and cache.
-    this._helperPaths = null
-    this._partialPaths = null
+    this._helpersPath = null
+    this._partialsPath = null
     this._templateDirectoryPath = null
     this._templates = null
   }
