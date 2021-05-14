@@ -34,7 +34,7 @@ const hoast = new Hoast()
             data.contents = componentHTML(data)
 
             return data
-          }
+          },
         }),
         // Bundle and minify.
         new ProcessPostprocess({

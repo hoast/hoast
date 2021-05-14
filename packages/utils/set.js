@@ -1,5 +1,5 @@
 /**
- * Set a value on a target by a dot seperated path.
+ * Set a value on a target by a dot separated path.
  * @param {Object} target Target object to set value to.
  * @param {String} path Dot notation string with each segment a property on the target.
  * @param {Any} value The value to set at the path on the target.
@@ -11,7 +11,7 @@ export const setByDotNotation = function (target, path, value) {
 }
 
 /**
- * Set a value on a target by an array seperated path.
+ * Set a value on a target by an array separated path.
  * @param {Object} target Target object to set value to.
  * @param {Array<String>} path Array of strings with each segment a property on the target.
  * @param {Any} value The value to set at the path on the target.
@@ -26,7 +26,7 @@ export const setByPathSegments = function (target, path, value) {
   [...path].reduce((object, segment, index) => {
     if (index === path.length - 1) {
       object[segment] = value
-      return
+      return null
     } else if (!object[segment] || typeof (object[segment]) !== 'object') {
       object[segment] = {}
     }

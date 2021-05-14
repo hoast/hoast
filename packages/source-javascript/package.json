@@ -3,16 +3,16 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/process-javascript",
+  "name": "@hoast/source-javascript",
   "version": "2.0.0",
-  "description": "Retrieve and or execute JavaScript.",
+  "description": "Execute JavaScript.",
   "keywords": [
     "hoast",
     "process",
     "javascript"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-javascript#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-javascript#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
@@ -29,12 +29,13 @@
     "CHANGELOG.md",
     "src/"
   ],
-  "main": "src/ProcessJavascript.js",
+  "main": "src/SourceJavascript.js",
   "scripts": {
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
     "@hoast/base-process": "^2.0.0",
-    "@hoast/utils": "^2.0.1"
+    "@hoast/utils": "^2.0.1",
+    "detective-es6": "^2.2.0"
   }
 }

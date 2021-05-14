@@ -1,16 +1,17 @@
 {
   "private": true,
-  "name": "@hoast/example-pdf",
+  "name": "@hoast/example-javascript",
   "version": "0.0.0",
   "dependencies": {
     "@hoast/hoast": "x",
+    "@hoast/source-javascript": "x",
     "@hoast/process-log": "x",
-    "@hoast/process-pdf": "x",
     "@hoast/source-readfiles": "x"
   },
   "type": "module",
   "scripts": {
-    "hoast": "hoast",
+    "hoast": "NODE_ENV=production hoast",
+    "develop": "NODE_ENV=development hoast --watch",
     "lint": "eslint --fix --cache *.js"
   }
 }
