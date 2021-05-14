@@ -178,7 +178,7 @@ class Hoast {
       // Call set app on processes.
       await call({
         concurrencyLimit: this.options.concurrencyLimit,
-      }, this._processes, '_setApp', this)
+      }, this._processes, '_setLibrary', this)
     }
 
     if (this._metaCollections.length > 0) {
@@ -196,14 +196,14 @@ class Hoast {
       })
 
       for (const collection of metaCollections) {
-        if (collection.source._setApp && typeof (collection.source._setApp) === 'function') {
-          collection.source._setApp(this)
+        if (collection.source._setLibrary && typeof (collection.source._setLibrary) === 'function') {
+          collection.source._setLibrary(this)
         }
 
         // Call set app on processes.
         await call({
           concurrencyLimit: this.options.concurrencyLimit,
-        }, collection.processes, '_setApp', this)
+        }, collection.processes, '_setLibrary', this)
       }
 
       // Process meta collections.
@@ -211,14 +211,14 @@ class Hoast {
     }
 
     for (const collection of this._collections) {
-      if (collection.source._setApp && typeof (collection.source._setApp) === 'function') {
-        collection.source._setApp(this)
+      if (collection.source._setLibrary && typeof (collection.source._setLibrary) === 'function') {
+        collection.source._setLibrary(this)
       }
 
       // Call set app on processes.
       await call({
         concurrencyLimit: this.options.concurrencyLimit,
-      }, collection.processes, '_setApp', this)
+      }, collection.processes, '_setLibrary', this)
     }
 
     // Process collections.
@@ -239,17 +239,18 @@ class Hoast {
 
   // Accessed.
 
-  addAccessed (source, filePath) {
+  addAccessed (source, filePath = null) {
+    if (!this._accessed[source]) {
+      this._accessed[source] = []
+    }
+
+    if (!filePath) {
+      return
+    }
+
     // Ensure path is absolute.
     if (!path.isAbsolute(filePath)) {
       filePath = path.resolve(this.options.directoryPath, filePath)
-    }
-
-    if (!this._accessed[source]) {
-      this._accessed[source] = [
-        filePath,
-      ]
-      return
     }
 
     if (this._accessed[source].indexOf(filePath) < 0) {

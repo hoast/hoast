@@ -42,7 +42,7 @@ class ProcessWritefiles extends BaseProcess {
     this._directoryPath =
       (this._options.directory && path.isAbsolute(this._options.directory))
         ? this._options.directory
-        : path.resolve(this.getApp().options.directoryPath, this._options.directory)
+        : path.resolve(this._library.options.directoryPath, this._options.directory)
   }
 
   async sequential (data) {

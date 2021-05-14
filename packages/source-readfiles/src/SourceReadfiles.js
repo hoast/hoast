@@ -41,7 +41,7 @@ class SourceReadfiles extends BaseSource {
     this._directoryPath =
       (this._options.directory && path.isAbsolute(this._options.directory))
         ? this._options.directory
-        : path.resolve(this.getApp().options.directoryPath, this._options.directory)
+        : path.resolve(this._library.options.directoryPath, this._options.directory)
 
     // Create directory iterator.
     this._directoryIterator = await iterateDirectory(this._directoryPath)
@@ -52,8 +52,7 @@ class SourceReadfiles extends BaseSource {
     // Get next file path.
     while (filePath = await this._directoryIterator()) {
       // Skip if file hasn't changed.
-      if (!this.getApp().hasChanged(filePath)) {
-        console.log('Hasn\'t changed: ', filePath)
+      if (!this._library.hasChanged(filePath)) {
         continue
       }
 
@@ -84,6 +83,9 @@ class SourceReadfiles extends BaseSource {
     // Deconstruct parameters.
     const [filePath, filePathRelative] = data
 
+    // Mark file as accessed.
+    this._library.addAccessed(filePath)
+
     // Construct URI for file.
     let uri = trimStart(filePath, path.sep)
     if (path.sep !== '/') {
@@ -92,8 +94,9 @@ class SourceReadfiles extends BaseSource {
 
     // Create result.
     const result = {
-      uri: 'file://' + uri,
       path: filePathRelative,
+      source: filePath,
+      uri: 'file://' + uri,
     }
 
     // Store promises here.

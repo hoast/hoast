@@ -48,11 +48,11 @@ class ProcessPdf extends BaseProcess {
   async initialize () {
     // Assign serve directory.
     if (!this._options.serveOptions.directory) {
-      this._serveDirectory = this.getApp().options.directoryPath
+      this._serveDirectory = this._library.options.directoryPath
     } else if (path.isAbsolute(this._options.serveOptions.directory)) {
       this._serveDirectory = this._options.serveOptions.directory
     } else {
-      this._serveDirectory = path.resolve(this.getApp().options.directoryPath, this._options.serveOptions.directory)
+      this._serveDirectory = path.resolve(this._library.options.directoryPath, this._options.serveOptions.directory)
     }
 
     // Launch puppeteer.
