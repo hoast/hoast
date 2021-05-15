@@ -5,16 +5,18 @@ import logger from './logger.js'
 
 /**
  * Process collections.
- * @param {Object} app App instance.
+ * @param {Object} library Library instance.
  * @param {Array} collections Collections to process.
  */
-const process = async function (app, collections) {
+const process = async function (library, collections) {
   // Exit early if already done.
   if (collections.length === 0) {
     logger.info('No collections to process.')
     return
   }
   logger.info('Start processing collections.')
+
+  const options = library.getOptions()
 
   // Iterate on collection sources and process them.
   await iterate(
@@ -40,7 +42,7 @@ const process = async function (app, collections) {
 
             // If string get from lookup.
             if (processType === 'string') {
-              process = app._processes[process]
+              process = library._processes[process]
 
               // Get type again.
               processType = typeof (process)
@@ -108,7 +110,7 @@ const process = async function (app, collections) {
           if (this.collectionsActiveByIndex[collectionIndex] === 1) {
             // Call final on processes only in this collection.
             await call({
-              concurrencyLimit: app.options.concurrencyLimit,
+              concurrencyLimit: options.concurrencyLimit,
             }, processes, 'final')
           }
         }
@@ -117,7 +119,7 @@ const process = async function (app, collections) {
         this.collectionsActiveByIndex[collectionIndex]--
       },
     },
-    app.options.concurrencyLimit, true
+    options.concurrencyLimit, true
   )
 
   logger.info('Finished processing collections.')

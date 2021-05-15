@@ -27,35 +27,44 @@ class SourceReadfiles extends BaseSource {
       },
       statOptions: {},
     }, options)
+    options = this.getOptions()
 
     // Parse patterns into regular expressions.
-    if (this._options.filterPatterns && this._options.filterPatterns.length > 0) {
-      this._expressions = this._options.filterPatterns.map(pattern => {
-        return planckmatch.parse(pattern, this._options.filterOptions, true)
+    if (options.filterPatterns && options.filterPatterns.length > 0) {
+      this._expressions = options.filterPatterns.map(pattern => {
+        return planckmatch.parse(pattern, options.filterOptions, true)
       })
     }
   }
 
   async initialize () {
+    const libraryOptions = this.getLibrary().getOptions()
+    const options = this.getOptions()
+
     // Construct absolute directory path.
     this._directoryPath =
-      (this._options.directory && path.isAbsolute(this._options.directory))
-        ? this._options.directory
-        : path.resolve(this._app.options.directoryPath, this._options.directory)
+      (options.directory && path.isAbsolute(options.directory))
+        ? options.directory
+        : path.resolve(libraryOptions.directoryPath, options.directory)
 
     // Create directory iterator.
     this._directoryIterator = await iterateDirectory(this._directoryPath)
   }
 
   async sequential () {
+    const library = this.getLibrary()
+    const options = this.getOptions()
+
     let filePath
     // Get next file path.
     while (filePath = await this._directoryIterator()) {
-      // Skip if file hasn't changed.
-      if (!this._app.hasChanged(filePath)) {
-        continue
+      if (library.isWatching()) {
+        // Skip if file hasn't changed.
+        if (!library.hasChanged(filePath)) {
+          continue
+        }
+        library.clearAccessed(filePath)
       }
-      this._app.clearAccessed(filePath)
 
       // Make file path relative.
       const filePathRelative = path.relative(this._directoryPath, filePath)
@@ -63,7 +72,7 @@ class SourceReadfiles extends BaseSource {
       // Check if path matches the patterns.
       if (this._expressions) {
         // Skip if it does not matches.
-        const matches = this._options.filterOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
+        const matches = options.filterOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
         if (!matches) {
           continue
         }
@@ -80,12 +89,13 @@ class SourceReadfiles extends BaseSource {
     if (!data) {
       return
     }
+    const options = this.getOptions()
 
     // Deconstruct parameters.
     const [filePath, filePathRelative] = data
 
     // Mark file as accessed.
-    this._app.addAccessed(filePath)
+    this.getLibrary().addAccessed(filePath)
 
     // Construct URI for file.
     let uri = trimStart(filePath, path.sep)
@@ -96,7 +106,8 @@ class SourceReadfiles extends BaseSource {
     // Create result.
     const result = {
       path: filePathRelative,
-      source: filePath,
+      sourceIdentifier: filePath,
+      sourceType: 'filesystem',
       uri: 'file://' + uri,
     }
 
@@ -104,10 +115,10 @@ class SourceReadfiles extends BaseSource {
     const promises = []
 
     // Read file content.
-    if (this._options.readOptions) {
+    if (options.readOptions) {
       promises.push(
         new Promise((resolve, reject) => {
-          fs.readFile(filePath, this._options.readOptions, (error, data) => {
+          fs.readFile(filePath, options.readOptions, (error, data) => {
             if (error) {
               reject(error)
               return
@@ -121,10 +132,10 @@ class SourceReadfiles extends BaseSource {
     }
 
     // Get file stat.
-    if (this._options.statOptions) {
+    if (options.statOptions) {
       promises.push(
         new Promise((resolve, reject) => {
-          fs.stat(filePath, this._options.statOptions, (error, data) => {
+          fs.stat(filePath, options.statOptions, (error, data) => {
             if (error) {
               reject(error)
               return

@@ -1,6 +1,6 @@
 # @hoast/base-package
 
-Provides basic functionality like receiving the app reference and setting up a logger. Meant for developers to be used as a base for a [hoast](https://hoast.js.org) source or process package.
+Provides basic functionality like receiving the library's reference and setting up a logger. Meant for developers to be used as a base for a [hoast](https://hoast.js.org) source or process package.
 
 ## Install
 
@@ -24,14 +24,20 @@ OR
 
 ### Variables
 
-- `{Object} _app` Hoast instance.
-- `{Object} _options` Merged options.
+- `{Object} _library` Hoast instance.
 - `{Object} _logger` [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js) instance.
+- `{Object} _options` Merged options.
 
 ### Functions
 
-- `_setApp` Set app reference. This will be called by hoast itself before the next function is called.
-  - `@params {Object} app` hoast instance.
+- `getOptions`
+  - `@returns {Object}` options.
+- `getLibrary`
+  - `@returns {Hoast}` hoast instance.
+- `setLibrary` Set library reference. This will be called by hoast itself before the next function is called.
+  - `@params {Hoast} library` hoast instance.
+- `getLogger`
+  - `@returns {Logger}` logger instance.
 
 ### Example
 

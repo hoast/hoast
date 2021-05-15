@@ -19,25 +19,28 @@ class ProcessLog extends BasePackage {
       prepend: null,
       append: null,
     }, options)
+    options = this.getOptions()
 
     // Convert dot notation to path segments.
-    if (this._options.property) {
-      this._propertyPath = this._options.property.split('.')
+    if (options.property) {
+      this._propertyPath = options.property.split('.')
     }
   }
 
   next (data) {
+    const options = this.getOptions()
+
     const messages = []
 
-    if (this._options.prepend) {
-      messages.push(this._options.prepend)
+    if (options.prepend) {
+      messages.push(options.prepend)
     }
 
     const value = this._propertyPath ? getByPathSegments(data, this._propertyPath) : data
 
-    switch (String.prototype.toLowerCase.call(this._options.format)) {
+    switch (String.prototype.toLowerCase.call(options.format)) {
       default:
-        this._logger.warn('Unknown value for option "format", falling back to "js".')
+        this.getLogger().warn('Unknown value for option "format", falling back to "js".')
       case 'js':
         messages.push(value)
         break
@@ -49,11 +52,11 @@ class ProcessLog extends BasePackage {
         break
     }
 
-    if (this._options.append) {
-      messages.push(this._options.append)
+    if (options.append) {
+      messages.push(options.append)
     }
 
-    switch (String.prototype.toLowerCase.call(this._options.level)) {
+    switch (String.prototype.toLowerCase.call(options.level)) {
       case 'error':
         console.error(...messages)
         break

@@ -23,7 +23,7 @@
 
 ## For developers
 
-- [`base-package`](/packages/base-package) - Provides basic functionality like receiving the app reference and setting up a logger.
+- [`base-package`](/packages/base-package) - Provides basic functionality like receiving the library's reference and setting up a logger.
 - [`base-process`](/packages/base-process) - Provides basic functionality for process package like an initialization function, sequentially running of certain code, and filtering out running the process based of the data.
 - [`base-source`](/packages/base-source) - Provides basic functionality for source package like an initialization function, sequentially running of certain code, and a finallize function called after the source is done iterating.
 - [`utils`](/packages/utils) - A package of utility functions used by several other packages in this list.

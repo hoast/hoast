@@ -15,6 +15,8 @@ OR
 ```
 ## Usage
 
+> Extends [BasePackage](https://github.com/hoast/hoast/tree/master/packages/base-package#readme).
+
 ### Constructor
 
 - `constructor` Create package instance.
@@ -32,25 +34,11 @@ OR
 - `{Array} _filterExpressions` Parsed `options.filterPatterns` values as regular expressions.
 - `{Array} _filterPropertyPath` Parsed `options.filterProperty` value as series of strings.
 
-#### Inherited
-
-- `{Object} _app` Hoast instance.
-- `{Object} _options` Merged options.
-- `{Object} _logger` [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js) instance.
-
 ### Functions
 
 - `async next` This will be called by hoast itself to process the given item.
   - `@param {Any} data` Data to process.
   - `@returns {Any}` Item to be processed.
-- `async _next` Internally called to process the given item.
-  - `@param {Any} data` Data to process.
-  - `@returns {Any}` Item to be processed.
-
-#### Inherited
-
-- `_setApp` Set app reference. This will be called by hoast itself before the next function is called.
-  - `@params {Object} app` hoast instance.
 
 ### Abstract functions
 

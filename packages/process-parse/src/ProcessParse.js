@@ -16,16 +16,19 @@ class ProcessParse extends BaseProcess {
       property: 'contents',
       parser: JSON.parse,
     }, options)
+    options = this.getOptions()
 
     // Convert dot notation to path segments.
-    this._propertyPath = this._options.property.split('.')
+    this._propertyPath = options.property.split('.')
   }
 
   async initialize () {
-    if (Array.isArray(this._options.parser) || typeof (this._options.parser) === 'string') {
-      this._parser = await instantiate(this._options.parser)
+    const options = this.getOptions()
+
+    if (Array.isArray(options.parser) || typeof (options.parser) === 'string') {
+      this._parser = await instantiate(options.parser)
     } else {
-      this._parser = this._options.parser
+      this._parser = options.parser
     }
   }
 

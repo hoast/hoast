@@ -38,57 +38,61 @@ class ProcessHandlebars extends BaseProcess {
       partials: null,
       partialsDirectory: null,
     }, options)
+    options = this.getOptions()
 
-    if (!this._options.templatePath && !this._options.templateProperty) {
-      this._logger.error('No template specified. Use the "templatePath" or "templateProperty" options.')
+    if (!options.templatePath && !options.templateProperty) {
+      this.getLogger().error('No template specified. Use the "templatePath" or "templateProperty" options.')
     }
 
     // Convert dot notation to path segments.
-    this._propertyPath = this._options.property.split('.')
-    if (this._options.templateProperty) {
-      this._templatePropertyPath = this._options.templateProperty.split('.')
+    this._propertyPath = options.property.split('.')
+    if (options.templateProperty) {
+      this._templatePropertyPath = options.templateProperty.split('.')
     }
   }
 
   async initialize () {
+    const libraryOptions = this.getLibrary().getOptions()
+    const options = this.getOptions()
+
     // Construct absolute directory path.
     this._templateDirectoryPath =
-      (this._options.templateDirectory && path.isAbsolute(this._options.templateDirectory))
-        ? this._options.templateDirectory
-        : path.resolve(this._app.options.directoryPath, this._options.templateDirectory)
+      (options.templateDirectory && path.isAbsolute(options.templateDirectory))
+        ? options.templateDirectory
+        : path.resolve(libraryOptions.directoryPath, options.templateDirectory)
 
     this._templates = {}
 
-    if (this._options.templatePath) {
+    if (options.templatePath) {
       // Construct absolute template path.
       const templatePathAbsolute =
-        path.isAbsolute(this._options.templatePath)
-          ? this._options.templatePath
-          : path.resolve(this._templateDirectoryPath, this._options.templatePath)
+        path.isAbsolute(options.templatePath)
+          ? options.templatePath
+          : path.resolve(this._templateDirectoryPath, options.templatePath)
       const template = await fsReadFile(templatePathAbsolute, {
         encoding: 'utf8',
       })
 
       if (!template) {
-        this._logger.error('No template found at path: "' + this._options.templatePath + '"')
+        this.getLogger().error('No template found at path: "' + options.templatePath + '"')
       } else {
         // Store compiled template in cache.
-        this._templates[templatePathAbsolute] = Handlebars.compile(template, this._options.handlebarsOptions)
+        this._templates[templatePathAbsolute] = Handlebars.compile(template, options.handlebarsOptions)
       }
     }
 
-    if (this._options.helpersDirectory || this._options.partialsDirectory) {
+    if (options.helpersDirectory || options.partialsDirectory) {
       const promises = []
 
       // Get helpers from directory.
-      if (this._options.helpersDirectory) {
+      if (options.helpersDirectory) {
         promises.push(
           (async () => {
             // Construct absolute helpers directory path.
             this._helpersPath =
-              (this._options.helpersDirectory && path.isAbsolute(this._options.helpersDirectory))
-                ? this._options.helpersDirectory
-                : path.resolve(this._app.options.directoryPath, this._options.helpersDirectory)
+              (options.helpersDirectory && path.isAbsolute(options.helpersDirectory))
+                ? options.helpersDirectory
+                : path.resolve(libraryOptions.directoryPath, options.helpersDirectory)
 
             // Get helper files.
             const directoryIterator = await iterateDirectory(this._helpersPath)
@@ -114,14 +118,14 @@ class ProcessHandlebars extends BaseProcess {
       }
 
       // Get partials from directory.
-      if (this._options.partialsDirectory) {
+      if (options.partialsDirectory) {
         promises.push(
           (async () => {
             // Construct absolute helpers directory path.
             this._partialsPath =
-              (this._options.partialsDirectory && path.isAbsolute(this._options.partialsDirectory))
-                ? this._options.partialsDirectory
-                : path.resolve(this._app.options.directoryPath, this._options.partialsDirectory)
+              (options.partialsDirectory && path.isAbsolute(options.partialsDirectory))
+                ? options.partialsDirectory
+                : path.resolve(libraryOptions.directoryPath, options.partialsDirectory)
 
             // Get helper files.
             const directoryIterator = await iterateDirectory(this._partialsPath)
@@ -147,31 +151,34 @@ class ProcessHandlebars extends BaseProcess {
     }
 
     // Register helpers.
-    if (this._options.helpers) {
-      for (const { name, helper } of this._options.helpers) {
+    if (options.helpers) {
+      for (const { name, helper } of options.helpers) {
         Handlebars.registerHelper(name, helper)
       }
     }
 
     // Register partials.
-    if (this._options.partials) {
-      for (const { name, partial } of this._options.partials) {
+    if (options.partials) {
+      for (const { name, partial } of options.partials) {
         Handlebars.registerPartial(name, partial)
       }
     }
   }
 
   async sequential (data) {
+    const library = this.getLibrary()
+    const options = this.getOptions()
+
     // Get template path.
     let templatePath
     if (this._templatePropertyPath) {
       templatePath = getByPathSegments(data, this._templatePropertyPath)
     }
 
-    if (!templatePath && this._options.templatePath) {
-      templatePath = this._options.templatePath
+    if (!templatePath && options.templatePath) {
+      templatePath = options.templatePath
     } else {
-      this._logger.warn('No template path found therefore skipping!')
+      this.getLogger().warn('No template path found therefore skipping!')
       return data
     }
 
@@ -181,7 +188,9 @@ class ProcessHandlebars extends BaseProcess {
         ? templatePath
         : path.resolve(this._templateDirectoryPath, templatePath)
 
-    this._app.addAccessed(data.source, templatePathAbsolute)
+    if (library.isWatching()) {
+      library.addAccessed(data.sourceIdentifier, templatePathAbsolute)
+    }
 
     // Get template.
     let template
@@ -195,27 +204,28 @@ class ProcessHandlebars extends BaseProcess {
       })
 
       if (!template) {
-        this._logger.warn('No template found at path "' + templatePath + '" therefore skipping!')
+        this.getLogger().warn('No template found at path "' + templatePath + '" therefore skipping!')
         return data
       }
 
       // Compile template.
-      template = Handlebars.compile(template, this._options.handlebarsOptions)
+      template = Handlebars.compile(template, options.handlebarsOptions)
 
       // Store template in cache.
       this._templates[templatePathAbsolute] = template
     }
-
-    if (this._helpersPath) {
-      this._app.addAccessed(data.source, path.join(this._helpersPath + '**'))
-    }
-    if (this._partialsPath) {
-      this._app.addAccessed(data.source, path.join(this._partialsPath + '**'))
+    if (library.isWatching()) {
+      if (this._helpersPath) {
+        library.addAccessed(data.sourceIdentifier, path.join(this._helpersPath + '**'))
+      }
+      if (this._partialsPath) {
+        library.addAccessed(data.sourceIdentifier, path.join(this._partialsPath + '**'))
+      }
     }
 
     // Compile data with template and set value.
     data = setByPathSegments(data, this._propertyPath, template({
-      app: this._app,
+      hoast: library,
       data: data,
     }))
 

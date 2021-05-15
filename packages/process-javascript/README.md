@@ -1,17 +1,17 @@
-# @hoast/source-javascript
+# @hoast/process-javascript
 
-Retrieve and or execute JavaScript.
+Retrieve and execute JavaScript.
 
 ## Install
 
 ```
-% yarn add @hoast/source-javascript
+% yarn add @hoast/process-javascript
 ```
 
 OR
 
 ```
-% npm install @hoast/source-javascript --save
+% npm install @hoast/process-javascript --save
 ```
 
 ## Options

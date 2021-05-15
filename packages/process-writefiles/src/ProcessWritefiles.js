@@ -26,23 +26,27 @@ class ProcessWritefiles extends BaseProcess {
         encoding: 'utf8',
       },
     }, options)
+    options = this.getOptions()
 
     this.directoryOptions = Object.assign(
-      this._options.directoryOptions,
+      options.directoryOptions,
       {
         recursive: true,
       }
     )
 
-    this._propertyPath = this._options.property.split('.')
+    this._propertyPath = options.property.split('.')
   }
 
   initialize () {
+    const libraryOptions = this.getLibrary().getOptions()
+    const options = this.getOptions()
+
     // Construct absolute directory path.
     this._directoryPath =
-      (this._options.directory && path.isAbsolute(this._options.directory))
-        ? this._options.directory
-        : path.resolve(this._app.options.directoryPath, this._options.directory)
+      (options.directory && path.isAbsolute(options.directory))
+        ? options.directory
+        : path.resolve(libraryOptions.directoryPath, options.directory)
   }
 
   async sequential (data) {
@@ -59,6 +63,8 @@ class ProcessWritefiles extends BaseProcess {
   }
 
   async concurrent (data) {
+    const options = this.getOptions()
+
     // Construct absolute file path.
     const filePath = path.resolve(this._directoryPath, data.path)
 
@@ -66,7 +72,7 @@ class ProcessWritefiles extends BaseProcess {
     await fsWriteFile(
       filePath,
       getByPathSegments(data, this._propertyPath),
-      this._options.writeOptions
+      options.writeOptions
     )
 
     return data

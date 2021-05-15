@@ -27,12 +27,15 @@ class ProcessMarkdown extends BaseProcess {
       remarkPlugins: [],
       rehypePlugins: [],
     }, options)
+    options = this.getOptions()
 
     // Convert dot notation to path segments.
-    this._propertyPath = this._options.property.split('.')
+    this._propertyPath = options.property.split('.')
   }
 
   async initialize () {
+    const options = this.getOptions()
+
     // Construct unified parser.
     this._parser = unified()
 
@@ -73,7 +76,7 @@ class ProcessMarkdown extends BaseProcess {
       .use(remarkParse) // Markdown to Markdown AST.
 
     // Add remark plugins.
-    for (const plugin of this._options.remarkPlugins) {
+    for (const plugin of options.remarkPlugins) {
       await addPlugin(plugin)
     }
 
@@ -82,7 +85,7 @@ class ProcessMarkdown extends BaseProcess {
       .use(rehypeRaw) // Reparse HTML AST.
 
     // Add rehype plugins.
-    for (const plugin of this._options.rehypePlugins) {
+    for (const plugin of options.rehypePlugins) {
       await addPlugin(plugin)
     }
 

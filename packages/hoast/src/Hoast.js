@@ -26,24 +26,26 @@ class Hoast {
    */
   constructor(options = {}, meta = {}) {
     // Set options.
-    this.options = deepAssign({
+    this._options = deepAssign({
       logLevel: 2,
 
       concurrencyLimit: 4,
       directoryPath: null,
     }, options)
 
-    if (!this.options.directoryPath) {
-      this.options.directoryPath = process.cwd()
-    } else if (!path.isAbsolute(this.options.directoryPath)) {
-      this.options.directoryPath = path.resolve(process.cwd, this.options.directoryPath)
+    this._isWatching = false
+
+    if (!this._options.directoryPath) {
+      this._options.directoryPath = process.cwd()
+    } else if (!path.isAbsolute(this._options.directoryPath)) {
+      this._options.directoryPath = path.resolve(process.cwd, this._options.directoryPath)
     }
 
     // Set meta.
     this.meta = meta || {}
 
     // Set debugger.
-    logger.setLevel(this.options.logLevel)
+    logger.setLevel(this._options.logLevel)
     logger.setPrefix(this.constructor.name)
 
     // Initialize meta collections.
@@ -58,6 +60,101 @@ class Hoast {
     // Accessed cache.
     this._changedFiles = null
     this._accessed = {}
+  }
+
+  // Accessed.
+
+  addAccessed (source, ...filePaths) {
+    if (!this._accessed[source]) {
+      this._accessed[source] = []
+    }
+
+    for (let filePath of filePaths) {
+      if (!filePath) {
+        return
+      }
+
+      // Ensure path is absolute.
+      if (!path.isAbsolute(filePath)) {
+        filePath = path.resolve(this._options.directoryPath, filePath)
+      } else {
+        filePath = path.resolve(filePath)
+      }
+
+      // Parse file path to regular expression.
+      const filePathExpression = planckmatch.parse(filePath, MATCH_OPTIONS, true)
+
+      if (this._accessed[source].indexOf(filePathExpression) < 0) {
+        this._accessed[source].push(filePathExpression)
+      }
+    }
+  }
+
+  clearAccessed (source) {
+    this._accessed[source] = undefined
+  }
+
+  resetAccessed () {
+    this._accessed = {}
+  }
+
+  // Changed.
+
+  getChanged () {
+    if (!this.isWatching() || !this._changedFiles) {
+      return null
+    }
+    return [...this._changedFiles]
+  }
+
+  hasChanged (source) {
+    // Return true if no changed files are given.
+    if (!this._changedFiles || this._changedFiles.indexOf(source) >= 0 || !this._accessed[source]) {
+      return true
+    }
+
+    // Check if any of the changed files are in the accessed list.
+    const filePathExpressions = this._accessed[source]
+    for (const changedFile of this._changedFiles) {
+      if (planckmatch.match.any(changedFile, filePathExpressions)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  setChanged (filePaths = null) {
+    if (!filePaths) {
+      this._changedFiles = null
+    }
+
+    const absolutePaths = []
+    for (let filePath of filePaths) {
+      if (!path.isAbsolute(filePath)) {
+        filePath = path.resolve(this._options.directoryPath, filePath)
+      }
+      absolutePaths.push(filePath)
+    }
+    this._changedFiles = absolutePaths
+
+    return this
+  }
+
+  // Options.
+
+  getOptions () {
+    return deepAssign({}, this._options)
+  }
+
+  // Watch.
+
+  isWatching () {
+    return this._isWatching
+  }
+
+  setWatching (isWatching) {
+    this._isWatching = !!isWatching
   }
 
   // Meta collections.
@@ -182,10 +279,10 @@ class Hoast {
    */
   async process () {
     if (this._processes) {
-      // Call set app on processes.
+      // Call set library on processes.
       await call({
-        concurrencyLimit: this.options.concurrencyLimit,
-      }, this._processes, '_setApp', this)
+        concurrencyLimit: this._options.concurrencyLimit,
+      }, this._processes, 'setLibrary', this)
     }
 
     if (this._metaCollections.length > 0) {
@@ -193,8 +290,8 @@ class Hoast {
       const metaCollections = this._metaCollections.map(collection => {
         // Add 'assign to meta' process at the end of each meta collection.
         collection.processes = [...collection.processes, {
-          process: function (app, data) {
-            app.assignMeta(data)
+          process: function (library, data) {
+            library.assignMeta(data)
             return data
           },
         }]
@@ -203,14 +300,14 @@ class Hoast {
       })
 
       for (const collection of metaCollections) {
-        if (collection.source._setApp && typeof (collection.source._setApp) === 'function') {
-          collection.source._setApp(this)
+        if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
+          collection.source.setLibrary(this)
         }
 
-        // Call set app on processes.
+        // Call set library on processes.
         await call({
-          concurrencyLimit: this.options.concurrencyLimit,
-        }, collection.processes, '_setApp', this)
+          concurrencyLimit: this._options.concurrencyLimit,
+        }, collection.processes, 'setLibrary', this)
       }
 
       // Process meta collections.
@@ -218,14 +315,14 @@ class Hoast {
     }
 
     for (const collection of this._collections) {
-      if (collection.source._setApp && typeof (collection.source._setApp) === 'function') {
-        collection.source._setApp(this)
+      if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
+        collection.source.setLibrary(this)
       }
 
-      // Call set app on processes.
+      // Call set library on processes.
       await call({
-        concurrencyLimit: this.options.concurrencyLimit,
-      }, collection.processes, '_setApp', this)
+        concurrencyLimit: this._options.concurrencyLimit,
+      }, collection.processes, 'setLibrary', this)
     }
 
     // Process collections.
@@ -234,7 +331,7 @@ class Hoast {
     if (this._processes) {
       // Call final on processes.
       await call({
-        concurrencyLimit: this.options.concurrencyLimit,
+        concurrencyLimit: this._options.concurrencyLimit,
       }, this._processes, 'final')
     }
 
@@ -242,76 +339,6 @@ class Hoast {
     this._changedFiles = null
 
     return this
-  }
-
-  // Accessed.
-
-  addAccessed (source, filePath = null) {
-    if (!this._accessed[source]) {
-      this._accessed[source] = []
-    }
-
-    if (!filePath) {
-      return
-    }
-
-    // Ensure path is absolute.
-    if (!path.isAbsolute(filePath)) {
-      filePath = path.resolve(this.options.directoryPath, filePath)
-    } else {
-      filePath = path.resolve(filePath)
-    }
-
-    // Parse file path to regular expression.
-    const filePathExpression = planckmatch.parse(filePath, MATCH_OPTIONS, true)
-
-    if (this._accessed[source].indexOf(filePathExpression) < 0) {
-      this._accessed[source].push(filePathExpression)
-    }
-  }
-
-  clearAccessed (source) {
-    this._accessed[source] = undefined
-  }
-
-  resetAccessed () {
-    this._accessed = {}
-  }
-
-  // Changed.
-
-  setChanged (filePaths = null) {
-    if (!filePaths) {
-      this._changedFiles = null
-    }
-
-    const absolutePaths = []
-    for (let filePath of filePaths) {
-      if (!path.isAbsolute(filePath)) {
-        filePath = path.resolve(this.options.directoryPath, filePath)
-      }
-      absolutePaths.push(filePath)
-    }
-    this._changedFiles = absolutePaths
-
-    return this
-  }
-
-  hasChanged (source) {
-    // Return true if no changed files are given.
-    if (!this._changedFiles || this._changedFiles.indexOf(source) >= 0 || !this._accessed[source]) {
-      return true
-    }
-
-    // Check if any of the changed files are in the accessed list.
-    const filePathExpressions = this._accessed[source]
-    for (const changedFile of this._changedFiles) {
-      if (planckmatch.match.any(changedFile, filePathExpressions)) {
-        return true
-      }
-    }
-
-    return false
   }
 }
 

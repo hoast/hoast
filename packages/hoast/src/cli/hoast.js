@@ -15,7 +15,7 @@ import minimist from 'minimist'
 // TODO: import { isValidConfig } from './util/isValid.js'
 import timer from './utils/timer.js'
 
-// Import core app.
+// Import core library.
 import Hoast from '../Hoast.js'
 
 // Promisify read file.
@@ -229,16 +229,17 @@ Options for run
   }
 
   // Overwrite options with CLI options.
-  hoast.options.directoryPath = directoryPath
+  hoast._options.directoryPath = directoryPath
   if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
-    hoast.options.logLevel = options['log-level']
+    hoast._options.logLevel = options['log-level']
   }
   if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
-    hoast.options.concurrencyLimit = options['concurrency-limit']
+    hoast._options.concurrencyLimit = options['concurrency-limit']
   }
-
   // Check if watch option is set.
-  const shouldWatch = Object.prototype.hasOwnProperty.call(options, 'watch')
+  const isWatching = Object.prototype.hasOwnProperty.call(options, 'watch')
+  hoast.setWatching(isWatching)
+
   let changedFiles, isProcessing
   // ChangedFiles is null since on the first process we want to perform a full rebuild.
   const doProcess = async function () {
@@ -262,7 +263,7 @@ Options for run
     const time = timer()
 
     // Start processing.
-    await hoast.process()
+    await hoast.process() // TODO: If watching and an error is throw catch it and allow it to be rebuild on change, the program should not quit!
 
     // Log end with execution time.
     console.log(`ʕっ✦ᴥ✦ʔっ Done in ${time()}s!`)
@@ -270,7 +271,7 @@ Options for run
     // Mark as done processing.
     isProcessing = false
 
-    if (shouldWatch) {
+    if (isWatching) {
       if (changedFiles && changedFiles.length > 0) {
         await doProcess()
       } else {
@@ -280,7 +281,7 @@ Options for run
     }
   }
 
-  if (shouldWatch) {
+  if (isWatching) {
     let ignored = 'node_modules/**'
     if (Object.prototype.hasOwnProperty.call(options, 'watch-ignored')) {
       ignored = options['watch-ignored']

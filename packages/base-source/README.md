@@ -16,6 +16,8 @@ OR
 
 ## Usage
 
+> Extends [BasePackage](https://github.com/hoast/hoast/tree/master/packages/base-package#readme).
+
 ### Constructor
 
 - `constructor` Create package instance.
@@ -35,23 +37,10 @@ OR
 - `{Boolean} _holdCalls` Whether next calls are temporarily held while the initialize or sequential function is running.
 - `{Array} _promiseQueue` A queue of next calls that gets added to while hold calls is true.
 
-#### Inherited
-
-- `{Object} _app` Hoast instance.
-- `{Object} _options` Merged options.
-- `{Object} _logger` [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js) instance.
-
 ### Functions
 
 - `async next` This will be called by hoast itself to retrieve the next item.
   - `@returns {Any}` Retrieved data.
-- `async _next` Internally called to retrieve the next item.
-  - `@returns {Any}` Retrieved data.
-
-#### Inherited
-
-- `_setApp` Set app reference. This will be called by hoast itself before the next function is called.
-  - `@params {Object} app` hoast instance.
 
 ### Abstract functions
 

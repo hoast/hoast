@@ -10,7 +10,8 @@
   },
   "type": "module",
   "scripts": {
-    "hoast": "hoast",
+    "build": "NODE_ENV=production hoast",
+    "develop": "NODE_ENV=development hoast --watch",
     "lint": "eslint --fix --cache *.js"
   }
 }

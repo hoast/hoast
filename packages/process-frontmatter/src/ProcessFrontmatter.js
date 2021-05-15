@@ -20,11 +20,12 @@ class ProcessFrontmatter extends BaseProcess {
       fence: '---',
       parser: JSON.parse,
     }, options)
+    options = this.getOptions()
 
     // Convert dot notation to path segments.
-    this._fence = this._options.fence.toLowerCase()
-    this._propertyPath = this._options.property.split('.')
-    this._frontmatterPropertyPath = this._options.frontmatterProperty.split('.')
+    this._fence = options.fence.toLowerCase()
+    this._propertyPath = options.property.split('.')
+    this._frontmatterPropertyPath = options.frontmatterProperty.split('.')
   }
 
   concurrent (data) {
@@ -41,6 +42,8 @@ class ProcessFrontmatter extends BaseProcess {
       // Does not start with fence.
       return data
     }
+
+    const options = this.getOptions()
 
     // Skip past new line character.
     startIndex++
@@ -90,8 +93,8 @@ class ProcessFrontmatter extends BaseProcess {
     const rest = value.substring(lineIndexSum + lineEndIndex)
 
     // Parse frontmatter.
-    if (this._options.parser) {
-      frontmatter = this._options.parser(frontmatter)
+    if (options.parser) {
+      frontmatter = options.parser(frontmatter)
     }
     // Set values.
     data = setByPathSegments(data, this._frontmatterPropertyPath, frontmatter)

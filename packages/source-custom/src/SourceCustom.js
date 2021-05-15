@@ -13,21 +13,22 @@ class SourceCustom extends BaseSource {
       concurrent: null,
       final: null,
     }, options)
+    options = this.getOptions()
 
-    if (this._options.initialize) {
-      this.initialize = this._options.initialize
+    if (options.initialize) {
+      this.initialize = options.initialize
     }
 
-    if (this._options.sequential) {
-      this.sequential = this._options.sequential
+    if (options.sequential) {
+      this.sequential = options.sequential
     }
 
-    if (this._options.concurrent) {
-      this.concurrent = this._options.concurrent
+    if (options.concurrent) {
+      this.concurrent = options.concurrent
     }
 
-    if (this._options.final) {
-      this.final = this._options.final
+    if (options.final) {
+      this.final = options.final
     }
   }
 }

@@ -17,12 +17,24 @@ class BasePackage {
     this._logger = new Logger(this._options.logLevel, this.constructor.name)
   }
 
+  getOptions () {
+    return this._options
+  }
+
+  getLibrary () {
+    return this._library
+  }
+
   /**
-   * Set app reference. This will be called by hoast itself before the next function is called.
-   * @param {Object} app Hoast instance.
+   * Set library reference. This will be called by hoast itself before the next function is called.
+   * @param {Object} library Hoast instance.
    */
-  _setApp (app) {
-    this._app = app
+  setLibrary (library) {
+    this._library = library
+  }
+
+  getLogger () {
+    return this._logger
   }
 }
 

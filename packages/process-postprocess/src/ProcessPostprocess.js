@@ -42,21 +42,24 @@ class ProcessPostprocess extends BaseProcess {
       jsMinifyOptions: {},
       jsOptions: {},
     }, options)
+    options = this.getOptions()
 
-    if (MODES.indexOf(this._options.mode) < 0) {
-      this._logger.error('Unkown mode used. Mode:  "' + this._options.mode + '".')
+    if (MODES.indexOf(options.mode) < 0) {
+      this.getLogger().error('Unknown mode used. Mode:  "' + options.mode + '".')
     }
 
     // Convert dot notation to path segments.
-    this._propertyPath = this._options.property.split('.')
-    if (this._options.modeProperty) {
-      this._modePropertyPath = this._options.modeProperty.split('.')
+    this._propertyPath = options.property.split('.')
+    if (options.modeProperty) {
+      this._modePropertyPath = options.modeProperty.split('.')
     }
   }
 
   async initialize () {
+    const options = this.getOptions()
+
     // Setup Postcss plugins.
-    let cssPlugins = this._options.cssPlugins ? this._options.cssPlugins : []
+    let cssPlugins = options.cssPlugins ? options.cssPlugins : []
     if (cssPlugins.length >= 0) {
       // Instantiate all plugins.
       const pluginsTemp = []
@@ -70,15 +73,15 @@ class ProcessPostprocess extends BaseProcess {
     }
 
     // Add Postcss minifier.
-    if (this._options.minify && this._options.cssMinifyOptions) {
-      cssPlugins.push(cssnano(this._options.cssMinifyOptions))
+    if (options.minify && options.cssMinifyOptions) {
+      cssPlugins.push(cssnano(options.cssMinifyOptions))
     }
 
     // Setup Postcss.
     const postcss = new Postcss(cssPlugins)
     // Store options.
     const cssOptions = deepAssign({
-    }, this._options.cssOptions, {
+    }, options.cssOptions, {
       from: undefined,
     })
 
@@ -100,8 +103,8 @@ class ProcessPostprocess extends BaseProcess {
     }
 
     // Store options.
-    const jsOptions = deepAssign({}, this._options.jsOptions)
-    const jsMinifyOptions = deepAssign({}, this._options.jsMinifyOptions)
+    const jsOptions = deepAssign({}, options.jsOptions)
+    const jsMinifyOptions = deepAssign({}, options.jsMinifyOptions)
 
     // Create JS processor.
     this._jsProcess = (code) => {
@@ -132,7 +135,7 @@ class ProcessPostprocess extends BaseProcess {
     }
 
     // CSS and JS parser functions to this.
-    const htmlMinifyOptions = deepAssign({}, this._options.htmlMinifyOptions, {
+    const htmlMinifyOptions = deepAssign({}, options.htmlMinifyOptions, {
       minifyCSS: this._cssProcess,
       minifyJS: this._jsProcess,
     })
@@ -144,8 +147,10 @@ class ProcessPostprocess extends BaseProcess {
   }
 
   async concurrent (data) {
+    const options = this.getOptions()
+
     let value = getByPathSegments(data, this._propertyPath)
-    switch (this._options.mode) {
+    switch (options.mode) {
       case 'css':
         value = await this._cssProcessAsync(value)
         break

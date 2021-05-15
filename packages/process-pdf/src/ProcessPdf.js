@@ -10,7 +10,7 @@ import deepAssign from '@hoast/utils/deepAssign.js'
 import { getByPathSegments } from '@hoast/utils/get.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
-// Import puppeteer app.
+// Import puppeteer library.
 import serveHandler from 'serve-handler'
 import puppeteer from 'puppeteer'
 
@@ -36,34 +36,38 @@ class ProcessPdf extends BaseProcess {
       },
       wrap: '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>{0}</body></html>',
     }, options)
+    options = this.getOptions()
 
     // Convert dot notation to path segments.
-    this._propertyPath = this._options.property.split('.')
-    this._setPropertyPath = this._options.setProperty.split('.')
-    if (this._options.optionsProperty) {
-      this._optionsPropertyPath = this._options.optionsProperty.split('.')
+    this._propertyPath = options.property.split('.')
+    this._setPropertyPath = options.setProperty.split('.')
+    if (options.optionsProperty) {
+      this._optionsPropertyPath = options.optionsProperty.split('.')
     }
   }
 
   async initialize () {
+    const libraryOptions = this.getLibrary().getOptions()
+    const options = this.getOptions()
+
     // Assign serve directory.
-    if (!this._options.serveOptions.directory) {
-      this._serveDirectory = this._app.options.directoryPath
-    } else if (path.isAbsolute(this._options.serveOptions.directory)) {
-      this._serveDirectory = this._options.serveOptions.directory
+    if (!options.serveOptions.directory) {
+      this._serveDirectory = libraryOptions.directoryPath
+    } else if (path.isAbsolute(options.serveOptions.directory)) {
+      this._serveDirectory = options.serveOptions.directory
     } else {
-      this._serveDirectory = path.resolve(this._app.options.directoryPath, this._options.serveOptions.directory)
+      this._serveDirectory = path.resolve(libraryOptions.directoryPath, options.serveOptions.directory)
     }
 
     // Launch puppeteer.
-    this._logger.info('Launching puppeteer...')
+    this.getLogger().info('Launching puppeteer...')
     this._browser = await puppeteer.launch({
       headless: true,
     })
-    this._logger.info('Launched puppeteer.')
+    this.getLogger().info('Launched puppeteer.')
 
     // Launch server.
-    this._logger.info('Launching server...')
+    this.getLogger().info('Launching server...')
     await new Promise((resolve) => {
       this._server = createServer(async (request, response) => {
         // Serve local files.
@@ -71,15 +75,17 @@ class ProcessPdf extends BaseProcess {
           public: this._serveDirectory,
         })
       })
-      this._server.listen(this._options.serveOptions.port, () => resolve(this._server))
+      this._server.listen(options.serveOptions.port, () => resolve(this._server))
     })
-    this._logger.info('Launched server.')
+    this.getLogger().info('Launched server.')
   }
 
   async concurrent (data) {
+    const options = this.getOptions()
+
     // Deconstruct data.
     let value = getByPathSegments(data, this._propertyPath)
-    let pdfOptions = this._options.pdfOptions
+    let pdfOptions = options.pdfOptions
     if (this._optionsPropertyPath) {
       pdfOptions = deepAssign({}, pdfOptions, getByPathSegments(data, this._optionsPropertyPath))
     }
@@ -99,36 +105,36 @@ class ProcessPdf extends BaseProcess {
     }
 
     // Format using wrap if set.
-    if (this._options.wrap) {
-      value = String.prototype.format.call(this._options.wrap, value)
+    if (options.wrap) {
+      value = String.prototype.format.call(options.wrap, value)
     }
 
     // Create page.
-    this._logger.info('Create new page.')
+    this.getLogger().info('Create new page.')
     const page = await this._browser.newPage()
-    await page.goto(`http://localhost:${this._options.serveOptions.port}/${relativePath}`)
+    await page.goto(`http://localhost:${options.serveOptions.port}/${relativePath}`)
 
     // Add HTML to page.
-    this._logger.info('Setting page contents.')
+    this.getLogger().info('Setting page contents.')
     await page.setContent(value)
 
     // Wait for HTML to be loaded.
-    this._logger.info('Waiting for page to load.')
+    this.getLogger().info('Waiting for page to load.')
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'networkidle0' }),
       page.evaluate(() => history.pushState(undefined, '', '#')), // eslint-disable-line  no-undef
     ])
 
     // Convert to PDF.
-    if (this._options.mediaType || this._options.mediaType === null) {
-      this._logger.info('Setting page media type.')
-      await page.emulateMediaType(this._options.mediaType)
+    if (options.mediaType || options.mediaType === null) {
+      this.getLogger().info('Setting page media type.')
+      await page.emulateMediaType(options.mediaType)
     }
-    this._logger.info('Getting page output as pdf.')
+    this.getLogger().info('Getting page output as pdf.')
     value = await page.pdf(pdfOptions)
 
     // Close page.
-    this._logger.info('Closing page.')
+    this.getLogger().info('Closing page.')
     await page.close()
 
     // Set value.
@@ -156,14 +162,14 @@ class ProcessPdf extends BaseProcess {
     super.final()
 
     // Close server.
-    this._logger.info('Closing server...')
+    this.getLogger().info('Closing server...')
     await new Promise((resolve) => this._server.close(resolve))
-    this._logger.info('Closed server.')
+    this.getLogger().info('Closed server.')
 
     // Close puppeteer.
-    this._logger.info('Closing puppeteer...')
+    this.getLogger().info('Closing puppeteer...')
     await this._browser.close()
-    this._logger.info('Closed puppeteer.')
+    this.getLogger().info('Closed puppeteer.')
 
     this._serveDirectory = null
   }

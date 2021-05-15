@@ -3,9 +3,9 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/source-javascript",
+  "name": "@hoast/process-javascript",
   "version": "2.0.0",
-  "description": "Execute JavaScript.",
+  "description": "Retrieve and execute JavaScript.",
   "keywords": [
     "hoast",
     "process",
@@ -29,13 +29,14 @@
     "CHANGELOG.md",
     "src/"
   ],
-  "main": "src/SourceJavascript.js",
+  "main": "src/ProcessJavascript.js",
   "scripts": {
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
     "@hoast/base-process": "^2.0.0",
     "@hoast/utils": "^2.0.1",
-    "detective-es6": "^2.2.0"
+    "detective-es6": "^2.2.0",
+    "planckmatch": "^0.2.1"
   }
 }
