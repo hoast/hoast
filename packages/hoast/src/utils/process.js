@@ -38,21 +38,9 @@ const process = async function (library, collections) {
 
           // Prepare collections.
           this.collectionProcesses = this.collection.processes.map(process => {
-            let processType = typeof (process)
-
             // If string get from lookup.
-            if (processType === 'string') {
+            if (typeof (process) === 'string') {
               process = library._processes[process]
-
-              // Get type again.
-              processType = typeof (process)
-            }
-
-            // If function wrap in object.
-            if (processType === 'function') {
-              process = {
-                process: process,
-              }
             }
 
             return process
@@ -108,7 +96,7 @@ const process = async function (library, collections) {
 
           // Check if done and this is the last active collection call.
           if (this.collectionsActiveByIndex[collectionIndex] === 1) {
-            // Call final on processes only in this collection.
+            // Call final on processes only in this collection, globally registered processes are called later.
             await call({
               concurrencyLimit: options.concurrencyLimit,
             }, processes, 'final')

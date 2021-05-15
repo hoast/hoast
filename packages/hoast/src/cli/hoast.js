@@ -13,6 +13,7 @@ import minimist from 'minimist'
 
 // Import local utility libraries.
 // TODO: import { isValidConfig } from './util/isValid.js'
+import logger from '../utils/logger.js'
 import timer from './utils/timer.js'
 
 // Import core library.
@@ -157,6 +158,12 @@ Options for run
 
       if (imported && imported instanceof Hoast) {
         hoast = imported
+
+        // Prioritize the hoast instance path above the terminal one since the setLibrary function will have been called already.
+        const potentialDirectoryPath = hoast.getOptions().directoryPath
+        if (potentialDirectoryPath) {
+          directoryPath = potentialDirectoryPath
+        }
         break
       }
 
@@ -173,6 +180,16 @@ Options for run
       config.options = {}
     } else if (typeof (config.options) !== 'object') {
       throw new Error('Invalid options type in configuration file! Must be of type object. ' + MESSAGE_SEE_DOCS)
+    }
+
+    config.options = Object.assign(options, {
+      directoryPath: directoryPath,
+    })
+    if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
+      config.options.logLevel = options['log-level']
+    }
+    if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
+      config.options.concurrencyLimit = options['concurrency-limit']
     }
 
     // Ensure meta is set and an object.
@@ -226,16 +243,17 @@ Options for run
         hoast.registerProcess(name, await instantiate(config.processes[name]))
       }
     }
+  } else {
+    // Overwrite options with CLI options.
+    if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
+      hoast._options.logLevel = options['log-level']
+      logger.setLevel(options['log-level'])
+    }
+    if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
+      hoast._options.concurrencyLimit = options['concurrency-limit']
+    }
   }
 
-  // Overwrite options with CLI options.
-  hoast._options.directoryPath = directoryPath
-  if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
-    hoast._options.logLevel = options['log-level']
-  }
-  if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
-    hoast._options.concurrencyLimit = options['concurrency-limit']
-  }
   // Check if watch option is set.
   const isWatching = Object.prototype.hasOwnProperty.call(options, 'watch')
   hoast.setWatching(isWatching)

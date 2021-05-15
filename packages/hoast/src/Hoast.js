@@ -9,7 +9,7 @@ import planckmatch from 'planckmatch'
 // Import internal modules.
 import call from './utils/call.js'
 import logger from './utils/logger.js'
-import _process from './utils/process.js'
+import processCollections from './utils/process.js'
 
 const MATCH_OPTIONS = {
   extended: true,
@@ -50,6 +50,11 @@ class Hoast {
 
     // Initialize meta collections.
     this._metaCollections = []
+    this._assignToMetaProcess = {
+      next: (data) => {
+        deepAssign(this.meta, data)
+      },
+    }
 
     // Initialize collections.
     this._collections = []
@@ -166,8 +171,21 @@ class Hoast {
    */
   addMetaCollection (collection) {
     if (!hasProperties(collection, ['source'])) {
+      logger.warn('Tried adding a meta collection without a source.')
       return this
     }
+
+    // Inform process of library.
+    if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
+      collection.source.setLibrary(this)
+    }
+    for (const process of collection.processes) {
+      if (process.setLibrary && typeof (process.setLibrary) === 'function') {
+        process.setLibrary(this)
+      }
+    }
+    // Append assign to meta process.
+    collection.processes.push(this._assignToMetaProcess)
 
     this._metaCollections.push(collection)
 
@@ -180,14 +198,27 @@ class Hoast {
    * @returns {Object} The hoast instance.
    */
   addMetaCollections (collections) {
-    // Filter based on type.
-    collections = collections.filter((collection) => hasProperties(collection, ['source']))
-    if (!collections) {
-      return this
-    }
+    for (const collection of collections) {
+      if (!hasProperties(collection, ['source'])) {
+        logger.warn('Tried adding a meta collection without a source.')
+        continue
+      }
 
-    // Add to collections.
-    this._metaCollections.push(...collections)
+      // Inform process of library.
+      if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
+        collection.source.setLibrary(this)
+      }
+      for (const process of collection.processes) {
+        if (process.setLibrary && typeof (process.setLibrary) === 'function') {
+          process.setLibrary(this)
+        }
+      }
+      // Append assign to meta process.
+      collection.processes.push(this._assignToMetaProcess)
+
+      // Add to collections.
+      this._metaCollections.push(collection)
+    }
 
     return this
   }
@@ -201,9 +232,21 @@ class Hoast {
    */
   addCollection (collection) {
     if (!hasProperties(collection, ['source'])) {
+      logger.warn('Tried adding a collection without a source.')
       return this
     }
 
+    // Inform process of library.
+    if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
+      collection.source.setLibrary(this)
+    }
+    for (const process of collection.processes) {
+      if (process.setLibrary && typeof (process.setLibrary) === 'function') {
+        process.setLibrary(this)
+      }
+    }
+
+    // Add to collections.
     this._collections.push(collection)
 
     return this
@@ -215,14 +258,25 @@ class Hoast {
    * @returns {Object} The hoast instance.
   */
   addCollections (collections) {
-    // Filter based on type.
-    collections = collections.filter(collection => hasProperties(collection, ['source']))
-    if (!collections) {
-      return this
-    }
+    for (const collection of collections) {
+      if (!hasProperties(collection, ['source'])) {
+        logger.warn('Tried adding a collection without a source.')
+        continue
+      }
 
-    // Add to collections.
-    this._collections.push(...collections)
+      // Inform process of library.
+      if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
+        collection.source.setLibrary(this)
+      }
+      for (const process of collection.processes) {
+        if (process.setLibrary && typeof (process.setLibrary) === 'function') {
+          process.setLibrary(this)
+        }
+      }
+
+      // Add to collections.
+      this._collections.push(collection)
+    }
 
     return this
   }
@@ -237,10 +291,16 @@ class Hoast {
   */
   registerProcess (name, process) {
     if (typeof (name) !== 'string') {
+      logger.warn('Tried registering a process without a name.')
       return this
     }
 
     this._processes[name] = process
+
+    // Inform process of library.
+    if (process.setLibrary && typeof (process.setLibrary) === 'function') {
+      process.setLibrary(this)
+    }
 
     return this
   }
@@ -254,13 +314,21 @@ class Hoast {
     const processesFiltered = {}
     for (const name in processes) {
       if (typeof (name) !== 'string') {
+        logger.warn('Tried registering a process without a name.')
         continue
       }
 
       if (!Object.prototype.hasOwnProperty.call(processes, name)) {
         continue
       }
-      processesFiltered[name] = processes[name]
+      const process = processes[name]
+
+      processesFiltered[name] = process
+
+      // Inform process of library.
+      if (process.setLibrary && typeof (process.setLibrary) === 'function') {
+        process.setLibrary(this)
+      }
     }
     if (processesFiltered === {}) {
       return this
@@ -278,55 +346,15 @@ class Hoast {
    * @returns {Object} The hoast instance.
    */
   async process () {
-    if (this._processes) {
-      // Call set library on processes.
-      await call({
-        concurrencyLimit: this._options.concurrencyLimit,
-      }, this._processes, 'setLibrary', this)
-    }
-
     if (this._metaCollections.length > 0) {
-      // Prepare meta collections.
-      const metaCollections = this._metaCollections.map(collection => {
-        // Add 'assign to meta' process at the end of each meta collection.
-        collection.processes = [...collection.processes, {
-          process: function (library, data) {
-            library.assignMeta(data)
-            return data
-          },
-        }]
-
-        return collection
-      })
-
-      for (const collection of metaCollections) {
-        if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
-          collection.source.setLibrary(this)
-        }
-
-        // Call set library on processes.
-        await call({
-          concurrencyLimit: this._options.concurrencyLimit,
-        }, collection.processes, 'setLibrary', this)
-      }
-
       // Process meta collections.
-      await _process(this, metaCollections)
+      await processCollections(this, this._metaCollections)
     }
 
-    for (const collection of this._collections) {
-      if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
-        collection.source.setLibrary(this)
-      }
-
-      // Call set library on processes.
-      await call({
-        concurrencyLimit: this._options.concurrencyLimit,
-      }, collection.processes, 'setLibrary', this)
+    if (this._collections.length > 0) {
+      // Process collections.
+      await processCollections(this, this._collections)
     }
-
-    // Process collections.
-    await _process(this, this._collections)
 
     if (this._processes) {
       // Call final on processes.
