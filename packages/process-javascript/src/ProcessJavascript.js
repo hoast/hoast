@@ -64,8 +64,8 @@ class ProcessJavascript extends BaseProcess {
     // Parse ignore patterns.
     this._ignoreDependencies = options.ignoreDependencies ? planckmatch.parse(options.ignoreDependencies, MATCH_OPTIONS, true) : []
 
-    this._fileUsesCache = {}
     this._fileUsedByCache = {}
+    this._fileUsesCache = {}
   }
 
   initialize () {
@@ -89,8 +89,6 @@ class ProcessJavascript extends BaseProcess {
           if (changedFile in this._fileUsesCache) {
             delete this._fileUsesCache[changedFile]
           }
-          // TODO: Also recursively invalidate any files that use a changed file as a dependency!
-          // TODO: What about a list of what the file uses and a list of where the file is used!
         }
       }
     }
