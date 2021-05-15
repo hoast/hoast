@@ -63,6 +63,9 @@ class ProcessHandlebars extends BaseProcess {
 
     this._templates = {}
 
+    // Create handlebars instance.
+    this._handlebars = Handlebars.create()
+
     if (options.templatePath) {
       // Construct absolute template path.
       const templatePathAbsolute =
@@ -77,7 +80,7 @@ class ProcessHandlebars extends BaseProcess {
         this.getLogger().error('No template found at path: "' + options.templatePath + '"')
       } else {
         // Store compiled template in cache.
-        this._templates[templatePathAbsolute] = Handlebars.compile(template, options.handlebarsOptions)
+        this._templates[templatePathAbsolute] = this._handlebars.compile(template, options.handlebarsOptions)
       }
     }
 
@@ -111,7 +114,7 @@ class ProcessHandlebars extends BaseProcess {
               helper = helper.default
 
               // Register helper.
-              Handlebars.registerHelper(filePathRelative, helper)
+              this._handlebars.registerHelper(filePathRelative, helper)
             }
           })()
         )
@@ -140,7 +143,7 @@ class ProcessHandlebars extends BaseProcess {
               const partial = await fsReadFile(filePath, { encoding: 'utf8' })
 
               // Register partial.
-              Handlebars.registerPartial(filePathRelative, partial)
+              this._handlebars.registerPartial(filePathRelative, partial)
             }
           })()
         )
@@ -153,14 +156,14 @@ class ProcessHandlebars extends BaseProcess {
     // Register helpers.
     if (options.helpers) {
       for (const { name, helper } of options.helpers) {
-        Handlebars.registerHelper(name, helper)
+        this._handlebars.registerHelper(name, helper)
       }
     }
 
     // Register partials.
     if (options.partials) {
       for (const { name, partial } of options.partials) {
-        Handlebars.registerPartial(name, partial)
+        this._handlebars.registerPartial(name, partial)
       }
     }
   }
@@ -209,7 +212,7 @@ class ProcessHandlebars extends BaseProcess {
       }
 
       // Compile template.
-      template = Handlebars.compile(template, options.handlebarsOptions)
+      template = this._handlebars.compile(template, options.handlebarsOptions)
 
       // Store template in cache.
       this._templates[templatePathAbsolute] = template
@@ -237,6 +240,7 @@ class ProcessHandlebars extends BaseProcess {
     super.final()
 
     // Clear templates path and cache.
+    this._handlebars = null
     this._helpersPath = null
     this._partialsPath = null
     this._templateDirectoryPath = null
