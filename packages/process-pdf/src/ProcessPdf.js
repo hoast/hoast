@@ -50,6 +50,7 @@ class ProcessPdf extends BaseProcess {
 
   async initialize () {
     const libraryOptions = this.getLibrary().getOptions()
+    const logger = this.getLogger()
     const options = this.getOptions()
 
     // Assign serve directory.
@@ -61,30 +62,35 @@ class ProcessPdf extends BaseProcess {
       this._serveDirectory = path.resolve(libraryOptions.directoryPath, options.serveOptions.directory)
     }
 
-    // Launch puppeteer.
-    this.getLogger().info('Launching puppeteer...')
-    this._browser = await puppeteer.launch({
-      headless: true,
-    })
-    this.getLogger().info('Launched puppeteer.')
-
-    // Launch server.
-    this.getLogger().info('Launching server...')
-    await new Promise((resolve) => {
-      this._server = createServer(async (request, response) => {
-        // Serve local files.
-        return serveHandler(request, response, {
-          public: this._serveDirectory,
-        })
+    if (!this._browser) {
+      // Launch puppeteer.
+      logger.info('Launching puppeteer...')
+      this._browser = await puppeteer.launch({
+        headless: true,
       })
-      this._server.listen(options.serveOptions.port, () => resolve(this._server))
-    })
-    this.getLogger().info('Launched server.')
+      logger.info('Launched puppeteer.')
+    }
+
+    if (!this._server) {
+      // Launch server.
+      logger.info('Launching server...')
+      await new Promise((resolve) => {
+        this._server = createServer(async (request, response) => {
+          // Serve local files.
+          return serveHandler(request, response, {
+            public: this._serveDirectory,
+          })
+        })
+        this._server.listen(options.serveOptions.port, () => resolve(this._server))
+      })
+      logger.info('Launched server.')
+    }
   }
 
   async concurrent (data) {
     const library = this.getLibrary()
     const libraryOptions = library.getOptions()
+    const logger = this.getLogger()
     const options = this.getOptions()
 
     // Deconstruct data.
@@ -114,7 +120,7 @@ class ProcessPdf extends BaseProcess {
     }
 
     // Create page.
-    this.getLogger().info('Create new page.')
+    logger.info('Create new page.')
     const page = await this._browser.newPage()
     const pageHost = `http://localhost:${options.serveOptions.port}/`
     const pageUrl = pageHost + relativePath
@@ -124,7 +130,7 @@ class ProcessPdf extends BaseProcess {
       // Wait for page to be loaded, we don't want to handle network request from the previous relative path page.
       // await page.waitForNavigation({ waitUntil: 'networkidle0' })
 
-      this.getLogger().info('Track page\'s requests.')
+      logger.info('Track page\'s requests.')
 
       // Keep track of requested resources, whether they are successful or not is irrelevant.
       requestHandler = (interceptedRequest) => {
@@ -156,31 +162,31 @@ class ProcessPdf extends BaseProcess {
     await page.goto(pageUrl)
 
     // Add HTML to page.
-    this.getLogger().info('Setting page contents.')
+    logger.info('Setting page contents.')
     await page.setContent(value)
 
     // Wait for HTML to be loaded.
-    this.getLogger().info('Waiting for page to load.')
+    logger.info('Waiting for page to load.')
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'networkidle0' }),
       page.evaluate(() => history.pushState(undefined, '', '#')), // eslint-disable-line  no-undef
     ])
 
     if (library.isWatching() && requestHandler) {
-      this.getLogger().info('Stop tracking requests.')
+      logger.info('Stop tracking requests.')
       page.off('request', requestHandler)
     }
 
     // Convert to PDF.
     if (options.mediaType || options.mediaType === null) {
-      this.getLogger().info('Setting page media type.')
+      logger.info('Setting page media type.')
       await page.emulateMediaType(options.mediaType)
     }
-    this.getLogger().info('Getting page output as pdf.')
+    logger.info('Getting page output as pdf.')
     value = await page.pdf(pdfOptions)
 
     // Close page.
-    this.getLogger().info('Closing page.')
+    logger.info('Closing page.')
     await page.close()
 
     // Set value.
@@ -207,19 +213,24 @@ class ProcessPdf extends BaseProcess {
   async final () {
     super.final()
 
-    // Close server.
-    this.getLogger().info('Closing server...')
-    await new Promise((resolve) => this._server.close(resolve))
-    this._server = null
-    this.getLogger().info('Closed server.')
+    // Only cleanup when not watching.
+    if (!this.getLibrary().isWatching()) {
+      const logger = this.getLogger()
 
-    // Close puppeteer.
-    this.getLogger().info('Closing puppeteer...')
-    await this._browser.close()
-    this._browser = null
-    this.getLogger().info('Closed puppeteer.')
+      // Close server.
+      logger.info('Closing server...')
+      await new Promise((resolve) => this._server.close(resolve))
+      this._server = null
+      logger.info('Closed server.')
 
-    this._serveDirectory = null
+      // Close puppeteer.
+      logger.info('Closing puppeteer...')
+      await this._browser.close()
+      this._browser = null
+      logger.info('Closed puppeteer.')
+
+      this._serveDirectory = null
+    }
   }
 }
 
