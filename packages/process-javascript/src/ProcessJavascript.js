@@ -7,7 +7,8 @@ import path from 'path'
 import { promisify } from 'util'
 
 // Import external modules.
-import detective from 'detective-es6'
+import detectiveCommon from 'detective-cjs'
+import detectiveModule from 'detective-es6'
 import planckmatch from 'planckmatch'
 
 // Import utility modules.
@@ -27,7 +28,6 @@ const MATCH_OPTIONS = {
 const READ_OPTIONS = {
   encoding: 'utf8',
 }
-
 const DETECTIVE_OPTIONS = {
   skipTypeImports: true,
 }
@@ -189,7 +189,10 @@ class ProcessJavascript extends BaseProcess {
       } catch {
         throw new Error('Unable to read dependencies of file at path: "' + importPath + '".')
       }
-      const discoveredDependencies = detective(content, DETECTIVE_OPTIONS)
+      const discoveredDependencies = [
+        ...detectiveCommon(content, DETECTIVE_OPTIONS),
+        ...detectiveModule(content, DETECTIVE_OPTIONS),
+      ]
 
       // Reset dependency cache.
       this._fileUsesCache[importPath] = []
@@ -226,13 +229,13 @@ class ProcessJavascript extends BaseProcess {
         }
       }
 
-      // Add dependencies of added dependency to list.
+      // Add dependencies of added dependency to the list.
       for (const dependency of addedDependencies) {
         await addDependencies(dependency)
       }
     }
 
-    // Start adding dependencies to list.
+    // Start adding dependencies to the list.
     await addDependencies(importPath)
 
     return dependencies

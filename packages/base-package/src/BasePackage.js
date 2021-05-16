@@ -30,6 +30,11 @@ class BasePackage {
    * @param {Object} library Hoast instance.
    */
   setLibrary (library) {
+    if (this._library && this._library !== library) {
+      this._logger.error('Different library already set on plugin. Don\'t re-use plugins on multiple instances.')
+      return
+    }
+
     this._library = library
   }
 
