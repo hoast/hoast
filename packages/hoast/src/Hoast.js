@@ -38,7 +38,7 @@ class Hoast {
     if (!this._options.directoryPath) {
       this._options.directoryPath = process.cwd()
     } else if (!path.isAbsolute(this._options.directoryPath)) {
-      this._options.directoryPath = path.resolve(process.cwd, this._options.directoryPath)
+      this._options.directoryPath = path.resolve(process.cwd(), this._options.directoryPath)
     }
 
     // Set meta.

@@ -1,4 +1,4 @@
-// Import hoast and hosast modules.
+// Import hoast and the modules.
 import Hoast from '@hoast/hoast'
 import ProcessCustom from '@hoast/process-custom'
 import ProcessPdf from '@hoast/process-pdf'
@@ -8,20 +8,19 @@ import SourceReadfiles from '@hoast/source-readfiles'
 // Import libraries for custom process.
 import path from 'path'
 
-const hoast = new Hoast()
+const hoast = new Hoast({
+  directoryPath: 'src',
+})
   .addCollections([
     {
       source: new SourceReadfiles({
-        directory: 'src',
+        directory: null,
         filterPatterns: [
           'pages/**',
         ],
       }),
       processes: [
         new ProcessPdf({
-          serveOptions: {
-            directory: 'src',
-          },
           wrap: false,
         }),
         new ProcessCustom({
@@ -34,7 +33,7 @@ const hoast = new Hoast()
           },
         }),
         new ProcessWritefiles({
-          directory: 'dst',
+          directory: '../dst',
         }),
       ],
     },

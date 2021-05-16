@@ -17,7 +17,7 @@ class SourceReadfiles extends BaseSource {
    */
   constructor(options) {
     super({
-      directory: 'src',
+      directory: null,
       filterPatterns: null,
       filterOptions: {
         all: false,
@@ -42,10 +42,14 @@ class SourceReadfiles extends BaseSource {
     const options = this.getOptions()
 
     // Construct absolute directory path.
-    this._directoryPath =
-      (options.directory && path.isAbsolute(options.directory))
-        ? options.directory
-        : path.resolve(libraryOptions.directoryPath, options.directory)
+    if (options.directory) {
+      this._directoryPath =
+        (options.directory && path.isAbsolute(options.directory))
+          ? options.directory
+          : path.resolve(libraryOptions.directoryPath, options.directory)
+    } else {
+      this._directoryPath = libraryOptions.directoryPath
+    }
 
     // Create directory iterator.
     this._directoryIterator = await iterateDirectory(this._directoryPath)

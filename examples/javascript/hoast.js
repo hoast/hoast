@@ -1,3 +1,4 @@
+// Import hoast and the modules.
 import Hoast from '@hoast/hoast'
 import ProcessLog from '@hoast/process-log'
 import ProcessJavascript from '@hoast/process-javascript'

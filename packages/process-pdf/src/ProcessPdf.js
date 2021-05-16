@@ -29,7 +29,9 @@ class ProcessPdf extends BaseProcess {
       optionsProperty: false,
 
       mediaType: false,
-      pdfOptions: {},
+      pdfOptions: {
+        format: 'a4',
+      },
       serveOptions: {
         directory: null,
         port: 3000,
@@ -81,6 +83,8 @@ class ProcessPdf extends BaseProcess {
   }
 
   async concurrent (data) {
+    const library = this.getLibrary()
+    const libraryOptions = library.getOptions()
     const options = this.getOptions()
 
     // Deconstruct data.
@@ -112,7 +116,44 @@ class ProcessPdf extends BaseProcess {
     // Create page.
     this.getLogger().info('Create new page.')
     const page = await this._browser.newPage()
-    await page.goto(`http://localhost:${options.serveOptions.port}/${relativePath}`)
+    const pageHost = `http://localhost:${options.serveOptions.port}/`
+    const pageUrl = pageHost + relativePath
+
+    let requestHandler
+    if (library.isWatching()) {
+      // Wait for page to be loaded, we don't want to handle network request from the previous relative path page.
+      // await page.waitForNavigation({ waitUntil: 'networkidle0' })
+
+      this.getLogger().info('Track page\'s requests.')
+
+      // Keep track of requested resources, whether they are successful or not is irrelevant.
+      requestHandler = (interceptedRequest) => {
+        const url = interceptedRequest.url()
+
+        // Ignore current page.
+        if (url === pageUrl) {
+          return
+        }
+
+        // Exit early if external resource.
+        if (!url.startsWith(pageHost)) {
+          return
+        }
+
+        // Make path absolute to served directory.
+        let filePath = url.substring(pageHost.length)
+        filePath = path.resolve(this._serveDirectory, filePath)
+
+        // Ignore if not inside watched directory.
+        if (!filePath.startsWith(libraryOptions.directoryPath)) {
+          return
+        }
+
+        library.addAccessed(data.sourceIdentifier, filePath)
+      }
+      page.on('request', requestHandler)
+    }
+    await page.goto(pageUrl)
 
     // Add HTML to page.
     this.getLogger().info('Setting page contents.')
@@ -124,6 +165,11 @@ class ProcessPdf extends BaseProcess {
       page.waitForNavigation({ waitUntil: 'networkidle0' }),
       page.evaluate(() => history.pushState(undefined, '', '#')), // eslint-disable-line  no-undef
     ])
+
+    if (library.isWatching() && requestHandler) {
+      this.getLogger().info('Stop tracking requests.')
+      page.off('request', requestHandler)
+    }
 
     // Convert to PDF.
     if (options.mediaType || options.mediaType === null) {
@@ -164,11 +210,13 @@ class ProcessPdf extends BaseProcess {
     // Close server.
     this.getLogger().info('Closing server...')
     await new Promise((resolve) => this._server.close(resolve))
+    this._server = null
     this.getLogger().info('Closed server.')
 
     // Close puppeteer.
     this.getLogger().info('Closing puppeteer...')
     await this._browser.close()
+    this._browser = null
     this.getLogger().info('Closed puppeteer.')
 
     this._serveDirectory = null
