@@ -280,8 +280,17 @@ Options for run
     // Start execution timer.
     const time = timer()
 
-    // Start processing.
-    await hoast.process() // TODO: If watching and an error is throw catch it and allow it to be rebuild on change, the program should not quit!
+    try {
+      // Start processing.
+      await hoast.process()
+    } catch (error) {
+      if (isWatching) {
+        console.warn('Error occurred during build.')
+        console.log(error)
+      } else {
+        throw error
+      }
+    }
 
     // Log end with execution time.
     console.log(`ʕっ✦ᴥ✦ʔっ Done in ${time()}s!`)
