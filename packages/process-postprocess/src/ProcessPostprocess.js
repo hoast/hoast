@@ -85,6 +85,8 @@ class ProcessPostprocess extends BaseProcess {
 
     // Parse ignore patterns.
     this._watchIgnore = options.watchIgnore ? planckmatch.parse(options.watchIgnore, MATCH_OPTIONS, true) : []
+
+    this._fileUsesCache = {}
   }
 
   async initialize () {
@@ -159,7 +161,7 @@ class ProcessPostprocess extends BaseProcess {
       minify: options.minify,
     }, this._styleProcessor, this._scriptProcessor)
     this._documentProcessor = async (code) => {
-      return await unified.process(code)
+      return (await unified.process(code)).contents
     }
 
     if (library.isWatching()) {

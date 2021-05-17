@@ -19,7 +19,6 @@ import rehypeRemoveExternalScriptContent from 'rehype-remove-external-script-con
 import rehypeRemoveMetaHttpEquiv from 'rehype-remove-meta-http-equiv'
 import rehypeRemoveScriptTypeJavascript from 'rehype-remove-script-type-javascript'
 import rehypeRemoveStyleTypeCss from 'rehype-remove-style-type-css'
-import rehypeSanitize from 'rehype-sanitize'
 import rehypeSortAttributeValues from 'rehype-sort-attribute-values'
 import rehypeSortAttributes from 'rehype-sort-attributes'
 import rehypeStringify from 'rehype-stringify'
@@ -32,13 +31,15 @@ export default function (options, stylesProcessor, scriptsProcessor) {
     minify: true,
   }, options)
 
-  // Create custom scripts and styles processor plugin.
-  const scriptsStylesProcess = createScriptsStylesProcess(stylesProcessor, scriptsProcessor)
-
+  // Setup unified.
   const parser = unified()
-    .use(rehypeParse) // Parse string.
-    .use(scriptsStylesProcess) // Custom parser.
 
+  // Parse string.
+  parser.use(rehypeParse)
+  // Custom parser for scripts and styles.
+  parser.use(createScriptsStylesProcess, stylesProcessor, scriptsProcessor)
+
+  // Add minify plugins.
   if (options.minify) {
     parser
       .use(rehypeMinifyAttributeWhitespace)
@@ -63,9 +64,8 @@ export default function (options, stylesProcessor, scriptsProcessor) {
       .use(rehypeSortAttributes)
   }
 
-  parser
-    .use(rehypeSanitize) // Sanitize tree.
-    .use(rehypeStringify) // Stringify tree.
+  // Stringify tree.
+  parser.use(rehypeStringify)
 
   return parser
 }

@@ -40,7 +40,7 @@ const hoast = new Hoast()
         new ProcessPostprocess({
           minify: process.env.NODE_ENV === 'production',
 
-          cssPlugins: [
+          stylePlugins: [
             'postcss-import',
             'autoprefixer',
             'postcss-preset-env',
@@ -63,7 +63,7 @@ const hoast = new Hoast()
           mode: 'css',
           minify: process.env.NODE_ENV === 'production',
 
-          cssPlugins: [
+          stylePlugins: [
             'postcss-import',
             'autoprefixer',
             'postcss-preset-env',
