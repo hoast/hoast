@@ -1,6 +1,6 @@
 # @hoast/process-custom
 
-Allows you to provide your own custom process functions. Extends base-process where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
+Allows you to provide your own custom process functions. Extends base-process where the overridable functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
 
 ## Install
 

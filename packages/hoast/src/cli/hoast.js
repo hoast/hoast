@@ -71,8 +71,8 @@ Options for run
   --directory-path     {String}  Directory to run the command from. (Default: '.')
   --file-path          {String}  File path to config or script file. (Defaults: 'hoast.js' and 'hoast.json')
   --log-level          {Number}  Log level given to the logger. (Default: 2 (Errors and warnings))
-  --watch                        Re-run automatically when a file changes.
-  --watch-ignore       {String}  Glob or regular expression of paths to exclude. (Default: 'node_modules/**')
+  --watch                        Re-build automatically when a file changes.
+  --watch-ignore       {String}  Glob patter or paths to exclude from watching. (Default: 'node_modules/**')
 `)
       return
     }

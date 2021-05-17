@@ -39,12 +39,12 @@ class ProcessJavascript extends BaseProcess {
    */
   constructor(options) {
     super({
-      importPath: null, // Fallback script's file path.
-      importProperty: 'scripts.default.path', // Optional property path of script's file path.
-      executeProperty: 'default', // Property path of the function to execute.
-      setProperty: 'contents', // Property path to write the results to.
+      setProperty: 'contents',
+      executeProperty: 'default',
+      importProperty: null,
+      importPath: null,
 
-      ignoreDependencies: [
+      watchIgnore: [
         '**/node_modules/**',
       ],
     }, options)
@@ -62,7 +62,7 @@ class ProcessJavascript extends BaseProcess {
     }
 
     // Parse ignore patterns.
-    this._ignoreDependencies = options.ignoreDependencies ? planckmatch.parse(options.ignoreDependencies, MATCH_OPTIONS, true) : []
+    this._watchIgnore = options.watchIgnore ? planckmatch.parse(options.watchIgnore, MATCH_OPTIONS, true) : []
 
     this._fileUsedByCache = {}
     this._fileUsesCache = {}
@@ -215,7 +215,7 @@ class ProcessJavascript extends BaseProcess {
         }
 
         // Continue if dependency should be ignored.
-        if (planckmatch.match.any(dependency, this._ignoreDependencies)) {
+        if (planckmatch.match.any(dependency, this._watchIgnore)) {
           continue
         }
 

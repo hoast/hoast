@@ -22,21 +22,15 @@ OR
   - `@param {Object} ...Options` Options objects which can contain the following key.
     - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
 
-### Variables
-
-- `{Object} _library` Hoast instance.
-- `{Object} _logger` [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js) instance.
-- `{Object} _options` Merged options.
-
 ### Functions
 
-- `getOptions`
+- `getOptions` Get merged options.
   - `@returns {Object}` options.
-- `getLibrary`
+- `getLibrary` Get the `hoast` instance that the module is part of.
   - `@returns {Hoast}` hoast instance.
-- `setLibrary` Set library reference. This will be called by hoast itself before the next function is called.
+- `setLibrary` Set library reference. This will be called by `hoast` itself before the next function is called.
   - `@params {Hoast} library` hoast instance.
-- `getLogger`
+- `getLogger` Get the logger instance.
   - `@returns {Logger}` logger instance.
 
 ### Example

@@ -67,8 +67,13 @@ class Hoast {
     this._accessed = {}
   }
 
-  // Accessed.
+  // Access.
 
+  /**
+   * Mark a file as accessed by the given source, this will allow the watcher to rebuild effectively.
+   * @param {String} source A unique identifier of the source.
+   * @param  {...String} filePaths File paths accessed by the source.
+   */
   addAccessed (source, ...filePaths) {
     if (!this._accessed[source]) {
       this._accessed[source] = []
@@ -95,16 +100,20 @@ class Hoast {
     }
   }
 
+  /**
+   * Clears information of file paths accessed by the given source.
+   * @param {String} source A unique identifier of the source.
+   */
   clearAccessed (source) {
     this._accessed[source] = undefined
   }
 
-  resetAccessed () {
-    this._accessed = {}
-  }
+  // Changes.
 
-  // Changed.
-
+  /**
+   * Get the list of changed file since the last build.
+   * @returns {Array<String>} List of absolute file paths.
+   */
   getChanged () {
     if (!this.isWatching() || !this._changedFiles) {
       return null
@@ -112,6 +121,11 @@ class Hoast {
     return [...this._changedFiles]
   }
 
+  /**
+   * Check whether any files that the source uses have changed.
+   * @param {String} source A unique identifier of the source.
+   * @returns {Boolean} Whether a file the source uses has changed.
+   */
   hasChanged (source) {
     // Return true if no changed files are given.
     if (!this._changedFiles || this._changedFiles.indexOf(source) >= 0 || !this._accessed[source]) {
@@ -129,6 +143,10 @@ class Hoast {
     return false
   }
 
+  /**
+   * Marks the given set of file paths as changed files.
+   * @param {Array<String>} filePaths A list of absolute file paths.
+   */
   setChanged (filePaths = null) {
     if (!filePaths) {
       this._changedFiles = null
@@ -142,24 +160,92 @@ class Hoast {
       absolutePaths.push(filePath)
     }
     this._changedFiles = absolutePaths
-
-    return this
   }
 
   // Options.
 
+  /**
+   * Get the options.
+   * @returns {Object} The options.
+   */
   getOptions () {
     return deepAssign({}, this._options)
   }
 
-  // Watch.
+  // Watching.
 
+  /**
+   * Get whether the watcher is running.
+   * @returns {Boolean} Whether the watcher is running.
+   */
   isWatching () {
     return this._isWatching
   }
 
+  /**
+   * Set whether the watcher is running.
+   * @param {Boolean} isWatching Whether the watcher is running.
+   */
   setWatching (isWatching) {
     this._isWatching = !!isWatching
+  }
+
+  // Collections.
+
+  /**
+   * Add collection to collections.
+   * @param {Object} collection Collection to add.
+   * @returns {Object} The hoast instance.
+   */
+  addCollection (collection) {
+    if (!hasProperties(collection, ['source'])) {
+      logger.warn('Tried adding a collection without a source.')
+      return this
+    }
+
+    // Inform process of library.
+    if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
+      collection.source.setLibrary(this)
+    }
+    for (const process of collection.processes) {
+      if (process.setLibrary && typeof (process.setLibrary) === 'function') {
+        process.setLibrary(this)
+      }
+    }
+
+    // Add to collections.
+    this._collections.push(collection)
+
+    return this
+  }
+
+  /**
+   * Add multiple collections to collections.
+   * @param {Array} collections Collections to add.
+   * @returns {Object} The hoast instance.
+  */
+  addCollections (collections) {
+    for (const collection of collections) {
+      if (!hasProperties(collection, ['source'])) {
+        logger.warn('Tried adding a collection without a source.')
+        continue
+      }
+
+      // Inform process of library.
+      if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
+        collection.source.setLibrary(this)
+      }
+      for (const process of collection.processes) {
+        if (process.setLibrary && typeof (process.setLibrary) === 'function') {
+          process.setLibrary(this)
+        }
+      }
+
+      // Add to collections.
+      this._collections.push(collection)
+    }
+
+    return this
   }
 
   // Meta collections.
@@ -218,64 +304,6 @@ class Hoast {
 
       // Add to collections.
       this._metaCollections.push(collection)
-    }
-
-    return this
-  }
-
-  // Collections.
-
-  /**
-   * Add collection to collections.
-   * @param {Object} collection Collection to add.
-   * @returns {Object} The hoast instance.
-   */
-  addCollection (collection) {
-    if (!hasProperties(collection, ['source'])) {
-      logger.warn('Tried adding a collection without a source.')
-      return this
-    }
-
-    // Inform process of library.
-    if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
-      collection.source.setLibrary(this)
-    }
-    for (const process of collection.processes) {
-      if (process.setLibrary && typeof (process.setLibrary) === 'function') {
-        process.setLibrary(this)
-      }
-    }
-
-    // Add to collections.
-    this._collections.push(collection)
-
-    return this
-  }
-
-  /**
-   * Add multiple collections to collections.
-   * @param {Array} collections Collections to add.
-   * @returns {Object} The hoast instance.
-  */
-  addCollections (collections) {
-    for (const collection of collections) {
-      if (!hasProperties(collection, ['source'])) {
-        logger.warn('Tried adding a collection without a source.')
-        continue
-      }
-
-      // Inform process of library.
-      if (collection.source.setLibrary && typeof (collection.source.setLibrary) === 'function') {
-        collection.source.setLibrary(this)
-      }
-      for (const process of collection.processes) {
-        if (process.setLibrary && typeof (process.setLibrary) === 'function') {
-          process.setLibrary(this)
-        }
-      }
-
-      // Add to collections.
-      this._collections.push(collection)
     }
 
     return this

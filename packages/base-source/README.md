@@ -29,22 +29,14 @@ OR
 - `{Boolean} done` Is set to true if all items are returned.
 - `{Boolean} exhausted` Set `exhausted` to true if the source has ran out of items to return.
 
-- `{Boolean} _hasInitialize` True if the derived class has a `initialize` function.
-- `{Boolean} _hasSequential` True if the derived class has a `sequential` function.
-- `{Boolean} _hasConcurrent` True if the derived class has a `concurrent` function.
-- `{Boolean} _hasFinal` True if the derived class has a `final` function.
-
-- `{Boolean} _holdCalls` Whether next calls are temporarily held while the initialize or sequential function is running.
-- `{Array} _promiseQueue` A queue of next calls that gets added to while hold calls is true.
-
 ### Functions
 
-- `async next` This will be called by hoast itself to retrieve the next item.
+- `async next` Will be called by hoast itself to retrieve the next item.
   - `@returns {Any}` Retrieved data.
 
 ### Abstract functions
 
-The following functions can be implimented by the derived class and will automatically called if present. All functions are optional and don't have to be asynchronous.
+The following functions can be implemented by the derived class and will automatically called if present. All functions are optional and don't have to be asynchronous.
 
 - `async initialize` Called only once before sequential and concurrent.
 - `async sequential` Called sequentially for each iteration call. Meaning while this method is running it won't be called until the ongoing call is finished. Useful for processes that have to happen in order. Useful for iterating over the items in the filesystem.

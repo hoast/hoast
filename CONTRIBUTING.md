@@ -8,9 +8,8 @@ Welcome and thank you for wanting to contribute! Following these guidelines help
 + [Issues](#issues)
 + [Creating pull requests](#creating-pull-requests)
   + [Follow styling](#follow-styling)
-  + [Run tests](#run-tests)
   + [Write documentation](#write-documentation)
-  + [Write tests](#write-tests)
+  + [Write examples](#write-examples)
   + [Sign off commits](#sign-off-commits)
 + [Reviewing pull requests](#reviewing-pull-requests)
 
@@ -35,19 +34,12 @@ To create a pull request first fork the repository, make and and commit your cha
 
 When making changes make sure you do everything listed below.
 + Follow styling.
-+ Run tests.
 + Write documentation.
-+ Write examples.
-+ Write tests.
 + Sign off commits.
 
 ### Follow styling
 
 There is no specific styling guide to use. There are however two which can automatically be enforced by [EditorConfig](https://editorconfig.org) and [ESLint](https://eslint.org) using the `.editorconfig` and `.eslintrc.js` file respectively. Therefore you are recommend to install a plugin to automate this process. See [EditorConfig's download section](https://editorconfig.org/#download) for a list of editor extensions. Depending on your preferences you can enable the format / lint on save option in several editors as well.
-
-### Run tests
-
-The project uses `yarn` which has some support for monorepositories. To read more about how to run commands with yarn in a monorepository see the [yarn workspaces documentation](https://yarnpkg.com/features/workspaces) or run `% yarn workspaces -h`. Clone the repository, install dependencies with `% yarn install`, and run tests with `% yarn workspaces run test` or `% yarn workspace <package-name> run test` for a specific package.
 
 ### Write documentation
 
@@ -56,14 +48,6 @@ The projects documentation include four elements the instruction manual, change 
 + **Instruction manual**: The `README.md` introduces the project and provides instructions on how to use the package.
 + **Change log**: The `CHANGELOG.md` lists what has changed in which version. Add your changes under the `UNRELEASED` header, if not already there feel free to add it. Then create sub-headers with the type of changes either `Added`, `Changed`, `Fixed`, or `Removed` where you will list the changes.
 + **Commit message**: Commit messages should summarize what has essentially been written to the change log.
-
-### Write examples
-
-In order to help people
-
-### Write tests
-
-Sometimes tests need to be added, improved, or updated to reflect recent changes, be sure to run the current tests and make changes if necessary. Tests can be ran using `% yarn workspaces run test` or `% yarn workspace <package-name> run test` for a specific test. GitHub actions will automatically run the tests when a pull request is submitted. Your pull request will not be merged until all test are passed.
 
 ### Sign off commits
 
@@ -76,7 +60,7 @@ Ensure your commits are signed off on at the end of your commit message, like so
 Before a pull request is allowed to be merged into the master branch at least one other contributor has to review and approve the changes made.
 
 + Changes follow styling.
++ Linting runs successfully.
 + Documentation is up to date.
-+ Tests are up to date.
-+ Tests run successfully.
++ Examples are up to date.
 + Commits are signed off.

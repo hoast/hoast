@@ -67,7 +67,7 @@ class ProcessPostprocess extends BaseProcess {
       styleOptions: {},
       stylePlugins: [],
 
-      ignoreDependencies: [
+      watchIgnore: [
         '**/node_modules/**',
       ],
     }, options)
@@ -84,7 +84,7 @@ class ProcessPostprocess extends BaseProcess {
     }
 
     // Parse ignore patterns.
-    this._ignoreDependencies = options.ignoreDependencies ? planckmatch.parse(options.ignoreDependencies, MATCH_OPTIONS, true) : []
+    this._watchIgnore = options.watchIgnore ? planckmatch.parse(options.watchIgnore, MATCH_OPTIONS, true) : []
   }
 
   async initialize () {
@@ -278,7 +278,7 @@ class ProcessPostprocess extends BaseProcess {
         }
 
         // Continue if dependency should be ignored.
-        if (planckmatch.match.any(dependency, this._ignoreDependencies)) {
+        if (planckmatch.match.any(dependency, this._watchIgnore)) {
           continue
         }
 
