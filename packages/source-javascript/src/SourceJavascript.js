@@ -21,6 +21,11 @@ import { isClass } from '@hoast/utils/is.js'
 const fsReadFile = promisify(fs.readFile)
 
 const REGEXP_DIRECTORY = /^(\/|.\/|..\/)/
+const MATCH_OPTIONS = {
+  extended: true,
+  flags: 'i',
+  globstar: true,
+}
 const READ_OPTIONS = {
   encoding: 'utf8',
 }
@@ -41,6 +46,10 @@ class SourceJavascript extends BaseSource {
       filterOptions: {
         all: false,
       },
+
+      watchIgnore: [
+        '**/node_modules/**',
+      ],
     }, options)
     options = this.getOptions()
 
@@ -55,6 +64,9 @@ class SourceJavascript extends BaseSource {
         return planckmatch.parse(pattern, options.filterOptions, true)
       })
     }
+
+    // Parse ignore patterns.
+    this._watchIgnore = options.watchIgnore ? planckmatch.parse(options.watchIgnore, MATCH_OPTIONS, true) : []
 
     this._fileUsesCache = {}
   }
@@ -147,7 +159,7 @@ class SourceJavascript extends BaseSource {
     try {
       importedScript = await import(filePath)
     } catch (error) {
-      throw new Error('Unable to import file at path: "' + filePath + '".')
+      throw new Error('Unable to import file at path: "' + filePath + '".', error)
     }
     // Get function to execute.
     importedScript = getByPathSegments(importedScript, this._executePropertyPath)

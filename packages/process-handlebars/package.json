@@ -33,8 +33,8 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-process": "^2.0.0",
-    "@hoast/utils": "^2.0.1",
+    "@hoast/base-process": "^3.0.0",
+    "@hoast/utils": "^3.0.0",
     "handlebars": "^4.7.7"
   }
 }

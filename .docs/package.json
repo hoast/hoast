@@ -2,23 +2,23 @@
   "private": true,
   "name": "@hoast/docs",
   "version": "0.0.0",
-  "dependencies": {
-    "normalize.css": "8.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@hoast/hoast": "^2.0.1",
-    "@hoast/process-custom": "^2.0.0",
-    "@hoast/process-frontmatter": "^2.0.0",
-    "@hoast/process-markdown": "^2.0.0",
-    "@hoast/process-postprocess": "^2.0.1",
-    "@hoast/process-writefiles": "^2.0.0",
-    "@hoast/source-readfiles": "^2.0.1",
+    "@hoast/hoast": "^3.0.0",
+    "@hoast/process-custom": "^3.0.0",
+    "@hoast/process-postprocess": "^3.0.0",
+    "@hoast/process-writefiles": "^3.0.0",
+    "@hoast/source-javascript": "^3.0.0",
+    "@hoast/source-readfiles": "^3.0.0",
     "autoprefixer": "10.2.5",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "highlight.js": "^10.7.2",
     "postcss": "^8.2.15",
     "postcss-import": "14.0.2",
+    "postcss-nesting": "^8.0.1",
     "postcss-preset-env": "6.7.0",
-    "remark-external-links": "^8.0.0",
-    "serve": "11.3.2"
+    "serve": "11.3.2",
+    "tailwindcss": "^2.1.2"
   },
   "type": "module",
   "scripts": {

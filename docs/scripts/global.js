@@ -1,0 +1,1 @@
+window.copyToClipboard=e=>{const o=document.createElement("textarea");o.value=e,document.body.append(o),o.select(),o.setSelectionRange(0,999999),document.execCommand("copy"),o.remove()};

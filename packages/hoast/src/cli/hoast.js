@@ -68,7 +68,7 @@ Commands
 
 Options for run
   --concurrency-limit  {Number}  Maximum amount of items to process at once. (Default: 4)
-  --directory-path     {String}  Directory to run the command from. (Default: '.')
+  --directory-path     {String}  Directory to run the command from. (Default: 'process.cwd()')
   --file-path          {String}  File path to config or script file. (Defaults: 'hoast.js' and 'hoast.json')
   --log-level          {Number}  Log level given to the logger. (Default: 2 (Errors and warnings))
   --watch                        Re-build automatically when a file changes.
@@ -182,9 +182,6 @@ Options for run
       throw new Error('Invalid options type in configuration file! Must be of type object. ' + MESSAGE_SEE_DOCS)
     }
 
-    config.options = Object.assign(options, {
-      directory: directory,
-    })
     if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
       config.options.logLevel = options['log-level']
     }

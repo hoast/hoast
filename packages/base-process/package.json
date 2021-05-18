@@ -33,6 +33,6 @@
     "lint": "eslint --fix --cache src/*.js"
   },
   "dependencies": {
-    "@hoast/base-package": "^2.0.0"
+    "@hoast/base-package": "^3.0.0"
   }
 }

@@ -81,9 +81,6 @@ class ProcessPostprocess extends BaseProcess {
 
     // Convert dot notation to path segments.
     this._propertyPath = options.property.split('.')
-    if (options.modeProperty) {
-      this._modePropertyPath = options.modeProperty.split('.')
-    }
 
     // Parse ignore patterns.
     this._watchIgnore = options.watchIgnore ? planckmatch.parse(options.watchIgnore, MATCH_OPTIONS, true) : []
@@ -139,16 +136,15 @@ class ProcessPostprocess extends BaseProcess {
 
     // Setup Postcss.
     const postcss = new Postcss(stylePlugins)
-    // Store options.
-    const styleOptions = deepAssign({}, options.styleOptions, {
-      from: undefined,
-    })
-
     // Create style processor.
-    this._styleProcessor = (code) => {
+    this._styleProcessor = (code, filePath = null) => {
+      const styleOptionsTemp = Object.assign({}, options.styleOptions, {
+        from: filePath || undefined,
+      })
+
       return new Promise((resolve, reject) => {
         // Process via Postcss.
-        postcss.process(code, styleOptions)
+        postcss.process(code, styleOptionsTemp)
           .then(result => {
             resolve(result.css)
           })
@@ -209,7 +205,11 @@ class ProcessPostprocess extends BaseProcess {
         break
 
       case 'css':
-        value = await this._styleProcessor(value)
+        let filePathTemp
+        if (data.sourceType === 'filesystem') {
+          filePathTemp = data.sourceIdentifier
+        }
+        value = await this._styleProcessor(value, filePathTemp)
         break
     }
 

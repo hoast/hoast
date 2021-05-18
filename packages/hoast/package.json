@@ -38,7 +38,7 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/utils": "^2.0.1",
+    "@hoast/utils": "^3.0.0",
     "chokidar": "^3.5.1",
     "minimist": "^1.2.5",
     "planckmatch": "^0.2.1"

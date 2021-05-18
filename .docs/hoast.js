@@ -1,101 +1,99 @@
-import Hoast from '@hoast/hoast'
-import ProcessCustom from '@hoast/process-custom'
-import ProcessFrontmatter from '@hoast/process-frontmatter'
-import ProcessMarkdown from '@hoast/process-markdown'
-import ProcessPostprocess from '@hoast/process-postprocess'
-import ProcessWritefiles from '@hoast/process-writefiles'
-import SourceReadfiles from '@hoast/source-readfiles'
+// Manually import config.
+import tailwindConfig from "./tailwind.config.js"
 
-// Import base component.
-import componentHTML from './src/components/html.js'
+export default {
+  options: {
+    directory: 'src',
+  },
+  collections: [{
+    // Pages.
+    source: ['@hoast/source-javascript', {
+      directory: 'pages',
+    }],
+    processes: [
+      ['@hoast/process-postprocess', {
+        minify: process.env.NODE_ENV === 'production',
+        mode: 'html',
 
-const hoast = new Hoast({
-  directory: 'src',
-})
-  .addCollections([
-    // Add pages collection.
-    {
-      // Read files from pages directory.
-      source: new SourceReadfiles({
-        directory: 'pages',
-      }),
-      processes: [
-        // Extract frontmatter.
-        new ProcessFrontmatter(),
-        // Convert markdown to HTML.
-        new ProcessMarkdown({
-          highlightOptions: {},
-
-          remarkPlugins: [
-            'remark-external-links',
-          ],
-        }),
-        // Template using custom function.
-        new ProcessCustom({
-          concurrent: (data) => {
-            data.contents = componentHTML(data)
-
-            return data
-          },
-        }),
-        // Bundle and minify.
-        new ProcessPostprocess({
-          minify: process.env.NODE_ENV === 'production',
-
-          stylePlugins: [
-            'postcss-import',
-            'autoprefixer',
-            'postcss-preset-env',
-          ],
-        }),
-        // Write to filesystem.
-        new ProcessWritefiles({
-          directory: '../../docs',
-        }),
+        stylePlugins: [
+          'postcss-nesting',
+          'autoprefixer',
+          'postcss-preset-env',
+        ],
+      }],
+      ['@hoast/process-custom', {
+        concurrent: (data) => {
+          // Rename from JS extension to HTML extension.
+          data.path = data.path.substring(0, data.path.lastIndexOf('.') + 1) + 'html'
+          return data
+        },
+      }],
+      ['@hoast/process-writefiles', {
+        directory: '../../docs',
+      }],
+    ],
+  }, {
+    // Scripts.
+    source: ['@hoast/source-readfiles', {
+      directory: 'scripts',
+      filterPatterns: [
+        'global.js'
       ],
-    },
+    }],
+    processes: [
+      ['@hoast/process-postprocess', {
+        minify: process.env.NODE_ENV === 'production',
+        mode: 'js',
 
-    // Add style sheets collection.
-    {
-      source: new SourceReadfiles({
-        directory: 'styles',
-      }),
-      processes: [
-        new ProcessPostprocess({
-          mode: 'css',
-          minify: process.env.NODE_ENV === 'production',
-
-          stylePlugins: [
-            'postcss-import',
-            'autoprefixer',
-            'postcss-preset-env',
-          ],
-        }),
-        new ProcessWritefiles({
-          directory: '../../docs/styles',
-        }),
+        scriptPlugins: [
+          'babel-plugin-module-resolver',
+        ],
+      }],
+      ['@hoast/process-writefiles', {
+        directory: '../../docs/scripts',
+      }],
+    ],
+  }, {
+    // Styles.
+    source: ['@hoast/source-readfiles', {
+      directory: 'styles',
+      filterPatterns: [
+        'global.css'
       ],
-    },
+    }],
+    processes: [
+      ['@hoast/process-postprocess', {
+        minify: process.env.NODE_ENV === 'production',
+        mode: 'css',
 
-    // Transfer files from assets directory over.
-    {
-      source: new SourceReadfiles({
-        directory: 'assets',
+        stylePlugins: [
+          'postcss-import',
+          'postcss-nesting',
+          ['tailwindcss', tailwindConfig],
+          'autoprefixer',
+          'postcss-preset-env',
+        ],
+      }],
+      ['@hoast/process-writefiles', {
+        directory: '../../docs/styles',
+      }],
+    ],
+  }, {
+    // Assets.
+    source: ['@hoast/source-readfiles', {
+      directory: 'assets',
+      readOptions: {
+        encoding: null,
+      },
+    }],
+    processes: [
+      ['@hoast/process-writefiles', {
+        directory: '../../docs/assets',
 
-        readOptions: {
+        writeOptions: {
           encoding: null,
         },
-      }),
-      processes: [
-        new ProcessWritefiles({
-          directory: '../../docs/assets',
-
-          writeOptions: {
-            encoding: null,
-          },
-        }),
-      ],
-    },
-  ])
-
-export default hoast
+      }],
+    ],
+  }],
+}
