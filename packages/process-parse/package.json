@@ -26,7 +26,6 @@
   "type": "module",
   "files": [
     "README.md",
-    "CHANGELOG.md",
     "src/"
   ],
   "main": "src/ProcessParse.js",

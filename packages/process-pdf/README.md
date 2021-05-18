@@ -32,4 +32,4 @@ OR
 
 ## Security risk
 
-Note this module serves the `directoryPath` options of hoast or `serveOptions.directory` directory to the local network whilst it is processing files. This can be a potential security risk and expose information to the network you might not want to make available.
+Note this module serves the `directory` options of hoast or `serveOptions.directory` directory to the local network whilst it is processing files. This can be a potential security risk and expose information to the network you might not want to make available.

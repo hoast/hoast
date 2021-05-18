@@ -55,11 +55,11 @@ class ProcessPdf extends BaseProcess {
 
     // Assign serve directory.
     if (!options.serveOptions.directory) {
-      this._serveDirectory = libraryOptions.directoryPath
+      this._serveDirectory = libraryOptions.directory
     } else if (path.isAbsolute(options.serveOptions.directory)) {
       this._serveDirectory = options.serveOptions.directory
     } else {
-      this._serveDirectory = path.resolve(libraryOptions.directoryPath, options.serveOptions.directory)
+      this._serveDirectory = path.resolve(libraryOptions.directory, options.serveOptions.directory)
     }
 
     if (!this._browser) {
@@ -103,9 +103,9 @@ class ProcessPdf extends BaseProcess {
     // Construct directory path relative to served directory.
     let relativePath = ''
     if (data.path) {
-      const directoryPath = path.dirname(data.path)
-      if (directoryPath !== '.') {
-        relativePath = directoryPath
+      const directory = path.dirname(data.path)
+      if (directory !== '.') {
+        relativePath = directory
         if (relativePath.startsWith(this._serveDirectory)) {
           relativePath = relativePath.substring(this._serveDirectory.length - 1)
         }
@@ -151,7 +151,7 @@ class ProcessPdf extends BaseProcess {
         filePath = path.resolve(this._serveDirectory, filePath)
 
         // Ignore if not inside watched directory.
-        if (!filePath.startsWith(libraryOptions.directoryPath)) {
+        if (!filePath.startsWith(libraryOptions.directory)) {
           return
         }
 

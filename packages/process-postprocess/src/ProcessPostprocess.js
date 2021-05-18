@@ -275,7 +275,7 @@ class ProcessPostprocess extends BaseProcess {
         }
 
         // Continue if dependency not inside the watched directory.
-        if (!dependency.startsWith(libraryOptions.directoryPath)) {
+        if (!dependency.startsWith(libraryOptions.directory)) {
           continue
         }
 

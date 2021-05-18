@@ -16,8 +16,6 @@ A set of simple and modular packages for build automation.
 
 [Examples](https://github.com/hoast/hoast/tree/master/examples#readme)
 
-[Packages](https://github.com/hoast/hoast/tree/master/packages#readme)
-
 [Guides](https://github.com/hoast/hoast/tree/master/guides#readme)
 
 [Contribute](https://github.com/hoast/hoast/blob/master/CONTRIBUTING.md)

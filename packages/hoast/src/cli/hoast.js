@@ -95,14 +95,14 @@ Options for run
   console.log('ʕ ˵·ᴥ·ʔ   Preparing…')
 
   // Set base directory path.
-  let directoryPath
+  let directory
   if (Object.prototype.hasOwnProperty.call(options, 'directory-path')) {
-    directoryPath = options['directory-path']
-    if (!path.isAbsolute(directoryPath)) {
-      directoryPath = path.resolve(process.cwd(), directoryPath)
+    directory = options['directory-path']
+    if (!path.isAbsolute(directory)) {
+      directory = path.resolve(process.cwd(), directory)
     }
   } else {
-    directoryPath = process.cwd()
+    directory = process.cwd()
   }
 
   // Set configuration file path.
@@ -110,7 +110,7 @@ Options for run
   if (Object.prototype.hasOwnProperty.call(options, 'file-path')) {
     filePath = options['file-path']
     if (!path.isAbsolute(filePath)) {
-      filePath = path.resolve(directoryPath, filePath)
+      filePath = path.resolve(directory, filePath)
     }
 
     try {
@@ -121,16 +121,16 @@ Options for run
     }
   } else {
     // Check for hoast.js or hoast.json in current working directory.
-    filePath = path.resolve(directoryPath, 'hoast.js')
+    filePath = path.resolve(directory, 'hoast.js')
     try {
       await fsAccess(filePath, fs.constants.R_OK)
     } catch {
-      filePath = path.resolve(directoryPath, 'hoast.json')
+      filePath = path.resolve(directory, 'hoast.json')
 
       try {
         await fsAccess(filePath, fs.constants.R_OK)
       } catch {
-        console.error(`Error: No readable configuration file found in "${directoryPath}". ` + MESSAGE_SEE_HELP)
+        console.error(`Error: No readable configuration file found in "${directory}". ` + MESSAGE_SEE_HELP)
         return
       }
     }
@@ -160,9 +160,9 @@ Options for run
         hoast = imported
 
         // Prioritize the hoast instance path above the terminal one since the setLibrary function will have been called already.
-        const potentialDirectoryPath = hoast.getOptions().directoryPath
+        const potentialDirectoryPath = hoast.getOptions().directory
         if (potentialDirectoryPath) {
-          directoryPath = potentialDirectoryPath
+          directory = potentialDirectoryPath
         }
         break
       }
@@ -183,7 +183,7 @@ Options for run
     }
 
     config.options = Object.assign(options, {
-      directoryPath: directoryPath,
+      directory: directory,
     })
     if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
       config.options.logLevel = options['log-level']
@@ -315,7 +315,7 @@ Options for run
     }
 
     const handleFileChange = async function (filePath) {
-      filePath = path.resolve(directoryPath, filePath)
+      filePath = path.resolve(directory, filePath)
 
       if (changedFiles.indexOf(filePath) < 0) {
         // Store change and check later.
@@ -328,8 +328,8 @@ Options for run
     }
 
     // Setup the watcher.
-    watch(directoryPath, {
-      cwd: directoryPath,
+    watch(directory, {
+      cwd: directory,
       disableGlobbing: true,
       ignored: ignored,
       ignoreInitial: true,

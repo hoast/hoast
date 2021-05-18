@@ -3,16 +3,18 @@
     "name": "Ron Dekker",
     "url": "https://rondekker.com"
   },
-  "name": "@hoast/process-frontmatter",
-  "version": "2.0.0",
-  "description": "Extract frontmatter from text.",
+  "name": "@hoast/source-javascript",
+  "version": "1.0.0",
+  "description": "Read and execute scripts from the filesystem.",
   "keywords": [
     "hoast",
-    "process",
-    "frontmatter"
+    "source",
+    "scripts",
+    "javascript",
+    "filesystem"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-frontmatter#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-javascript#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
@@ -28,11 +30,15 @@
     "README.md",
     "src/"
   ],
-  "main": "src/ProcessFrontmatter.js",
+  "main": "src/SourceJavascript.js",
   "scripts": {
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-process": "^2.0.0"
+    "@hoast/base-source": "^2.0.0",
+    "@hoast/utils": "^2.0.1",
+    "detective-cjs": "^3.1.1",
+    "detective-es6": "^2.2.0",
+    "planckmatch": "^0.2.1"
   }
 }

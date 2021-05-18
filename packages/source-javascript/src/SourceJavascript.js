@@ -1,5 +1,5 @@
-// Import base class.
-import BaseProcess from '@hoast/base-process'
+// Import base module.
+import BaseSource from '@hoast/base-source'
 
 // Import build-in modules.
 import fs from 'fs'
@@ -12,19 +12,15 @@ import detectiveModule from 'detective-es6'
 import planckmatch from 'planckmatch'
 
 // Import utility modules.
+import iterateDirectory from '@hoast/utils/iterateDirectory.js'
+import { trimStart } from '@hoast/utils/trim.js'
 import { getByPathSegments } from '@hoast/utils/get.js'
-import { setByPathSegments } from '@hoast/utils/set.js'
 import { isClass } from '@hoast/utils/is.js'
 
 // Promisify read file.
 const fsReadFile = promisify(fs.readFile)
 
 const REGEXP_DIRECTORY = /^(\/|.\/|..\/)/
-const MATCH_OPTIONS = {
-  extended: true,
-  flags: 'i',
-  globstar: true,
-}
 const READ_OPTIONS = {
   encoding: 'utf8',
 }
@@ -32,21 +28,20 @@ const DETECTIVE_OPTIONS = {
   skipTypeImports: true,
 }
 
-class ProcessJavascript extends BaseProcess {
+class SourceJavascript extends BaseSource {
   /**
    * Create package instance.
-   * @param  {...Object} options Options objects.
+   * @param  {Object} options Options objects.
    */
   constructor(options) {
     super({
-      setProperty: 'contents',
-      executeProperty: 'default',
-      importProperty: null,
-      importPath: null,
+      directory: null,
+      filterPatterns: null,
+      filterOptions: {
+        all: false,
+      },
 
-      watchIgnore: [
-        '**/node_modules/**',
-      ],
+      executeProperty: 'default',
     }, options)
     options = this.getOptions()
 
@@ -54,104 +49,134 @@ class ProcessJavascript extends BaseProcess {
     if (options.executeProperty) {
       this._executePropertyPath = options.executeProperty.split('.')
     }
-    if (options.importProperty) {
-      this._importPropertyPath = options.importProperty.split('.')
-    }
-    if (options.setProperty) {
-      this._setPropertyPath = options.setProperty.split('.')
-    }
 
-    // Parse ignore patterns.
-    this._watchIgnore = options.watchIgnore ? planckmatch.parse(options.watchIgnore, MATCH_OPTIONS, true) : []
+    // Parse patterns into regular expressions.
+    if (options.filterPatterns && options.filterPatterns.length > 0) {
+      this._expressions = options.filterPatterns.map(pattern => {
+        return planckmatch.parse(pattern, options.filterOptions, true)
+      })
+    }
 
     this._fileUsesCache = {}
   }
 
-  initialize () {
-    const library = this.getLibrary()
-    const libraryOptions = library.getOptions()
+  async initialize () {
+    const libraryOptions = this.getLibrary().getOptions()
     const options = this.getOptions()
 
     // Construct absolute directory path.
-    if (options.importPath) {
-      this._importPath =
-        path.isAbsolute(options.importPath)
-          ? options.importPath
-          : path.resolve(libraryOptions.directory, options.importPath)
+    if (options.directory) {
+      this._directoryPath =
+        (options.directory && path.isAbsolute(options.directory))
+          ? options.directory
+          : path.resolve(libraryOptions.directory, options.directory)
+    } else {
+      this._directoryPath = libraryOptions.directory
     }
 
-    if (library.isWatching()) {
-      // Remove changed files from dependency cache.
-      const changedFiles = library.getChanged()
-      if (changedFiles) {
-        for (const changedFile of changedFiles) {
-          if (changedFile in this._fileUsesCache) {
-            delete this._fileUsesCache[changedFile]
-          }
+    // Create directory iterator.
+    this._directoryIterator = await iterateDirectory(this._directoryPath)
+  }
+
+  async sequential () {
+    const library = this.getLibrary()
+    const options = this.getOptions()
+
+    let filePath
+    // Get next file path.
+    while (filePath = await this._directoryIterator()) {
+      if (library.isWatching()) {
+        // Skip if file hasn't changed.
+        if (!library.hasChanged(filePath)) {
+          continue
+        }
+        library.clearAccessed(filePath)
+      }
+
+      // Make file path relative.
+      const filePathRelative = path.relative(this._directoryPath, filePath)
+
+      // Check if path matches the patterns.
+      if (this._expressions) {
+        // Skip if it does not matches.
+        const matches = options.filterOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
+        if (!matches) {
+          continue
         }
       }
+
+      return [filePath, filePathRelative]
     }
+
+    this.exhausted = true
   }
 
   async concurrent (data) {
-    const library = this.getLibrary()
-    const libraryOptions = library.getOptions()
-
-    // Get path of script to import.
-    let importPath
-    try {
-      importPath = getByPathSegments(data, this._importPropertyPath)
-    } catch { }
-    if (!importPath) {
-      importPath = this._importPath
-      if (!importPath) {
-        this.getLogger().log('No import path given for item with source: "' + data.sourceIdentifier + '".')
-        return data
-      }
-    } else if (!path.isAbsolute(importPath)) {
-      importPath = path.resolve(importPath, libraryOptions.directory)
+    // Exit early if invalid parameters.
+    if (!data) {
+      return
     }
+    const library = this.getLibrary()
+
+    // Deconstruct parameters.
+    const [filePath, filePathRelative] = data
 
     if (library.isWatching()) {
       // Get all dependencies of script.
-      const dependencies = await this.getDependencies(importPath)
+      const dependencies = await this.getDependencies(filePath)
 
-      // Add import and dependencies as accessed.
-      library.addAccessed(data.sourceIdentifier, importPath, ...dependencies)
+      // Add file path and dependencies as accessed.
+      library.addAccessed(filePath, ...dependencies)
+    }
+
+    // Construct URI for file.
+    let uri = trimStart(filePath, path.sep)
+    if (path.sep !== '/') {
+      uri = uri.replace(path.sep, '/')
+    }
+
+    // Create result.
+    const result = {
+      path: filePathRelative,
+      sourceIdentifier: filePath,
+      sourceType: 'filesystem',
+      uri: 'file://' + uri,
     }
 
     // Import script at path.
     let importedScript
     try {
-      importedScript = await import(importPath)
+      importedScript = await import(filePath)
     } catch (error) {
-      throw new Error('Unable to import file at path: "' + importPath + '".')
+      throw new Error('Unable to import file at path: "' + filePath + '".')
     }
     // Get function to execute.
     importedScript = getByPathSegments(importedScript, this._executePropertyPath)
 
     // Run imported script.
-    let value
     if (importedScript && typeof (importedScript) === 'function') {
       try {
         if (isClass(importedScript)) {
-          importedScript = new importedScript(library, data) // eslint-disable-line new-cap
+          result.contents = new importedScript(library, result) // eslint-disable-line new-cap
         } else {
-          value = importedScript(library, data)
+          result.contents = importedScript(library, result)
         }
       } catch (error) {
-        throw new Error('Error while executing imported script file at path: "' + importPath + '".', error)
+        throw new Error('Error while executing imported script file at path: "' + filePath + '".', error)
       }
     } else {
-      throw new Error('Import function at "' + this._executePropertyPath + '" from "' + importPath + '" not of type function.')
+      throw new Error('Import function at "' + this._executePropertyPath + '" from "' + filePath + '" not of type function.')
     }
 
-    // Write value back to data.
-    if (this._setPropertyPath) {
-      data = setByPathSegments(data, this._setPropertyPath, value)
-    }
+    // Return result.
+    return result
+  }
 
-    return data
+  final () {
+    super.final()
+
+    this._directoryPath = null
+    this._directoryIterator = null
   }
 
   async getDependencies (importPath) {
@@ -241,4 +266,4 @@ class ProcessJavascript extends BaseProcess {
   }
 }
 
-export default ProcessJavascript
+export default SourceJavascript

@@ -59,7 +59,7 @@ class ProcessHandlebars extends BaseProcess {
     this._templateDirectoryPath =
       (options.templateDirectory && path.isAbsolute(options.templateDirectory))
         ? options.templateDirectory
-        : path.resolve(libraryOptions.directoryPath, options.templateDirectory)
+        : path.resolve(libraryOptions.directory, options.templateDirectory)
 
     this._templates = {}
 
@@ -95,7 +95,7 @@ class ProcessHandlebars extends BaseProcess {
             this._helpersPath =
               (options.helpersDirectory && path.isAbsolute(options.helpersDirectory))
                 ? options.helpersDirectory
-                : path.resolve(libraryOptions.directoryPath, options.helpersDirectory)
+                : path.resolve(libraryOptions.directory, options.helpersDirectory)
 
             // Get helper files.
             const directoryIterator = await iterateDirectory(this._helpersPath)
@@ -128,7 +128,7 @@ class ProcessHandlebars extends BaseProcess {
             this._partialsPath =
               (options.partialsDirectory && path.isAbsolute(options.partialsDirectory))
                 ? options.partialsDirectory
-                : path.resolve(libraryOptions.directoryPath, options.partialsDirectory)
+                : path.resolve(libraryOptions.directory, options.partialsDirectory)
 
             // Get helper files.
             const directoryIterator = await iterateDirectory(this._partialsPath)

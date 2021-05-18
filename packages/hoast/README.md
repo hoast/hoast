@@ -48,7 +48,7 @@ Options for run
   - `@params {Object} options` Options object which can contain the following keys.
     - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
     - `{Number} concurrencyLimit = 4` Maximum amount of items to process at once.
-    - `{String} directoryPath = process.cwd()` Directory path to build from. Relative paths are resolved with `process.cwd()`.
+    - `{String} directory = process.cwd()` Directory path to build from. Relative paths are resolved with `process.cwd()`.
   - `@params {Object} meta = {}` Global metadata that can be picked up by process packages.
   - `@returns {Object}` Hoast instance.
 

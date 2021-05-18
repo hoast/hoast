@@ -9,7 +9,7 @@ import SourceReadfiles from '@hoast/source-readfiles'
 import path from 'path'
 
 const hoast = new Hoast({
-  directoryPath: 'src',
+  directory: 'src',
 })
   .addCollections([
     {

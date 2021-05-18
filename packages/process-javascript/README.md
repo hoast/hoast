@@ -14,6 +14,48 @@ OR
 % npm install @hoast/process-javascript --save
 ```
 
+## Example
+
+### Input
+
+File located at `components/h1.js`.
+
+```JS
+export default function({ contents }) {
+  return '<h1>' . contents . '</h1>';
+}
+```
+
+File located at `pages/index.html`.
+
+```HTML
+Hello world!
+```
+
+### Config
+
+```JS
+export default {
+  collections: [{
+    source: ['@hoast/source-readfiles', {
+      directory: 'pages',
+    }],
+    processes: [
+      ['@hoast/process-javascript', {
+        importPath: 'components/h1.js',
+      }],
+      '@hoast/process-log',
+    ],
+  }],
+}
+```
+
+### Output
+
+```HTML
+<h1>Hello world!</h1>
+```
+
 ## Options
 
 - `{String} setProperty = 'contents'` Dot notation path to the data property to which the result should be written.

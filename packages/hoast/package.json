@@ -28,7 +28,6 @@
   "type": "module",
   "files": [
     "README.md",
-    "CHANGELOG.md",
     "src/"
   ],
   "bin": {

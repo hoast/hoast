@@ -30,15 +30,15 @@ class Hoast {
       logLevel: 2,
 
       concurrencyLimit: 4,
-      directoryPath: null,
+      directory: null,
     }, options)
 
     this._isWatching = false
 
-    if (!this._options.directoryPath) {
-      this._options.directoryPath = process.cwd()
-    } else if (!path.isAbsolute(this._options.directoryPath)) {
-      this._options.directoryPath = path.resolve(process.cwd(), this._options.directoryPath)
+    if (!this._options.directory) {
+      this._options.directory = process.cwd()
+    } else if (!path.isAbsolute(this._options.directory)) {
+      this._options.directory = path.resolve(process.cwd(), this._options.directory)
     }
 
     // Set meta.
@@ -86,7 +86,7 @@ class Hoast {
 
       // Ensure path is absolute.
       if (!path.isAbsolute(filePath)) {
-        filePath = path.resolve(this._options.directoryPath, filePath)
+        filePath = path.resolve(this._options.directory, filePath)
       } else {
         filePath = path.resolve(filePath)
       }
@@ -155,7 +155,7 @@ class Hoast {
     const absolutePaths = []
     for (let filePath of filePaths) {
       if (!path.isAbsolute(filePath)) {
-        filePath = path.resolve(this._options.directoryPath, filePath)
+        filePath = path.resolve(this._options.directory, filePath)
       }
       absolutePaths.push(filePath)
     }

@@ -5,7 +5,7 @@ import BaseSource from '@hoast/base-source'
 import fs from 'fs'
 import path from 'path'
 
-// Import external modules.
+// Import utility modules.
 import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import planckmatch from 'planckmatch'
 import { trimStart } from '@hoast/utils/trim.js'
@@ -46,9 +46,9 @@ class SourceReadfiles extends BaseSource {
       this._directoryPath =
         (options.directory && path.isAbsolute(options.directory))
           ? options.directory
-          : path.resolve(libraryOptions.directoryPath, options.directory)
+          : path.resolve(libraryOptions.directory, options.directory)
     } else {
-      this._directoryPath = libraryOptions.directoryPath
+      this._directoryPath = libraryOptions.directory
     }
 
     // Create directory iterator.
@@ -93,13 +93,16 @@ class SourceReadfiles extends BaseSource {
     if (!data) {
       return
     }
+    const library = this.getLibrary()
     const options = this.getOptions()
 
     // Deconstruct parameters.
     const [filePath, filePathRelative] = data
 
-    // Mark file as accessed.
-    this.getLibrary().addAccessed(filePath)
+    if (library.isWatching()) {
+      // Mark file as accessed.
+      library.addAccessed(filePath)
+    }
 
     // Construct URI for file.
     let uri = trimStart(filePath, path.sep)

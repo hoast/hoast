@@ -9,13 +9,15 @@ import SourceReadfiles from '@hoast/source-readfiles'
 // Import base component.
 import componentHTML from './src/components/html.js'
 
-const hoast = new Hoast()
+const hoast = new Hoast({
+  directory: 'src'
+})
   .addCollections([
     // Add pages collection.
     {
       // Read files from pages directory.
       source: new SourceReadfiles({
-        directory: 'src/pages',
+        directory: 'pages',
       }),
       processes: [
         // Extract frontmatter.
@@ -48,7 +50,7 @@ const hoast = new Hoast()
         }),
         // Write to filesystem.
         new ProcessWritefiles({
-          directory: '../docs',
+          directory: '../../docs',
         }),
       ],
     },
@@ -56,7 +58,7 @@ const hoast = new Hoast()
     // Add style sheets collection.
     {
       source: new SourceReadfiles({
-        directory: 'src/styles',
+        directory: 'styles',
       }),
       processes: [
         new ProcessPostprocess({
@@ -70,15 +72,15 @@ const hoast = new Hoast()
           ],
         }),
         new ProcessWritefiles({
-          directory: '../docs/styles',
+          directory: '../../docs/styles',
         }),
       ],
     },
 
-    // Transfer files from .assets directory over.
+    // Transfer files from assets directory over.
     {
       source: new SourceReadfiles({
-        directory: 'src/assets',
+        directory: 'assets',
 
         readOptions: {
           encoding: null,
@@ -86,7 +88,7 @@ const hoast = new Hoast()
       }),
       processes: [
         new ProcessWritefiles({
-          directory: '../docs/assets',
+          directory: '../../docs/assets',
 
           writeOptions: {
             encoding: null,
