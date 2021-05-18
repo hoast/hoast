@@ -7,8 +7,8 @@ import path from 'path'
 import { promisify } from 'util'
 
 // Import utility modules.
-import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import { getByPathSegments } from '@hoast/utils/get.js'
+import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
 // Import external modules.
@@ -52,7 +52,8 @@ class ProcessHandlebars extends BaseProcess {
   }
 
   async initialize () {
-    const libraryOptions = this.getLibrary().getOptions()
+    const library = this.getLibrary()
+    const libraryOptions = library.getOptions()
     const options = this.getOptions()
 
     // Construct absolute directory path.

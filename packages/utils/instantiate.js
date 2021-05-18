@@ -20,7 +20,7 @@ const instantiate = async function (value) {
 
   // Import as package if string.
   if (type === 'string') {
-    result = (await import(result))
+    result = await import(result)
     if (result.default) {
       result = result.default
     }

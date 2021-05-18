@@ -12,10 +12,10 @@ import detectiveModule from 'detective-es6'
 import planckmatch from 'planckmatch'
 
 // Import utility modules.
-import iterateDirectory from '@hoast/utils/iterateDirectory.js'
-import { trimStart } from '@hoast/utils/trim.js'
 import { getByPathSegments } from '@hoast/utils/get.js'
 import { isClass } from '@hoast/utils/is.js'
+import iterateDirectory from '@hoast/utils/iterateDirectory.js'
+import { trimStart } from '@hoast/utils/trim.js'
 
 // Promisify read file.
 const fsReadFile = promisify(fs.readFile)

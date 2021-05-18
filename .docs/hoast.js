@@ -1,5 +1,5 @@
 // Manually import config.
-import tailwindConfig from "./tailwind.config.js"
+import tailwindConfig from './tailwind.config.js'
 
 export default {
   options: {
@@ -37,7 +37,7 @@ export default {
     source: ['@hoast/source-readfiles', {
       directory: 'scripts',
       filterPatterns: [
-        'global.js'
+        'global.js',
       ],
     }],
     processes: [
@@ -58,7 +58,7 @@ export default {
     source: ['@hoast/source-readfiles', {
       directory: 'styles',
       filterPatterns: [
-        'global.css'
+        'global.css',
       ],
     }],
     processes: [

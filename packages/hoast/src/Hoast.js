@@ -63,8 +63,9 @@ class Hoast {
     this._processes = {}
 
     // Accessed cache.
-    this._changedFiles = null
+    this._changed = null
     this._accessed = {}
+    this._processCount = 0
   }
 
   // Access.
@@ -115,10 +116,10 @@ class Hoast {
    * @returns {Array<String>} List of absolute file paths.
    */
   getChanged () {
-    if (!this.isWatching() || !this._changedFiles) {
+    if (!this.isWatching() || !this._changed) {
       return null
     }
-    return [...this._changedFiles]
+    return [...this._changed]
   }
 
   /**
@@ -128,13 +129,13 @@ class Hoast {
    */
   hasChanged (source) {
     // Return true if no changed files are given.
-    if (!this._changedFiles || this._changedFiles.indexOf(source) >= 0 || !this._accessed[source]) {
+    if (!this._changed || this._changed.indexOf(source) >= 0 || !this._accessed[source]) {
       return true
     }
 
     // Check if any of the changed files are in the accessed list.
     const filePathExpressions = this._accessed[source]
-    for (const changedFile of this._changedFiles) {
+    for (const changedFile of this._changed) {
       if (planckmatch.match.any(changedFile, filePathExpressions)) {
         return true
       }
@@ -149,7 +150,7 @@ class Hoast {
    */
   setChanged (filePaths = null) {
     if (!filePaths) {
-      this._changedFiles = null
+      this._changed = null
     }
 
     const absolutePaths = []
@@ -159,7 +160,7 @@ class Hoast {
       }
       absolutePaths.push(filePath)
     }
-    this._changedFiles = absolutePaths
+    this._changed = absolutePaths
   }
 
   // Options.
@@ -170,6 +171,16 @@ class Hoast {
    */
   getOptions () {
     return deepAssign({}, this._options)
+  }
+
+  // Process.
+
+  /**
+   * Get process called count.
+   * @returns Process call count.
+   */
+  getProcessCount () {
+    return this._processCount
   }
 
   // Watching.
@@ -374,6 +385,9 @@ class Hoast {
    * @returns {Object} The hoast instance.
    */
   async process () {
+    // Increment process count.
+    this._processCount++
+
     if (this._metaCollections.length > 0) {
       // Process meta collections.
       await processCollections(this, this._metaCollections)
@@ -392,7 +406,7 @@ class Hoast {
     }
 
     // Reset changed files.
-    this._changedFiles = null
+    this._changed = null
 
     return this
   }

@@ -1,5 +1,5 @@
-const fontBase = 1.05;
-const fontFactor = 1.15;
+const fontBase = 1.05
+const fontFactor = 1.15
 
 export default {
   corePlugins: {
@@ -36,7 +36,7 @@ export default {
 
     fontFamily: false,
     fontSize: {
-      'root': '1rem',
+      root: '1rem',
       '-2': (fontBase / (Math.pow(fontFactor, 2))) + 'rem',
       '-1': (fontBase / fontFactor) + 'rem',
       0: fontBase + 'rem',
