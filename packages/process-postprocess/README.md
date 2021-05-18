@@ -1,6 +1,6 @@
 # @hoast/process-postprocess
 
-Process CSS, HTML, and JS data using [PostCSS](https://github.com/postcss/postcss#readme), [Unified](https://github.com/unifiedjs/unified#readme), and [Babel](https://github.com/babel/babel#readme) plugins and minify using [CleanCSS](https://github.com/cssnano/cssnano#readme), [Unified](https://github.com/unifiedjs/unified#readme), and [Terser](https://github.com/terser/terser#readme) respectively.
+Process CSS, HTML, and JS data using [PostCSS](https://github.com/postcss/postcss#readme), [Unified](https://github.com/unifiedjs/unified#readme), and [Babel](https://github.com/babel/babel#readme) plugins and minify using [CleanCSS](https://github.com/cssnano/cssnano#readme), [Unified](https://github.com/unifiedjs/unified#readme), and [Terser](https://github.com/terser/terser#readme).
 
 ## Install
 

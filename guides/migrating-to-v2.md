@@ -8,4 +8,4 @@ As a result of the complete rewrite the packages have also drastically changed. 
 - Filtering can now be done on a package by package basis thanks to the `base-process` package which is inherited by most process packages. As a result a step can be skipped in the processes. This change removes the need for a seprate collection if a single process is different for a few items in a collection.
 - Minification can now handled by a postprocess package which also accepts other babel and postcss plugins for transformation of your style sheets and scripts.
 
-If you want to migrate to the new version you will unfortunately need to rewrite the entire configuration file. An overview of all packages can be found in the [packages directory](/packages).
+If you want to migrate to the new version you will unfortunately need to rewrite the configuration file. An overview of all packages can be found in the [packages directory](/packages).

@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/source-javascript",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "Read and execute scripts from the filesystem.",
   "keywords": [
     "hoast",

@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-postprocess",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Process CSS, HTML, and JS data using PostCSS, Unified, and Babel plugins and minify using CleanCSS, Unified, and Terser.",
   "keywords": [
     "hoast",

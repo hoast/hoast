@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-log",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Log data to the terminal, useful for developing other process and source packages.",
   "keywords": [
     "hoast",

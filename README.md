@@ -49,7 +49,7 @@ The following list serve as tools you can use directly, or as an example on how 
 
 The following list are project that are build with this project.
 
-- [`docs`](hoast.js.org) - The project's website is of course build using the project itself.
+- [`docs`](https://hoast.js.org) - The project's website is of course build using the project itself.
 
 ## Packages
 
@@ -74,7 +74,7 @@ The following list are project that are build with this project.
 - [`process-postprocess`](/packages/process-postprocess#readme) - Process CSS, HTML, and JS data using PostCSS, Unified, and Babel plugins and minify using CleanCSS, Unified, and Terser.
 - [`process-writefiles`](/packages/process-writefiles#readme) - Write data to the filesystem.
 
-### For developers
+### Developer packages
 
 - [`base-package`](/packages/base-package#readme) - Provides basic functionality like receiving the library's reference and setting up a logger.
 - [`base-process`](/packages/base-process#readme) - Provides basic functionality for process package like an initialization function, sequentially running of certain code, and filtering out running the process based of the data.

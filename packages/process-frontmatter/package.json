@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-frontmatter",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Extract frontmatter from text.",
   "keywords": [
     "hoast",

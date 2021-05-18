@@ -10,7 +10,7 @@ import SourceReadfiles from '@hoast/source-readfiles'
 import componentHTML from './src/components/html.js'
 
 const hoast = new Hoast({
-  directory: 'src'
+  directory: 'src',
 })
   .addCollections([
     // Add pages collection.
