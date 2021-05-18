@@ -5,13 +5,7 @@ The core package of [hoast](https://hoast.js.org) responsible for managing and r
 ## Install
 
 ```
-% yarn add @hoast/hoast
-```
-
-OR
-
-```
-% npm install @hoast/hoast --save
+$ npm install @hoast/hoast
 ```
 
 ## Usage

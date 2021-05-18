@@ -5,13 +5,7 @@ Provides basic functionality for source package like an initialization function,
 ## Install
 
 ```
-% yarn add @hoast/base-source
-```
-
-OR
-
-```
-% npm install @hoast/base-source --save
+$ npm install @hoast/base-source
 ```
 
 ## Usage

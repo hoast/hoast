@@ -5,7 +5,7 @@
   },
   "name": "@hoast/process-postprocess",
   "version": "3.0.0",
-  "description": "Process CSS, HTML, and JS data using PostCSS, Unified, and Babel plugins and minify using CleanCSS, Unified, and Terser.",
+  "description": "Process CSS, HTML, and JS data using PostCSS, Unified's rehype, and Babel plugins and minify using CleanCSS, Unified's rehype, and Terser.",
   "keywords": [
     "hoast",
     "process",

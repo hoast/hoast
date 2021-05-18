@@ -66,12 +66,12 @@ The following list are project that are build with this project.
 - [`process-custom`](/packages/process-custom#readme) - Allows you to provide your own custom process functions. Extends base-process where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
 - [`process-frontmatter`](/packages/process-frontmatter#readme) - Extract frontmatter from a text value.
 - [`process-handlebars`](/packages/process-handlebars#readme) - Template using [Handlebars](https://github.com/handlebars-lang/handlebars.js#readme).
-- [`source-javascript`](/packages/source-javascript#readme) - Retrieve and execute JavaScript.
+- [`process-javascript`](/packages/process-javascript#readme) - Retrieve and execute JavaScript.
 - [`process-log`](/packages/process-log#readme) - Log data to the terminal, useful for developing other process and source packages.
 - [`process-markdown`](/packages/process-markdown#readme) - Convert markdown to HTML using [Unified](https://github.com/unifiedjs/unified#readme).
 - [`process-parse`](/packages/process-parse#readme) - Parse a text value using a function or package.
 - [`process-pdf`](/packages/process-pdf#readme) - Converts HTML to PDF using [puppeteer](https://github.com/puppeteer/puppeteer#readme).
-- [`process-postprocess`](/packages/process-postprocess#readme) - Process CSS, HTML, and JS data using PostCSS, Unified, and Babel plugins and minify using CleanCSS, Unified, and Terser.
+- [`process-postprocess`](/packages/process-postprocess#readme) - Process CSS, HTML, and JS data using PostCSS, Unified's rehype, and Babel plugins and minify using CleanCSS, Unified's rehype, and Terser.
 - [`process-writefiles`](/packages/process-writefiles#readme) - Write data to the filesystem.
 
 ### Developer packages

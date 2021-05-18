@@ -1,17 +1,11 @@
 # @hoast/source-custom
 
-Allows you to provide your own custom source functions. Extends base-source where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
+Allows you to provide your own custom source functions. Extends base-source where the overridable functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
 
 ## Install
 
 ```
-% yarn add @hoast/source-custom
-```
-
-OR
-
-```
-% npm install @hoast/source-custom --save
+$ npm install @hoast/source-custom
 ```
 
 ## Options

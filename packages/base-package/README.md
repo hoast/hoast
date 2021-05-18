@@ -5,13 +5,7 @@ Provides basic functionality like receiving the library's reference and setting 
 ## Install
 
 ```
-% yarn add @hoast/base-package
-```
-
-OR
-
-```
-% npm install @hoast/base-package --save
+$ npm install @hoast/base-package
 ```
 
 ## Usage

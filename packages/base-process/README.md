@@ -5,14 +5,9 @@ Provides basic functionality for process package like an initialization function
 ## Install
 
 ```
-% yarn add @hoast/base-process
+$ npm install @hoast/base-process
 ```
 
-OR
-
-```
-% npm install @hoast/base-process --save
-```
 ## Usage
 
 > Extends [BasePackage](https://github.com/hoast/hoast/tree/master/packages/base-package#readme).

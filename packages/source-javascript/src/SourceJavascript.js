@@ -36,12 +36,11 @@ class SourceJavascript extends BaseSource {
   constructor(options) {
     super({
       directory: null,
+      executeProperty: 'default',
       filterPatterns: null,
       filterOptions: {
         all: false,
       },
-
-      executeProperty: 'default',
     }, options)
     options = this.getOptions()
 

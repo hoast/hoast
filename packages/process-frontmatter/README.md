@@ -5,13 +5,7 @@ Extract frontmatter from text.
 ## Install
 
 ```
-% yarn add @hoast/process-frontmatter
-```
-
-OR
-
-```
-% npm install @hoast/process-frontmatter --save
+$ npm install @hoast/process-frontmatter
 ```
 
 ## Options

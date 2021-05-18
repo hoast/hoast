@@ -5,13 +5,7 @@ Allows you to provide your own custom process functions. Extends base-process wh
 ## Install
 
 ```
-% yarn add @hoast/process-custom
-```
-
-OR
-
-```
-% npm install @hoast/process-custom --save
+$ npm install @hoast/process-custom
 ```
 
 ## Options

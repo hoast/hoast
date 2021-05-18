@@ -5,13 +5,7 @@ Retrieve and execute JavaScript.
 ## Install
 
 ```
-% yarn add @hoast/process-javascript
-```
-
-OR
-
-```
-% npm install @hoast/process-javascript --save
+$ npm install @hoast/process-javascript
 ```
 
 ## Example
