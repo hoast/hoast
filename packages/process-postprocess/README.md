@@ -1,6 +1,6 @@
 # @hoast/process-postprocess
 
-Process CSS, HTML, and JS data using [`postcss`](https://github.com/postcss/postcss#readme) and [`babel`](https://github.com/babel/babel#readme) plugins and minify using [`cssnano`](https://github.com/cssnano/cssnano#readme), [`html-minifier-terser`](https://github.com/terser/html-minifier-terser#readme), and [`terser`](https://github.com/terser/terser#readme).
+Process CSS, HTML, and JS data using [PostCSS](https://github.com/postcss/postcss#readme), [Unified](https://github.com/unifiedjs/unified#readme), and [Babel](https://github.com/babel/babel#readme) plugins and minify using [CleanCSS](https://github.com/cssnano/cssnano#readme), [Unified](https://github.com/unifiedjs/unified#readme), and [Terser](https://github.com/terser/terser#readme) respectively.
 
 ## Install
 
@@ -19,6 +19,7 @@ OR
 - `{String} property = 'contents'` Dot notation path to the data property which should be used processed by Mithril.
 - `{String} mode = 'html'` Whether to process the data as either `css`, `cjs`, `html`, or `js`, `mjs`, `ts`. Set to either of those options. The `cjs`, `mjs`, and `ts` modes do not process the data differently and only influence how the dependencies are read when watching for changes.
 - `{Boolean} minify = true` Whether to minify.
+- `{Array} documentPlugins = []` [`unified` plugins](https://github.com/unifiedjs/unified#readme).
 - `{Object} scriptMinifyOptions = {}` [`terser` options](https://github.com/terser/terser#readme). Set to `false` to disable JS minification.
 - `{Object} scriptOptions = {}` [`babel` options](https://github.com/babel/babel#readme).
 - `{Object} styleMinifyOptions = {}` [`cssnano` options](https://github.com/cssnano/cssnano#readme). Set to `false` to disable CSS minification.

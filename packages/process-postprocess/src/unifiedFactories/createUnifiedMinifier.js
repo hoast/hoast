@@ -26,7 +26,7 @@ import rehypeStringify from 'rehype-stringify'
 // Import custom rehype processes.
 import createScriptsStylesProcess from './createScriptsStylesProcess.js'
 
-export default function (options, stylesProcessor, scriptsProcessor) {
+export default function (options, plugins, stylesProcessor, scriptsProcessor) {
   options = Object.assign({
     minify: true,
   }, options)
@@ -38,6 +38,13 @@ export default function (options, stylesProcessor, scriptsProcessor) {
   parser.use(rehypeParse)
   // Custom parser for scripts and styles.
   parser.use(createScriptsStylesProcess, stylesProcessor, scriptsProcessor)
+
+  // Add additional given plugins.
+  if (plugins) {
+    for (const plugin of plugins) {
+      parser.use(plugin)
+    }
+  }
 
   // Add minify plugins.
   if (options.minify) {

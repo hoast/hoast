@@ -60,6 +60,8 @@ class ProcessPostprocess extends BaseProcess {
       mode: 'html',
       minify: true,
 
+      documentPlugins: [],
+
       scriptMinifyOptions: {},
       scriptOptions: {},
 
@@ -159,7 +161,7 @@ class ProcessPostprocess extends BaseProcess {
     // Create document processor.
     const unified = createUnified({
       minify: options.minify,
-    }, this._styleProcessor, this._scriptProcessor)
+    }, options.documentPlugins, this._styleProcessor, this._scriptProcessor)
     this._documentProcessor = async (code) => {
       return (await unified.process(code)).contents
     }
