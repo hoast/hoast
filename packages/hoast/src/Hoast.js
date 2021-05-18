@@ -65,7 +65,6 @@ class Hoast {
     // Accessed cache.
     this._changed = null
     this._accessed = {}
-    this._processCount = 0
   }
 
   // Access.
@@ -171,16 +170,6 @@ class Hoast {
    */
   getOptions () {
     return deepAssign({}, this._options)
-  }
-
-  // Process.
-
-  /**
-   * Get process called count.
-   * @returns Process call count.
-   */
-  getProcessCount () {
-    return this._processCount
   }
 
   // Watching.
@@ -385,9 +374,6 @@ class Hoast {
    * @returns {Object} The hoast instance.
    */
   async process () {
-    // Increment process count.
-    this._processCount++
-
     if (this._metaCollections.length > 0) {
       // Process meta collections.
       await processCollections(this, this._metaCollections)
