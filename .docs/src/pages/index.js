@@ -99,7 +99,7 @@ export default function () {
 
       section([
         r('h2', 'Customize to what you need!'),
-        r('p', 'First import the core package, and start adding collections. Each collection needs a source plugin as wel as a series of processors to transform the data. See the list below for an overview of first party packages.'),
+        r('p', 'First import the core package, and start adding collections. Each collection needs a source plugin as wel as a series of processors to transform the data.'),
       ]),
 
       r('div', {

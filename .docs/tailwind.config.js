@@ -166,7 +166,9 @@ export default {
 
   purge: [
     './src/components/**/*.js',
+    './src/icons/**/*.svg',
     './src/pages/**/*.js',
     './src/scripts/**/*.js',
+    './src/utils/**/*.js',
   ],
 }
