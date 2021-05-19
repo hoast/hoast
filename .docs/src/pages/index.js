@@ -33,7 +33,7 @@ export default function () {
           class: 'logo'
         }, logo()),
 
-        r('h1', ''),
+        r('h1', 'A set of simple and modular packages for build automation.'),
         r('p', ''),
 
         r('div', {
@@ -60,22 +60,46 @@ export default function () {
       ]),
 
       section([
-        r('h2', ''),
-        r('p', ''),
-      ]),
+        r('h2', 'Creating a static page generator can be incredibly easy!'),
+        r('p', 'Create the following configuration file in the root of your project, install the used dependencies and run the `hoast` command to start a build.'),
 
-      section([
-        r('h2', ''),
-        r('p', ''),
+        r('div', {
+          class: 'sm:mx-2 md:mx-8 lg:mx-12',
+        }, [
+          // Code.
+          window({
+            language: 'js',
+          }, [
+            "export default {",
+            " options: {",
+            "   directory: 'src',",
+            " },",
+            " collections: [{",
+            "   source: ['@hoast/source-readfiles', {",
+            "     directory: 'pages',",
+            "   }],",
+            "   processes: [",
+            "     '@hoast/process-frontmatter',",
+            "     '@hoast/process-markdown',",
+            "     ['@hoast/process-handlebars', {",
+            "       templateDirectory: 'layouts',",
+            "       templatePath: 'default.hbs',",
+            "     }],",
+            "     ['@hoast/process-writefiles', {",
+            "       directory: '../dst',",
+            "     }],",
+            "   ],",
+            " }],",
+            "}",
+          ]),
 
-        // Code.
-        window({}, [
+          r('div', { class: 'px-2 py-1' }, 'Configuration files can have many forms `JSON`, `JavaScript` objects, `Hoast` instances, or use the API directly and call the process function to start building.')
         ]),
       ]),
 
       section([
-        r('h2', ''),
-        r('p', ''),
+        r('h2', 'Customize to what you need!'),
+        r('p', 'First import the core package, and start adding collections. Each collection needs a source plugin as wel as a series of processors to transform the data. See the list below for an overview of first party packages.'),
       ]),
 
       r('div', {
@@ -86,7 +110,59 @@ export default function () {
         }, [
           card({
             href: 'https://github.com/hoast/hoast/tree/master/packages/hoast#readme',
-          }, '@hoast/hoast', ''),
+          }, '@hoast/hoast', 'The core package of hoast responsible for managing and running the other packages.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/source-filesystem#readme',
+          }, '@hoast/source-filesystem', 'Read files from the filesystem.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/source-javascript#readme',
+          }, '@hoast/source-javascript', 'Read and execute script from the filesystem.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/source-custom#readme',
+          }, '@hoast/source-custom', 'Allows you to provide your own custom source functions.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-writefiles#readme',
+          }, '@hoast/process-writefiles', 'Write data to the filesystem.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-frontmatter#readme',
+          }, '@hoast/process-frontmatter', 'Extract frontmatter from a text value.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-parse#readme',
+          }, '@hoast/process-parse', 'Parse a text value using a function or package.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-markdown#readme',
+          }, '@hoast/process-markdown', 'Convert markdown to HTML using Unified.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-handlebars#readme',
+          }, '@hoast/process-handlebars', 'Template using Handlebars.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-javascript#readme',
+          }, '@hoast/process-javascript', 'Retrieve and execute JavaScript.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-postprocess#readme',
+          }, '@hoast/process-postprocess', 'Process CSS, HTML, and JS data using PostCSS, Unified\'s rehype, and Babel plugins and minify using CleanCSS, Unified\'s rehype, and Terser.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-pdf#readme',
+          }, '@hoast/process-pdf', 'Converts HTML to PDF using puppeteer.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-log#readme',
+          }, '@hoast/process-log', 'Log data to the terminal, useful for developing other process and source packages.'),
+
+          card({
+            href: 'https://github.com/hoast/hoast/tree/master/packages/process-custom#readme',
+          }, '@hoast/process-custom', 'Allows you to provide your own custom process functions.'),
         ]),
       ]),
     ]),

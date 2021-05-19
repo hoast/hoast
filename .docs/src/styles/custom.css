@@ -299,7 +299,6 @@ a.card {
 .code-wrapper {
   @apply border border-solid border-grey-9 my-0.5 px-1 py-0.75 rounded-1;
 }
-
 .hljs-comment {
   @apply text-grey-6;
 }
@@ -315,29 +314,29 @@ a.card {
 .hljs-params {
   @apply text-grey-0;
 }
-.hljs-string,
-.javascript {
+.hljs-string {
   @apply text-black;
 }
 
 .code-dark {
+  @apply text-grey-3;
+
   & .hljs-comment {
     @apply text-grey-3;
   }
+  & .hljs-attr,
   & .hljs-name {
     @apply text-grey-7;
   }
-  & .hljs-function,
   & .hljs-keyword,
+  & .hljs-function,
   & .hljs-tag {
     @apply text-grey-5;
   }
-  & .hljs-attr,
   & .hljs-params {
     @apply text-grey-9;
   }
-  & .hljs-string,
-  & .javascript {
+  & .hljs-string {
     @apply text-white;
   }
 }
