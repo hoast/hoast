@@ -2,6 +2,7 @@ import _deepAssign from './deepAssign.js'
 import _deepMerge from './deepMerge.js'
 import _get from './get.js'
 import _has from './has.js'
+import _importVersion from './importVersion.js'
 import _instantiate from './instantiate.js'
 import _iterateDirectory from './iterateDirectory.js'
 import _is from './is.js'
@@ -13,6 +14,7 @@ export const deepAssign = _deepAssign
 export const deepMerge = _deepMerge
 export const get = _get
 export const has = _has
+export const importVersion = _importVersion
 export const instantiate = _instantiate
 export const iterateDirectory = _iterateDirectory
 export const is = _is
@@ -25,6 +27,7 @@ export default {
   deepMerge: _deepMerge,
   get: _get,
   has: _has,
+  importVersion: _importVersion,
   instantiate: _instantiate,
   iterateDirectory: _iterateDirectory,
   is: _is,

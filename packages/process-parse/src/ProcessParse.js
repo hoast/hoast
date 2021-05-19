@@ -25,10 +25,12 @@ class ProcessParse extends BaseProcess {
   async initialize () {
     const options = this.getOptions()
 
-    if (Array.isArray(options.parser) || typeof (options.parser) === 'string') {
-      this._parser = await instantiate(options.parser)
-    } else {
-      this._parser = options.parser
+    if (!this._parser) {
+      if (Array.isArray(options.parser) || typeof (options.parser) === 'string') {
+        this._parser = await instantiate(options.parser)
+      } else {
+        this._parser = options.parser
+      }
     }
   }
 
@@ -41,12 +43,6 @@ class ProcessParse extends BaseProcess {
     data = setByPathSegments(data, this._propertyPath, value)
     // Return result.
     return data
-  }
-
-  final () {
-    super.final()
-
-    this._parser = null
   }
 }
 

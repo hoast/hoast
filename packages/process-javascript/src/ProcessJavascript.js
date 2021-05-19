@@ -13,6 +13,7 @@ import planckmatch from 'planckmatch'
 
 // Import utility modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
+import importVersion from '@hoast/utils/importVersion.js'
 import { isClass } from '@hoast/utils/is.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
@@ -96,6 +97,7 @@ class ProcessJavascript extends BaseProcess {
   async concurrent (data) {
     const library = this.getLibrary()
     const libraryOptions = library.getOptions()
+    const libraryProcessCount = library.getProcessCount()
 
     // Get path of script to import.
     let importPath
@@ -123,7 +125,7 @@ class ProcessJavascript extends BaseProcess {
     // Import script at path.
     let importedScript
     try {
-      importedScript = await import(importPath)
+      importedScript = await importVersion(importPath, libraryProcessCount)
     } catch (error) {
       throw new Error('Unable to import file at path: "' + importPath + '".')
     }

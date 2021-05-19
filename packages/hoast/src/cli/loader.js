@@ -1,16 +1,24 @@
 import { URL } from 'url'
 
 export async function resolve (specifier, context, defaultResolve) {
-  const result = defaultResolve(specifier, context, defaultResolve)
-  const resultUrl = new URL(result.url)
+  const resolved = defaultResolve(specifier, context, defaultResolve)
+  const resolvedURL = new URL(resolved.url)
 
   // Ignore node modules.
-  if (resultUrl.protocol === 'nodejs:' || resultUrl.protocol === 'node:' || resultUrl.pathname.includes('/node_modules/')) {
-    return result
+  if (resolvedURL.protocol === 'nodejs:' || resolvedURL.protocol === 'node:' || resolvedURL.pathname.includes('/node_modules/')) {
+    return resolved
   }
 
-  // Append current time as a query to the file path.
+  if (!resolvedURL.searchParams.has('version') && context.parentURL) {
+    // Get query paramter from parent if set.
+    const parentURL = new URL(context.parentURL)
+    if (parentURL.searchParams.has('version')) {
+      resolvedURL.searchParams.set('version', parentURL.searchParams.get('version'))
+    }
+  }
+
+  // Return filepath with optional query parameter.
   return {
-    url: resultUrl.href + '?t=' + (Date.now()),
+    url: resolvedURL.protocol + '//' + resolvedURL.pathname + '?' + resolvedURL.searchParams.toString(),
   }
 }

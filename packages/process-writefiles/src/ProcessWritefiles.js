@@ -42,11 +42,13 @@ class ProcessWritefiles extends BaseProcess {
     const libraryOptions = this.getLibrary().getOptions()
     const options = this.getOptions()
 
-    // Construct absolute directory path.
-    this._directoryPath =
-      (options.directory && path.isAbsolute(options.directory))
-        ? options.directory
-        : path.resolve(libraryOptions.directory, options.directory)
+    if (!this._directoryPath) {
+      // Construct absolute directory path.
+      this._directoryPath =
+        (options.directory && path.isAbsolute(options.directory))
+          ? options.directory
+          : path.resolve(libraryOptions.directory, options.directory)
+    }
   }
 
   async sequential (data) {
@@ -76,12 +78,6 @@ class ProcessWritefiles extends BaseProcess {
     )
 
     return data
-  }
-
-  final () {
-    super.final()
-
-    this._directoryPath = null
   }
 }
 

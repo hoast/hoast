@@ -68,7 +68,6 @@ Commands
 
 Options for run
   --concurrency-limit  {Number}  Maximum amount of items to process at once. (Default: 4)
-  --directory-path     {String}  Directory to run the command from. (Default: 'process.cwd()')
   --file-path          {String}  File path to config or script file. (Defaults: 'hoast.js' and 'hoast.json')
   --log-level          {Number}  Log level given to the logger. (Default: 2 (Errors and warnings))
   --watch                        Re-build automatically when a file changes.
@@ -95,15 +94,7 @@ Options for run
   console.log('ʕ ˵·ᴥ·ʔ   Preparing…')
 
   // Set base directory path.
-  let directory
-  if (Object.prototype.hasOwnProperty.call(options, 'directory-path')) {
-    directory = options['directory-path']
-    if (!path.isAbsolute(directory)) {
-      directory = path.resolve(process.cwd(), directory)
-    }
-  } else {
-    directory = process.cwd()
-  }
+  let directory = process.cwd()
 
   // Set configuration file path.
   let filePath

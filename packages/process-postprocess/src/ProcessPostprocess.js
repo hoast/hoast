@@ -92,74 +92,80 @@ class ProcessPostprocess extends BaseProcess {
     const library = this.getLibrary()
     const options = this.getOptions()
 
-    // Store options.
-    const scriptOptions = deepAssign({}, options.scriptOptions)
-    const scriptMinifyOptions = deepAssign({}, options.scriptMinifyOptions)
+    if (!this._scriptProcessor) {
+      // Store options.
+      const scriptOptions = deepAssign({}, options.scriptOptions)
+      const scriptMinifyOptions = deepAssign({}, options.scriptMinifyOptions)
 
-    // Create script processor.
-    this._scriptProcessor = async (code) => {
-      // Process via Babel.
-      let result = await babel.transformAsync(code, scriptOptions)
-      if (result.error) {
-        return code
-      }
-
-      code = result.code
-
-      // Process via Terser.
-      result = await terser(code, scriptMinifyOptions)
-      if (result.error) {
-        return code
-      }
-
-      return result.code
-    }
-
-    // Setup Postcss plugins.
-    let stylePlugins = options.stylePlugins ? options.stylePlugins : []
-    if (stylePlugins.length >= 0) {
-      // Instantiate all plugins.
-      const pluginsTemp = []
-      for (let plugin of stylePlugins) {
-        if (Array.isArray(plugin) || typeof (plugin) === 'string') {
-          plugin = await instantiate(plugin)
+      // Create script processor.
+      this._scriptProcessor = async (code) => {
+        // Process via Babel.
+        let result = await babel.transformAsync(code, scriptOptions)
+        if (result.error) {
+          return code
         }
-        pluginsTemp.push(plugin)
+
+        code = result.code
+
+        // Process via Terser.
+        result = await terser(code, scriptMinifyOptions)
+        if (result.error) {
+          return code
+        }
+
+        return result.code
       }
-      stylePlugins = pluginsTemp
     }
 
-    // Add Postcss minifier.
-    if (options.minify && options.styleMinifyOptions) {
-      stylePlugins.push(cssnano(options.styleMinifyOptions))
+    if (!this._styleProcessor) {
+      // Setup Postcss plugins.
+      let stylePlugins = options.stylePlugins ? options.stylePlugins : []
+      if (stylePlugins.length >= 0) {
+        // Instantiate all plugins.
+        const pluginsTemp = []
+        for (let plugin of stylePlugins) {
+          if (Array.isArray(plugin) || typeof (plugin) === 'string') {
+            plugin = await instantiate(plugin)
+          }
+          pluginsTemp.push(plugin)
+        }
+        stylePlugins = pluginsTemp
+      }
+
+      // Add Postcss minifier.
+      if (options.minify) {
+        stylePlugins.push(cssnano(options.styleMinifyOptions ?? {}))
+      }
+
+      // Setup Postcss.
+      const postcss = new Postcss(stylePlugins)
+      // Create style processor.
+      this._styleProcessor = (code, filePath = null) => {
+        const styleOptionsTemp = Object.assign({}, options.styleOptions, {
+          from: filePath || undefined,
+        })
+
+        return new Promise((resolve, reject) => {
+          // Process via Postcss.
+          postcss.process(code, styleOptionsTemp)
+            .then(result => {
+              resolve(result.css)
+            })
+            .catch(error => {
+              reject(error)
+            })
+        })
+      }
     }
 
-    // Setup Postcss.
-    const postcss = new Postcss(stylePlugins)
-    // Create style processor.
-    this._styleProcessor = (code, filePath = null) => {
-      const styleOptionsTemp = Object.assign({}, options.styleOptions, {
-        from: filePath || undefined,
-      })
-
-      return new Promise((resolve, reject) => {
-        // Process via Postcss.
-        postcss.process(code, styleOptionsTemp)
-          .then(result => {
-            resolve(result.css)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    }
-
-    // Create document processor.
-    const unified = createUnified({
-      minify: options.minify,
-    }, options.documentPlugins, this._styleProcessor, this._scriptProcessor)
-    this._documentProcessor = async (code) => {
-      return (await unified.process(code)).contents
+    if (!this._documentProcessor) {
+      // Create document processor.
+      const unified = createUnified({
+        minify: options.minify,
+      }, options.documentPlugins, this._styleProcessor, this._scriptProcessor)
+      this._documentProcessor = async (code) => {
+        return (await unified.process(code)).contents
+      }
     }
 
     if (library.isWatching()) {
@@ -185,7 +191,7 @@ class ProcessPostprocess extends BaseProcess {
     // If watching mark dependencies as accessed.
     if (library.isWatching()) {
       // Get all dependencies of script.
-      const dependencies = await this.getDependencies(value, options.mode)
+      const dependencies = await this.getDependencies(data.sourceIdentifier, value, options.mode)
 
       // Add import and dependencies as accessed.
       library.addAccessed(data.sourceIdentifier, ...dependencies)
@@ -244,6 +250,8 @@ class ProcessPostprocess extends BaseProcess {
         case 'ts':
           return detectiveTypescript(content, DETECTIVE_TYPESCRIPT_OPTIONS)
       }
+
+      return []
     }
 
     // Discover dependencies of given content.
@@ -264,6 +272,10 @@ class ProcessPostprocess extends BaseProcess {
      * Filter out dependencies that our outside the watcher or should be ignored.
      */
     const filterDependencies = (importPath, discoveredDependencies) => {
+      if (!discoveredDependencies || discoveredDependencies.length === 0) {
+        return []
+      }
+
       const filteredDependencies = []
       for (let dependency of discoveredDependencies) {
         // Exclude any non file path dependencies.
@@ -339,14 +351,6 @@ class ProcessPostprocess extends BaseProcess {
     await addDependencies(source, filterDependencies(source, discoveredDependencies), type)
 
     return dependencies
-  }
-
-  final () {
-    super.final()
-
-    this._documentProcessor = null
-    this._scriptProcessor = null
-    this._styleProcessor = null
   }
 }
 

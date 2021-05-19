@@ -5,9 +5,6 @@ import toString from 'hast-util-to-string'
 import isStyle from 'hast-util-is-css-style'
 import { visit } from 'unist-util-visit'
 
-const INLINE_STYLE_PREFIX = '*{'
-const INLINE_STYLE_SUFFIX = '}'
-
 export default function (stylesProcessor, scriptsProcessor) {
   return async function (tree) {
     const inlineStyleNodes = [], styleNodes = [], scriptNodes = []
@@ -28,8 +25,8 @@ export default function (stylesProcessor, scriptsProcessor) {
       inlineStyleNodes.map(async (node) => {
         let value = node.properties.style
         if (typeof value === 'string') {
-          value = await stylesProcessor(INLINE_STYLE_PREFIX + value + INLINE_STYLE_SUFFIX)
-          node.properties.style = value ? value.substring(INLINE_STYLE_PREFIX.length, -INLINE_STYLE_SUFFIX.length) : null
+          value = await stylesProcessor('*{' + value + '}')
+          node.properties.style = value ? value.substring(2, value.length - 1) : null
         }
       }),
       styleNodes.map(async (node) => {

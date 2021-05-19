@@ -6,7 +6,9 @@
 
 # Hoast
 
-A set of simple and modular packages for build automation. Creating a static page generator can be incredibly easy! Create a configuration file in the root of your project and run the `hoast` command to start building.
+A set of simple and modular packages for build automation.
+
+Creating a static page generator can be incredibly easy! Create the following configuration file in the root of your project, install the used dependencies and run the `hoast` command to start a build.
 
 ```JavaScript
 export default {
@@ -57,13 +59,13 @@ The following list are project that are build with this project.
 
 ### Source packages
 
-- [`source-custom`](/packages/source-custom#readme) - Allows you to provide your own custom source functions. Extends base-source where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
+- [`source-custom`](/packages/source-custom#readme) - Allows you to provide your own custom source functions. Extends base-source where the overridable functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
 - [`source-javascript`](/packages/source-javascript#readme) - Read and execute script from the filesystem.
 - [`source-readfiles`](/packages/source-readfiles#readme) - Read files from the filesystem.
 
 ### Process packages
 
-- [`process-custom`](/packages/process-custom#readme) - Allows you to provide your own custom process functions. Extends base-process where the overridabel functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
+- [`process-custom`](/packages/process-custom#readme) - Allows you to provide your own custom process functions. Extends base-process where the overridable functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
 - [`process-frontmatter`](/packages/process-frontmatter#readme) - Extract frontmatter from a text value.
 - [`process-handlebars`](/packages/process-handlebars#readme) - Template using [Handlebars](https://github.com/handlebars-lang/handlebars.js#readme).
 - [`process-javascript`](/packages/process-javascript#readme) - Retrieve and execute JavaScript.

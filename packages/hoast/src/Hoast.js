@@ -65,6 +65,9 @@ class Hoast {
     // Accessed cache.
     this._changed = null
     this._accessed = {}
+
+    // Keep track of process call count.
+    this._processCount = 0
   }
 
   // Access.
@@ -170,6 +173,16 @@ class Hoast {
    */
   getOptions () {
     return deepAssign({}, this._options)
+  }
+
+  // Process.
+
+  /**
+   * Get the process called count.
+   * @returns {Object} The process called count.
+   */
+  getProcessCount () {
+    return this._processCount
   }
 
   // Watching.
@@ -393,6 +406,7 @@ class Hoast {
 
     // Reset changed files.
     this._changed = null
+    this._processCount++
 
     return this
   }

@@ -1,3 +1,4 @@
+import importVersion from './importVersion.js'
 import { isClass } from './is.js'
 
 /**
@@ -5,7 +6,7 @@ import { isClass } from './is.js'
  * @param {Any} value Value to import and or instantiate. A string will be dynamically imported.
  * @returns {Object} The imported and instantiated object.
  */
-const instantiate = async function (value) {
+const instantiate = async function (value, version = 0) {
   let result, parameters
   if (Array.isArray(value)) {
     result = value.shift()
@@ -20,7 +21,7 @@ const instantiate = async function (value) {
 
   // Import as package if string.
   if (type === 'string') {
-    result = await import(result)
+    result = await importVersion(result, version)
     if (result.default) {
       result = result.default
     }

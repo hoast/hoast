@@ -36,62 +36,64 @@ class ProcessMarkdown extends BaseProcess {
   async initialize () {
     const options = this.getOptions()
 
-    // Construct unified parser.
-    this._parser = unified()
+    if (!this._parser) {
+      // Construct unified parser.
+      this._parser = unified()
 
-    const addPlugin = async (plugin) => {
-      let result, parameters
-      if (Array.isArray(plugin)) {
-        result = plugin.shift()
-        parameters = plugin
-      } else {
-        result = plugin
-        parameters = []
-      }
-
-      // Get type of result.
-      let type = typeof (result)
-
-      // Import as package if string.
-      if (type === 'string') {
-        result = (await import(result))
-        if (result.default) {
-          result = result.default
+      const addPlugin = async (plugin) => {
+        let result, parameters
+        if (Array.isArray(plugin)) {
+          result = plugin.shift()
+          parameters = plugin
+        } else {
+          result = plugin
+          parameters = []
         }
 
-        // Get type of imported.
-        type = typeof (result)
+        // Get type of result.
+        let type = typeof (result)
 
-        // Check new value.
-        if (type !== 'function') {
-          throw new Error('Imported type must be a class or function.')
+        // Import as package if string.
+        if (type === 'string') {
+          result = (await import(result))
+          if (result.default) {
+            result = result.default
+          }
+
+          // Get type of imported.
+          type = typeof (result)
+
+          // Check new value.
+          if (type !== 'function') {
+            throw new Error('Imported type must be a class or function.')
+          }
         }
+
+        this._parser
+          .use(result, ...parameters)
       }
 
       this._parser
-        .use(result, ...parameters)
+        .use(remarkParse) // Markdown to Markdown AST.
+
+      // Add remark plugins.
+      for (const plugin of options.remarkPlugins) {
+        await addPlugin(plugin)
+      }
+
+      this._parser
+        .use(remarkRehype) // Markdown AST to HTML AST.
+        .use(rehypeRaw) // Reparse HTML AST.
+
+      // Add rehype plugins.
+      for (const plugin of options.rehypePlugins) {
+        await addPlugin(plugin)
+      }
+
+      this._parser
+        .use(rehypeSanitize) // Sanitize HTML AST.
+        .use(rehypeStringify) // HTML AST to string.
     }
-
-    this._parser
-      .use(remarkParse) // Markdown to Markdown AST.
-
-    // Add remark plugins.
-    for (const plugin of options.remarkPlugins) {
-      await addPlugin(plugin)
-    }
-
-    this._parser
-      .use(remarkRehype) // Markdown AST to HTML AST.
-      .use(rehypeRaw) // Reparse HTML AST.
-
-    // Add rehype plugins.
-    for (const plugin of options.rehypePlugins) {
-      await addPlugin(plugin)
-    }
-
-    this._parser
-      .use(rehypeSanitize) // Sanitize HTML AST.
-      .use(rehypeStringify) // HTML AST to string.
   }
 
   async concurrent (data) {
@@ -122,12 +124,6 @@ class ProcessMarkdown extends BaseProcess {
 
     // Return result.
     return data
-  }
-
-  final () {
-    super.final()
-
-    this._parser = null
   }
 }
 

@@ -8,6 +8,7 @@ import { promisify } from 'util'
 
 // Import utility modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
+import importVersion from '@hoast/utils/importVersion.js'
 import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
@@ -54,6 +55,7 @@ class ProcessHandlebars extends BaseProcess {
   async initialize () {
     const library = this.getLibrary()
     const libraryOptions = library.getOptions()
+    const libraryProcessCount = library.getProcessCount()
     const options = this.getOptions()
 
     // Construct absolute directory path.
@@ -108,7 +110,7 @@ class ProcessHandlebars extends BaseProcess {
               const filePathRelative = path.relative(this._helpersPath, filePath)
 
               // Dynamic import helper.
-              let helper = await import(filePath)
+              let helper = await importVersion(filePath, libraryProcessCount)
               if (!helper || !helper.default) {
                 continue
               }
