@@ -3,7 +3,7 @@ body {
   -webkit-text-size-adjust: none;
   -moz-text-size-adjust: none;
   -moz-osx-font-smoothing: grayscale;
-  @reuse .font-sans, .font-300, .leading-4, .text-grey-1, .text-0;
+  @reuse font-sans font-300 leading-4 text-grey-1 text-0;
 }
 
 html {
@@ -17,61 +17,61 @@ html {
 }
 
 .heading {
-  @reuse .font-display, .font-900, .leading-2, .bg-gradient-to-tr, .from-grey-1, .to-grey-5, .text-transparent, .bg-clip-text;
+  @reuse font-display font-900 leading-2 bg-gradient-to-tr from-grey-1 to-grey-5 text-transparent bg-clip-text;
 }
 
 a {
-  @reuse .font-900, .no-underline;
+  @reuse font-900 no-underline;
   &:active, &:focus, &:hover {
-    @reuse .underline;
+    @reuse underline;
     & .hover-a\:underline {
-      @reuse .underline;
+      @reuse underline;
     }
   }
 }
 
 b {
-  @reuse .font-600;
+  @reuse font-600;
 }
 
 h1 {
-  @reuse .text-6;
+  @reuse text-6;
 }
 
 h2 {
-  @reuse .text-5;
+  @reuse text-5;
 }
 
 h3 {
-  @reuse .text-4;
+  @reuse text-4;
 }
 
 h4 {
-  @reuse .text-3;
+  @reuse text-3;
 }
 
 h5 {
-  @reuse .text-2;
+  @reuse text-2;
 }
 
 h6 {
-  @reuse .text-1;
+  @reuse text-1;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @reuse .heading, .leading-2;
+  @reuse heading leading-2;
 }
 
 h1, h2, h3, h4, h5, h6, p {
-  @reuse .my-0\.875;
+  @reuse my-0.875;
 }
 
 p {
-  @reuse .text-grey-3, .text-0, .font-400;
+  @reuse text-grey-3 text-0 font-400;
 }
 
 .logo {
-  @reuse .my-0\.375, .select-none, .text-10;
+  @reuse my-0.375 select-none text-10;
 }
 
 main .logo+h1 {
@@ -79,127 +79,127 @@ main .logo+h1 {
 }
 
 main .logo {
-  @reuse .heading;
+  @reuse heading;
 }
 
 footer .logo {
-  @reuse .font-display, .font-900, .leading-2, .text-white;
+  @reuse font-display font-900 leading-2 text-white;
 }
 
 @media screen and (min-width: 512px) {
   h1 {
-    @reuse .text-7;
+    @reuse text-7;
   }
   h2 {
-    @reuse .text-6;
+    @reuse text-6;
   }
   h3 {
-    @reuse .text-5;
+    @reuse text-5;
   }
   h4 {
-    @reuse .text-4;
+    @reuse text-4;
   }
   h5 {
-    @reuse .text-3;
+    @reuse text-3;
   }
   h6 {
-    @reuse .text-2;
+    @reuse text-2;
   }
   p {
-    @reuse .text-1;
+    @reuse text-1;
   }
   .logo {
-    @reuse .text-11;
+    @reuse text-11;
   }
 }
 
 @media screen and (min-width: 768px) {
   h1 {
-    @reuse .text-8;
+    @reuse text-8;
   }
   h2 {
-    @reuse .text-7;
+    @reuse text-7;
   }
   h3 {
-    @reuse .text-6;
+    @reuse text-6;
   }
   h4 {
-    @reuse .text-5;
+    @reuse text-5;
   }
   h5 {
-    @reuse .text-4;
+    @reuse text-4;
   }
   h6 {
-    @reuse .text-3;
+    @reuse text-3;
   }
   p {
-    @reuse .text-2;
+    @reuse text-2;
   }
   .logo {
-    @reuse .text-12;
+    @reuse text-12;
   }
 }
 
 .bar {
-  @reuse .flex, .flex-row, .flex-wrap, .-mx-0\.5;
+  @reuse flex flex-row flex-wrap -mx-0.5;
   &>* {
-    @reuse .mx-0\.5, .my-0\.5;
+    @reuse mx-0.5 my-0.5;
   }
 }
 
 .group>*:not(:first-child) {
-  @reuse .border-l-0, .rounded-l-0;
+  @reuse border-l-0 rounded-l-0;
 }
 
 .group>*:not(:last-child) {
-  @reuse .rounded-r-0;
+  @reuse rounded-r-0;
 }
 
 button, .button, [type="button"], [type="reset"], [type="submit"] {
-  @reuse .bg-white, .border, .border-grey-9, .border-solid, .cursor-pointer, .inline-block, .my-0\.5, .py-0\.5, .px-0\.75, .rounded-0\.75, .text-grey-2;
+  @reuse bg-white border border-grey-9 border-solid cursor-pointer inline-block my-0.5 py-0.5 px-0.75 rounded-0.75 text-grey-2;
   &:active, &:focus, &:hover {
-    @reuse .no-underline;
+    @reuse no-underline;
   }
 }
 
 input {
-  @reuse .bg-white, .block, .border, .border-solid, .border-grey-9, .my-0\.5, .px-1, .py-0\.5, .rounded-0\.75, .text-grey-1, .w-full;
+  @reuse bg-white block border border-solid border-grey-9 my-0.5 px-1 py-0.5 rounded-0.75 text-grey-1 w-full;
 }
 
 fieldset {
-  @reuse .border-0, .m-0, .p-0;
+  @reuse border-0 m-0 p-0;
 }
 
 code {
   word-break: break-word;
-  @reuse .font-mono, .font-400, .leading-1;
+  @reuse font-mono font-400 leading-1;
 }
 
 pre {
-  @reuse .leading-2, .m-0, .overflow-x-scroll;
+  @reuse leading-2 m-0 overflow-x-scroll;
 }
 
 svg.icon, svg.ionicon {
-  @reuse .align-middle, .h-font, .inline-block, .w-font;
+  @reuse align-middle h-font inline-block w-font;
 }
 
 a>svg.icon, a>svg.ionicon {
-  @reuse .text-3;
+  @reuse text-3;
 }
 
 main section {
   & ol {
-    @reuse .list-decimal;
+    @reuse list-decimal;
   }
   & ol, & ul {
-    @reuse .pl-2;
+    @reuse pl-2;
   }
 }
 
 footer {
-  @reuse .bg-grey-0, .fill-current, .py-4, .text-white;
+  @reuse bg-grey-0 fill-current py-4 text-white;
   & a {
-    @reuse .text-white;
+    @reuse text-white;
   }
 }
 
@@ -212,7 +212,7 @@ footer {
 }
 
 .fit {
-  @reuse .absolute, .bottom-0, .left-0, .right-0, .top-0, .h-full, .w-full;
+  @reuse absolute bottom-0 left-0 right-0 top-0 h-full w-full;
 }
 
 .flip {
@@ -224,87 +224,87 @@ footer {
 }
 
 ::selection {
-  @reuse .bg-grey-4, .fill-current, .text-white;
+  @reuse bg-grey-4 fill-current text-white;
 }
 
 /* Container */
 
 .container {
-  @reuse .mx-auto, .max-w-screen-lg;
+  @reuse mx-auto max-w-screen-lg;
 }
 
 main>.container {
-  @reuse .my-6;
+  @reuse my-6;
 }
 
 main>.container:first-child {
-  @reuse .mt-2, .lg: mt-6;
+  @reuse mt-2 lg: mt-6;
 }
 
 /* Component shorthands. */
 
 .card, .card-example {
-  @reuse .bg-white, .block, .px-1\.5, .py-1, .rounded-1;
+  @reuse bg-white block px-1.5 py-1 rounded-1;
   box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1), 0 2px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .card-example {
   backdrop-filter: blur(1rem);
   background-color: #222b;
-  @reuse .border, .border-solid, .border-transparent, .ml-auto, .mr-3, .text-white, .w-24, .max-w-full;
+  @reuse border border-solid border-transparent ml-auto mr-3 text-white w-24 max-w-full;
   & p {
-    @reuse .text-white;
+    @reuse text-white;
   }
 }
 
 a.card {
   &:active, &:focus, &:hover {
-    @reuse .no-underline;
+    @reuse no-underline;
   }
 }
 
 /* Highlight.js */
 
 .code-wrapper {
-  @reuse .border, .border-solid, .border-grey-9, .my-0\.5, .px-1, .py-0\.75, .rounded-1;
+  @reuse border border-solid border-grey-9 my-0.5 px-1 py-0.75 rounded-1;
 }
 
 .hljs-comment {
-  @reuse .text-grey-6;
+  @reuse text-grey-6;
 }
 
 .hljs-name {
-  @reuse .text-grey-2;
+  @reuse text-grey-2;
 }
 
 .hljs-function, .hljs-keyword, .hljs-tag {
-  @reuse .text-grey-4;
+  @reuse text-grey-4;
 }
 
 .hljs-attr, .hljs-params {
-  @reuse .text-grey-0;
+  @reuse text-grey-0;
 }
 
 .hljs-string {
-  @reuse .text-black;
+  @reuse text-black;
 }
 
 .code-dark {
-  @reuse .text-grey-3;
+  @reuse text-grey-3;
   & .hljs-comment {
-    @reuse .text-grey-3;
+    @reuse text-grey-3;
   }
   & .hljs-attr, & .hljs-name {
-    @reuse .text-grey-7;
+    @reuse text-grey-7;
   }
   & .hljs-keyword, & .hljs-function, & .hljs-tag {
-    @reuse .text-grey-5;
+    @reuse text-grey-5;
   }
   & .hljs-params {
-    @reuse .text-grey-9;
+    @reuse text-grey-9;
   }
   & .hljs-string {
-    @reuse .text-white;
+    @reuse text-white;
   }
 }
 
@@ -312,12 +312,12 @@ a.card {
 
 @media screen and (min-width: 768px) {
   .branch {
-    @reuse .flex, .flex-nowrap, .flex-row, .items-center, .relative, .justify-around;
+    @reuse flex flex-nowrap flex-row items-center relative justify-around;
   }
   .branch>* {
-    @reuse .flex-shrink;
+    @reuse flex-shrink;
   }
   .branch.branch-reverse {
-    @reuse .flex-row-reverse;
+    @reuse flex-row-reverse;
   }
 }

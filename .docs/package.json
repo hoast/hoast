@@ -16,7 +16,7 @@
     "postcss": "^8.2.15",
     "postcss-import": "^14.0.2",
     "postcss-nesting": "^8.0.1",
-    "postcss-reuse": "^2.0.0",
+    "postcss-reuse": "^2.1.0",
     "postcss-preset-env": "6.7.0",
     "serve": "11.3.2",
     "tailwindcss": "^2.1.2"

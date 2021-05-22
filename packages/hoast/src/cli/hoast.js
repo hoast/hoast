@@ -94,7 +94,7 @@ Options for run
   console.log('ʕ ˵·ᴥ·ʔ   Preparing…')
 
   // Set base directory path.
-  let directory = process.cwd()
+  const directory = process.cwd()
 
   // Set configuration file path.
   let filePath
@@ -149,12 +149,6 @@ Options for run
 
       if (imported && imported instanceof Hoast) {
         hoast = imported
-
-        // Prioritize the hoast instance path above the terminal one since the setLibrary function will have been called already.
-        const potentialDirectoryPath = hoast.getOptions().directory
-        if (potentialDirectoryPath) {
-          directory = potentialDirectoryPath
-        }
         break
       }
 
@@ -301,9 +295,10 @@ Options for run
     if (Object.prototype.hasOwnProperty.call(options, 'watch-ignored')) {
       ignored = options['watch-ignored']
     }
+    const hoastDirectory = hoast.getOptions().directory
 
     const handleFileChange = async function (filePath) {
-      filePath = path.resolve(directory, filePath)
+      filePath = path.resolve(hoastDirectory, filePath)
 
       if (changedFiles.indexOf(filePath) < 0) {
         // Store change and check later.
@@ -316,8 +311,8 @@ Options for run
     }
 
     // Setup the watcher.
-    watch(directory, {
-      cwd: directory,
+    watch(hoastDirectory, {
+      cwd: hoastDirectory,
       disableGlobbing: true,
       ignored: ignored,
       ignoreInitial: true,

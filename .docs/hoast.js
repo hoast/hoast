@@ -70,7 +70,7 @@ export default {
           'postcss-import',
           'postcss-nesting',
           ['tailwindcss', tailwindConfig],
-          'postcss-reuse',
+          ['postcss-reuse', { mode: 'class' }],
           'autoprefixer',
           'postcss-preset-env',
           // TODO: In production builds run PurgeCSS, which scans the same files as tailwind except for the css files.

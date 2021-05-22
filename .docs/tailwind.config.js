@@ -1,11 +1,30 @@
-const fontBase = 1.05
-const fontFactor = 1.15
+const BROAD_MATCH_GLOBAL_REGEXP = /[^<>"'`;,\s]*[^<>"'`;,\s:]/g
+const INNER_MATCH_GLOBAL_REGEXP = /[^<>"'`;,\s.(){}[\]#=%]*[^<>"'`;,\s.(){}[\]#=%:]/g
+
+const FONT_SIZE = 1.05
+const FONT_FACTOR = 1.15
 
 export default {
   mode: 'jit',
 
   corePlugins: {
     container: false,
+  },
+
+  purge: {
+    content: [
+      './src/components/**/*.js',
+      './src/icons/**/*.svg',
+      './src/pages/**/*.js',
+      './src/scripts/**/*.js',
+      './src/styles/**/*.css',
+      './src/utils/**/*.js',
+    ],
+    options: {
+      defaultExtractor: (line) => {
+        return [...(line.match(BROAD_MATCH_GLOBAL_REGEXP) || []), ...(line.match(INNER_MATCH_GLOBAL_REGEXP) || [])]
+      },
+    }
   },
 
   theme: {
@@ -39,21 +58,21 @@ export default {
     fontFamily: false,
     fontSize: {
       root: '1rem',
-      '-2': (fontBase / (Math.pow(fontFactor, 2))) + 'rem',
-      '-1': (fontBase / fontFactor) + 'rem',
-      0: fontBase + 'rem',
-      1: (fontBase * fontFactor) + 'rem',
-      2: (fontBase * (Math.pow(fontFactor, 2))) + 'rem',
-      3: (fontBase * (Math.pow(fontFactor, 3))) + 'rem',
-      4: (fontBase * (Math.pow(fontFactor, 4))) + 'rem',
-      5: (fontBase * (Math.pow(fontFactor, 5))) + 'rem',
-      6: (fontBase * (Math.pow(fontFactor, 6))) + 'rem',
-      7: (fontBase * (Math.pow(fontFactor, 7))) + 'rem',
-      8: (fontBase * (Math.pow(fontFactor, 8))) + 'rem',
-      9: (fontBase * (Math.pow(fontFactor, 9))) + 'rem',
-      10: (fontBase * (Math.pow(fontFactor, 10))) + 'rem',
-      11: (fontBase * (Math.pow(fontFactor, 11))) + 'rem',
-      12: (fontBase * (Math.pow(fontFactor, 12))) + 'rem',
+      '-2': (FONT_SIZE / (Math.pow(FONT_FACTOR, 2))) + 'rem',
+      '-1': (FONT_SIZE / FONT_FACTOR) + 'rem',
+      0: FONT_SIZE + 'rem',
+      1: (FONT_SIZE * FONT_FACTOR) + 'rem',
+      2: (FONT_SIZE * (Math.pow(FONT_FACTOR, 2))) + 'rem',
+      3: (FONT_SIZE * (Math.pow(FONT_FACTOR, 3))) + 'rem',
+      4: (FONT_SIZE * (Math.pow(FONT_FACTOR, 4))) + 'rem',
+      5: (FONT_SIZE * (Math.pow(FONT_FACTOR, 5))) + 'rem',
+      6: (FONT_SIZE * (Math.pow(FONT_FACTOR, 6))) + 'rem',
+      7: (FONT_SIZE * (Math.pow(FONT_FACTOR, 7))) + 'rem',
+      8: (FONT_SIZE * (Math.pow(FONT_FACTOR, 8))) + 'rem',
+      9: (FONT_SIZE * (Math.pow(FONT_FACTOR, 9))) + 'rem',
+      10: (FONT_SIZE * (Math.pow(FONT_FACTOR, 10))) + 'rem',
+      11: (FONT_SIZE * (Math.pow(FONT_FACTOR, 11))) + 'rem',
+      12: (FONT_SIZE * (Math.pow(FONT_FACTOR, 12))) + 'rem',
     },
     fontWeight: {
       100: '100',
@@ -165,13 +184,4 @@ export default {
       },
     },
   },
-
-  purge: [
-    './src/components/**/*.js',
-    './src/icons/**/*.svg',
-    './src/pages/**/*.js',
-    './src/scripts/**/*.js',
-    './src/styles/**/*.css',
-    './src/utils/**/*.js',
-  ],
 }
