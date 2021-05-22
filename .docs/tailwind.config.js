@@ -2,6 +2,8 @@ const fontBase = 1.05
 const fontFactor = 1.15
 
 export default {
+  mode: 'jit',
+
   corePlugins: {
     container: false,
   },
@@ -169,6 +171,7 @@ export default {
     './src/icons/**/*.svg',
     './src/pages/**/*.js',
     './src/scripts/**/*.js',
+    './src/styles/**/*.css',
     './src/utils/**/*.js',
   ],
 }

@@ -3483,6 +3483,11 @@ postcss-replace-overflow-wrap@^3.0.0:
   dependencies:
     postcss "^7.0.2"
 
+postcss-reuse@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-reuse/-/postcss-reuse-2.0.0.tgz#a21ca7927aab3d68a4c7bceaa046b3997cc82b97"
+  integrity sha512-9ePBPxwEGkjMzvl8AFZYpgZOzmYqK1uB1gM8uBJuhnpf88KK/tys9V8OUGoUWeWW/yveY3snhUf+MQgJ4Bs59Q==
+
 postcss-selector-matches@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/postcss-selector-matches/-/postcss-selector-matches-4.0.0.tgz#71c8248f917ba2cc93037c9637ee09c64436fcff"

@@ -150,7 +150,7 @@ export default function () {
 
           card({
             href: 'https://github.com/hoast/hoast/tree/master/packages/process-postprocess#readme',
-          }, '@hoast/process-postprocess', 'Process CSS, HTML, and JS data using PostCSS, Unified\'s rehype, and Babel plugins and minify using CleanCSS, Unified\'s rehype, and Terser.'),
+          }, '@hoast/process-postprocess', 'Process CSS, HTML, and JS using PostCSS, Unified, Babel, and Terser.'),
 
           card({
             href: 'https://github.com/hoast/hoast/tree/master/packages/process-pdf#readme',
