@@ -3,9 +3,9 @@ import { render as r } from '../utils/RenderUtils.js'
 
 export default function (meta = {}, ...contents) {
   meta = Object.assign({
-    image: 'https://doar.dev/assets/banner.png',
+    image: 'https://hoast.dev/banner.png',
     twitter: '@RedKenrok',
-    url: 'https://doar.dev',
+    url: 'https://hoast.dev',
   }, meta)
 
   // Render document.
@@ -84,19 +84,19 @@ export default function (meta = {}, ...contents) {
       // Icons.
       r('link', {
         rel: 'icon',
-        href: '/assets/icons/128-round.png',
+        href: '/icons/128-round.png',
         type: 'image/png',
         sizes: '128x128',
       }),
       r('link', {
         rel: 'icon',
-        href: '/assets/icons/256-round.png',
+        href: '/icons/256-round.png',
         type: 'image/png',
         sizes: '256x256',
       }),
       r('link', {
         rel: 'icon',
-        href: '/assets/icons/512-round.png',
+        href: '/icons/512-round.png',
         type: 'image/png',
         sizes: '512x512',
       }),
@@ -110,7 +110,7 @@ export default function (meta = {}, ...contents) {
       r('link', {
         crossorigin: 'anonymous',
         rel: 'stylesheet',
-        href: '/styles/global.css',
+        href: '/index.css',
       }),
     ]),
 
@@ -121,7 +121,7 @@ export default function (meta = {}, ...contents) {
       // Scripts.
       r('script', {
         crossorigin: 'anonymous',
-        src: '/scripts/global.js',
+        src: '/index.js',
       }),
     ]),
   ])

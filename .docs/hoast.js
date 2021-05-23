@@ -37,7 +37,7 @@ export default {
     source: ['@hoast/source-readfiles', {
       directory: 'scripts',
       filterPatterns: [
-        'global.js',
+        'index.js',
       ],
     }],
     processes: [
@@ -50,7 +50,7 @@ export default {
         ],
       }],
       ['@hoast/process-writefiles', {
-        directory: '../../docs/scripts',
+        directory: '../../docs',
       }],
     ],
   }, {
@@ -58,7 +58,7 @@ export default {
     source: ['@hoast/source-readfiles', {
       directory: 'styles',
       filterPatterns: [
-        'global.css',
+        'index.css',
       ],
     }],
     processes: [
@@ -73,11 +73,10 @@ export default {
           ['postcss-reuse', { mode: 'class' }],
           'autoprefixer',
           'postcss-preset-env',
-          // TODO: In production builds run PurgeCSS, which scans the same files as tailwind except for the css files.
         ],
       }],
       ['@hoast/process-writefiles', {
-        directory: '../../docs/styles',
+        directory: '../../docs',
       }],
     ],
   }, {
@@ -90,7 +89,7 @@ export default {
     }],
     processes: [
       ['@hoast/process-writefiles', {
-        directory: '../../docs/assets',
+        directory: '../../docs',
 
         writeOptions: {
           encoding: null,

@@ -238,7 +238,7 @@ main>.container {
 }
 
 main>.container:first-child {
-  @reuse mt-2 lg: mt-6;
+  @reuse mt-2 lg:mt-6;
 }
 
 /* Component shorthands. */
