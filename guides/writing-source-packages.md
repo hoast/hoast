@@ -1,3 +1,0 @@
-# Writing source packages
-
-TODO:

@@ -5,20 +5,10 @@ import BaseSource from '@hoast/base-source'
 import fs from 'fs'
 import path from 'path'
 
-// Import external modules.
+// Import utility modules.
 import iterateDirectory from '@hoast/utils/iterateDirectory.js'
 import planckmatch from 'planckmatch'
 import { trimStart } from '@hoast/utils/trim.js'
-
-// TODO: Improve build speed.
-// Add option to skip unchanged files, prevents copying over basic files that haven't changed.
-// One problem is that files names can change for example from a .md extension to .html extension.
-// Perhaps an optional file name transformer function can given to improve this.
-// Consider caching at the process.cwd directory in a cache file which stores the last iterated time of
-// the file at the relative path which can be compared with the last modified time from the stats data.
-// Perhaps intergrate a file watcher with the CLI that monitors the files and store which file is changed.
-// As a result it can be check based on the change origin that a template has been changed and therefore
-// requires a full rebuild of all the pages instead of just the one page itself.
 
 class SourceReadfiles extends BaseSource {
   /**
@@ -27,7 +17,7 @@ class SourceReadfiles extends BaseSource {
    */
   constructor(options) {
     super({
-      directory: 'src',
+      directory: null,
       filterPatterns: null,
       filterOptions: {
         all: false,
@@ -37,37 +27,56 @@ class SourceReadfiles extends BaseSource {
       },
       statOptions: {},
     }, options)
+    options = this.getOptions()
 
     // Parse patterns into regular expressions.
-    if (this._options.filterPatterns && this._options.filterPatterns.length > 0) {
-      this._expressions = this._options.filterPatterns.map(pattern => {
-        return planckmatch.parse(pattern, this._options.filterOptions, true)
+    if (options.filterPatterns && options.filterPatterns.length > 0) {
+      this._expressions = options.filterPatterns.map(pattern => {
+        return planckmatch.parse(pattern, options.filterOptions, true)
       })
     }
-
-    // Construct absolute directory path.
-    this._directoryPath =
-      (this._options.directory && path.isAbsolute(this._options.directory))
-        ? this._options.directory
-        : path.resolve(process.cwd(), this._options.directory)
   }
 
   async initialize () {
+    const libraryOptions = this.getLibrary().getOptions()
+    const options = this.getOptions()
+
+    // Construct absolute directory path.
+    if (options.directory) {
+      this._directoryPath =
+        (options.directory && path.isAbsolute(options.directory))
+          ? options.directory
+          : path.resolve(libraryOptions.directory, options.directory)
+    } else {
+      this._directoryPath = libraryOptions.directory
+    }
+
     // Create directory iterator.
     this._directoryIterator = await iterateDirectory(this._directoryPath)
   }
 
   async sequential () {
+    const library = this.getLibrary()
+    const options = this.getOptions()
+
     let filePath
     // Get next file path.
     while (filePath = await this._directoryIterator()) {
+      if (library.isWatching()) {
+        // Skip if file hasn't changed.
+        if (!library.hasChanged(filePath)) {
+          continue
+        }
+        library.clearAccessed(filePath)
+      }
+
       // Make file path relative.
       const filePathRelative = path.relative(this._directoryPath, filePath)
 
       // Check if path matches the patterns.
       if (this._expressions) {
         // Skip if it does not matches.
-        const matches = this._options.filterOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
+        const matches = options.filterOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
         if (!matches) {
           continue
         }
@@ -84,11 +93,18 @@ class SourceReadfiles extends BaseSource {
     if (!data) {
       return
     }
+    const library = this.getLibrary()
+    const options = this.getOptions()
 
-    // Deconstruct paramters.
+    // Deconstruct parameters.
     const [filePath, filePathRelative] = data
 
-    // Construc URI for file.
+    if (library.isWatching()) {
+      // Mark file as accessed.
+      library.addAccessed(filePath)
+    }
+
+    // Construct URI for file.
     let uri = trimStart(filePath, path.sep)
     if (path.sep !== '/') {
       uri = uri.replace(path.sep, '/')
@@ -96,18 +112,20 @@ class SourceReadfiles extends BaseSource {
 
     // Create result.
     const result = {
-      uri: 'file://' + uri,
       path: filePathRelative,
+      sourceIdentifier: filePath,
+      sourceType: 'filesystem',
+      uri: 'file://' + uri,
     }
 
     // Store promises here.
     const promises = []
 
     // Read file content.
-    if (this._options.readOptions) {
+    if (options.readOptions) {
       promises.push(
         new Promise((resolve, reject) => {
-          fs.readFile(filePath, this._options.readOptions, (error, data) => {
+          fs.readFile(filePath, options.readOptions, (error, data) => {
             if (error) {
               reject(error)
               return
@@ -121,10 +139,10 @@ class SourceReadfiles extends BaseSource {
     }
 
     // Get file stat.
-    if (this._options.statOptions) {
+    if (options.statOptions) {
       promises.push(
         new Promise((resolve, reject) => {
-          fs.stat(filePath, this._options.statOptions, (error, data) => {
+          fs.stat(filePath, options.statOptions, (error, data) => {
             if (error) {
               reject(error)
               return
@@ -144,6 +162,13 @@ class SourceReadfiles extends BaseSource {
 
     // Return result.
     return result
+  }
+
+  final () {
+    super.final()
+
+    this._directoryPath = null
+    this._directoryIterator = null
   }
 }
 

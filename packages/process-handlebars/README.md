@@ -5,13 +5,7 @@ Template using [Handlebars](https://github.com/handlebars-lang/handlebars.js#rea
 ## Install
 
 ```
-% yarn add @hoast/process-handlebars
-```
-
-OR
-
-```
-% npm install @hoast/process-handlebars --save
+$ npm install @hoast/process-handlebars
 ```
 
 ## Options

@@ -5,13 +5,7 @@ Converts HTML to PDF using [Puppeteer](https://github.com/puppeteer/puppeteer#re
 ## Install
 
 ```
-% yarn add @hoast/process-pdf
-```
-
-OR
-
-```
-% npm install @hoast/process-pdf --save
+$ npm install @hoast/process-pdf
 ```
 
 ## Options
@@ -32,4 +26,4 @@ OR
 
 ## Security risk
 
-Note this module serves the `process.cwd()` or `serveOptions.directory` directory to the local network whilst it is processing files. This can be a potential security risk and expose information to the network you might not want to make available.
+Note this module serves the `directory` options of hoast or `serveOptions.directory` directory to the local network whilst it is processing files. This can be a potential security risk and expose information to the network you might not want to make available.

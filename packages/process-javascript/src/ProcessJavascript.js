@@ -1,10 +1,37 @@
 // Import base class.
 import BaseProcess from '@hoast/base-process'
 
+// Import build-in modules.
+import fs from 'fs'
+import path from 'path'
+import { promisify } from 'util'
+
+// Import external modules.
+import detectiveCommon from 'detective-cjs'
+import detectiveModule from 'detective-es6'
+import planckmatch from 'planckmatch'
+
 // Import utility modules.
 import { getByPathSegments } from '@hoast/utils/get.js'
-import { setByPathSegments } from '@hoast/utils/set.js'
+import importVersion from '@hoast/utils/importVersion.js'
 import { isClass } from '@hoast/utils/is.js'
+import { setByPathSegments } from '@hoast/utils/set.js'
+
+// Promisify read file.
+const fsReadFile = promisify(fs.readFile)
+
+const REGEXP_DIRECTORY = /^(\/|.\/|..\/)/
+const MATCH_OPTIONS = {
+  extended: true,
+  flags: 'i',
+  globstar: true,
+}
+const READ_OPTIONS = {
+  encoding: 'utf8',
+}
+const DETECTIVE_OPTIONS = {
+  skipTypeImports: true,
+}
 
 class ProcessJavascript extends BaseProcess {
   /**
@@ -13,102 +40,206 @@ class ProcessJavascript extends BaseProcess {
    */
   constructor(options) {
     super({
-      importProperty: 'path',
-      importOptions: {
-        extractName: 'default',
-        setProperty: 'contents',
-      },
+      setProperty: 'contents',
+      executeProperty: 'default',
+      importProperty: null,
+      importPath: null,
 
-      executeProperty: 'contents',
-      executeOptions: {
-        functionNames: [''],
-        setProperty: 'contents',
-      },
+      watchIgnore: [
+        '**/node_modules/**',
+      ],
     }, options)
+    options = this.getOptions()
 
     // Convert dot notation to path segments.
-    if (this._options.executeProperty) {
-      this._executePropertyPath = this._options.executeProperty.split('.')
+    if (options.executeProperty) {
+      this._executePropertyPath = options.executeProperty.split('.')
     }
-    if (this._options.executeOptions && this._options.executeOptions.setProperty) {
-      this._executeSetPropertyPath = this._options.executeOptions.setProperty.split('.')
+    if (options.importProperty) {
+      this._importPropertyPath = options.importProperty.split('.')
     }
-    if (this._options.importProperty) {
-      this._importPropertyPath = this._options.importProperty.split('.')
+    if (options.setProperty) {
+      this._setPropertyPath = options.setProperty.split('.')
     }
-    if (this._options.importOptions && this._options.importOptions.setProperty) {
-      this._importSetPropertyPath = this._options.importOptions.setProperty.split('.')
+
+    // Parse ignore patterns.
+    this._watchIgnore = options.watchIgnore ? planckmatch.parse(options.watchIgnore, MATCH_OPTIONS, true) : []
+
+    this._fileUsesCache = {}
+  }
+
+  initialize () {
+    const library = this.getLibrary()
+    const libraryOptions = library.getOptions()
+    const options = this.getOptions()
+
+    // Construct absolute directory path.
+    if (options.importPath) {
+      this._importPath =
+        path.isAbsolute(options.importPath)
+          ? options.importPath
+          : path.resolve(libraryOptions.directory, options.importPath)
+    }
+
+    if (library.isWatching()) {
+      // Remove changed files from dependency cache.
+      const changedFiles = library.getChanged()
+      if (changedFiles) {
+        for (const changedFile of changedFiles) {
+          if (changedFile in this._fileUsesCache) {
+            delete this._fileUsesCache[changedFile]
+          }
+        }
+      }
     }
   }
 
   async concurrent (data) {
+    const library = this.getLibrary()
+    const libraryOptions = library.getOptions()
+    const libraryProcessCount = library.getProcessCount()
+
+    // Get path of script to import.
+    let importPath
+    try {
+      importPath = getByPathSegments(data, this._importPropertyPath)
+    } catch { }
+    if (!importPath) {
+      importPath = this._importPath
+      if (!importPath) {
+        this.getLogger().log('No import path given for item with source: "' + data.sourceIdentifier + '".')
+        return data
+      }
+    } else if (!path.isAbsolute(importPath)) {
+      importPath = path.resolve(importPath, libraryOptions.directory)
+    }
+
+    if (library.isWatching()) {
+      // Get all dependencies of script.
+      const dependencies = await this.getDependencies(importPath)
+
+      // Add import and dependencies as accessed.
+      library.addAccessed(data.sourceIdentifier, importPath, ...dependencies)
+    }
+
+    // Import script at path.
+    let importedScript
+    try {
+      importedScript = await importVersion(importPath, libraryProcessCount)
+    } catch (error) {
+      throw new Error('Unable to import file at path: "' + importPath + '".')
+    }
+    // Get function to execute.
+    importedScript = getByPathSegments(importedScript, this._executePropertyPath)
+
+    // Run imported script.
     let value
-
-    // Dynamically import code.
-    if (this._importPropertyPath) {
-      // Get path from data.
-      const importValue = getByPathSegments(data, this._importPropertyPath)
+    if (importedScript && typeof (importedScript) === 'function') {
       try {
-        // Import value at path.
-        value = await import(importValue)
-
-        // Deconstruct imported value.
-        if (this._options.extractName) {
-          value = getByPathSegments(value, this._options.extractName)
-
-          if (!value) {
-            this._logger.warn('Unable to deconstruct imported code.')
-            return data
-          }
-        }
-
-        // Set value back to data object.
-        if (this._importSetPropertyPath) {
-          data = setByPathSegments(data, this._importSetPropertyPath, value)
+        if (isClass(importedScript)) {
+          importedScript = new importedScript(library, data) // eslint-disable-line new-cap
+        } else {
+          value = importedScript(library, data)
         }
       } catch (error) {
-        this._logger.warn('Unable to import file at path: "' + importValue + '".')
-        return data
+        throw new Error('Error while executing imported script file at path: "' + importPath + '".', error)
       }
-    }
-
-    // Get executable code from exising object.
-    if (!value && this._executePropertyPath) {
-      value = getByPathSegments(data, this._executePropertyPath)
-
-      if (!value) {
-        this._logger.warn('Unable to retrieve an executable value or propert')
-        return data
-      }
-    }
-
-    // Iterate over function names.
-    for (const functionName of this._options.executeOptions.functionNames) {
-      // Deconstruct if function name is given.
-      if (functionName && functionName !== '') {
-        value = value[functionName]
-      }
-
-      // Check if variable can be called.
-      if (typeof (value) !== 'function') {
-        this._logger.error('Value not of type function or class')
-        return data
-      }
-
-      // If class then invoke as new otherwise call it as a function.
-      if (isClass(value)) {
-        value = new value(data) // eslint-disable-line new-cap
-      } else {
-        value = value(data)
-      }
+    } else {
+      throw new Error('Import function at "' + this._executePropertyPath + '" from "' + importPath + '" not of type function.')
     }
 
     // Write value back to data.
-    if (this._executeSetPropertyPath) {
-      data = setByPathSegments(data, this._executeSetPropertyPath, value)
+    if (this._setPropertyPath) {
+      data = setByPathSegments(data, this._setPropertyPath, value)
     }
 
     return data
+  }
+
+  async getDependencies (importPath) {
+    const libraryOptions = this.getLibrary().getOptions()
+
+    const dependencies = []
+
+    const addDependencies = async (importPath) => {
+      // Try to get it from cache.
+      if (this._fileUsesCache[importPath]) {
+        const discoveredDependencies = this._fileUsesCache[importPath]
+
+        const addedDependencies = []
+        for (const dependency of discoveredDependencies) {
+          // Add dependency to list.
+          if (dependencies.indexOf(dependency) >= 0) {
+            continue
+          }
+          dependencies.push(dependency)
+          addedDependencies.push(dependency)
+        }
+
+        // Add dependencies of added dependency to list.
+        for (const dependency of addedDependencies) {
+          await addDependencies(dependency)
+        }
+        return
+      }
+
+      // Read file contents.
+      let content
+      try {
+        content = await fsReadFile(importPath, READ_OPTIONS)
+      } catch {
+        throw new Error('Unable to read dependencies of file at path: "' + importPath + '".')
+      }
+      const discoveredDependencies = [
+        ...detectiveCommon(content, DETECTIVE_OPTIONS),
+        ...detectiveModule(content, DETECTIVE_OPTIONS),
+      ]
+
+      // Reset dependency cache.
+      this._fileUsesCache[importPath] = []
+
+      const addedDependencies = []
+      for (let dependency of discoveredDependencies) {
+        // Exclude any non file path dependencies.
+        if (!REGEXP_DIRECTORY.test(dependency)) {
+          continue
+        }
+
+        // Ensure dependency is an absolute path.
+        if (!path.isAbsolute(dependency)) {
+          dependency = path.resolve(path.dirname(importPath), dependency)
+        }
+
+        // Continue if dependency not inside the watched directory.
+        if (!dependency.startsWith(libraryOptions.directory)) {
+          continue
+        }
+
+        // Continue if dependency should be ignored.
+        if (planckmatch.match.any(dependency, this._watchIgnore)) {
+          continue
+        }
+
+        // Added dependencies to cache.
+        this._fileUsesCache[importPath].push(dependency)
+
+        // Add dependency to list.
+        if (dependencies.indexOf(dependency) < 0) {
+          dependencies.push(dependency)
+          addedDependencies.push(dependency)
+        }
+      }
+
+      // Add dependencies of added dependency to the list.
+      for (const dependency of addedDependencies) {
+        await addDependencies(dependency)
+      }
+    }
+
+    // Start adding dependencies to the list.
+    await addDependencies(importPath)
+
+    return dependencies
   }
 }
 

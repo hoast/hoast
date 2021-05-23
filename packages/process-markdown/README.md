@@ -5,13 +5,7 @@ Convert markdown to HTML using [Unified](https://github.com/unifiedjs/unified#re
 ## Install
 
 ```
-% yarn add @hoast/process-markdown
-```
-
-OR
-
-```
-% npm install @hoast/process-markdown --save
+$ npm install @hoast/process-markdown
 ```
 
 ## Options

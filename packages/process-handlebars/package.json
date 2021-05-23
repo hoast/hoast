@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-handlebars",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Template using Handlebars",
   "keywords": [
     "hoast",
@@ -26,7 +26,6 @@
   "type": "module",
   "files": [
     "README.md",
-    "CHANGELOG.md",
     "src/"
   ],
   "main": "src/ProcessHandlebars.js",
@@ -34,8 +33,8 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-process": "^2.0.0",
-    "@hoast/utils": "^2.0.0",
-    "handlebars": "^4.7.6"
+    "@hoast/base-process": "^3.0.0",
+    "@hoast/utils": "^3.0.0",
+    "handlebars": "^4.7.7"
   }
 }

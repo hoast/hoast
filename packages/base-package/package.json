@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/base-package",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Base package for other packages.",
   "keywords": [
     "hoast",
@@ -26,7 +26,6 @@
   "type": "module",
   "files": [
     "README.md",
-    "CHANGELOG.md",
     "src/*.js"
   ],
   "main": "src/BasePackage.js",
@@ -34,6 +33,6 @@
     "lint": "eslint --fix --cache src/*.js"
   },
   "dependencies": {
-    "@hoast/utils": "^2.0.0"
+    "@hoast/utils": "^3.0.0"
   }
 }

@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-parse",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Parse a text value using a function or package.",
   "keywords": [
     "hoast",
@@ -26,7 +26,6 @@
   "type": "module",
   "files": [
     "README.md",
-    "CHANGELOG.md",
     "src/"
   ],
   "main": "src/ProcessParse.js",
@@ -34,7 +33,7 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-process": "^2.0.0",
-    "@hoast/utils": "^2.0.0"
+    "@hoast/base-process": "^3.0.0",
+    "@hoast/utils": "^3.0.0"
   }
 }

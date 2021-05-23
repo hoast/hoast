@@ -29,57 +29,73 @@ class ProcessPdf extends BaseProcess {
       optionsProperty: false,
 
       mediaType: false,
-      pdfOptions: {},
+      pdfOptions: {
+        format: 'a4',
+      },
       serveOptions: {
         directory: null,
         port: 3000,
       },
       wrap: '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>{0}</body></html>',
     }, options)
+    options = this.getOptions()
 
     // Convert dot notation to path segments.
-    this._propertyPath = this._options.property.split('.')
-    this._setPropertyPath = this._options.setProperty.split('.')
-    if (this._options.optionsProperty) {
-      this._optionsPropertyPath = this._options.optionsProperty.split('.')
-    }
-
-    // Assign serve directory.
-    if (!this._options.serveOptions.directory) {
-      this._serveDirectory = process.cwd()
-    } else if (path.isAbsolute(this._options.serveOptions.directory)) {
-      this._serveDirectory = this._options.serveOptions.directory
-    } else {
-      this._serveDirectory = path.resolve(process.cwd(), this._options.serveOptions.directory)
+    this._propertyPath = options.property.split('.')
+    this._setPropertyPath = options.setProperty.split('.')
+    if (options.optionsProperty) {
+      this._optionsPropertyPath = options.optionsProperty.split('.')
     }
   }
 
   async initialize () {
-    // Launch puppeteer.
-    this._logger.info('Launching puppeteer...')
-    this._browser = await puppeteer.launch({
-      headless: true,
-    })
-    this._logger.info('Launched puppeteer.')
+    const libraryOptions = this.getLibrary().getOptions()
+    const logger = this.getLogger()
+    const options = this.getOptions()
 
-    // Launch server.
-    this._logger.info('Launching server...')
-    await new Promise((resolve) => {
-      this._server = createServer(async (request, response) => {
-        // Serve local files.
-        return serveHandler(request, response, {
-          public: this._serveDirectory,
-        })
+    // Assign serve directory.
+    if (!options.serveOptions.directory) {
+      this._serveDirectory = libraryOptions.directory
+    } else if (path.isAbsolute(options.serveOptions.directory)) {
+      this._serveDirectory = options.serveOptions.directory
+    } else {
+      this._serveDirectory = path.resolve(libraryOptions.directory, options.serveOptions.directory)
+    }
+
+    if (!this._browser) {
+      // Launch puppeteer.
+      logger.info('Launching puppeteer...')
+      this._browser = await puppeteer.launch({
+        headless: true,
       })
-      this._server.listen(this._options.serveOptions.port, () => resolve(this._server))
-    })
-    this._logger.info('Launched server.')
+      logger.info('Launched puppeteer.')
+    }
+
+    if (!this._server) {
+      // Launch server.
+      logger.info('Launching server...')
+      await new Promise((resolve) => {
+        this._server = createServer(async (request, response) => {
+          // Serve local files.
+          return serveHandler(request, response, {
+            public: this._serveDirectory,
+          })
+        })
+        this._server.listen(options.serveOptions.port, () => resolve(this._server))
+      })
+      logger.info('Launched server.')
+    }
   }
 
   async concurrent (data) {
+    const library = this.getLibrary()
+    const libraryOptions = library.getOptions()
+    const logger = this.getLogger()
+    const options = this.getOptions()
+
     // Deconstruct data.
     let value = getByPathSegments(data, this._propertyPath)
-    let pdfOptions = this._options.pdfOptions
+    let pdfOptions = options.pdfOptions
     if (this._optionsPropertyPath) {
       pdfOptions = deepAssign({}, pdfOptions, getByPathSegments(data, this._optionsPropertyPath))
     }
@@ -87,9 +103,9 @@ class ProcessPdf extends BaseProcess {
     // Construct directory path relative to served directory.
     let relativePath = ''
     if (data.path) {
-      const directoryPath = path.dirname(data.path)
-      if (directoryPath !== '.') {
-        relativePath = directoryPath
+      const directory = path.dirname(data.path)
+      if (directory !== '.') {
+        relativePath = directory
         if (relativePath.startsWith(this._serveDirectory)) {
           relativePath = relativePath.substring(this._serveDirectory.length - 1)
         }
@@ -99,36 +115,78 @@ class ProcessPdf extends BaseProcess {
     }
 
     // Format using wrap if set.
-    if (this._options.wrap) {
-      value = String.prototype.format.call(this._options.wrap, value)
+    if (options.wrap) {
+      value = String.prototype.format.call(options.wrap, value)
     }
 
     // Create page.
-    this._logger.info('Create new page.')
+    logger.info('Create new page.')
     const page = await this._browser.newPage()
-    await page.goto(`http://localhost:${this._options.serveOptions.port}/${relativePath}`)
+    const pageHost = `http://localhost:${options.serveOptions.port}/`
+    const pageUrl = pageHost + relativePath
+
+    let requestHandler
+    if (library.isWatching()) {
+      // Wait for page to be loaded, we don't want to handle network request from the previous relative path page.
+      // await page.waitForNavigation({ waitUntil: 'networkidle0' })
+
+      logger.info('Track page\'s requests.')
+
+      // Keep track of requested resources, whether they are successful or not is irrelevant.
+      requestHandler = (interceptedRequest) => {
+        const url = interceptedRequest.url()
+
+        // Ignore current page.
+        if (url === pageUrl) {
+          return
+        }
+
+        // Exit early if external resource.
+        if (!url.startsWith(pageHost)) {
+          return
+        }
+
+        // Make path absolute to served directory.
+        let filePath = url.substring(pageHost.length)
+        filePath = path.resolve(this._serveDirectory, filePath)
+
+        // Ignore if not inside watched directory.
+        if (!filePath.startsWith(libraryOptions.directory)) {
+          return
+        }
+
+        library.addAccessed(data.sourceIdentifier, filePath)
+      }
+      page.on('request', requestHandler)
+    }
+    await page.goto(pageUrl)
 
     // Add HTML to page.
-    this._logger.info('Setting page contents.')
+    logger.info('Setting page contents.')
     await page.setContent(value)
 
     // Wait for HTML to be loaded.
-    this._logger.info('Waiting for page to load.')
+    logger.info('Waiting for page to load.')
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'networkidle0' }),
       page.evaluate(() => history.pushState(undefined, '', '#')), // eslint-disable-line  no-undef
     ])
 
-    // Convert to PDF.
-    if (this._options.mediaType || this._options.mediaType === null) {
-      this._logger.info('Setting page media type.')
-      await page.emulateMediaType(this._options.mediaType)
+    if (library.isWatching() && requestHandler) {
+      logger.info('Stop tracking requests.')
+      page.off('request', requestHandler)
     }
-    this._logger.info('Getting page output as pdf.')
+
+    // Convert to PDF.
+    if (options.mediaType || options.mediaType === null) {
+      logger.info('Setting page media type.')
+      await page.emulateMediaType(options.mediaType)
+    }
+    logger.info('Getting page output as pdf.')
     value = await page.pdf(pdfOptions)
 
     // Close page.
-    this._logger.info('Closing page.')
+    logger.info('Closing page.')
     await page.close()
 
     // Set value.
@@ -140,7 +198,7 @@ class ProcessPdf extends BaseProcess {
       const pathSegments = data.path.split('.')
       // Check if file ends with an expected extension.
       if (EXTENSIONS_FROM.indexOf(pathSegments[pathSegments.length - 1]) >= 0) {
-        // Remove existin extension.
+        // Remove existing extension.
         pathSegments.pop()
         // Add html extension.
         pathSegments.push(EXTENSIONS_TO)
@@ -152,16 +210,27 @@ class ProcessPdf extends BaseProcess {
     return data
   }
 
-  async final() {
-    // Close server.
-    this._logger.info('Closing server...')
-    await new Promise((resolve) => this._server.close(resolve))
-    this._logger.info('Closed server.')
+  async final () {
+    super.final()
 
-    // Close puppeteer.
-    this._logger.info('Closing puppeteer...')
-    await this._browser.close()
-    this._logger.info('Closed puppeteer.')
+    // Only cleanup when not watching.
+    if (!this.getLibrary().isWatching()) {
+      const logger = this.getLogger()
+
+      // Close server.
+      logger.info('Closing server...')
+      await new Promise((resolve) => this._server.close(resolve))
+      this._server = null
+      logger.info('Closed server.')
+
+      // Close puppeteer.
+      logger.info('Closing puppeteer...')
+      await this._browser.close()
+      this._browser = null
+      logger.info('Closed puppeteer.')
+
+      this._serveDirectory = null
+    }
   }
 }
 

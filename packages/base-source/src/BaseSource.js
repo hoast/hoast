@@ -9,13 +9,16 @@ class BaseSource extends BasePackage {
   constructor(...options) {
     super(...options)
 
-    this.done = false
-    this.exhausted = false
-
     this._hasInitialize = typeof (this.initialize) === 'function'
     this._hasSequential = typeof (this.sequential) === 'function'
     this._hasConcurrent = typeof (this.concurrent) === 'function'
-    this._hasFinal = typeof (this.final) === 'function'
+
+    this.reset()
+  }
+
+  reset () {
+    this.done = false
+    this.exhausted = false
 
     if (this._hasInitialize) {
       this._isInitialized = false
@@ -27,6 +30,10 @@ class BaseSource extends BasePackage {
     if (this._hasConcurrent) {
       this._concurrentCount = 0
     }
+  }
+
+  final () {
+    this.reset()
   }
 
   /**
@@ -64,66 +71,58 @@ class BaseSource extends BasePackage {
       this._isInitialized = true
     }
 
+    const iterate = async () => {
+      let data = null
+      if (this._hasSequential) {
+        // Run sequential part.
+        data = await this.sequential()
+      }
+
+      if (this._hasInitialize || this._hasSequential) {
+        // If done wait for now.
+        if (this.exhausted || this.done) {
+          // Immediately resolve all queued promises.
+          for (const promise of this._promiseQueue) {
+            promise.resolve(null)
+          }
+          this._promiseQueue = []
+        }
+
+        // Set hold back to false.
+        if (this._promiseQueue.length > 0) {
+          // Run next iteration.
+          const promise = this._promiseQueue.shift()
+          try {
+            promise.resolve(iterate(promise.data))
+          } catch (error) {
+            promise.reject(error)
+          }
+        } else {
+          this._holdCalls = false
+        }
+      }
+
+      if (this._hasConcurrent) {
+        // Increment concurrent count.
+        this._concurrentCount++
+
+        // Run concurrent part.
+        data = await this.concurrent(data)
+
+        // Decrement concurrent count.
+        this._concurrentCount--
+      }
+
+      // If exhausted and no more concurrency of this source is going then set done to true!
+      if (this.exhausted && (!this._hasConcurrent || this._concurrentCount === 0)) {
+        this.done = true
+      }
+
+      return data
+    }
+
     // Run now.
-    return await this._next()
-  }
-
-  /**
-   * Internally called to retrieve the next item.
-   * @returns {Any} Retrieved data.
-   */
-  async _next () {
-    let data = null
-    if (this._hasSequential) {
-      // Run sequential part.
-      data = await this.sequential()
-    }
-
-    if (this._hasInitialize || this._hasSequential) {
-      // If done wait for now.
-      if (this.exhausted || this.done) {
-        // Immediately resolve all queued promises.
-        for (const promise of this._promiseQueue) {
-          promise.resolve(null)
-        }
-        this._promiseQueue = []
-      }
-
-      // Set hold back to false.
-      if (this._promiseQueue.length > 0) {
-        // Run next iteration.
-        const promise = this._promiseQueue.shift()
-        try {
-          promise.resolve(this._next(promise.data))
-        } catch (error) {
-          promise.reject(error)
-        }
-      } else {
-        this._holdCalls = false
-      }
-    }
-
-    if (this._hasConcurrent) {
-      // Increment concurrent count.
-      this._concurrentCount++
-
-      // Run concurrent part.
-      data = await this.concurrent(data)
-
-      // Decrement concurrent count.
-      this._concurrentCount--
-    }
-
-    // If exhausted and no more concurreny of this source is going then set done to true!
-    if (this.exhausted && (!this._hasConcurrent || this._concurrentCount === 0)) {
-      if (this._hasFinal) {
-        await this.final()
-      }
-
-      this.done = true
-    }
-
-    return data
+    return await iterate()
   }
 }
 

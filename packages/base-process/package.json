@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/base-process",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Base package for process packages.",
   "keywords": [
     "hoast",
@@ -26,7 +26,6 @@
   "type": "module",
   "files": [
     "README.md",
-    "CHANGELOG.md",
     "src/*.js"
   ],
   "main": "src/BaseProcess.js",
@@ -34,6 +33,6 @@
     "lint": "eslint --fix --cache src/*.js"
   },
   "dependencies": {
-    "@hoast/base-package": "^2.0.0"
+    "@hoast/base-package": "^3.0.0"
   }
 }

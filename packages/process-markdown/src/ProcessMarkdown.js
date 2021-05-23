@@ -27,68 +27,73 @@ class ProcessMarkdown extends BaseProcess {
       remarkPlugins: [],
       rehypePlugins: [],
     }, options)
+    options = this.getOptions()
 
     // Convert dot notation to path segments.
-    this._propertyPath = this._options.property.split('.')
+    this._propertyPath = options.property.split('.')
   }
 
   async initialize () {
-    // Construct unified parser.
-    this._parser = unified()
+    const options = this.getOptions()
 
-    const addPlugin = async (plugin) => {
-      let result, parameters
-      if (Array.isArray(plugin)) {
-        result = plugin.shift()
-        parameters = plugin
-      } else {
-        result = plugin
-        parameters = []
-      }
+    if (!this._parser) {
+      // Construct unified parser.
+      this._parser = unified()
 
-      // Get type of result.
-      let type = typeof (result)
-
-      // Import as package if string.
-      if (type === 'string') {
-        result = (await import(result))
-        if (result.default) {
-          result = result.default
+      const addPlugin = async (plugin) => {
+        let result, parameters
+        if (Array.isArray(plugin)) {
+          result = plugin.shift()
+          parameters = plugin
+        } else {
+          result = plugin
+          parameters = []
         }
 
-        // Get type of imported.
-        type = typeof (result)
+        // Get type of result.
+        let type = typeof (result)
 
-        // Check new value.
-        if (type !== 'function') {
-          throw new Error('Imported type must be a class or function.')
+        // Import as package if string.
+        if (type === 'string') {
+          result = (await import(result))
+          if (result.default) {
+            result = result.default
+          }
+
+          // Get type of imported.
+          type = typeof (result)
+
+          // Check new value.
+          if (type !== 'function') {
+            throw new Error('Imported type must be a class or function.')
+          }
         }
+
+        this._parser
+          .use(result, ...parameters)
       }
 
       this._parser
-        .use(result, ...parameters)
+        .use(remarkParse) // Markdown to Markdown AST.
+
+      // Add remark plugins.
+      for (const plugin of options.remarkPlugins) {
+        await addPlugin(plugin)
+      }
+
+      this._parser
+        .use(remarkRehype) // Markdown AST to HTML AST.
+        .use(rehypeRaw) // Reparse HTML AST.
+
+      // Add rehype plugins.
+      for (const plugin of options.rehypePlugins) {
+        await addPlugin(plugin)
+      }
+
+      this._parser
+        .use(rehypeSanitize) // Sanitize HTML AST.
+        .use(rehypeStringify) // HTML AST to string.
     }
-
-    this._parser
-      .use(remarkParse) // Markdown to Mardown AST.
-
-    // Add remark plugins.
-    for (const plugin of this._options.remarkPlugins) {
-      await addPlugin(plugin)
-    }
-
-    this._parser
-      .use(remarkRehype) // Markdown AST to HTML AST.
-      .use(rehypeRaw) // Reparse HTML AST.
-
-    // Add rehype plugins.
-    for (const plugin of this._options.rehypePlugins) {
-      await addPlugin(plugin)
-    }
-
-    this._parser
-      .use(rehypeSanitize) // Sanitize HTML AST.
-      .use(rehypeStringify) // HTML AST to string.
   }
 
   async concurrent (data) {
@@ -108,7 +113,7 @@ class ProcessMarkdown extends BaseProcess {
       const pathSegments = data.path.split('.')
       // Check if file ends with an expected extension.
       if (EXTENSIONS_FROM.indexOf(pathSegments[pathSegments.length - 1]) >= 0) {
-        // Remove existin extension.
+        // Remove existing extension.
         pathSegments.pop()
         // Add html extension.
         pathSegments.push(EXTENSIONS_TO)

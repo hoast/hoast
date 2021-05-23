@@ -4,8 +4,6 @@ module.exports = {
   },
   extends: [
     'standard',
-    'eslint:recommended',
-    'eslint-config-standard',
   ],
   globals: {
     Atomics: 'readonly',
@@ -30,7 +28,9 @@ module.exports = {
         imports: 'never',
         exports: 'never',
         functions: 'never',
-      }],
+      },
+    ],
+    'default-case-last': 0,
     indent: [
       'error',
       2,
@@ -42,6 +42,10 @@ module.exports = {
       'error',
       'unix',
     ],
+    'no-case-declarations': 0,
+    'no-cond-assign': 0,
+    'no-fallthrough': 0,
+    'one-var': 0,
     quotes: [
       'error',
       'single',
@@ -54,9 +58,6 @@ module.exports = {
       0,
       'always',
     ],
-    'no-cond-assign': 0,
-    'no-case-declarations': 0,
-    'no-fallthrough': 0,
     'standard/no-callback-literal': 0,
   },
 }

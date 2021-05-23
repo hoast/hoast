@@ -15,6 +15,10 @@ class BaseProcess extends BasePackage {
     this._hasSequential = typeof (this.sequential) === 'function'
     this._hasConcurrent = typeof (this.concurrent) === 'function'
 
+    this.reset()
+  }
+
+  reset () {
     if (this._hasInitialize) {
       this._isInitialized = false
     }
@@ -22,6 +26,10 @@ class BaseProcess extends BasePackage {
       this._holdCalls = false
       this._promiseQueue = []
     }
+  }
+
+  final () {
+    this.reset()
   }
 
   /**
@@ -64,43 +72,38 @@ class BaseProcess extends BasePackage {
       this._isInitialized = true
     }
 
-    // Run now.
-    return await this._next(data)
-  }
-
-  /**
-   * Internally called to process the given item.
-   * @param {Any} data Data to process.
-   * @returns {Any} Processed data.
-   */
-  async _next (data) {
-    if (this._hasSequential) {
-      // Run sequential part.
-      data = await this.sequential(data)
-    }
-
-    if (this._hasInitialize || this._hasSequential) {
-      // Run any promises.
-      if (this._promiseQueue.length > 0) {
-        // Run next iteration.
-        const promise = this._promiseQueue.shift()
-        try {
-          promise.resolve(this._next(promise.data))
-        } catch (error) {
-          promise.reject(error)
-        }
-      } else {
-        // Set hold back to false.
-        this._holdCalls = false
+    const iterate = async (data) => {
+      if (this._hasSequential) {
+        // Run sequential part.
+        data = await this.sequential(data)
       }
+
+      if (this._hasInitialize || this._hasSequential) {
+        // Run any promises.
+        if (this._promiseQueue.length > 0) {
+          // Run next iteration.
+          const promise = this._promiseQueue.shift()
+          try {
+            promise.resolve(iterate(promise.data))
+          } catch (error) {
+            promise.reject(error)
+          }
+        } else {
+          // Set hold back to false.
+          this._holdCalls = false
+        }
+      }
+
+      if (this._hasConcurrent) {
+        // Run concurrent part.
+        data = await this.concurrent(data)
+      }
+
+      return data
     }
 
-    if (this._hasConcurrent) {
-      // Run concurrent part.
-      data = await this.concurrent(data)
-    }
-
-    return data
+    // Run now.
+    return await iterate(data)
   }
 }
 

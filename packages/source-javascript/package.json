@@ -1,0 +1,44 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/source-javascript",
+  "version": "3.0.0",
+  "description": "Read and execute scripts from the filesystem.",
+  "keywords": [
+    "hoast",
+    "source",
+    "scripts",
+    "javascript",
+    "filesystem"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-javascript#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "src/"
+  ],
+  "main": "src/SourceJavascript.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js"
+  },
+  "dependencies": {
+    "@hoast/base-source": "^3.0.0",
+    "@hoast/utils": "^3.0.0",
+    "detective-cjs": "^3.1.1",
+    "detective-es6": "^2.2.0",
+    "planckmatch": "^0.2.1"
+  }
+}

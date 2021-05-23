@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-writefiles",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Write data to the filesystem.",
   "keywords": [
     "hoast",
@@ -28,7 +28,6 @@
   "type": "module",
   "files": [
     "README.md",
-    "CHANGELOG.md",
     "src/"
   ],
   "main": "src/ProcessWritefiles.js",
@@ -36,7 +35,7 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-package": "^2.0.0",
-    "@hoast/utils": "^2.0.0"
+    "@hoast/base-package": "^3.0.0",
+    "@hoast/utils": "^3.0.0"
   }
 }

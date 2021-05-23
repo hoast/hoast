@@ -4,15 +4,15 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-javascript",
-  "version": "2.0.0",
-  "description": "Retrieve and or execute JavaScript.",
+  "version": "3.0.0",
+  "description": "Retrieve and execute JavaScript.",
   "keywords": [
     "hoast",
     "process",
     "javascript"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-javascript#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-javascript#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"
@@ -26,7 +26,6 @@
   "type": "module",
   "files": [
     "README.md",
-    "CHANGELOG.md",
     "src/"
   ],
   "main": "src/ProcessJavascript.js",
@@ -34,7 +33,10 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-process": "^2.0.0",
-    "@hoast/utils": "^2.0.0"
+    "@hoast/base-process": "^3.0.0",
+    "@hoast/utils": "^3.0.0",
+    "detective-cjs": "^3.1.1",
+    "detective-es6": "^2.2.0",
+    "planckmatch": "^0.2.1"
   }
 }

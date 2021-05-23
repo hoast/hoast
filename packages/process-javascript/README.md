@@ -1,29 +1,62 @@
 # @hoast/process-javascript
 
-Retrieve and or execute JavaScript.
+Retrieve and execute JavaScript.
 
 ## Install
 
 ```
-% yarn add @hoast/process-javascript
+$ npm install @hoast/process-javascript
 ```
 
-OR
+## Example
 
+### Input
+
+File located at `components/h1.js`.
+
+```JS
+export default function({ contents }) {
+  return '<h1>' . contents . '</h1>';
+}
 ```
-% npm install @hoast/process-javascript --save
+
+File located at `pages/index.html`.
+
+```HTML
+Hello world!
+```
+
+### Config
+
+```JS
+export default {
+  collections: [{
+    source: ['@hoast/source-readfiles', {
+      directory: 'pages',
+    }],
+    processes: [
+      ['@hoast/process-javascript', {
+        importPath: 'components/h1.js',
+      }],
+      '@hoast/process-log',
+    ],
+  }],
+}
+```
+
+### Output
+
+```HTML
+<h1>Hello world!</h1>
 ```
 
 ## Options
 
-- `{String} importProperty = 'path'` Dot notation path to the data property from which the dynamic importing path should be taken.
-- `{Object} importOptions` Dynamic importing options. Set to `false` to disable dynamic importing.
-  - `{String} extractName = 'default'` The name of the item to import from the imported code.
-  - `{String} setProperty = 'contents'` Dot notation path to the data property to which the imported code should be written.
-- `{String} executeProperty = 'contents'` Dot notation path to the data property which should be executed. This option is ignored if the code is dynamically imported from the path at the `importProperty` option.
-- `{Object} executeOptions` Code execution options. Set to `false` to disable code execution.
-  - `{Array<String>} functionNames = ['']` Names of the functions to call on the code. If multiple names are given the function is called on the data returned by the earlier function call. An empty string will assume the value itself is a function and call it instead.
-  - `{String} setProperty = 'contents'` Dot notation path to the data property to which the result of the function call should be written.
+- `{String} setProperty = 'contents'` Dot notation path to the data property to which the result should be written.
+- `{String} executeProperty = 'default'` Dot notation of property on imported object to execute.
+- `{String} importProperty = 'default'` Dot notation of property path of script's file path.
+- `{String} importPath = 'default'` File path of the script to execute, if know file path on data is found.
+- `{Array<String>} watchIgnore = [ '**/node_modules/**' ]` Paths of files to ignore marking as dependencies when watching for changes.
 
 - `{Function} filter = null` Custom filter function. The item data is given as the parameter. Return `true` if it should be processed, return `false` if this processor should be skipped.
 

@@ -5,13 +5,7 @@ Log data to the terminal, useful for developing other process and source package
 ## Install
 
 ```
-% yarn add @hoast/process-log
-```
-
-OR
-
-```
-% npm install @hoast/process-log --save
+$ npm install @hoast/process-log
 ```
 
 ## Options

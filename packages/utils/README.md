@@ -5,13 +5,7 @@ Utility functions commonly used by hoast and hoast packages.
 ## Install
 
 ```
-% yarn add @hoast/utils
-```
-
-OR
-
-```
-% npm install @hoast/utils --save
+$ npm install @hoast/utils
 ```
 
 ## Usage

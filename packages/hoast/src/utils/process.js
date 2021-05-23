@@ -5,16 +5,18 @@ import logger from './logger.js'
 
 /**
  * Process collections.
- * @param {Object} app App instance.
+ * @param {Object} library Library instance.
  * @param {Array} collections Collections to process.
  */
-const process = async function (app, collections) {
+const process = async function (library, collections) {
   // Exit early if already done.
   if (collections.length === 0) {
     logger.info('No collections to process.')
     return
   }
   logger.info('Start processing collections.')
+
+  const options = library.getOptions()
 
   // Iterate on collection sources and process them.
   await iterate(
@@ -36,21 +38,9 @@ const process = async function (app, collections) {
 
           // Prepare collections.
           this.collectionProcesses = this.collection.processes.map(process => {
-            let processType = typeof (process)
-
             // If string get from lookup.
-            if (processType === 'string') {
-              process = app._processes[process]
-
-              // Get type again.
-              processType = typeof (process)
-            }
-
-            // If function wrap in object.
-            if (processType === 'function') {
-              process = {
-                process: process,
-              }
+            if (typeof (process) === 'string') {
+              process = library._processes[process]
             }
 
             return process
@@ -98,19 +88,26 @@ const process = async function (app, collections) {
           }
         }
 
-        // Check if done and this is the last active collection call.
-        if (source.done && this.collectionsActiveByIndex[collectionIndex] === 1) {
-          // Call final on processes only in this collection.
-          await call({
-            concurrencyLimit: app.options.concurrencyLimit,
-          }, processes, 'final')
+        if (source.done) {
+          // Call final on source.
+          if (source.final && typeof (source.final) === 'function') {
+            await source.final()
+          }
+
+          // Check if done and this is the last active collection call.
+          if (this.collectionsActiveByIndex[collectionIndex] === 1) {
+            // Call final on processes only in this collection, globally registered processes are called later.
+            await call({
+              concurrencyLimit: options.concurrencyLimit,
+            }, processes, 'final')
+          }
         }
 
         // Decrement active count.
         this.collectionsActiveByIndex[collectionIndex]--
       },
     },
-    app.options.concurrencyLimit, true
+    options.concurrencyLimit, true
   )
 
   logger.info('Finished processing collections.')

@@ -6,12 +6,14 @@ import path from 'path'
 import { promisify } from 'util'
 
 // Import external modules.
+import { watch } from 'chokidar'
 import deepAssign from '@hoast/utils/deepAssign.js'
 import instantiate from '@hoast/utils/instantiate.js'
 import minimist from 'minimist'
 
 // Import local utility libraries.
 // TODO: import { isValidConfig } from './util/isValid.js'
+import logger from '../utils/logger.js'
 import timer from './utils/timer.js'
 
 // Import core library.
@@ -43,12 +45,17 @@ const CLI = async function () {
   )
 
   // Standard CLI messages.
+  const MESSAGE_SEE_DOCS = `See '${pkg.docs}' for more information about hoast.`
+  const MESSAGE_SEE_HELP = `Use '${pkg.name} help' to see a list of commands.`
 
-  const MESSAGE_VERSION = `
-ʕ ˵·ᴥ·ʔっ ${pkg.name} (v${pkg.version})
-`
+  // Construct command line interface.
+  const options = minimist(process.argv.slice(2))
+  options._ = options._.map(_ => String.prototype.toLowerCase.call(_))
 
-  const MESSAGE_HELP = `
+  if (options._.length > 0) {
+    // Display help.
+    if (options._.indexOf('h') >= 0 || options._.indexOf('help') >= 0) {
+      console.log(`
 ʕ ˵•ᴥ•ʔっ ${pkg.name} (v${pkg.version})
 
 Usage
@@ -60,47 +67,41 @@ Commands
   v, version  Display version
 
 Options for run
-  --log-level          {Number}  Log level given to the logger. (Default: 2 (Errors and warnings))
-  --file-path          {String}  File path to config or script file. (Defaults: hoast.js and hoast.json)
   --concurrency-limit  {Number}  Maximum amount of items to process at once. (Default: 4)
-`
-
-  const MESSAGE_SEE_DOCS = `See '${pkg.docs}' for more information about hoast.`
-  const MESSAGE_SEE_HELP = `Use '${pkg.name} help' to see a list of commands.`
-  const MESSAGE_UNKNOWN_COMMAND = 'ʕ ˵;ᴥ;ʔ Unkown command!'
-
-  // Construct command line interface.
-  const options = minimist(process.argv.slice(2))
-  options._ = options._.map(_ => String.prototype.toLowerCase.call(_))
-
-  if (options._.length > 0) {
-    // Display help.
-    if (options._.indexOf('h') >= 0 || options._.indexOf('help') >= 0) {
-      console.log(MESSAGE_HELP)
+  --file-path          {String}  File path to config or script file. (Defaults: 'hoast.js' and 'hoast.json')
+  --log-level          {Number}  Log level given to the logger. (Default: 2 (Errors and warnings))
+  --watch                        Re-build automatically when a file changes.
+  --watch-ignore       {String}  Glob patter or paths to exclude from watching. (Default: 'node_modules/**')
+`)
       return
     }
 
     // Display version.
     if (options._.indexOf('v') >= 0 || options._.indexOf('version') >= 0) {
-      console.log(MESSAGE_VERSION)
+      console.log(`
+ʕ ˵·ᴥ·ʔっ ${pkg.name} (v${pkg.version})
+`)
       return
     }
 
     if (options._.indexOf('r') === -1 && options._.indexOf('run') === -1) {
-      console.log(`${MESSAGE_UNKNOWN_COMMAND} ${MESSAGE_SEE_HELP}`)
+      console.log(`ʕ ˵;ᴥ;ʔ Unknown command! ${MESSAGE_SEE_HELP}`)
       return
     }
   }
 
   // Log prepare message.
-  console.log('ʕ ˵·ᴥ·ʔ   Preparing!')
+  console.log('ʕ ˵·ᴥ·ʔ   Preparing…')
+
+  // Set base directory path.
+  const directory = process.cwd()
 
   // Set configuration file path.
   let filePath
   if (Object.prototype.hasOwnProperty.call(options, 'file-path')) {
     filePath = options['file-path']
     if (!path.isAbsolute(filePath)) {
-      filePath = path.resolve(process.cwd(), filePath)
+      filePath = path.resolve(directory, filePath)
     }
 
     try {
@@ -111,16 +112,16 @@ Options for run
     }
   } else {
     // Check for hoast.js or hoast.json in current working directory.
-    filePath = path.resolve(process.cwd(), 'hoast.js')
+    filePath = path.resolve(directory, 'hoast.js')
     try {
       await fsAccess(filePath, fs.constants.R_OK)
     } catch {
-      filePath = path.resolve(process.cwd(), 'hoast.json')
+      filePath = path.resolve(directory, 'hoast.json')
 
       try {
         await fsAccess(filePath, fs.constants.R_OK)
       } catch {
-        console.error(`Error: No readable configuration file found in "${process.cwd()}". ` + MESSAGE_SEE_HELP)
+        console.error(`Error: No readable configuration file found in "${directory}". ` + MESSAGE_SEE_HELP)
         return
       }
     }
@@ -164,6 +165,13 @@ Options for run
       config.options = {}
     } else if (typeof (config.options) !== 'object') {
       throw new Error('Invalid options type in configuration file! Must be of type object. ' + MESSAGE_SEE_DOCS)
+    }
+
+    if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
+      config.options.logLevel = options['log-level']
+    }
+    if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
+      config.options.concurrencyLimit = options['concurrency-limit']
     }
 
     // Ensure meta is set and an object.
@@ -217,33 +225,108 @@ Options for run
         hoast.registerProcess(name, await instantiate(config.processes[name]))
       }
     }
+  } else {
+    // Overwrite options with CLI options.
+    if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
+      hoast._options.logLevel = options['log-level']
+      logger.setLevel(options['log-level'])
+    }
+    if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
+      hoast._options.concurrencyLimit = options['concurrency-limit']
+    }
   }
 
-  // Overwrite options with CLI options.
-  const optionsOverride = {}
-  if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
-    optionsOverride.logLevel = options['log-level']
+  // Check if watch option is set.
+  const isWatching = Object.prototype.hasOwnProperty.call(options, 'watch')
+  hoast.setWatching(isWatching)
+
+  let changedFiles, isProcessing
+  // ChangedFiles is null since on the first process we want to perform a full rebuild.
+  const doProcess = async function () {
+    if (isProcessing) {
+      return
+    }
+
+    // Mark as processing.
+    isProcessing = true
+
+    if (changedFiles && changedFiles.length > 0) {
+      console.log(`
+ʕ  ✦ᴥ✦ʔ   Processing changes…`)
+
+      // Provide changed files to hoast and reset the local list.
+      hoast.setChanged(changedFiles)
+    }
+    changedFiles = []
+
+    // Start execution timer.
+    const time = timer()
+
+    try {
+      // Start processing.
+      await hoast.process()
+    } catch (error) {
+      if (isWatching) {
+        console.warn('Error occurred during build.')
+        console.log(error)
+      } else {
+        throw error
+      }
+    }
+
+    // Log end with execution time.
+    console.log(`ʕっ✦ᴥ✦ʔっ Done in ${time()}s!`)
+
+    // Mark as done processing.
+    isProcessing = false
+
+    if (isWatching) {
+      if (changedFiles && changedFiles.length > 0) {
+        await doProcess()
+      } else {
+        // Log that the watcher is watching if no immediate process is started.
+        console.log('ʕ ˵•ᴥ•ʔ   Watching for changes…')
+      }
+    }
   }
-  if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
-    optionsOverride.concurrencyLimit = options['concurrency-limit']
+
+  if (isWatching) {
+    let ignored = 'node_modules/**'
+    if (Object.prototype.hasOwnProperty.call(options, 'watch-ignored')) {
+      ignored = options['watch-ignored']
+    }
+    const hoastDirectory = hoast.getOptions().directory
+
+    const handleFileChange = async function (filePath) {
+      filePath = path.resolve(hoastDirectory, filePath)
+
+      if (changedFiles.indexOf(filePath) < 0) {
+        // Store change and check later.
+        changedFiles.push(filePath)
+      }
+
+      if (!isProcessing && changedFiles.length > 0) {
+        await doProcess()
+      }
+    }
+
+    // Setup the watcher.
+    watch(hoastDirectory, {
+      cwd: hoastDirectory,
+      disableGlobbing: true,
+      ignored: ignored,
+      ignoreInitial: true,
+    })
+      .on('add', handleFileChange)
+      .on('change', handleFileChange)
+      .on('unlink', handleFileChange)
   }
-  // Manually overwrite options.
-  hoast.options = deepAssign(
-    hoast.options,
-    optionsOverride
-  )
 
   // Log start message.
-  console.log('ʕ ˵•ₒ•ʔ   Starting!')
+  console.log('ʕ ˵•ₒ•ʔ   Starting…')
 
-  // Start execution timer.
-  const time = timer()
-
-  // Start processing.
-  await hoast.process()
-
-  // Log end with execution time.
-  console.log(`ʕっ✦ᴥ✦ʔっ Done in ${time()}s!`)
+  // Perform initial full build!
+  await doProcess()
 }
 
 // Run CLI.
