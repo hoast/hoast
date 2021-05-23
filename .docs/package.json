@@ -25,7 +25,7 @@
   "scripts": {
     "build": "NODE_ENV=production hoast",
     "develop": "NODE_ENV=development NODE_OPTIONS='--experimental-loader=@hoast/hoast/loader.js' hoast --watch",
-    "lint": "eslint --fix --cache *.js src/components/*.js",
+    "lint": "eslint src/components/*.js src/utils/*.js --cache --fix --no-error-on-unmatched-pattern",
     "serve": "serve ../docs/"
   }
 }

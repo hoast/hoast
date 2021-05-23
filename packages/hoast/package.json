@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/hoast",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A set of simple and modular packages for build automation.",
   "keywords": [
     "modular",
@@ -27,8 +27,10 @@
   },
   "type": "module",
   "files": [
-    "README.md",
-    "src/"
+    "src/",
+    "hoast.js",
+    "loader.js",
+    "README.md"
   ],
   "bin": {
     "hoast": "src/cli/hoast.js"
