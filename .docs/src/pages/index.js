@@ -113,7 +113,7 @@ export default function () {
           }, '@hoast/hoast', 'The core package of hoast responsible for managing and running the other packages.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/source-filesystem#readme',
+            href: 'https://github.com/hoast/hoast/tree/master/packages/source-readfiles#readme',
           }, '@hoast/source-filesystem', 'Read files from the filesystem.'),
 
           card({

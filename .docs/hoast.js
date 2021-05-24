@@ -15,6 +15,11 @@ export default {
         minify: process.env.NODE_ENV === 'production',
         mode: 'html',
 
+        scriptOptions: {
+          presets: [
+            '@babel/preset-env'
+          ],
+        },
         stylePlugins: [
           'postcss-nesting',
           'autoprefixer',
@@ -45,9 +50,11 @@ export default {
         minify: process.env.NODE_ENV === 'production',
         mode: 'js',
 
-        scriptPlugins: [
-          'babel-plugin-module-resolver',
-        ],
+        scriptOptions: {
+          presets: [
+            '@babel/preset-env'
+          ],
+        },
       }],
       ['@hoast/process-writefiles', {
         directory: '../../docs',
