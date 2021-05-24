@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
+    "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.2",
     "@hoast/hoast": "^3.0.1",
     "@hoast/process-custom": "^3.0.0",
@@ -16,7 +17,7 @@
     "postcss": "^8.3.0",
     "postcss-import": "^14.0.2",
     "postcss-nesting": "^8.0.1",
-    "postcss-reuse": "^2.1.1",
+    "postcss-reuse": "^2.1.4",
     "postcss-preset-env": "6.7.0",
     "serve": "11.3.2",
     "tailwindcss": "^2.1.2"

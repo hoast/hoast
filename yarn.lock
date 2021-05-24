@@ -1682,6 +1682,14 @@ css-select@^3.1.2:
     domutils "^2.4.3"
     nth-check "^2.0.0"
 
+css-selector-tokenizer@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/css-selector-tokenizer/-/css-selector-tokenizer-0.7.3.tgz#735f26186e67c749aaf275783405cf0661fae8f1"
+  integrity sha512-jWQv3oCEL5kMErj4wRnK/OPoBi0D+P1FR2cDCKYPaMeD2eW3/mttav8HT4hT1CKopiJI/psEULjkClhvJo4Lvg==
+  dependencies:
+    cssesc "^3.0.0"
+    fastparse "^1.1.2"
+
 css-tree@^1.1.2:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/css-tree/-/css-tree-1.1.3.tgz#eb4870fb6fd7707327ec95c2ff2ab09b5e8db91d"
@@ -2271,6 +2279,11 @@ fast-url-parser@1.1.3:
   integrity sha1-9K8+qfNNiicc9YrSs3WfQx8LMY0=
   dependencies:
     punycode "^1.3.2"
+
+fastparse@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
+  integrity sha512-483XLLxTVIwWK3QTrMGRqUfUpoOs/0hbQrl2oz4J0pAcm3A3bu84wxTFqGqkJzewCLdME38xJLJAxBABfQT8sQ==
 
 fastq@^1.6.0:
   version "1.11.0"
@@ -4091,10 +4104,12 @@ postcss-replace-overflow-wrap@^3.0.0:
   dependencies:
     postcss "^7.0.2"
 
-postcss-reuse@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/postcss-reuse/-/postcss-reuse-2.1.1.tgz#adbc8461400807e244acb0578b2b5f5dc4b8d001"
-  integrity sha512-WQo+YN5Rre/4ZIvyrIiZlgeBBktbGKmPvWOTLr0W2bdau1NggAw7V3dl/E3FCAansM2mAXGOQUciXF42miLaDA==
+postcss-reuse@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/postcss-reuse/-/postcss-reuse-2.1.4.tgz#6b13203250f80ff9278f478fc656e5ffc34a1d11"
+  integrity sha512-ThAwKPS4NfKbaSS4JzrgjoEHUrzZ/kwvA7YAX9Sq/W4GjTUgr+u9XsN5Zk7ooXFehXBXjfcikZzXdVmDtdVOTQ==
+  dependencies:
+    css-selector-tokenizer "^0.7.3"
 
 postcss-selector-matches@^4.0.0:
   version "4.0.0"
