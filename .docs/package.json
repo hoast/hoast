@@ -5,7 +5,7 @@
   "dependencies": {},
   "devDependencies": {
     "@babel/preset-env": "^7.14.2",
-    "@hoast/hoast": "^3.0.0",
+    "@hoast/hoast": "^3.0.1",
     "@hoast/process-custom": "^3.0.0",
     "@hoast/process-postprocess": "^3.0.0",
     "@hoast/process-writefiles": "^3.0.0",
@@ -13,7 +13,7 @@
     "@hoast/source-readfiles": "^3.0.0",
     "autoprefixer": "10.2.5",
     "highlight.js": "^10.7.2",
-    "postcss": "^8.2.15",
+    "postcss": "^8.3.0",
     "postcss-import": "^14.0.2",
     "postcss-nesting": "^8.0.1",
     "postcss-reuse": "^2.1.1",

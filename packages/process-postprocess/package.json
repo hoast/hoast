@@ -37,10 +37,10 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@babel/core": "^7.14.2",
+    "@babel/core": "^7.14.3",
     "@hoast/base-process": "^3.0.0",
     "@hoast/utils": "^3.0.0",
-    "cssnano": "^5.0.2",
+    "cssnano": "^5.0.4",
     "detective-cjs": "^3.1.1",
     "detective-es6": "^2.2.0",
     "detective-postcss": "^5.0.0",
@@ -51,8 +51,8 @@
     "hast-util-to-string": "^1.0.4",
     "hast-util-is-css-style": "^1.0.5",
     "planckmatch": "^0.2.1",
-    "postcss": "^8.2.15",
-    "rehype-minify-attribute-whitespace": "^2.0.2",
+    "postcss": "^8.3.0",
+    "rehype-minify-attribute-whitespace": "^2.0.3",
     "rehype-minify-enumerated-attribute": "^3.1.0",
     "rehype-minify-event-handler": "^2.0.3",
     "rehype-minify-javascript-url": "^3.0.3",
