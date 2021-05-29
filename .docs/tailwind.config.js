@@ -1,5 +1,5 @@
-const BROAD_MATCH_GLOBAL_REGEXP = /[^<>"'`;,\s]*[^<>"'`;,\s:]/g
-const INNER_MATCH_GLOBAL_REGEXP = /[^<>"'`;,\s.(){}[\]#=%]*[^<>"'`;,\s.(){}[\]#=%:]/g
+const BROAD_MATCH_GLOBAL_REGEXP = /[^<>"'`;,\s]*[^<>"'`;\s:]/g
+const INNER_MATCH_GLOBAL_REGEXP = /[^<>"'`;,\s.(){}[\]#=%]*[^<>"'`;\s.(){}[\]#=%:]/g
 
 const FONT_SIZE = 1.05
 const FONT_FACTOR = 1.15
