@@ -1,14 +1,10 @@
 // Import highlight.js.
-import hljs from 'highlight.js/lib/core.js'
-import hljsXml from 'highlight.js/lib/languages/xml.js'
-import hljsJavascript from 'highlight.js/lib/languages/javascript.js'
+import hljs from 'highlight.js'
 
 // Import renderer.
 import { render as r } from '../utils/RenderUtils.js'
 
-const { highlight } = hljs
-hljs.registerLanguage('xml', hljsXml)
-hljs.registerLanguage('javascript', hljsJavascript)
+const { highlight } = hljs;
 
 export default function (options, ...contents) {
   // Override default options.

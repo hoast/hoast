@@ -4,7 +4,6 @@ import { readFileSync } from 'fs';
 // Import components.
 import card from '../components/card.js'
 import carousel from '../components/carousel.js'
-import code from '../components/code.js'
 import logo from '../components/logo.js'
 import section from '../components/section.js'
 import template from '../components/template.js'

@@ -161,7 +161,8 @@ class SourceJavascript extends BaseSource {
     try {
       importedScript = await importVersion(filePath, libraryProcessCount)
     } catch (error) {
-      throw new Error('Unable to import file at path: "' + filePath + '".', error)
+      console.warn('Unable to import file at path: "' + filePath + '".')
+      throw new Error(error)
     }
     // Get function to execute.
     importedScript = getByPathSegments(importedScript, this._executePropertyPath)
@@ -175,7 +176,8 @@ class SourceJavascript extends BaseSource {
           result.contents = importedScript(library, result)
         }
       } catch (error) {
-        throw new Error('Error while executing imported script file at path: "' + filePath + '".', error)
+        console.warn('Error while executing imported script file at path: "' + filePath + '".')
+        throw new Error(error)
       }
     } else {
       throw new Error('Import function at "' + this._executePropertyPath + '" from "' + filePath + '" not of type function.')
