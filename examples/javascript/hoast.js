@@ -3,14 +3,14 @@ export default {
     directory: 'src',
   },
   collections: [{
-    source: ['source-readfiles', {
+    source: ['@hoast/source-readfiles', {
       directory: 'pages',
     }],
     processes: [
-      ['process-javascript', {
+      ['@hoast/process-javascript', {
         importPath: 'components/html.js',
       }],
-      'process-log',
+      '@hoast/process-log',
     ],
   }],
 }

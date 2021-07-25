@@ -6,7 +6,7 @@ import { getByPathSegments } from '@hoast/utils/get.js'
 import { setByPathSegments } from '@hoast/utils/set.js'
 
 // Import external unified modules.
-import unified from 'unified'
+import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
@@ -101,8 +101,7 @@ class ProcessMarkdown extends BaseProcess {
     let value = getByPathSegments(data, this._propertyPath)
 
     // Parse data.
-    value = await this._parser.process(value)
-    value = value.contents
+    value = (await this._parser.process(value)).value
 
     // Set value back to data.
     data = setByPathSegments(data, this._propertyPath, value)

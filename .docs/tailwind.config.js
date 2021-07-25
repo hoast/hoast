@@ -5,7 +5,7 @@ const FONT_SIZE = 1.05
 const FONT_FACTOR = 1.15
 
 export default {
-  mode: 'jit',
+  mode: process.env.NODE_ENV !== 'development' ? null : 'jit',
 
   corePlugins: {
     container: false,

@@ -164,7 +164,7 @@ class ProcessPostprocess extends BaseProcess {
         minify: options.minify,
       }, options.documentPlugins, this._styleProcessor, this._scriptProcessor)
       this._documentProcessor = async (code) => {
-        return (await unified.process(code)).contents
+        return (await unified.process(code)).value
       }
     }
 

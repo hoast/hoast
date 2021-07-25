@@ -3,15 +3,15 @@ export default {
     directory: 'src',
   },
   collections: [{
-    source: ['source-readfiles', {
+    source: ['@hoast/source-readfiles', {
       directory: 'pages',
     }],
     processes: [
-      ['process-handlebars', {
+      ['@hoast/process-handlebars', {
         templateDirectory: 'templates',
         templatePath: 'default.hbs',
       }],
-      'process-log',
+      '@hoast/process-log',
     ],
   }],
 }

@@ -1,5 +1,5 @@
 // Import unified and rehype processes.
-import unified from 'unified'
+import { unified } from 'unified'
 import rehypeMinifyAttributeWhitespace from 'rehype-minify-attribute-whitespace'
 import rehypeMinifyEnumeratedAttribute from 'rehype-minify-enumerated-attribute'
 import rehypeMinifyEventHandler from 'rehype-minify-event-handler'
