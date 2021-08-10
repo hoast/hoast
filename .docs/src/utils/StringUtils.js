@@ -55,7 +55,11 @@ export const anyToString = function (data, asCode = false, unwrap = true) {
       if (Array.isArray(data)) {
         data = data
           .map((value) => {
-            return anyToString(value, true, false) ?? 'null'
+            value = anyToString(value, true, false)
+            if (value === '') {
+              value = 'null'
+            }
+            return value
           })
           .join(asCode ? ',' : ' ')
 
@@ -72,7 +76,10 @@ export const anyToString = function (data, asCode = false, unwrap = true) {
           continue
         }
 
-        let value = anyToString(data[key], true, !asCode) ?? 'null'
+        let value = anyToString(data[key], true, !asCode)
+        if (value === '') {
+          value = 'null'
+        }
 
         if (asCode) {
           value = key + ':' + value

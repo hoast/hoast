@@ -134,7 +134,7 @@ class ProcessPostprocess extends BaseProcess {
 
       // Add Postcss minifier.
       if (options.minify) {
-        stylePlugins.push(cssnano(options.styleMinifyOptions ?? {}))
+        stylePlugins.push(cssnano(options.styleMinifyOptions || {}))
       }
 
       // Setup Postcss.
