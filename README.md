@@ -44,14 +44,14 @@ This repository contains the core package as well as first party modules and eve
 
 ## Made with
 
-The following list serve as tools you can use directly, or as an example on how to make a solution that fits your needs.
-
-- [`.docs`](/.docs#readme) - The website's source code, which is of course build with this project.
-- [`examples`](/examples#readme) - Examples on how Hoast and several modules can be used.
-
 The following list are project that are build with this project.
 
-- [`docs`](https://hoast.js.org) - The project's website is of course build using the project itself.
+- [Hoast.dev](https://hoast.dev) ([source](https://github.com/hoast/hoast/tree/main/.docs)) - The Hoast website itself.
+- [Doars.dev](https://doars.dev) ([source](https://github.com/doars/doars/tree/main/.docs)) - The Doars website. Doars is a front-end library for declaring functionality in your markup.
+
+The following list serve as tools you can use directly, or as an example on how to make a solution that fits your needs.
+
+- [`examples`](/examples#readme) - Examples on how Hoast and several modules can be used.
 
 ## Packages
 
