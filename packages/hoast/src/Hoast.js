@@ -401,7 +401,7 @@ class Hoast {
       // Call final on processes.
       await call({
         concurrencyLimit: this._options.concurrencyLimit,
-      }, this._processes, 'final')
+      }, Object.values(this._processes), 'final')
     }
 
     // Reset changed files.

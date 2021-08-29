@@ -88,23 +88,23 @@ const process = async function (library, collections) {
           }
         }
 
-        if (source.done) {
-          // Call final on source.
-          if (source.final && typeof (source.final) === 'function') {
-            await source.final()
-          }
+        // Decrement active count.
+        this.collectionsActiveByIndex[collectionIndex]--
 
+        if (source.done) {
           // Check if done and this is the last active collection call.
-          if (this.collectionsActiveByIndex[collectionIndex] === 1) {
+          if (this.collectionsActiveByIndex[collectionIndex] === 0) {
+            // Call final on source.
+            if (source.final && typeof (source.final) === 'function') {
+              await source.final()
+            }
+
             // Call final on processes only in this collection, globally registered processes are called later.
             await call({
               concurrencyLimit: options.concurrencyLimit,
             }, processes, 'final')
           }
         }
-
-        // Decrement active count.
-        this.collectionsActiveByIndex[collectionIndex]--
       },
     },
     options.concurrencyLimit, true
