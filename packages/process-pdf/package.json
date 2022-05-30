@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-pdf",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Converts HTML to PDF using puppeteer.",
   "keywords": [
     "hoast",
@@ -35,7 +35,7 @@
   "dependencies": {
     "@hoast/base-process": "^3.0.0",
     "@hoast/utils": "^3.0.0",
-    "puppeteer": "^10.1.0",
+    "puppeteer": "^14.1.2",
     "serve-handler": "^6.1.3"
   }
 }
