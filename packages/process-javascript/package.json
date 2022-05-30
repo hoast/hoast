@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-javascript",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Retrieve and execute JavaScript.",
   "keywords": [
     "hoast",
@@ -35,8 +35,8 @@
   "dependencies": {
     "@hoast/base-process": "^3.0.0",
     "@hoast/utils": "^3.0.0",
-    "detective-cjs": "^3.1.1",
-    "detective-es6": "^2.2.0",
+    "detective-cjs": "^4.0.0",
+    "detective-es6": "^3.0.0",
     "planckmatch": "^0.2.1"
   }
 }
