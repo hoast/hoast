@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-markdown",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Convert markdown to HTML using Unified",
   "keywords": [
     "hoast",
@@ -35,11 +35,11 @@
   "dependencies": {
     "@hoast/base-process": "^3.0.0",
     "@hoast/utils": "^3.0.0",
-    "rehype-raw": "^5.1.0",
-    "rehype-sanitize": "^4.0.0",
-    "rehype-stringify": "^8.0.0",
-    "remark-parse": "^9.0.0",
-    "remark-rehype": "^8.1.0",
-    "unified": "^10.0.1"
+    "rehype-raw": "^6.1.1",
+    "rehype-sanitize": "^5.0.1",
+    "rehype-stringify": "^9.0.3",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "unified": "^10.1.2"
   }
 }
