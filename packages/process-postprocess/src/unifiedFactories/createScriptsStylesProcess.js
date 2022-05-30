@@ -1,8 +1,8 @@
-import fromString from 'hast-util-from-string'
+import { fromString } from 'hast-util-from-string'
 import { hasProperty } from 'hast-util-has-property'
-import isScript from 'hast-util-is-javascript'
-import toString from 'hast-util-to-string'
-import isStyle from 'hast-util-is-css-style'
+import { isJavaScript } from 'hast-util-is-javascript'
+import { toString } from 'hast-util-to-string'
+import { isCssStyle } from 'hast-util-is-css-style'
 import { visit } from 'unist-util-visit'
 
 export default function (stylesProcessor, scriptsProcessor) {
@@ -11,9 +11,9 @@ export default function (stylesProcessor, scriptsProcessor) {
 
     // Get all script nodes.
     visit(tree, 'element', (node) => {
-      if (isStyle(node)) {
+      if (isCssStyle(node)) {
         styleNodes.push(node)
-      } else if (isScript(node) && !hasProperty(node, 'src')) {
+      } else if (isJavaScript(node) && !hasProperty(node, 'src')) {
         scriptNodes.push(node)
       } else if (hasProperty(node, 'style')) {
         inlineStyleNodes.push(node)

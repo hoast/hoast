@@ -9,8 +9,11 @@ export default {
     container: false,
   },
 
-  purge: {
-    content: [
+  content: {
+    extract: (content) => {
+      return [...(content.match(BROAD_MATCH_GLOBAL_REGEXP) || []), ...(content.match(INNER_MATCH_GLOBAL_REGEXP) || [])]
+    },
+    files: [
       './src/components/**/*.js',
       './src/icons/**/*.svg',
       './src/pages/**/*.js',
@@ -18,11 +21,6 @@ export default {
       './src/styles/**/*.css',
       './src/utils/**/*.js',
     ],
-    options: {
-      defaultExtractor: (line) => {
-        return [...(line.match(BROAD_MATCH_GLOBAL_REGEXP) || []), ...(line.match(INNER_MATCH_GLOBAL_REGEXP) || [])]
-      },
-    }
   },
 
   theme: {
