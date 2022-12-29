@@ -9,7 +9,6 @@ Welcome and thank you for wanting to contribute! Following these guidelines help
 + [Creating pull requests](#creating-pull-requests)
   + [Follow styling](#follow-styling)
   + [Write documentation](#write-documentation)
-  + [Write examples](#write-examples)
   + [Sign off commits](#sign-off-commits)
 + [Reviewing pull requests](#reviewing-pull-requests)
 
