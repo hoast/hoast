@@ -1,7 +1,7 @@
 import { URL } from 'url'
 
-export async function resolve (specifier, context, defaultResolve) {
-  const resolved = defaultResolve(specifier, context, defaultResolve)
+export const resolve = async function (specifier, context, defaultResolve) {
+  const resolved = await defaultResolve(specifier, context, defaultResolve)
   const resolvedURL = new URL(resolved.url)
 
   // Ignore node modules.

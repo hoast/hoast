@@ -15,11 +15,12 @@
     "version": "hoast v"
   },
   "devDependencies": {
-    "eslint": "^8.16.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.0.0"
+    "eslint": "8.30.x",
+    "eslint-config-standard": "17.0.x",
+    "eslint-plugin-import": "2.26.x",
+    "eslint-plugin-n": "15.6.x",
+    "eslint-plugin-node": "11.1.x",
+    "eslint-plugin-promise": "6.1.x"
   },
   "dependencies": {}
 }

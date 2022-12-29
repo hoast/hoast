@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/hoast",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "A set of simple and modular packages for build automation.",
   "keywords": [
     "modular",
@@ -40,9 +40,9 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/utils": "^3.0.0",
-    "chokidar": "^3.5.3",
-    "minimist": "^1.2.6",
-    "planckmatch": "^0.2.1"
+    "@hoast/utils": "3.0.x",
+    "chokidar": "3.5.x",
+    "minimist": "1.2.x",
+    "planckmatch": "0.2.x"
   }
 }

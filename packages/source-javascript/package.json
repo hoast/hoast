@@ -35,10 +35,10 @@
     "lint": "eslint --fix --cache src --ext .js"
   },
   "dependencies": {
-    "@hoast/base-source": "^3.0.0",
-    "@hoast/utils": "^3.0.0",
-    "detective-cjs": "^4.0.0",
-    "detective-es6": "^3.0.0",
-    "planckmatch": "^0.2.1"
+    "@hoast/base-source": "3.0.x",
+    "@hoast/utils": "3.0.x",
+    "detective-cjs": "4.0.x",
+    "detective-es6": "3.0.x",
+    "planckmatch": "0.2.x"
   }
 }

@@ -1,3 +1,1 @@
-import { resolve as loaderResolve } from './src/cli/loader.js'
-
-export const resolve = loaderResolve
+export * from './src/cli/loader.js'
