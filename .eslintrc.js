@@ -58,6 +58,5 @@ module.exports = {
       0,
       'always',
     ],
-    'standard/no-callback-literal': 0,
   },
 }

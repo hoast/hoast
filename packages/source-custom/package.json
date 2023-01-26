@@ -30,9 +30,11 @@
   ],
   "main": "src/SourceCustom.js",
   "scripts": {
-    "lint": "eslint --fix --cache src --ext .js"
+    "lint": "eslint --fix --cache src --ext .js",
+    "upgrade": "npm-check-updates --upgrade --target minor"
   },
+  "devDependencies": {},
   "dependencies": {
-    "@hoast/base-source": "3.0.x"
+    "@hoast/base-source": "^3.0.0"
   }
 }

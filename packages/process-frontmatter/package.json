@@ -30,9 +30,11 @@
   ],
   "main": "src/ProcessFrontmatter.js",
   "scripts": {
-    "lint": "eslint --fix --cache src --ext .js"
+    "lint": "eslint --fix --cache src --ext .js",
+    "upgrade": "npm-check-updates --upgrade --target minor"
   },
+  "devDependencies": {},
   "dependencies": {
-    "@hoast/base-process": "3.0.x"
+    "@hoast/base-process": "^3.0.0"
   }
 }

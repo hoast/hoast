@@ -12,6 +12,7 @@
   "scripts": {
     "build": "NODE_ENV=production hoast",
     "develop": "NODE_ENV=development hoast --watch",
-    "lint": "eslint --fix --cache *.js"
+    "lint": "eslint --fix --cache *.js",
+    "upgrade": "echo 'no upgrade command'"
   }
 }

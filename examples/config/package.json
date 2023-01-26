@@ -14,7 +14,8 @@
     "hoast-json": "hoast --file-path='hoast-json.json'",
     "hoast-object": "hoast --file-path='hoast-object.js'",
     "hoast-process": "node ./hoast-process.js",
-    "version": "hoast version",
-    "lint": "eslint --fix --cache *.js"
+    "lint": "eslint --fix --cache *.js",
+    "upgrade": "echo 'no upgrade command'",
+    "version": "hoast version"
   }
 }

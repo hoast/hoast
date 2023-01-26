@@ -30,16 +30,18 @@
   ],
   "main": "src/ProcessMarkdown.js",
   "scripts": {
-    "lint": "eslint --fix --cache src --ext .js"
+    "lint": "eslint --fix --cache src --ext .js",
+    "upgrade": "npm-check-updates --upgrade --target minor"
   },
+  "devDependencies": {},
   "dependencies": {
-    "@hoast/base-process": "3.0.x",
-    "@hoast/utils": "3.0.x",
-    "rehype-raw": "6.1.x",
-    "rehype-sanitize": "5.0.x",
-    "rehype-stringify": "9.0.x",
-    "remark-parse": "10.0.x",
-    "remark-rehype": "10.1.x",
-    "unified": "10.1.x"
+    "@hoast/base-process": "^3.0.0",
+    "@hoast/utils": "^3.0.0",
+    "rehype-raw": "^6.1.1",
+    "rehype-sanitize": "^5.0.1",
+    "rehype-stringify": "^9.0.3",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "unified": "^10.1.2"
   }
 }

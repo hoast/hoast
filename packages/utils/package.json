@@ -33,7 +33,9 @@
   ],
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --fix --cache *.js"
+    "lint": "eslint --fix --cache *.js",
+    "upgrade": "npm-check-updates --upgrade --target minor"
   },
+  "devDependencies": {},
   "dependencies": {}
 }

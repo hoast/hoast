@@ -30,12 +30,14 @@
   ],
   "main": "src/ProcessPdf.js",
   "scripts": {
-    "lint": "eslint --fix --cache src --ext .js"
+    "lint": "eslint --fix --cache src --ext .js",
+    "upgrade": "npm-check-updates --upgrade --target minor"
   },
+  "devDependencies": {},
   "dependencies": {
-    "@hoast/base-process": "3.0.x",
-    "@hoast/utils": "3.0.x",
-    "puppeteer": "19.1.x",
-    "serve-handler": "6.1.x"
+    "@hoast/base-process": "^3.0.0",
+    "@hoast/utils": "^3.0.0",
+    "puppeteer": "^19.6.0",
+    "serve-handler": "^6.1.5"
   }
 }

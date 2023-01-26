@@ -2,31 +2,32 @@
   "private": true,
   "name": "@hoast/docs",
   "version": "0.0.0",
-  "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.18.2",
-    "@babel/preset-env": "^7.18.2",
-    "@hoast/hoast": "^3.0.0",
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "@hoast/hoast": "^3.0.5",
     "@hoast/process-custom": "^3.0.0",
-    "@hoast/process-postprocess": "^3.0.0",
+    "@hoast/process-postprocess": "^3.0.5",
     "@hoast/process-writefiles": "^3.0.0",
-    "@hoast/source-javascript": "^3.0.0",
+    "@hoast/source-javascript": "^3.0.1",
     "@hoast/source-readfiles": "^3.0.0",
-    "autoprefixer": "10.4.7",
-    "highlight.js": "^11.5.1",
-    "postcss": "^8.4.14",
+    "autoprefixer": "10.4.13",
+    "highlight.js": "^11.7.0",
+    "postcss": "^8.4.21",
     "postcss-import": "^14.1.0",
-    "postcss-nesting": "^10.1.7",
-    "postcss-reuse": "^2.1.9",
-    "postcss-preset-env": "7.6.0",
-    "serve": "13.0.2",
-    "tailwindcss": "^3.0.24"
+    "postcss-nesting": "^10.2.0",
+    "postcss-reuse": "^2.2.0",
+    "postcss-preset-env": "7.8.3",
+    "serve": "13.0.4",
+    "tailwindcss": "^3.2.4"
   },
+  "dependencies": {},
   "type": "module",
   "scripts": {
     "build": "NODE_ENV=production hoast",
     "develop": "NODE_ENV=development NODE_OPTIONS='--experimental-loader=@hoast/hoast/loader.js' hoast --watch",
     "lint": "eslint src/components/*.js src/utils/*.js --cache --fix --no-error-on-unmatched-pattern",
-    "serve": "serve ../docs/"
+    "serve": "serve ../docs/",
+    "upgrade": "npm-check-updates --upgrade --target minor"
   }
 }

@@ -30,9 +30,11 @@
   ],
   "main": "src/BasePackage.js",
   "scripts": {
-    "lint": "eslint --fix --cache src/*.js"
+    "lint": "eslint --fix --cache src/*.js",
+    "upgrade": "npm-check-updates --upgrade --target minor"
   },
+  "devDependencies": {},
   "dependencies": {
-    "@hoast/utils": "3.0.x"
+    "@hoast/utils": "^3.0.0"
   }
 }
