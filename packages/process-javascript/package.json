@@ -37,8 +37,8 @@
   "dependencies": {
     "@hoast/base-process": "^3.0.0",
     "@hoast/utils": "^3.0.0",
-    "detective-cjs": "^4.0.0",
-    "detective-es6": "^3.0.0",
+    "detective-cjs": "^4.1.0",
+    "detective-es6": "^3.0.1",
     "planckmatch": "^0.2.1"
   }
 }

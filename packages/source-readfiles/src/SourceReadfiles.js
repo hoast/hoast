@@ -76,7 +76,9 @@ class SourceReadfiles extends BaseSource {
       // Check if path matches the patterns.
       if (this._expressions) {
         // Skip if it does not matches.
-        const matches = options.filterOptions.all ? planckmatch.match.all(filePathRelative, this._expressions) : planckmatch.match.any(filePathRelative, this._expressions)
+        const matches = options.filterOptions.all
+          ? planckmatch.match.all(filePathRelative, this._expressions)
+          : planckmatch.match.any(filePathRelative, this._expressions)
         if (!matches) {
           continue
         }

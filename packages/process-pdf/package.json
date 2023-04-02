@@ -37,7 +37,7 @@
   "dependencies": {
     "@hoast/base-process": "^3.0.0",
     "@hoast/utils": "^3.0.0",
-    "puppeteer": "^19.6.0",
+    "puppeteer": "^19.8.2",
     "serve-handler": "^6.1.5"
   }
 }

@@ -44,7 +44,7 @@
   "dependencies": {
     "@hoast/utils": "^3.0.0",
     "chokidar": "^3.5.3",
-    "minimist": "^1.2.7",
+    "minimist": "^1.2.8",
     "planckmatch": "^0.2.1"
   }
 }
