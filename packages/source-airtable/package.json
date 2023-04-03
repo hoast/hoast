@@ -1,0 +1,43 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.com"
+  },
+  "name": "@hoast/source-airtable",
+  "version": "3.0.0",
+  "description": "Read data from Google Spreadsheets.",
+  "keywords": [
+    "hoast",
+    "source",
+    "google spreadsheet"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-airtable#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoast/hoast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoast/hoast/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "files": [
+    "README.md",
+    "src/"
+  ],
+  "main": "src/SourceAirtable.js",
+  "scripts": {
+    "lint": "eslint --fix --cache src --ext .js",
+    "upgrade": "npm-check-updates --upgrade --target minor"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "@hoast/base-source": "^3.0.0",
+    "@hoast/utils": "^3.0.0",
+    "googleapis": "^114.0.0",
+    "google-auth-library": "^8.7.0"
+  }
+}
