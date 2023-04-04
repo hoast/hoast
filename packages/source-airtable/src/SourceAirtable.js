@@ -96,7 +96,10 @@ export class SourceAirtable extends BaseSource {
       }
     }
 
-    if (table.id in this._rows[options.baseId]) {
+    if (
+      !(table.id in this._rows[options.baseId]) ||
+      !this._rows[options.baseId][table.id]
+    ) {
       this._rows[options.baseId][table.id] = (await this._airtable.listRecords(options.baseId, options.tableIdOrName)).records
     }
 
