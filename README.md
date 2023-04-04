@@ -60,6 +60,7 @@ The following list serve as tools you can use directly, or as an example on how 
 ### Source packages
 
 - [`source-custom`](/packages/source-custom#readme) - Allows you to provide your own custom source functions. Extends base-source where the overridable functions can be provided via the options. Helps you from having to create a package for simple one-off behaviour.
+- [`source-airtable`](/packages/source-airtable#readme) - Read data from Airtable bases.
 - [`source-javascript`](/packages/source-javascript#readme) - Read and execute script from the filesystem.
 - [`source-readfiles`](/packages/source-readfiles#readme) - Read files from the filesystem.
 

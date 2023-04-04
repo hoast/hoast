@@ -41,24 +41,29 @@ export class SourceAirtable extends BaseSource {
       })
     }
 
+    // Setup Airtable api instance.
+    this._airtable = new Airtable(options.token)
+
     this._rows = {}
     this._tables = {}
-    this._tableIndices = {}
   }
 
   async initialize () {
     const options = this.getOptions()
 
-    // Setup Airtable api instance.
-    this._airtable = new Airtable(options.token)
+    // Reset indices
+    this._rowIndices = {}
+    this._tableIndices = {}
 
     // Try and get tables of base.
     if (!options.cache || !this._tables[options.baseId]) {
       let tables = (await this._airtable.getBaseSchema(options.baseId)).tables
 
       this._rows[options.baseId] = {}
+      this._rowIndices[options.baseId] = {}
       for (const table of tables) {
         this._rows[options.baseId][table.id] = null
+        this._rowIndices[options.baseId][table.id] = -1
       }
 
       tables = tables.reverse()
@@ -77,10 +82,33 @@ export class SourceAirtable extends BaseSource {
   }
 
   async _sequentialRow () {
-    // FIX:
-    throw new Error('Not implemented yet!')
+    const options = this.getOptions()
 
-    // this.exhausted = true
+    // Get table.
+    const tables = this._tables[options.baseId]
+    let table
+    for (let index = 0; index < tables.length; index++) {
+      if (
+        tables[index].id === options.tableIdOrName ||
+        tables[index].name === options.tableIdOrName
+      ) {
+        table = tables[index]
+      }
+    }
+
+    if (table.id in this._rows[options.baseId]) {
+      this._rows[options.baseId][table.id] = (await this._airtable.listRecords(options.baseId, options.tableIdOrName)).records
+    }
+
+    if (
+      table.id in this._rowIndices[options.baseId] &&
+      this._rows[options.baseId][table.id].length - 1 >= this._rowIndices[options.baseId][table.id]
+    ) {
+      this._rowIndices[options.baseId][table.id]++
+      return this._rows[options.baseId][table.id][this._rowIndices[options.baseId][table.id]]
+    }
+
+    this.exhausted = true
   }
 
   _sequentialTable () {

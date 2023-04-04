@@ -1,6 +1,6 @@
 # @hoast/base-process
 
-Provides basic functionality for process package like an initialization function, sequentially running of certain code, and filtering out running the process based of the data. Meant for developers to be used as a base for a [hoast](https://hoast.js.org) process package.
+Provides basic functionality for process package like an initialization function, sequentially running of certain code, and filtering out running the process based of the data. Meant for developers to be used as a base for a [hoast](https://hoast.dev) process package.
 
 ## Install
 
