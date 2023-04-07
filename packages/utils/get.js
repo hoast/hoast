@@ -26,7 +26,7 @@ export const getByPathSegments = function (source, path) {
 
     // Return list of items instead of a single one.
     if (segment === '' && Array.isArray(source)) {
-      return source.map(item => getFromObject(item, path))
+      return source.map(item => getByPathSegments(item, path))
     }
   }
 

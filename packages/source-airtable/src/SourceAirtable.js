@@ -161,7 +161,7 @@ export class SourceAirtable extends BaseSource {
     const options = this.getOptions()
 
     if (!options.cache || !this._rows[options.baseId][data.id]) {
-      this._rows[options.baseId][data.id] = await this._airtable.listRecords(options.baseId, data.id).records
+      this._rows[options.baseId][data.id] = (await this._airtable.listRecords(options.baseId, data.id)).records
     }
     data.records = this._rows[options.baseId][data.id]
 

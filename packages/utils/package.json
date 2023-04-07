@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/utils",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Utility functions commonly used by hoast and hoast packages.",
   "keywords": [
     "hoast",
