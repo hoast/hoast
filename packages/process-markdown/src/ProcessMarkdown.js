@@ -101,7 +101,14 @@ class ProcessMarkdown extends BaseProcess {
     let value = getByPathSegments(data, this._propertyPath)
 
     // Parse data.
-    value = (await this._parser.process(value)).value
+    if (Array.isArray(value)) {
+      for (let i = 0; i < value.length; i++) {
+        value[i] = (await this._parser.process(value[i])).value
+
+      }
+    } else {
+      value = (await this._parser.process(value)).value
+    }
 
     // Set value back to data.
     data = setByPathSegments(data, this._propertyPath, value)
