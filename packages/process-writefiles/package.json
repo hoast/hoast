@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-writefiles",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Write data to the filesystem.",
   "keywords": [
     "hoast",
@@ -38,6 +38,6 @@
   "devDependencies": {},
   "dependencies": {
     "@hoast/base-package": "^3.0.0",
-    "@hoast/utils": "^3.0.0"
+    "@hoast/utils": "^3.1.1"
   }
 }

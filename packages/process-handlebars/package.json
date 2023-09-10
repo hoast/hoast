@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-handlebars",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Template using Handlebars",
   "keywords": [
     "hoast",
@@ -36,7 +36,7 @@
   "devDependencies": {},
   "dependencies": {
     "@hoast/base-process": "^3.0.0",
-    "@hoast/utils": "^3.0.0",
-    "handlebars": "^4.7.7"
+    "@hoast/utils": "^3.1.1",
+    "handlebars": "^4.7.8"
   }
 }

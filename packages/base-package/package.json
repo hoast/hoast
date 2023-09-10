@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/base-package",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Base package for other packages.",
   "keywords": [
     "hoast",
@@ -35,6 +35,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hoast/utils": "^3.0.0"
+    "@hoast/utils": "^3.1.1"
   }
 }

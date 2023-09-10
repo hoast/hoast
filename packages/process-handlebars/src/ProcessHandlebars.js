@@ -107,7 +107,9 @@ class ProcessHandlebars extends BaseProcess {
             // Get next file path.
             while (filePath = await directoryIterator()) {
               // Get relative file path.
-              const filePathRelative = path.relative(this._helpersPath, filePath)
+              let filePathRelative = path.relative(this._helpersPath, filePath)
+              const extensionIndex = filePathRelative.lastIndexOf('.')
+              filePathRelative = filePathRelative.substring(0, extensionIndex)
 
               // Dynamic import helper.
               let helper = await importVersion(filePath, libraryProcessCount)
@@ -140,7 +142,9 @@ class ProcessHandlebars extends BaseProcess {
             // Get next file path.
             while (filePath = await directoryIterator()) {
               // Get relative file path.
-              const filePathRelative = path.relative(this._partialsPath, filePath)
+              let filePathRelative = path.relative(this._partialsPath, filePath)
+              const extensionIndex = filePathRelative.lastIndexOf('.')
+              filePathRelative = filePathRelative.substring(0, extensionIndex)
 
               // Get file content.
               const partial = await fsReadFile(filePath, { encoding: 'utf8' })

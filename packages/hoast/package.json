@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/hoast",
-  "version": "3.0.5",
+  "version": "3.1.0",
   "description": "A set of simple and modular packages for build automation.",
   "keywords": [
     "modular",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hoast/utils": "^3.0.0",
+    "@hoast/utils": "^3.1.1",
     "chokidar": "^3.5.3",
     "minimist": "^1.2.8",
     "planckmatch": "^0.2.1"

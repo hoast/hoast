@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-parse",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Parse a text value using a function or package.",
   "keywords": [
     "hoast",
@@ -36,6 +36,6 @@
   "devDependencies": {},
   "dependencies": {
     "@hoast/base-process": "^3.0.0",
-    "@hoast/utils": "^3.0.0"
+    "@hoast/utils": "^3.1.1"
   }
 }
