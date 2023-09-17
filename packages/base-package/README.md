@@ -1,6 +1,6 @@
 # @hoast/base-package
 
-Provides basic functionality like receiving the library's reference and setting up a logger. Meant for developers to be used as a base for a [hoast](https://hoast.dev) source or process package.
+Provides basic functionality like receiving the library's reference and setting up a logger. Meant for developers to be used as a base for a [hoast](https://hoast.js.org) source or process package.
 
 ## Install
 

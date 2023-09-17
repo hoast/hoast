@@ -3,9 +3,9 @@ import { render as r } from '../utils/RenderUtils.js'
 
 export default function (meta = {}, ...contents) {
   meta = Object.assign({
-    image: 'https://hoast.dev/banner.png',
+    image: 'https://hoast.js.org/banner.png',
     twitter: '@RedKenrok',
-    url: 'https://hoast.dev',
+    url: 'https://hoast.js.org',
   }, meta)
 
   // Render document.

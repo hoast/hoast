@@ -1,6 +1,6 @@
 # @hoast/hoast
 
-The core package of [hoast](https://hoast.dev) responsible for managing and running the other packages.
+The core package of [hoast](https://hoast.js.org) responsible for managing and running the other packages.
 
 ## Install
 
