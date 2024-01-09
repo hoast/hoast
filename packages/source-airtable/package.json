@@ -4,12 +4,12 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/source-airtable",
-  "version": "3.2.2",
-  "description": "Read data from Google Spreadsheets.",
+  "version": "3.2.3",
+  "description": "Read data via the Airtable API.",
   "keywords": [
     "hoast",
     "source",
-    "google spreadsheet"
+    "airtable"
   ],
   "license": "MIT",
   "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-airtable#readme",
@@ -36,8 +36,6 @@
   "devDependencies": {},
   "dependencies": {
     "@hoast/base-source": "^3.0.0",
-    "@hoast/utils": "^3.1.1",
-    "google-auth-library": "^8.9.0",
-    "googleapis": "^114.0.0"
+    "@hoast/utils": "^3.1.1"
   }
 }
