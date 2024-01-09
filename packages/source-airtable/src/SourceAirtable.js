@@ -10,9 +10,6 @@ import planckmatch from 'planckmatch'
 export const Airtable = _Airtable
 
 export class SourceAirtable extends BaseSource {
-  static MODE_ROW = 'row'
-  static MODE_TABLE = 'table'
-
   /**
    * Create package instance.
    * @param  {Object} options Options objects.
@@ -168,5 +165,7 @@ export class SourceAirtable extends BaseSource {
     return data
   }
 }
+SourceAirtable.MODE_ROW = 'row'
+SourceAirtable.MODE_TABLE = 'table'
 
 export default SourceAirtable

@@ -39,7 +39,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@babel/core": "^7.22.17",
+    "@babel/core": "^7.23.7",
     "@hoast/base-process": "^3.0.0",
     "@hoast/utils": "^3.1.1",
     "cssnano": "^5.1.15",
@@ -53,7 +53,7 @@
     "hast-util-is-javascript": "^2.0.0",
     "hast-util-to-string": "^2.0.0",
     "planckmatch": "^0.2.1",
-    "postcss": "^8.4.29",
+    "postcss": "^8.4.33",
     "rehype-minify-attribute-whitespace": "^3.0.0",
     "rehype-minify-enumerated-attribute": "^4.1.0",
     "rehype-minify-event-handler": "^3.0.0",
@@ -76,7 +76,7 @@
     "rehype-sort-attribute-values": "^4.0.0",
     "rehype-sort-attributes": "^4.0.0",
     "rehype-stringify": "^9.0.4",
-    "terser": "^5.19.4",
+    "terser": "^5.26.0",
     "unified": "^10.1.2",
     "unist-util-visit": "^4.1.2"
   }
