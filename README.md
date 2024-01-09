@@ -1,6 +1,7 @@
 <div align="center">
 
 ![Project logo](.docs/src/assets/icons/256-round.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhoast%2Fhoast.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhoast%2Fhoast?ref=badge_shield)
 
 </div>
 
@@ -83,3 +84,7 @@ The following list serve as tools you can use directly, or as an example on how 
 - [`base-process`](/packages/base-process#readme) - Provides basic functionality for process package like an initialization function, sequentially running of certain code, and filtering out running the process based of the data.
 - [`base-source`](/packages/base-source#readme) - Provides basic functionality for source package like an initialization function, sequentially running of certain code, and a finallize function called after the source is done iterating.
 - [`utils`](/packages/utils#readme) - A package of utility functions used by several other packages in this list.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhoast%2Fhoast.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhoast%2Fhoast?ref=badge_large)
