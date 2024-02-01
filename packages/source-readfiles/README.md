@@ -21,4 +21,4 @@ $ npm install @hoast/source-readfiles
 - `{Object} readOptions = { encoding: 'utf8' }` [fs.readfile options](https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback). Set to false to disable retrieving the file contents.
 - `{Object} statOptions = {}` [fs.stat options](https://nodejs.org/api/fs.html#fs_fs_stat_path_options_callback) Set to false to disable retrieving the file metadata.
 
-- `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
+- `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/main/packages/utils#logger.js).

@@ -21,4 +21,4 @@ $ npm install @hoast/source-javascript
   - `{Boolean} strict = false` Be forgiving about multiple slashes, such as /// and make everything after the first / optional. Like how bash glob works.
 - `{Array<String>} watchIgnore = [ '**/node_modules/**' ]` Paths of files to ignore marking as dependencies when watching for changes.
 
-- `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
+- `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/main/packages/utils#logger.js).

@@ -40,7 +40,7 @@ export default function (options = {}, title = '', description = '', ...children
       }, [
         'Learn more ',
         iconOpen,
-      ])
+      ]),
     )
   }
 

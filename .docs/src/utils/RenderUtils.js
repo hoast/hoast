@@ -57,5 +57,5 @@ export const render = function (tag, attributes, ...children) {
 }
 
 export default {
-  render: render,
+  render,
 }

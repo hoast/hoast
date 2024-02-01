@@ -47,7 +47,7 @@ class ProcessLog extends BasePackage {
 
       case 'json':
         messages.push(
-          JSON.stringify(value, null, 2)
+          JSON.stringify(value, null, 2),
         )
         break
     }

@@ -12,7 +12,7 @@
     "handlebars"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-handlebars#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/process-handlebars#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

@@ -104,7 +104,6 @@ class ProcessMarkdown extends BaseProcess {
     if (Array.isArray(value)) {
       for (let i = 0; i < value.length; i++) {
         value[i] = (await this._parser.process(value[i])).value
-
       }
     } else {
       value = (await this._parser.process(value)).value

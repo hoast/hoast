@@ -16,4 +16,4 @@ $ npm install @hoast/process-log
 - `{String} prepend = null` Text to prepend to the message.
 - `{String} append = null` Text to append to the message.
 
-- `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
+- `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/main/packages/utils#logger.js).

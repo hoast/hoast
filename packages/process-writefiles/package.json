@@ -14,7 +14,7 @@
     "files"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-writefiles#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/process-writefiles#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

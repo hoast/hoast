@@ -34,7 +34,7 @@ const iterateDirectory = async function (directoryPath) {
       if (item.isDirectory()) {
         // Create new sub iterator.
         subIterator = await iterateDirectory(
-          path.resolve(directoryPath, item.name)
+          path.resolve(directoryPath, item.name),
         )
 
         // Get next item from iterator.

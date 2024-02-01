@@ -12,7 +12,7 @@
     "source"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/base-source#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/base-source#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

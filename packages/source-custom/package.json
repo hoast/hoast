@@ -12,7 +12,7 @@
     "custom"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-custom#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/source-custom#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

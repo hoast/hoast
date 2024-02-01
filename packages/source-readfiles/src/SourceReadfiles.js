@@ -136,7 +136,7 @@ class SourceReadfiles extends BaseSource {
             result.contents = data
             resolve()
           })
-        })
+        }),
       )
     }
 
@@ -153,7 +153,7 @@ class SourceReadfiles extends BaseSource {
             result.stat = data
             resolve()
           })
-        })
+        }),
       )
     }
 

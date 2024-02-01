@@ -15,7 +15,7 @@
     "logging"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-log#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/process-log#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

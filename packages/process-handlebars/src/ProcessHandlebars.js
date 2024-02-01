@@ -121,7 +121,7 @@ class ProcessHandlebars extends BaseProcess {
               // Register helper.
               this._handlebars.registerHelper(filePathRelative, helper)
             }
-          })()
+          })(),
         )
       }
 
@@ -152,7 +152,7 @@ class ProcessHandlebars extends BaseProcess {
               // Register partial.
               this._handlebars.registerPartial(filePathRelative, partial)
             }
-          })()
+          })(),
         )
       }
 
@@ -236,7 +236,7 @@ class ProcessHandlebars extends BaseProcess {
     // Compile data with template and set value.
     data = setByPathSegments(data, this._propertyPath, template({
       hoast: library,
-      data: data,
+      data,
     }))
 
     // Return result.

@@ -32,7 +32,7 @@ class ProcessWritefiles extends BaseProcess {
       options.directoryOptions,
       {
         recursive: true,
-      }
+      },
     )
 
     this._propertyPath = options.property.split('.')
@@ -58,7 +58,7 @@ class ProcessWritefiles extends BaseProcess {
     // Ensure directory exists.
     await fsMkdir(
       path.dirname(filePath),
-      this.directoryOptions
+      this.directoryOptions,
     )
 
     return data
@@ -74,7 +74,7 @@ class ProcessWritefiles extends BaseProcess {
     await fsWriteFile(
       filePath,
       getByPathSegments(data, this._propertyPath),
-      options.writeOptions
+      options.writeOptions,
     )
 
     return data

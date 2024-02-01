@@ -14,7 +14,7 @@
     "files"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-readfiles#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/source-readfiles#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

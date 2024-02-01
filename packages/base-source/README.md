@@ -10,13 +10,13 @@ $ npm install @hoast/base-source
 
 ## Usage
 
-> Extends [BasePackage](https://github.com/hoast/hoast/tree/master/packages/base-package#readme).
+> Extends [BasePackage](https://github.com/hoast/hoast/tree/main/packages/base-package#readme).
 
 ### Constructor
 
 - `constructor` Create package instance.
   - `@param {Object} ...Options` Options objects which can contain the following keys.
-    - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
+    - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/main/packages/utils#logger.js).
 
 ### Variables
 
@@ -76,4 +76,4 @@ class NewSource extends BaseSource {
 export default NewSource
 ```
 
-See the [@hoast/source-readfiles](https://github.com/hoast/hoast/tree/master/packages/source-readfiles#readme) package for another example.
+See the [@hoast/source-readfiles](https://github.com/hoast/hoast/tree/main/packages/source-readfiles#readme) package for another example.

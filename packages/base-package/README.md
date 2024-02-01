@@ -14,7 +14,7 @@ $ npm install @hoast/base-package
 
 - `constructor` Create package instance.
   - `@param {Object} ...Options` Options objects which can contain the following key.
-    - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
+    - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/main/packages/utils#logger.js).
 
 ### Functions
 
@@ -44,4 +44,4 @@ class NewPackage extends BasePackage {
 export default NewPackage
 ```
 
-See the [@hoast/process-log](https://github.com/hoast/hoast/tree/master/packages/process-log#readme) package for another example.
+See the [@hoast/process-log](https://github.com/hoast/hoast/tree/main/packages/process-log#readme) package for another example.

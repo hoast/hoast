@@ -34,7 +34,7 @@ export default function (stylesProcessor, scriptsProcessor) {
       }),
       scriptNodes.map(async (node) => {
         fromString(node, await scriptsProcessor(toString(node)))
-      })
+      }),
     )
 
     return tree

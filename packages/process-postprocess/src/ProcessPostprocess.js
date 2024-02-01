@@ -340,7 +340,7 @@ class ProcessPostprocess extends BaseProcess {
 
         // Discover, filter, and add dependencies.
         const filteredDependencies = filterDependencies(dependency,
-          discoverDependencies(content, dependencyType)
+          discoverDependencies(content, dependencyType),
         )
         this._fileUsesCache[dependency] = filteredDependencies
         await addDependencies(dependency, filteredDependencies)

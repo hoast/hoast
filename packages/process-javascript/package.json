@@ -12,7 +12,7 @@
     "javascript"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/source-javascript#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/source-javascript#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

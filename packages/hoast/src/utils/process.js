@@ -107,7 +107,8 @@ const process = async function (library, collections) {
         }
       },
     },
-    options.concurrencyLimit, true
+    options.concurrencyLimit,
+    true,
   )
 
   logger.info('Finished processing collections.')

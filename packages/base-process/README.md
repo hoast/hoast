@@ -10,7 +10,7 @@ $ npm install @hoast/base-process
 
 ## Usage
 
-> Extends [BasePackage](https://github.com/hoast/hoast/tree/master/packages/base-package#readme).
+> Extends [BasePackage](https://github.com/hoast/hoast/tree/main/packages/base-package#readme).
 
 ### Constructor
 
@@ -18,7 +18,7 @@ $ npm install @hoast/base-process
   - `@param {Object} ...Options` Options objects which can contain the following keys.
     - `{Function} filter = null` Custom filter function. The item data is given as the parameter. Return `true` if it should be processed, return `false` if this processor should be skipped.
 
-    - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
+    - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/main/packages/utils#logger.js).
 
 ### Functions
 
@@ -74,4 +74,4 @@ class NewProcess extends BaseProcess {
 export default NewProcess
 ```
 
-See the [@hoast/process-writefiles](https://github.com/hoast/hoast/tree/master/packages/process-writefiles#readme) package for another example.
+See the [@hoast/process-writefiles](https://github.com/hoast/hoast/tree/main/packages/process-writefiles#readme) package for another example.

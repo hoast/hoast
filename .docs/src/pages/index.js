@@ -108,59 +108,59 @@ export default function () {
           alignOnHover: true,
         }, [
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/hoast#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/hoast#readme',
           }, '@hoast/hoast', 'The core package of hoast responsible for managing and running the other packages.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/source-readfiles#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/source-readfiles#readme',
           }, '@hoast/source-filesystem', 'Read files from the filesystem.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/source-javascript#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/source-javascript#readme',
           }, '@hoast/source-javascript', 'Read and execute script from the filesystem.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/source-custom#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/source-custom#readme',
           }, '@hoast/source-custom', 'Allows you to provide your own custom source functions.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-writefiles#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-writefiles#readme',
           }, '@hoast/process-writefiles', 'Write data to the filesystem.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-frontmatter#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-frontmatter#readme',
           }, '@hoast/process-frontmatter', 'Extract frontmatter from a text value.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-parse#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-parse#readme',
           }, '@hoast/process-parse', 'Parse a text value using a function or package.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-markdown#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-markdown#readme',
           }, '@hoast/process-markdown', 'Convert markdown to HTML using Unified.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-handlebars#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-handlebars#readme',
           }, '@hoast/process-handlebars', 'Template using Handlebars.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-javascript#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-javascript#readme',
           }, '@hoast/process-javascript', 'Retrieve and execute JavaScript.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-postprocess#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-postprocess#readme',
           }, '@hoast/process-postprocess', 'Process CSS, HTML, and JS using PostCSS, Unified, Babel, and Terser.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-pdf#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-pdf#readme',
           }, '@hoast/process-pdf', 'Converts HTML to PDF using puppeteer.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-log#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-log#readme',
           }, '@hoast/process-log', 'Log data to the terminal, useful for developing other process and source packages.'),
 
           card({
-            href: 'https://github.com/hoast/hoast/tree/master/packages/process-custom#readme',
+            href: 'https://github.com/hoast/hoast/tree/main/packages/process-custom#readme',
           }, '@hoast/process-custom', 'Allows you to provide your own custom process functions.'),
         ]),
       ]),

@@ -12,7 +12,7 @@
     "frontmatter"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/process-frontmatter#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/process-frontmatter#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

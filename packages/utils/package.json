@@ -14,7 +14,7 @@
     "utilities"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/utils#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/utils#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

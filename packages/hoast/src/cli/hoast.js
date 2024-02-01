@@ -36,12 +36,12 @@ const CLI = async function () {
       path.resolve(
         path.dirname(
           import.meta.url
-            .replace(/(^\w+:|^)\/\//, '')
+            .replace(/(^\w+:|^)\/\//, ''),
         ),
-        '../../package.json'
+        '../../package.json',
       ),
-      'utf8'
-    )
+      'utf8',
+    ),
   )
 
   // Standard CLI messages.
@@ -314,7 +314,7 @@ Options for run
     watch(hoastDirectory, {
       cwd: hoastDirectory,
       disableGlobbing: true,
-      ignored: ignored,
+      ignored,
       ignoreInitial: true,
     })
       .on('add', handleFileChange)

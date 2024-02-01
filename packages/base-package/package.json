@@ -12,7 +12,7 @@
     "processor"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/hoast/hoast/tree/master/packages/base-package#readme",
+  "homepage": "https://github.com/hoast/hoast/tree/main/packages/base-package#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoast/hoast.git"

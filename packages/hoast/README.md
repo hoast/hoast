@@ -12,7 +12,7 @@ $ npm install @hoast/hoast
 
 ### Configuration file
 
-See the [config example](https://github.com/hoast/hoast/tree/master/examples/config#readme) for more detail on how to configure and use the core package.
+See the [config example](https://github.com/hoast/hoast/tree/main/examples/config#readme) for more detail on how to configure and use the core package.
 
 ### Command line interface
 
@@ -40,7 +40,7 @@ Options for run
 
 - `constructor` Create `Hoast` instance.
   - `@params {Object} options` Options object which can contain the following keys.
-    - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/master/packages/utils#logger.js).
+    - `{Number} logLevel = 2` Log level given to the [logger](https://github.com/hoast/hoast/tree/main/packages/utils#logger.js).
     - `{Number} concurrencyLimit = 4` Maximum amount of items to process at once.
     - `{String} directory = process.cwd()` Directory path to build from. Relative paths are resolved with `process.cwd()`.
   - `@params {Object} meta = {}` Global metadata that can be picked up by process packages.
