@@ -4,8 +4,8 @@ Read and execute scripts from the filesystem.
 
 ## Install
 
-```
-$ npm install @hoast/source-javascript
+```ZSH
+npm install @hoast/source-javascript
 ```
 
 ## Options

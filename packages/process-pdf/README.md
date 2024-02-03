@@ -4,8 +4,8 @@ Converts HTML to PDF using [Puppeteer](https://github.com/puppeteer/puppeteer#re
 
 ## Install
 
-```
-$ npm install @hoast/process-pdf
+```ZSH
+npm install @hoast/process-pdf
 ```
 
 ## Options

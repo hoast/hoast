@@ -4,8 +4,8 @@ Provides basic functionality like receiving the library's reference and setting 
 
 ## Install
 
-```
-$ npm install @hoast/base-package
+```ZSH
+npm install @hoast/base-package
 ```
 
 ## Usage

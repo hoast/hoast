@@ -4,8 +4,8 @@ Read files from the filesystem.
 
 ## Install
 
-```
-$ npm install @hoast/source-readfiles
+```ZSH
+npm install @hoast/source-readfiles
 ```
 
 ## Options

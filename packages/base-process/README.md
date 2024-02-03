@@ -4,8 +4,8 @@ Provides basic functionality for process package like an initialization function
 
 ## Install
 
-```
-$ npm install @hoast/base-process
+```ZSH
+npm install @hoast/base-process
 ```
 
 ## Usage

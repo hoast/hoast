@@ -4,8 +4,8 @@ Allows you to provide your own custom process functions. Extends base-process wh
 
 ## Install
 
-```
-$ npm install @hoast/process-custom
+```ZSH
+npm install @hoast/process-custom
 ```
 
 ## Options

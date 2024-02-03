@@ -4,8 +4,8 @@ Extract frontmatter from text.
 
 ## Install
 
-```
-$ npm install @hoast/process-frontmatter
+```ZSH
+npm install @hoast/process-frontmatter
 ```
 
 ## Options

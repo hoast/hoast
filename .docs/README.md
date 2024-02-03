@@ -2,12 +2,12 @@
 
 ## Develop
 
-```
-% yarn workspace @hoast/docs run develop
+```ZSH
+yarn workspace @hoast/docs run develop
 ```
 
 ## Build
 
-```
-% yarn workspace @hoast/docs run build
+```ZSH
+yarn workspace @hoast/docs run build
 ```

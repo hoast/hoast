@@ -4,8 +4,8 @@ Parse a text value using a function or package.
 
 ## Install
 
-```
-$ npm install @hoast/process-parse
+```ZSH
+npm install @hoast/process-parse
 ```
 
 ## Options

@@ -4,8 +4,8 @@ Log data to the terminal, useful for developing other process and source package
 
 ## Install
 
-```
-$ npm install @hoast/process-log
+```ZSH
+npm install @hoast/process-log
 ```
 
 ## Options

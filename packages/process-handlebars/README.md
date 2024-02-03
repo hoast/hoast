@@ -4,8 +4,8 @@ Template using [Handlebars](https://github.com/handlebars-lang/handlebars.js#rea
 
 ## Install
 
-```
-$ npm install @hoast/process-handlebars
+```ZSH
+npm install @hoast/process-handlebars
 ```
 
 ## Options

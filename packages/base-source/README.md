@@ -4,8 +4,8 @@ Provides basic functionality for source package like an initialization function,
 
 ## Install
 
-```
-$ npm install @hoast/base-source
+```ZSH
+npm install @hoast/base-source
 ```
 
 ## Usage

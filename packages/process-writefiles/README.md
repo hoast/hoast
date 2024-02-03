@@ -4,8 +4,8 @@ Write data to the filesystem.
 
 ## Install
 
-```
-$ npm install @hoast/process-writefiles
+```ZSH
+npm install @hoast/process-writefiles
 ```
 
 ## Options

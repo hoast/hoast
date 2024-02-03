@@ -4,8 +4,8 @@ Utility functions commonly used by hoast and hoast packages.
 
 ## Install
 
-```
-$ npm install @hoast/utils
+```ZSH
+npm install @hoast/utils
 ```
 
 ## Usage

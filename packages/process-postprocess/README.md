@@ -4,8 +4,8 @@ Process CSS, HTML, and JS data using [PostCSS](https://github.com/postcss/postcs
 
 ## Install
 
-```
-$ npm install @hoast/process-postprocess
+```ZSH
+npm install @hoast/process-postprocess
 ```
 
 ## Options

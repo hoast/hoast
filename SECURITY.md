@@ -19,6 +19,7 @@
 | process-pdf         | 3.x     | :white_check_mark: |
 | process-postprocess | 3.x     | :white_check_mark: |
 | process-writefiles  | 3.x     | :white_check_mark: |
+| source-airtable     | 3.x     | :x:                |
 | source-custom       | 3.x     | :white_check_mark: |
 | source-javascript   | 3.x     | :white_check_mark: |
 | source-readfiles    | 3.x     | :white_check_mark: |

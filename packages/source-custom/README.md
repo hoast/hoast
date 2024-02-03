@@ -4,8 +4,8 @@ Allows you to provide your own custom source functions. Extends base-source wher
 
 ## Install
 
-```
-$ npm install @hoast/source-custom
+```ZSH
+npm install @hoast/source-custom
 ```
 
 ## Options

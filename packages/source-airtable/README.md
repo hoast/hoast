@@ -2,10 +2,12 @@
 
 Read data from Airtable bases.
 
+> Not actively supported due to API changes on Airtable's end.
+
 ## Install
 
-```
-$ npm install @hoast/source-airtable
+```ZSH
+npm install @hoast/source-airtable
 ```
 
 ## Options

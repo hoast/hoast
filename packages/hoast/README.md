@@ -4,8 +4,8 @@ The core package of [hoast](https://hoast.js.org) responsible for managing and r
 
 ## Install
 
-```
-$ npm install @hoast/hoast
+```ZSH
+npm install @hoast/hoast
 ```
 
 ## Usage

@@ -24,8 +24,15 @@ class ProcessMarkdown extends BaseProcess {
   constructor(options) {
     super({
       property: 'contents',
+
       remarkPlugins: [],
+      remarkParseOptions: {},
+      remarkRehypeOptions: {},
+      rehypeRawOptions: {},
+
       rehypePlugins: [],
+      rehypeSanitizeOptions: {},
+      rehypeStringifyOptions: {},
     }, options)
     options = this.getOptions()
 
@@ -74,7 +81,7 @@ class ProcessMarkdown extends BaseProcess {
       }
 
       this._parser
-        .use(remarkParse) // Markdown to Markdown AST.
+        .use(remarkParse, options.remarkParseOptions) // Markdown to Markdown AST.
 
       // Add remark plugins.
       for (const plugin of options.remarkPlugins) {
@@ -82,8 +89,8 @@ class ProcessMarkdown extends BaseProcess {
       }
 
       this._parser
-        .use(remarkRehype) // Markdown AST to HTML AST.
-        .use(rehypeRaw) // Reparse HTML AST.
+        .use(remarkRehype, options.remarkRehypeOptions) // Markdown AST to HTML AST.
+        .use(rehypeRaw, options.rehypeRawOptions) // Reparse HTML AST.
 
       // Add rehype plugins.
       for (const plugin of options.rehypePlugins) {
@@ -91,8 +98,8 @@ class ProcessMarkdown extends BaseProcess {
       }
 
       this._parser
-        .use(rehypeSanitize) // Sanitize HTML AST.
-        .use(rehypeStringify) // HTML AST to string.
+        .use(rehypeSanitize, options.rehypeSanitizeOptions) // Sanitize HTML AST.
+        .use(rehypeStringify, options.rehypeStringifyOptions) // HTML AST to string.
     }
   }
 

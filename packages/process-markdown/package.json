@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-markdown",
-  "version": "3.1.2",
+  "version": "3.2.0",
   "description": "Convert markdown to HTML using Unified",
   "keywords": [
     "hoast",

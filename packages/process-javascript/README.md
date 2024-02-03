@@ -4,8 +4,8 @@ Retrieve and execute JavaScript.
 
 ## Install
 
-```
-$ npm install @hoast/process-javascript
+```ZSH
+npm install @hoast/process-javascript
 ```
 
 ## Example
