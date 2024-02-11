@@ -28,8 +28,13 @@ class ProcessCustom extends BaseProcess {
     }
 
     if (options.final) {
-      this.final = options.final
+      this.final = () => {
+        super.final()
+        options.final()
+      }
     }
+
+    this.reset()
   }
 }
 

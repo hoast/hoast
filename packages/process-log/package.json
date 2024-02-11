@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/process-log",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Log data to the terminal, useful for developing other process and source packages.",
   "keywords": [
     "hoast",
@@ -28,6 +28,7 @@
   },
   "type": "module",
   "files": [
+    "CHANGELOG.md",
     "README.md",
     "src/"
   ],
@@ -38,7 +39,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hoast/base-package": "^3.0.0",
-    "@hoast/utils": "^3.1.1"
+    "@hoast/base-package": "^3.1.0",
+    "@hoast/utils": "^3.2.0"
   }
 }

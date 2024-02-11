@@ -27,13 +27,15 @@
   },
   "type": "module",
   "files": [
-    "src/",
+    "CHANGELOG.md",
+    "README.md",
     "hoast.js",
     "loader.js",
-    "README.md"
+    "src/"
   ],
+  "command": "hoast",
   "bin": {
-    "hoast": "src/cli/hoast.js"
+    "hoast": "hoast.js"
   },
   "main": "src/Hoast.js",
   "scripts": {
@@ -42,8 +44,8 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hoast/utils": "^3.1.1",
-    "chokidar": "^3.5.3",
+    "@hoast/utils": "^3.2.0",
+    "chokidar": "^3.6.0",
     "minimist": "^1.2.8",
     "planckmatch": "^0.2.1"
   }

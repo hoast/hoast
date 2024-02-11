@@ -9,7 +9,9 @@ class ProcessLog extends BasePackage {
    * Create package instance.
    * @param  {Object} options Options objects.
    */
-  constructor(options) {
+  constructor(
+    options,
+  ) {
     super({
       property: null,
 
@@ -27,7 +29,9 @@ class ProcessLog extends BasePackage {
     }
   }
 
-  next (data) {
+  next (
+    data,
+  ) {
     const options = this.getOptions()
 
     const messages = []

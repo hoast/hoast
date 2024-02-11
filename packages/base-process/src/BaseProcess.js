@@ -11,14 +11,14 @@ class BaseProcess extends BasePackage {
       filter: null,
     }, ...options)
 
-    this._hasInitialize = typeof (this.initialize) === 'function'
-    this._hasSequential = typeof (this.sequential) === 'function'
-    this._hasConcurrent = typeof (this.concurrent) === 'function'
-
     this.reset()
   }
 
   reset () {
+    this._hasInitialize = typeof (this.initialize) === 'function'
+    this._hasSequential = typeof (this.sequential) === 'function'
+    this._hasConcurrent = typeof (this.concurrent) === 'function'
+
     if (this._hasInitialize) {
       this._isInitialized = false
     }
@@ -46,14 +46,22 @@ class BaseProcess extends BasePackage {
       }
     }
 
-    if ((!this._hasInitialize || this._isInitialized) && !this._hasSequential) {
-      // Run concurrent part.
-      return await this.concurrent(data)
+    if (
+      (
+        !this._hasInitialize ||
+        this._isInitialized
+      ) &&
+      !this._hasSequential
+    ) {
+      if (this._hasConcurrent) {
+        // Run concurrent part.
+        return await this.concurrent(data)
+      }
+      return data
     }
 
     // Check if calls should be held.
     if (this._holdCalls) {
-      // Add calls to queue.
       return await new Promise((resolve, reject) => {
         this._promiseQueue.push({
           resolve,
@@ -62,12 +70,13 @@ class BaseProcess extends BasePackage {
         })
       })
     }
-
-    // Hold new calls.
     this._holdCalls = true
 
     // Try initialization.
-    if (this._hasInitialize && !this._isInitialized) {
+    if (
+      this._hasInitialize &&
+      !this._isInitialized
+    ) {
       await this.initialize()
       this._isInitialized = true
     }

@@ -101,9 +101,11 @@ class ProcessJavascript extends BaseProcess {
 
     // Get path of script to import.
     let importPath
-    try {
-      importPath = getByPathSegments(data, this._importPropertyPath)
-    } catch { }
+    if (this._importPropertyPath) {
+      try {
+        importPath = getByPathSegments(data, this._importPropertyPath)
+      } catch { }
+    }
     if (!importPath) {
       importPath = this._importPath
       if (!importPath) {
@@ -125,7 +127,11 @@ class ProcessJavascript extends BaseProcess {
     // Import script at path.
     let importedScript
     try {
-      importedScript = await importVersion(importPath, libraryProcessCount)
+      importedScript = await importVersion(
+        importPath,
+        libraryProcessCount,
+        libraryOptions.namespace,
+      )
     } catch (error) {
       throw new Error('Unable to import file at path: "' + importPath + '".')
     }

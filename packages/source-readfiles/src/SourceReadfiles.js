@@ -15,7 +15,9 @@ class SourceReadfiles extends BaseSource {
    * Create package instance.
    * @param  {Object} options Options objects.
    */
-  constructor(options) {
+  constructor(
+    options,
+  ) {
     super({
       directory: null,
       filterPatterns: null,
@@ -37,7 +39,8 @@ class SourceReadfiles extends BaseSource {
     }
   }
 
-  async initialize () {
+  async initialize (
+  ) {
     const libraryOptions = this.getLibrary().getOptions()
     const options = this.getOptions()
 
@@ -55,12 +58,13 @@ class SourceReadfiles extends BaseSource {
     this._directoryIterator = await iterateDirectory(this._directoryPath)
   }
 
-  async sequential () {
+  async sequential (
+  ) {
     const library = this.getLibrary()
     const options = this.getOptions()
 
-    let filePath
     // Get next file path.
+    let filePath
     while (filePath = await this._directoryIterator()) {
       if (library.isWatching()) {
         // Skip if file hasn't changed.
@@ -90,7 +94,9 @@ class SourceReadfiles extends BaseSource {
     this.exhausted = true
   }
 
-  async concurrent (data) {
+  async concurrent (
+    data,
+  ) {
     // Exit early if invalid parameters.
     if (!data) {
       return
@@ -127,15 +133,19 @@ class SourceReadfiles extends BaseSource {
     if (options.readOptions) {
       promises.push(
         new Promise((resolve, reject) => {
-          fs.readFile(filePath, options.readOptions, (error, data) => {
-            if (error) {
-              reject(error)
-              return
-            }
+          fs.readFile(
+            filePath,
+            options.readOptions,
+            (error, data) => {
+              if (error) {
+                reject(error)
+                return
+              }
 
-            result.contents = data
-            resolve()
-          })
+              result.contents = data
+              resolve()
+            },
+          )
         }),
       )
     }
@@ -144,15 +154,19 @@ class SourceReadfiles extends BaseSource {
     if (options.statOptions) {
       promises.push(
         new Promise((resolve, reject) => {
-          fs.stat(filePath, options.statOptions, (error, data) => {
-            if (error) {
-              reject(error)
-              return
-            }
+          fs.stat(
+            filePath,
+            options.statOptions,
+            (error, data) => {
+              if (error) {
+                reject(error)
+                return
+              }
 
-            result.stat = data
-            resolve()
-          })
+              result.stat = data
+              resolve()
+            },
+          )
         }),
       )
     }
@@ -166,7 +180,8 @@ class SourceReadfiles extends BaseSource {
     return result
   }
 
-  final () {
+  final (
+  ) {
     super.final()
 
     this._directoryPath = null

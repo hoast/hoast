@@ -23,7 +23,9 @@ class ProcessHandlebars extends BaseProcess {
    * Create package instance.
    * @param  {...Object} options Options objects.
    */
-  constructor(options) {
+  constructor(
+    options,
+  ) {
     super({
       property: 'contents',
 
@@ -52,7 +54,8 @@ class ProcessHandlebars extends BaseProcess {
     }
   }
 
-  async initialize () {
+  async initialize (
+  ) {
     const library = this.getLibrary()
     const libraryOptions = library.getOptions()
     const libraryProcessCount = library.getProcessCount()
@@ -71,19 +74,31 @@ class ProcessHandlebars extends BaseProcess {
 
     if (options.templatePath) {
       // Construct absolute template path.
-      const templatePathAbsolute =
+      let templatePathAbsolute =
         path.isAbsolute(options.templatePath)
           ? options.templatePath
           : path.resolve(this._templateDirectoryPath, options.templatePath)
+
+      if (
+        !fs.existsSync(templatePathAbsolute) &&
+        !templatePathAbsolute.endsWith('.hbs')
+      ) {
+        templatePathAbsolute += '.hbs'
+      }
+
       const template = await fsReadFile(templatePathAbsolute, {
         encoding: 'utf8',
       })
-
-      if (!template) {
-        this.getLogger().error('No template found at path: "' + options.templatePath + '"')
-      } else {
+      if (template) {
         // Store compiled template in cache.
-        this._templates[templatePathAbsolute] = this._handlebars.compile(template, options.handlebarsOptions)
+        this._templates[templatePathAbsolute] =
+          this._handlebars.compile(
+            template,
+            options.handlebarsOptions,
+          )
+      } else {
+        this.getLogger()
+          .error('No template found at path: "' + options.templatePath + '"')
       }
     }
 
@@ -112,7 +127,11 @@ class ProcessHandlebars extends BaseProcess {
               filePathRelative = filePathRelative.substring(0, extensionIndex)
 
               // Dynamic import helper.
-              let helper = await importVersion(filePath, libraryProcessCount)
+              let helper = await importVersion(
+                filePath,
+                libraryProcessCount,
+                libraryOptions.namespace,
+              )
               if (!helper || !helper.default) {
                 continue
               }
@@ -147,7 +166,9 @@ class ProcessHandlebars extends BaseProcess {
               filePathRelative = filePathRelative.substring(0, extensionIndex)
 
               // Get file content.
-              const partial = await fsReadFile(filePath, { encoding: 'utf8' })
+              const partial = await fsReadFile(filePath, {
+                encoding: 'utf8',
+              })
 
               // Register partial.
               this._handlebars.registerPartial(filePathRelative, partial)
@@ -175,7 +196,9 @@ class ProcessHandlebars extends BaseProcess {
     }
   }
 
-  async sequential (data) {
+  async sequential (
+    data,
+  ) {
     const library = this.getLibrary()
     const options = this.getOptions()
 
@@ -193,7 +216,7 @@ class ProcessHandlebars extends BaseProcess {
     }
 
     // Construct absolute template path.
-    const templatePathAbsolute =
+    let templatePathAbsolute =
       path.isAbsolute(templatePath)
         ? templatePath
         : path.resolve(this._templateDirectoryPath, templatePath)
@@ -204,10 +227,17 @@ class ProcessHandlebars extends BaseProcess {
 
     // Get template.
     let template
-    // Check if it exists in cache.
-    if (this._templates[templatePathAbsolute]) {
-      template = this._templates[templatePathAbsolute]
-    } else {
+    const getTemplate = async () => {
+      if (
+        !fs.existsSync(template) &&
+        !templatePathAbsolute.endsWith('.hbs')
+      ) {
+        templatePathAbsolute += '.hbs'
+        if (library.isWatching()) {
+          library.addAccessed(data.sourceIdentifier, templatePathAbsolute)
+        }
+      }
+
       // Get template from filesystem.
       template = await fsReadFile(templatePathAbsolute, {
         encoding: 'utf8',
@@ -224,6 +254,23 @@ class ProcessHandlebars extends BaseProcess {
       // Store template in cache.
       this._templates[templatePathAbsolute] = template
     }
+
+    // Check if it exists in cache.
+    if (this._templates[templatePathAbsolute]) {
+      template = this._templates[templatePathAbsolute]
+    } else if (!templatePathAbsolute.endsWith('.hbs')) {
+      if (library.isWatching()) {
+        library.addAccessed(data.sourceIdentifier, templatePathAbsolute + '.hbs')
+      }
+      if (this._templates[templatePathAbsolute + '.hbs']) {
+        template = this._templates[templatePathAbsolute + '.hbs']
+      } else {
+        await getTemplate()
+      }
+    } else {
+      await getTemplate()
+    }
+
     if (library.isWatching()) {
       if (this._helpersPath) {
         library.addAccessed(data.sourceIdentifier, path.join(this._helpersPath + '**'))
@@ -243,7 +290,8 @@ class ProcessHandlebars extends BaseProcess {
     return data
   }
 
-  final () {
+  final (
+  ) {
     super.final()
 
     // Clear templates path and cache.

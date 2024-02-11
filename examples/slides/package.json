@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "@hoast/example-slides",
+  "version": "0.0.0",
+  "dependencies": {
+    "@hoast/tool-slides": "x"
+  },
+  "type": "module",
+  "scripts": {
+    "help": "hoast-slides help",
+    "build": "NODE_ENV=production hoast-slides",
+    "develop": "NODE_ENV=development NODE_OPTIONS='--experimental-loader=@hoast/tool-slides/loader.js' hoast-slides --watch",
+    "lint": "eslint --fix --cache *.js",
+    "upgrade": "echo 'no upgrade command'"
+  }
+}

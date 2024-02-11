@@ -25,8 +25,9 @@
   },
   "type": "module",
   "files": [
+    "CHANGELOG.md",
     "README.md",
-    "src/*.js"
+    "src/"
   ],
   "main": "src/BasePackage.js",
   "scripts": {
@@ -35,6 +36,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hoast/utils": "^3.1.1"
+    "@hoast/utils": "^3.2.0"
   }
 }

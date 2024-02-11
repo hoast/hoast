@@ -39,7 +39,9 @@ class SourceJavascript extends BaseSource {
    * Create package instance.
    * @param  {Object} options Options objects.
    */
-  constructor(options) {
+  constructor(
+    options,
+  ) {
     super({
       directory: null,
       executeProperty: 'default',
@@ -72,7 +74,8 @@ class SourceJavascript extends BaseSource {
     this._fileUsesCache = {}
   }
 
-  async initialize () {
+  async initialize (
+  ) {
     const libraryOptions = this.getLibrary().getOptions()
     const options = this.getOptions()
 
@@ -90,7 +93,8 @@ class SourceJavascript extends BaseSource {
     this._directoryIterator = await iterateDirectory(this._directoryPath)
   }
 
-  async sequential () {
+  async sequential (
+  ) {
     const library = this.getLibrary()
     const options = this.getOptions()
 
@@ -123,12 +127,15 @@ class SourceJavascript extends BaseSource {
     this.exhausted = true
   }
 
-  async concurrent (data) {
+  async concurrent (
+    data,
+  ) {
     // Exit early if invalid parameters.
     if (!data) {
       return
     }
     const library = this.getLibrary()
+    const libraryOptions = library.getOptions()
     const libraryProcessCount = library.getProcessCount()
 
     // Deconstruct parameters.
@@ -159,7 +166,11 @@ class SourceJavascript extends BaseSource {
     // Import script at path.
     let importedScript
     try {
-      importedScript = await importVersion(filePath, libraryProcessCount)
+      importedScript = await importVersion(
+        filePath,
+        libraryProcessCount,
+        libraryOptions.namespace,
+      )
     } catch (error) {
       console.warn('Unable to import file at path: "' + filePath + '".')
       throw new Error(error)
@@ -187,14 +198,17 @@ class SourceJavascript extends BaseSource {
     return result
   }
 
-  final () {
+  final (
+  ) {
     super.final()
 
     this._directoryPath = null
     this._directoryIterator = null
   }
 
-  async getDependencies (importPath) {
+  async getDependencies (
+    importPath,
+  ) {
     const libraryOptions = this.getLibrary().getOptions()
 
     const dependencies = []

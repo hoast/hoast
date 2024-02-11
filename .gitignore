@@ -30,5 +30,5 @@ coverage
 .env.test
 
 # Build directories
+.tmp/
 dst/
-examples/**/dst/

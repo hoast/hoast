@@ -27,6 +27,7 @@
   },
   "type": "module",
   "files": [
+    "CHANGELOG.md",
     "README.md",
     "src/"
   ],
@@ -37,8 +38,8 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hoast/base-source": "^3.0.0",
-    "@hoast/utils": "^3.1.1",
+    "@hoast/base-source": "^3.1.0",
+    "@hoast/utils": "^3.2.0",
     "planckmatch": "^0.2.1"
   }
 }

@@ -24,13 +24,17 @@ class Hoast {
    * @param {Object} meta Global metadata that can be picked up by process packages.
    * @returns {Object} Hoast instance.
    */
-  constructor(options = {}, meta = {}) {
+  constructor(
+    options = {},
+    meta = {},
+  ) {
     // Set options.
     this._options = deepAssign({
       logLevel: 2,
 
       concurrencyLimit: 4,
       directory: null,
+      namespace: null,
     }, options)
 
     this._isWatching = false
@@ -70,14 +74,24 @@ class Hoast {
     this._processCount = 0
   }
 
+  setOption (
+    name,
+    value,
+  ) {
+    this._options[name] = value
+  }
+
   // Access.
 
   /**
    * Mark a file as accessed by the given source, this will allow the watcher to rebuild effectively.
-   * @param {String} source A unique identifier of the source.
-   * @param  {...String} filePaths File paths accessed by the source.
+   * @param {string} source A unique identifier of the source.
+   * @param  {...string} filePaths File paths accessed by the source.
    */
-  addAccessed (source, ...filePaths) {
+  addAccessed (
+    source,
+    ...filePaths
+  ) {
     if (!this._accessed[source]) {
       this._accessed[source] = []
     }
@@ -105,9 +119,11 @@ class Hoast {
 
   /**
    * Clears information of file paths accessed by the given source.
-   * @param {String} source A unique identifier of the source.
+   * @param {string} source A unique identifier of the source.
    */
-  clearAccessed (source) {
+  clearAccessed (
+    source,
+  ) {
     this._accessed[source] = undefined
   }
 
@@ -115,9 +131,10 @@ class Hoast {
 
   /**
    * Get the list of changed file since the last build.
-   * @returns {Array<String>} List of absolute file paths.
+   * @returns {Array<string>} List of absolute file paths.
    */
-  getChanged () {
+  getChanged (
+  ) {
     if (!this.isWatching() || !this._changed) {
       return null
     }
@@ -126,10 +143,12 @@ class Hoast {
 
   /**
    * Check whether any files that the source uses have changed.
-   * @param {String} source A unique identifier of the source.
-   * @returns {Boolean} Whether a file the source uses has changed.
+   * @param {string} source A unique identifier of the source.
+   * @returns {boolean} Whether a file the source uses has changed.
    */
-  hasChanged (source) {
+  hasChanged (
+    source,
+  ) {
     // Return true if no changed files are given.
     if (!this._changed || this._changed.indexOf(source) >= 0 || !this._accessed[source]) {
       return true
@@ -148,9 +167,11 @@ class Hoast {
 
   /**
    * Marks the given set of file paths as changed files.
-   * @param {Array<String>} filePaths A list of absolute file paths.
+   * @param {Array<string>} filePaths A list of absolute file paths.
    */
-  setChanged (filePaths = null) {
+  setChanged (
+    filePaths = null,
+  ) {
     if (!filePaths) {
       this._changed = null
     }
@@ -171,7 +192,8 @@ class Hoast {
    * Get the options.
    * @returns {Object} The options.
    */
-  getOptions () {
+  getOptions (
+  ) {
     return deepAssign({}, this._options)
   }
 
@@ -179,9 +201,10 @@ class Hoast {
 
   /**
    * Get the process called count.
-   * @returns {Object} The process called count.
+   * @returns {string} The process called count.
    */
-  getProcessCount () {
+  getProcessCount (
+  ) {
     return this._processCount
   }
 
@@ -189,17 +212,20 @@ class Hoast {
 
   /**
    * Get whether the watcher is running.
-   * @returns {Boolean} Whether the watcher is running.
+   * @returns {boolean} Whether the watcher is running.
    */
-  isWatching () {
+  isWatching (
+  ) {
     return this._isWatching
   }
 
   /**
    * Set whether the watcher is running.
-   * @param {Boolean} isWatching Whether the watcher is running.
+   * @param {boolean} isWatching Whether the watcher is running.
    */
-  setWatching (isWatching) {
+  setWatching (
+    isWatching,
+  ) {
     this._isWatching = !!isWatching
   }
 
@@ -210,7 +236,9 @@ class Hoast {
    * @param {Object} collection Collection to add.
    * @returns {Object} The hoast instance.
    */
-  addCollection (collection) {
+  addCollection (
+    collection,
+  ) {
     if (!hasProperties(collection, ['source'])) {
       logger.warn('Tried adding a collection without a source.')
       return this
@@ -237,7 +265,9 @@ class Hoast {
    * @param {Array} collections Collections to add.
    * @returns {Object} The hoast instance.
   */
-  addCollections (collections) {
+  addCollections (
+    collections,
+  ) {
     for (const collection of collections) {
       if (!hasProperties(collection, ['source'])) {
         logger.warn('Tried adding a collection without a source.')
@@ -268,7 +298,9 @@ class Hoast {
    * @param {Object} collection Collection to add.
    * @returns {Object} The hoast instance.
    */
-  addMetaCollection (collection) {
+  addMetaCollection (
+    collection,
+  ) {
     if (!hasProperties(collection, ['source'])) {
       logger.warn('Tried adding a meta collection without a source.')
       return this
@@ -296,7 +328,9 @@ class Hoast {
    * @param {Array} collections Collections to add.
    * @returns {Object} The hoast instance.
    */
-  addMetaCollections (collections) {
+  addMetaCollections (
+    collections,
+  ) {
     for (const collection of collections) {
       if (!hasProperties(collection, ['source'])) {
         logger.warn('Tried adding a meta collection without a source.')
@@ -326,11 +360,14 @@ class Hoast {
 
   /**
    * Register process.
-   * @param {String} name Name of process.
+   * @param {string} name Name of process.
    * @param {Object} process Process object.
    * @returns {Object} The hoast instance.
   */
-  registerProcess (name, process) {
+  registerProcess (
+    name,
+    process,
+  ) {
     if (typeof (name) !== 'string') {
       logger.warn('Tried registering a process without a name.')
       return this
@@ -351,7 +388,9 @@ class Hoast {
    * @param {Object} processes Process objects by name as key.
    * @returns {Object} The hoast instance.
    */
-  registerProcesses (processes) {
+  registerProcesses (
+    processes,
+  ) {
     const processesFiltered = {}
     for (const name in processes) {
       if (typeof (name) !== 'string') {
@@ -371,7 +410,7 @@ class Hoast {
         process.setLibrary(this)
       }
     }
-    if (processesFiltered === {}) {
+    if (Object.keys(processesFiltered).length === 0) {
       return this
     }
 
@@ -386,7 +425,8 @@ class Hoast {
    * Process collections.
    * @returns {Object} The hoast instance.
    */
-  async process () {
+  async process (
+  ) {
     if (this._metaCollections.length > 0) {
       // Process meta collections.
       await processCollections(this, this._metaCollections)

@@ -1,10 +1,13 @@
 /**
  * Execute functions returned by the iterator until null is returned.
  * @param {Function} next Function to call when a new process can be run.
- * @param {Number} limit Maximum number of iterators to have running at once.
+ * @param {number} limit Maximum number of iterators to have running at once.
  * @returns {Promise} Limited concurrent process as a promise.
  */
-const iterate = function (iterator, limit = 1) {
+const iterate = function (
+  iterator,
+  limit = 1,
+) {
   // Track active calls.
   let count = 0
   let index = -1

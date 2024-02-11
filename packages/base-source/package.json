@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/base-source",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Base package for source packages.",
   "keywords": [
     "hoast",
@@ -25,8 +25,9 @@
   },
   "type": "module",
   "files": [
+    "CHANGELOG.md",
     "README.md",
-    "src/*.js"
+    "src/"
   ],
   "main": "src/BaseSource.js",
   "scripts": {

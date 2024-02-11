@@ -14,7 +14,9 @@ export class SourceAirtable extends BaseSource {
    * Create package instance.
    * @param  {Object} options Options objects.
    */
-  constructor(options) {
+  constructor(
+    options,
+  ) {
     super({
       cache: true,
 
@@ -45,7 +47,8 @@ export class SourceAirtable extends BaseSource {
     this._tables = {}
   }
 
-  async initialize () {
+  async initialize (
+  ) {
     const options = this.getOptions()
 
     // Reset indices
@@ -69,7 +72,8 @@ export class SourceAirtable extends BaseSource {
     this._tableIndices[options.baseId] = 0
   }
 
-  async sequential () {
+  async sequential (
+  ) {
     const options = this.getOptions()
 
     if (options.mode === SourceAirtable.MODE_ROW) {
@@ -78,7 +82,8 @@ export class SourceAirtable extends BaseSource {
     return this._sequentialTable()
   }
 
-  async _sequentialRow () {
+  async _sequentialRow (
+  ) {
     const options = this.getOptions()
 
     // Get table.
@@ -111,7 +116,8 @@ export class SourceAirtable extends BaseSource {
     this.exhausted = true
   }
 
-  _sequentialTable () {
+  _sequentialTable (
+  ) {
     const options = this.getOptions()
     const tables = this._tables[options.baseId]
     let index = this._tableIndices[options.baseId]
@@ -137,7 +143,9 @@ export class SourceAirtable extends BaseSource {
     this.exhausted = true
   }
 
-  async concurrent (data) {
+  async concurrent (
+    data,
+  ) {
     // Exit early if invalid parameters.
     if (!data) {
       return

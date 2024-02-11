@@ -10,7 +10,7 @@ export const resolve = async function (specifier, context, defaultResolve) {
   }
 
   if (!resolvedURL.searchParams.has('version') && context.parentURL) {
-    // Get query paramter from parent if set.
+    // Get query parameter from parent if set.
     const parentURL = new URL(context.parentURL)
     if (parentURL.searchParams.has('version')) {
       resolvedURL.searchParams.set('version', parentURL.searchParams.get('version'))

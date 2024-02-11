@@ -59,7 +59,7 @@ const CLI = async function () {
 ʕ ˵•ᴥ•ʔっ ${pkg.name} (v${pkg.version})
 
 Usage
-% ${pkg.name} [command] [...options]
+% ${pkg.command} [command] [...options]
 
 Commands
   h, help     Display help
@@ -228,11 +228,11 @@ Options for run
   } else {
     // Overwrite options with CLI options.
     if (Object.prototype.hasOwnProperty.call(options, 'log-level')) {
-      hoast._options.logLevel = options['log-level']
+      hoast.setOption('logLevel', options['log-level'])
       logger.setLevel(options['log-level'])
     }
     if (Object.prototype.hasOwnProperty.call(options, 'concurrency-limit')) {
-      hoast._options.concurrencyLimit = options['concurrency-limit']
+      hoast.setOption('concurrencyLimit', options['concurrency-limit'])
     }
   }
 
@@ -251,8 +251,7 @@ Options for run
     isProcessing = true
 
     if (changedFiles && changedFiles.length > 0) {
-      console.log(`
-ʕ  ✦ᴥ✦ʔ   Processing changes…`)
+      console.log('\nʕ  ✦ᴥ✦ʔ   Processing changes…')
 
       // Provide changed files to hoast and reset the local list.
       hoast.setChanged(changedFiles)

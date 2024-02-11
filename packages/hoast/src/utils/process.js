@@ -8,7 +8,10 @@ import logger from './logger.js'
  * @param {Object} library Library instance.
  * @param {Array} collections Collections to process.
  */
-const process = async function (library, collections) {
+const process = async function (
+  library,
+  collections,
+) {
   // Exit early if already done.
   if (collections.length === 0) {
     logger.info('No collections to process.')
@@ -31,20 +34,23 @@ const process = async function (library, collections) {
 
       exhausted: false,
 
-      next: async function (index) {
+      next: async function (
+        index,
+      ) {
         if (!this.collection) {
           // Set collection.
           this.collection = collections[this.collectionIndex]
 
           // Prepare collections.
-          this.collectionProcesses = this.collection.processes.map(process => {
-            // If string get from lookup.
-            if (typeof (process) === 'string') {
-              process = library._processes[process]
-            }
+          this.collectionProcesses = this.collection.processes
+            .map(process => {
+              // If string get from lookup.
+              if (typeof (process) === 'string') {
+                process = library._processes[process]
+              }
 
-            return process
-          })
+              return process
+            })
         }
 
         // Store values locally.
@@ -63,7 +69,10 @@ const process = async function (library, collections) {
           // Iterate over processes.
           for (const process of processesPrepared) {
             // Skip if data is null.
-            if (data === undefined || data === null) {
+            if (
+              data === undefined ||
+              data === null
+            ) {
               break
             }
 
@@ -72,7 +81,10 @@ const process = async function (library, collections) {
         }
 
         // Check source is exhausted and was not exhausted previously.
-        if (source.exhausted && !this.collectionsExhausted[collectionIndex]) {
+        if (
+          (source.isExhausted ? source.isExhausted() : source.exhausted) &&
+          !this.collectionsExhausted[collectionIndex]
+        ) {
           this.collectionsExhausted[collectionIndex] = true
           // Check if more collections left.
           if (this.collectionIndex < collections.length - 1) {
@@ -91,11 +103,14 @@ const process = async function (library, collections) {
         // Decrement active count.
         this.collectionsActiveByIndex[collectionIndex]--
 
-        if (source.done) {
+        if ((source.isDone ? source.isDone() : source.done)) {
           // Check if done and this is the last active collection call.
           if (this.collectionsActiveByIndex[collectionIndex] === 0) {
             // Call final on source.
-            if (source.final && typeof (source.final) === 'function') {
+            if (
+              source.final &&
+              typeof (source.final) === 'function'
+            ) {
               await source.final()
             }
 

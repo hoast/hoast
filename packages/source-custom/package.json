@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/source-custom",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Allows you to provide your own custom source functions.",
   "keywords": [
     "hoast",
@@ -25,6 +25,7 @@
   },
   "type": "module",
   "files": [
+    "CHANGELOG.md",
     "README.md",
     "src/"
   ],
@@ -35,6 +36,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hoast/base-source": "^3.0.0"
+    "@hoast/base-source": "^3.1.0"
   }
 }

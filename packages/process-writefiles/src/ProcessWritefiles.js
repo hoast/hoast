@@ -30,9 +30,7 @@ class ProcessWritefiles extends BaseProcess {
 
     this.directoryOptions = Object.assign(
       options.directoryOptions,
-      {
-        recursive: true,
-      },
+      { recursive: true },
     )
 
     this._propertyPath = options.property.split('.')
