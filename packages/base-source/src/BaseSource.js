@@ -178,8 +178,11 @@ class BaseSource extends BasePackage {
               : this._itemsCache.length
           )
           for (let i = 0; i < length; i++) {
-            this._promiseQueue.shift()
-              .resolve(this._itemsCache.shift())
+            const promise = this._promiseQueue.shift()
+            const item = this._itemsCache.shift()
+            setTimeout(() => {
+              promise.resolve(item)
+            }, 0)
           }
         }
 

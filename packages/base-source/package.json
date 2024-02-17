@@ -4,7 +4,7 @@
     "url": "https://rondekker.com"
   },
   "name": "@hoast/base-source",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Base package for source packages.",
   "keywords": [
     "hoast",
