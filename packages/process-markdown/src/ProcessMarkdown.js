@@ -91,6 +91,7 @@ class ProcessMarkdown extends BaseProcess {
       this._parser
         .use(remarkRehype, options.remarkRehypeOptions) // Markdown AST to HTML AST.
         .use(rehypeRaw, options.rehypeRawOptions) // Reparse HTML AST.
+        .use(rehypeSanitize, options.rehypeSanitizeOptions) // Sanitize HTML AST.
 
       // Add rehype plugins.
       for (const plugin of options.rehypePlugins) {
@@ -98,7 +99,6 @@ class ProcessMarkdown extends BaseProcess {
       }
 
       this._parser
-        .use(rehypeSanitize, options.rehypeSanitizeOptions) // Sanitize HTML AST.
         .use(rehypeStringify, options.rehypeStringifyOptions) // HTML AST to string.
     }
   }
