@@ -208,11 +208,13 @@ class ProcessHandlebars extends BaseProcess {
       templatePath = getByPathSegments(data, this._templatePropertyPath)
     }
 
-    if (!templatePath && options.templatePath) {
-      templatePath = options.templatePath
-    } else {
-      this.getLogger().warn('No template path found therefore skipping!')
-      return data
+    if (!templatePath) {
+      if (options.templatePath) {
+        templatePath = options.templatePath
+      } else {
+        this.getLogger().warn('No template path found therefore skipping!')
+        return data
+      }
     }
 
     // Construct absolute template path.
