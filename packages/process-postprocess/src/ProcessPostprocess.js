@@ -17,6 +17,12 @@ import createUnified from './unifiedFactories/createUnifiedMinifier.js'
 // import scripts processors.
 import babel from '@babel/core'
 import { minify as terser } from 'terser'
+import { rollup } from 'rollup'
+import rollupPluginBabel from '@rollup/plugin-babel'
+import rollupPluginCommonjs from '@rollup/plugin-commonjs'
+import rollupPluginNodeResolve from '@rollup/plugin-node-resolve'
+import { terser as rollupPluginTerser } from 'rollup-plugin-terser'
+import rollupPluginVirtual from '@rollup/plugin-virtual'
 // import styles processors.
 import cssnano from 'cssnano'
 import Postcss from 'postcss'
@@ -49,6 +55,9 @@ const DETECTIVE_TYPESCRIPT_OPTIONS = {
   jsx: true,
 }
 
+const SCRIPT_PROCESSOR_BABEL = 'babel'
+const SCRIPT_PROCESSOR_ROLLUP = 'rollup'
+
 class ProcessPostprocess extends BaseProcess {
   /**
    * Create package instance.
@@ -64,6 +73,7 @@ class ProcessPostprocess extends BaseProcess {
 
       scriptMinifyOptions: {},
       scriptOptions: {},
+      scriptProcessor: SCRIPT_PROCESSOR_BABEL,
 
       styleMinifyOptions: {},
       styleOptions: {},
@@ -98,22 +108,43 @@ class ProcessPostprocess extends BaseProcess {
       const scriptMinifyOptions = deepAssign({}, options.scriptMinifyOptions)
 
       // Create script processor.
-      this._scriptProcessor = async (code) => {
-        // Process via Babel.
-        let result = await babel.transformAsync(code, scriptOptions)
-        if (result.error) {
-          return code
+      if (options.scriptProcessor === SCRIPT_PROCESSOR_ROLLUP) {
+        this._scriptProcessor = async (code) => {
+          const bundle = await rollup({
+            input: 'input.js', // a temporary input placeholder
+            plugins: [
+              rollupPluginNodeResolve(),
+              rollupPluginCommonjs(),
+              rollupPluginVirtual({
+                'input.js': code,
+              }),
+              rollupPluginBabel(scriptOptions),
+              options.minify ? rollupPluginTerser(scriptMinifyOptions) : null,
+            ].filter(Boolean),
+            inlineDynamicImports: true,
+          })
+          const { output } = await bundle.generate({ format: 'iife' })
+          console.log(output)
+          return output[0].code
         }
+      } else {
+        this._scriptProcessor = async (code) => {
+          // Process via Babel.
+          let result = await babel.transformAsync(code, scriptOptions)
+          if (result.error) {
+            return code
+          }
 
-        code = result.code
+          code = result.code
 
-        // Process via Terser.
-        result = await terser(code, scriptMinifyOptions)
-        if (result.error) {
-          return code
+          // Process via Terser.
+          result = await terser(code, scriptMinifyOptions)
+          if (result.error) {
+            return code
+          }
+
+          return result.code
         }
-
-        return result.code
       }
     }
 
@@ -362,5 +393,8 @@ ProcessPostprocess.MODES = [
   'mjs',
   'ts',
 ]
+
+ProcessPostprocess.SCRIPT_PROCESSOR_BABEL = SCRIPT_PROCESSOR_BABEL
+ProcessPostprocess.SCRIPT_PROCESSOR_ROLLUP = SCRIPT_PROCESSOR_ROLLUP
 
 export default ProcessPostprocess

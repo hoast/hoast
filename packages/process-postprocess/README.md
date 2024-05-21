@@ -14,6 +14,7 @@ npm install @hoast/process-postprocess
 - `{String} mode = 'html'` Whether to process the data as either `css`, `cjs`, `html`, or `js`, `mjs`, `ts`. Set to either of those options. The `cjs`, `mjs`, and `ts` modes do not process the data differently and only influence how the dependencies are read when watching for changes.
 - `{Boolean} minify = true` Whether to minify.
 - `{Array} documentPlugins = []` [`unified rehype` plugins](https://github.com/rehypejs/rehype#readme).
+- `{String} scriptProcessor = 'babel'` What processor to use for the javascript, if bundling is needed use the value `'rollup'`. The babel and terser configurations are still used.
 - `{Object} scriptMinifyOptions = {}` [`terser` options](https://github.com/terser/terser#readme). Set to `false` to disable JS minification.
 - `{Object} scriptOptions = {}` [`babel` options](https://github.com/babel/babel#readme).
 - `{Object} styleMinifyOptions = {}` [`cssnano` options](https://github.com/cssnano/cssnano#readme). Set to `false` to disable CSS minification.
