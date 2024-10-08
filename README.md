@@ -84,3 +84,7 @@ The following list serve as tools you can use directly, or as an example on how 
 - [`base-process`](/packages/base-process#readme) - Provides basic functionality for process package like an initialization function, sequentially running of certain code, and filtering out running the process based of the data.
 - [`base-source`](/packages/base-source#readme) - Provides basic functionality for source package like an initialization function, sequentially running of certain code, and a finallize function called after the source is done iterating.
 - [`utils`](/packages/utils#readme) - A package of utility functions used by several other packages in this list.
+
+## Ideas
+
+- SQLite source plugin.

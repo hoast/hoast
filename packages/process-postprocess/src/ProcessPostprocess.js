@@ -124,7 +124,6 @@ class ProcessPostprocess extends BaseProcess {
             inlineDynamicImports: true,
           })
           const { output } = await bundle.generate({ format: 'iife' })
-          console.log(output)
           return output[0].code
         }
       } else {
