@@ -164,6 +164,34 @@ export default function () {
           }, '@hoast/process-custom', 'Allows you to provide your own custom process functions.'),
         ]),
       ]),
+      section([
+        r('h2', 'Already in use!'),
+        r('p', 'See the links below for places where Hoast is being used.'),
+      ]),
+
+      r('div', {
+        class: 'mb-6 -mt-4',
+      }, [
+        carousel({
+          alignOnHover: true,
+        }, [
+          card({
+            href: 'https://hoast.js.org/',
+          }, 'hoast.js.org', 'This website itself is build using Hoast.'),
+
+          card({
+            href: 'https://doars.js.org/',
+          }, 'doars.js.org', 'The website of another project of mine, Doars, is also made using Hoast.'),
+
+          card({
+            href: 'https://rondekker.com/',
+          }, 'rondekker.com', 'My personal website is statically rendered and build with Hoast.'),
+
+          card({
+            href: 'https://rondekker.nl/',
+          }, 'rondekker.nl', 'My personal website is even multilingual, the same codebase is used for both locales.'),
+        ]),
+      ]),
     ]),
 
     r('footer', [
