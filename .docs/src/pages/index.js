@@ -184,8 +184,8 @@ export default function () {
           }, 'doars.js.org', 'The website of another project of mine, Doars, is also made using Hoast.'),
 
           card({
-            href: 'https://rondekker.com/',
-          }, 'rondekker.com', 'My personal website is statically rendered and build with Hoast.'),
+            href: 'https://rondekker.nl/en-gb/',
+          }, 'rondekker.nl', 'My personal website is statically rendered and build with Hoast.'),
 
           card({
             href: 'https://rondekker.nl/',
@@ -217,7 +217,7 @@ export default function () {
             ]),
             r('li', [
               r('a', {
-                href: 'https://rondekker.com/',
+                href: 'https://rondekker.nl/en-gb/',
                 target: '_blank',
               }, 'From Ron Dekker'),
             ]),

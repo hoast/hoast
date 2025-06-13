@@ -26,4 +26,4 @@
 
 ## Reporting a Vulnerability
 
-Contact Ron via [RonDekker.com](https://rondekker.com)
+Contact Ron via [rondekker.nl](https://rondekker.nl/en-gb)

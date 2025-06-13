@@ -48,7 +48,7 @@ The following list are project that are build with this project.
 
 - [hoast.js.org](https://hoast.js.org/) ([source](https://github.com/hoast/hoast/tree/main/.docs)) - The Hoast website itself.
 - [doars.js.org](https://doars.js.org/) ([source](https://github.com/doars/doars/tree/main/.docs)) - The Doars website. Doars is a front-end library for declaring functionality in your markup.
-- [rondekker.com](https://rondekker.com/) and [rondekker.nl](https://rondekker.nl/) - My personal website and blog.
+- [rondekker.nl](https://rondekker.nl/en-gb/) - My personal website and blog.
 
 The following list serve as tools you can use directly, or as an example on how to make a solution that fits your needs.
 

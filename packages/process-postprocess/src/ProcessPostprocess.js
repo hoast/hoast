@@ -21,7 +21,7 @@ import { rollup } from 'rollup'
 import rollupPluginBabel from '@rollup/plugin-babel'
 import rollupPluginCommonjs from '@rollup/plugin-commonjs'
 import rollupPluginNodeResolve from '@rollup/plugin-node-resolve'
-import { terser as rollupPluginTerser } from 'rollup-plugin-terser'
+import rollupPluginTerser from '@rollup/plugin-terser'
 import rollupPluginVirtual from '@rollup/plugin-virtual'
 // import styles processors.
 import cssnano from 'cssnano'

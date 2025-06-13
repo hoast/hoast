@@ -1,7 +1,7 @@
 {
   "author": {
     "name": "Ron Dekker",
-    "url": "https://rondekker.com"
+    "url": "https://rondekker.nl/en-gb"
   },
   "name": "@hoast/process-pdf",
   "version": "3.2.0",
@@ -39,6 +39,6 @@
     "@hoast/base-process": "^3.1.0",
     "@hoast/utils": "^3.2.0",
     "puppeteer": "^19.11.1",
-    "serve-handler": "^6.1.5"
+    "serve-handler": "^6.1.6"
   }
 }

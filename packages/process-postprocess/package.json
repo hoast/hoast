@@ -1,10 +1,10 @@
 {
   "author": {
     "name": "Ron Dekker",
-    "url": "https://rondekker.com"
+    "url": "https://rondekker.nl/en-gb"
   },
   "name": "@hoast/process-postprocess",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "Process CSS, HTML, and JS data using PostCSS, Unified's rehype, and Babel plugins and minify using CleanCSS, Unified's rehype, and Terser.",
   "keywords": [
     "hoast",
@@ -40,12 +40,12 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@babel/core": "^7.25.7",
+    "@babel/core": "^7.27.4",
     "@hoast/base-process": "^3.1.0",
     "@hoast/utils": "^3.2.0",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.8",
-    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-node-resolve": "^15.3.1",
     "@rollup/plugin-virtual": "3.0.2",
     "cssnano": "^6.1.2",
     "detective-cjs": "^4.1.0",
@@ -58,9 +58,9 @@
     "hast-util-is-javascript": "^3.0.1",
     "hast-util-to-string": "^3.0.1",
     "planckmatch": "^0.2.1",
-    "postcss": "^8.4.47",
+    "postcss": "^8.5.5",
     "rehype-minify-attribute-whitespace": "^4.0.1",
-    "rehype-minify-enumerated-attribute": "^5.0.1",
+    "rehype-minify-enumerated-attribute": "^5.0.2",
     "rehype-minify-event-handler": "^4.0.1",
     "rehype-minify-javascript-url": "^5.0.1",
     "rehype-minify-json-script": "^4.0.1",
@@ -81,9 +81,9 @@
     "rehype-sort-attribute-values": "^5.0.1",
     "rehype-sort-attributes": "^5.0.1",
     "rehype-stringify": "^10.0.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup": "^4.24.0",
-    "terser": "^5.34.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.43.0",
+    "terser": "^5.42.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0"
   }

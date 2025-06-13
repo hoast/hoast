@@ -1,7 +1,7 @@
 {
   "author": {
     "name": "Ron Dekker",
-    "url": "https://rondekker.com"
+    "url": "https://rondekker.nl/en-gb"
   },
   "name": "@hoast/process-markdown",
   "version": "3.3.1",
@@ -42,7 +42,7 @@
     "rehype-sanitize": "^6.0.0",
     "rehype-stringify": "^10.0.1",
     "remark-parse": "^11.0.0",
-    "remark-rehype": "^11.1.1",
+    "remark-rehype": "^11.1.2",
     "unified": "^11.0.5"
   }
 }
