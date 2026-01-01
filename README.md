@@ -1,6 +1,6 @@
 <div align="center">
 
-![Project logo](.docs/src/assets/icons/256-round.png)
+![Project logo](docs-src/src/assets/icons/256-round.png)
 
 </div>
 
