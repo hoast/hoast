@@ -3,7 +3,7 @@
   "name": "@hoast/hoast-workspace",
   "description": "A set of simple and modular packages for build automation.",
   "workspaces": [
-    ".docs/",
+    "docs-src/",
     "examples/*",
     "packages/*"
   ],

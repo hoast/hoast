@@ -16,7 +16,7 @@ import { render as r } from '../utils/RenderUtils.js'
 const iconCopy = readFileSync('src/icons/copy-outline.svg')
 const iconGithub = readFileSync('src/icons/logo-github.svg')
 
-export default function () {
+export default function() {
   return template(
     // Meta data.
     {
@@ -186,10 +186,6 @@ export default function () {
           card({
             href: 'https://rondekker.nl/en-gb/',
           }, 'rondekker.nl', 'My personal website is statically rendered and build with Hoast.'),
-
-          card({
-            href: 'https://rondekker.nl/',
-          }, 'rondekker.nl', 'My personal website is even multilingual, the same codebase is used for both locales.'),
         ]),
       ]),
     ]),
